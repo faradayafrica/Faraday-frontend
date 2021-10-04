@@ -7,7 +7,7 @@ class Question extends Component {
     return (
       <div className='question '>
         <div className='horinzontal-align'>
-          <img className='profile-image' src={profile} alt='profile image' />
+          <img className='profile-image' src={profile} alt='profile' />
 
           <div className='user-info'>
             <div className='horinzontal-align'>
