@@ -1,38 +1,79 @@
-.App {
-  text-align: center;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+:root {
+  --white: #ffffff;
+  --outline: #cfd9de;
+  --brand: #05b851;
+  --secondary: #011945;
+  --background: ##f7f9f8;
+  --secondary-text: #a2abb3;
+  --records: #8b3745;
+  --text-black: #3f3f41;
+
+  --brand-highlight: #f2fcf3;
+  --danger-highlight: #fcf6f2;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/*************************************************** 
+QFEED STYLING 
+***************************************************/
+.qfeed-container {
+  padding: 0 !important;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.header {
+  padding: 1rem 14px;
+  border-bottom: solid 1px var(--outline);
+}
+
+/* question component */
+.question {
+  /* max-width: 620px; */
+  background-color: var(--white);
+  border-bottom: solid 1px var(--outline);
+  font-size: 14px;
+  padding: 14px;
+}
+
+.horinzontal-align {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.horinzontal-align > * {
+  margin-right: 7px;
+  margin-bottom: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.profile-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.profile-name {
+  font-weight: bold;
+}
+
+.question-content {
+  margin-top: 7px;
+}
+
+/*************************************************** 
+SIDENAV STYLING 
+***************************************************/
+.sidenav-container {
+  /* max-width: 375px; */
+}
+
+/*************************************************** 
+TRENDING STYLING 
+***************************************************/
+.trends-container {
+  /* max-width: 375px; */
 }

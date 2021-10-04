@@ -6,7 +6,7 @@ import Trends from './components/Trends';
 
 function App() {
   return (
-    <Body>
+    <Body className='row'>
       <SideNav />
       <Qfeed />
       <Trends />
