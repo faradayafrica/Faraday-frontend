@@ -1,12 +1,16 @@
-import logo from './logo.svg';
-import Hello from "./components/hello"
 import './App.css';
+import Qfeed from './components/Qfeed.jsx';
+import Body from './components/styledComponents/Body';
+import SideNav from './components/SideNav.jsx';
+import Trends from './components/Trends';
 
 function App() {
   return (
-    <div className="App">
-      <Hello />
-    </div>
+    <Body>
+      <SideNav />
+      <Qfeed />
+      <Trends />
+    </Body>
   );
 }
 
