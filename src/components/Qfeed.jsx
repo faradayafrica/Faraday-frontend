@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import '../styles/Qfeed.css';
-
+import Question from './styledComponents/Question';
+import Header from './styledComponents/Header';
 class Qfeed extends Component {
   render() {
     return (
-      <div className='QfeedContainer'>
-        <div>
-          <p className='badge badge-secondary'>Qfeed</p>
-          <h1 className=''>Hello Africa</h1>
+      <div className='qfeed-container col-md-6'>
+        <div className='header'>
+          <Header>Qfeed</Header>
         </div>
+        <Question />
+        <Question />
+        <Question />
       </div>
     );
   }

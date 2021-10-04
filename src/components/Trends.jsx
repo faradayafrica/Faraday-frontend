@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import '../styles/Trends.css';
 
 class Trends extends Component {
   render() {
     return (
-      <div>
-        <div className='TrendsContainer'>
-          <div>
-            <p className='badge badge-danger'>Trending</p>
-          </div>
+      <div className='trends-container bg-secondary col-md-3'>
+        <div>
+          <p className='badge badge-danger'>Trending</p>
         </div>
       </div>
     );
