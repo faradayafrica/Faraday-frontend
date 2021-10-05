@@ -11,6 +11,9 @@ class Qfeed extends Component {
         <Question />
         <Question />
         <Question />
+        <Question />
+        <Question />
+        <Question />
       </div>
     );
   }

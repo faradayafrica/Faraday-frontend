@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-const HEader = styled.div`
+const Header = styled.div`
   font-size: 20px;
 
   font-style: normal;
   font-weight: bold;
 `;
 
-export default HEader;
+export default Header;
