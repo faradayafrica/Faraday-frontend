@@ -1,7 +1,7 @@
 * {
   padding: 0;
   margin: 0;
-  box-sizing: border-box;
+  box-sizing: border-box !important;
 }
 
 :root {
@@ -9,13 +9,18 @@
   --outline: #cfd9de;
   --brand: #05b851;
   --secondary: #011945;
-  --background: ##f7f9f8;
+  --background: #f7f9f9;
   --secondary-text: #a2abb3;
   --records: #8b3745;
   --text-black: #3f3f41;
+  --text2-black: #595959;
 
   --brand-highlight: #f2fcf3;
   --danger-highlight: #fcf6f2;
+}
+
+.txt {
+  color: var(--text2-black);
 }
 
 /*************************************************** 
@@ -37,6 +42,11 @@ QFEED STYLING
   border-bottom: solid 1px var(--outline);
   font-size: 14px;
   padding: 14px;
+  padding-bottom: 7px !important;
+}
+
+.question:hover {
+  background-color: var(--background);
 }
 
 .horinzontal-align {
@@ -60,8 +70,93 @@ QFEED STYLING
   font-weight: bold;
 }
 
+.question-body {
+  display: flex;
+  align-items: flex-start;
+  padding-left: 14px;
+  padding-right: 14px;
+  margin-top: 7px;
+}
+
+.question-body > p {
+  margin: 0;
+}
+
 .question-content {
   margin-top: 7px;
+  padding: 0 !important;
+}
+
+.mr-15 {
+  margin-right: 12px;
+}
+
+.like {
+  /* margin-left: 21px; */
+  width: 40px;
+  margin-top: 18px;
+  margin-right: 12px;
+  /* background-color: #05b851; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.like > p {
+  margin-top: 7px;
+  margin-bottom: 7px;
+  padding: 0;
+  max-width: 20px;
+}
+
+.like > img {
+  cursor: pointer;
+}
+
+.engagement-bar {
+  align-items: center !important;
+  flex-grow: 1;
+  padding: 0;
+  padding-top: 7px;
+}
+
+.engagement-bar > div {
+  position: relative;
+  padding: 0;
+}
+
+.e-btn {
+  cursor: pointer;
+  width: 4rem !important;
+}
+
+.icon-container {
+  padding: 5px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+
+  transition: 0.3s all ease-in;
+}
+
+..engagement-count {
+  transition: 0.3s all ease-in;
+}
+
+.e-btn:hover > .icon-container {
+  background-color: #c8ebdc;
+}
+
+.e-btn:hover > .engagement-count {
+  color: var(--brand);
+}
+
+.engagement-bar p {
+  margin-bottom: 0;
 }
 
 /*************************************************** 
