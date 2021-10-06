@@ -10,7 +10,7 @@
   --brand: #05b851;
   --brand-dark: #23933f;
   --secondary: #011945;
-  --background: #f7f9f9;
+  --background: #f8f9fa;
   --secondary-text: #a2abb3;
   --records: #8b3745;
   --text-black: #3f3f41;
@@ -18,6 +18,10 @@
 
   --brand-highlight: #f2fcf3;
   --danger-highlight: #fcf6f2;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 .txt {
@@ -102,7 +106,7 @@ QFEED STYLING
 
 .like {
   min-width: 40px;
-  margin-top: 14px;
+  margin-top: 10px;
 
   display: flex;
   flex-direction: column;
@@ -114,8 +118,8 @@ QFEED STYLING
 }
 
 .like > p {
-  margin-top: 7px;
-  margin-bottom: 7px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   padding: 0;
   max-width: 20px;
 }
@@ -143,7 +147,7 @@ QFEED STYLING
 }
 
 .icon-container {
-  padding: 5px;
+  padding: 7px;
   margin: 0;
   display: flex;
   align-items: center;
@@ -163,17 +167,17 @@ QFEED STYLING
 }
 
 .e-icon {
-  transition: 0.3s all ease-in;
+  /* transition: 0.3s all ease-in; */
 }
 
 .e-icon:hover {
-  filter: brightness(0) saturate(100%) invert(49%) sepia(15%) saturate(2063%)
-    hue-rotate(82deg) brightness(90%) contrast(91%);
+  filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
+    hue-rotate(115deg) brightness(98%) contrast(96%);
 }
 
 .e-btn:hover .e-icon {
-  filter: brightness(0) saturate(100%) invert(49%) sepia(15%) saturate(2063%)
-    hue-rotate(82deg) brightness(90%) contrast(91%);
+  filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
+    hue-rotate(115deg) brightness(98%) contrast(96%);
 }
 
 .e-btn:hover > .engagement-count {
@@ -188,7 +192,7 @@ QFEED STYLING
   /* font-weight: bold; */
   margin: 0;
   color: var(--brand);
-  margin: 7px 0;
+  margin-bottom: 7px;
   cursor: pointer;
 }
 
