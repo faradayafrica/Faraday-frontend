@@ -5,7 +5,7 @@ const Body = styled.div`
   margin: 0 auto;
   /* display: flex; */
 
-  border: solid 1px #05b851; ;
+  /* border: solid 1px #05b851; ; */
 `;
 
 export default Body;

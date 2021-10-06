@@ -6,34 +6,36 @@ import bookmark from '../../images/bookmark.svg';
 class EngagementButtons extends Component {
   render() {
     return (
-      <div className=' horinzontal-align rol'>
-        <div className='col-1 mr-15'></div>
-        <div className='engagement-bar col row'>
-          <div className='col txt'>
-            <div className='e-btn horinzontal-align'>
-              <div className='icon-container'>
-                <img src={comment} alt='' />
-              </div>
-              <p className='engagement-count'>114</p>
-            </div>
-          </div>
-          <div className='col txt'>
-            <div className='e-btn horinzontal-align'>
-              <div className='icon-container'>
-                <img src={echo} alt='' />
-              </div>
-              <p className='engagement-count'>114</p>
-            </div>
-          </div>
-          <div className='col txt'>
-            <div className='e-btn horinzontal-align'>
-              <div className='icon-container'>
-                <img src={bookmark} alt='' />
+      <div className='engagements horinzontal-align'>
+        <div className='empty-bar'>
+          <div style={{ width: '40px', height: 20 }} className=''></div>
+        </div>
+
+        <div className='col' style={{ padding: '0px' }}>
+          <div className='engagement-bar col horinzontal-align'>
+            <div className='col txt'>
+              <div className='e-btn horinzontal-align'>
+                <div className='icon-container'>
+                  <img className='e-icon' src={comment} alt='' />
+                </div>
+                <p className='engagement-count'>114</p>
               </div>
             </div>
-          </div>
-          <div className='col' style={{ opacity: 0 }}>
-            Icon
+            <div className='col txt '>
+              <div className='e-btn horinzontal-align'>
+                <div className='icon-container'>
+                  <img className='e-icon' src={echo} alt='' />
+                </div>
+                <p className='engagement-count'>114</p>
+              </div>
+            </div>
+            <div className='col txt'>
+              <div className='e-btn horinzontal-align'>
+                <div className='icon-container'>
+                  <img className='e-icon' src={bookmark} alt='' />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
