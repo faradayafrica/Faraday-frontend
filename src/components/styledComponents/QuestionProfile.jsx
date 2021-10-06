@@ -5,18 +5,18 @@ import department from '../../images/department.svg';
 class QuestionProfile extends Component {
   render() {
     return (
-      <div className='horinzontal-align'>
+      <div className='horinzontal-align txt'>
         <img className='profile-image' src={profile} alt='profile' />
 
-        <div className='user-info txt'>
+        <div className='user-info col'>
           <div className='horinzontal-align'>
-            <p className='profile-name'>Nworie User</p>
+            <p className='profile-name '>Nworie User</p>
             <p>@username</p>
             <p>15h</p>
           </div>
           <div className='horinzontal-align'>
             <img src={department} alt='department icon' />
-            <p>Computer engineering</p>
+            <p className='dont-break'>Computer engineering</p>
           </div>
         </div>
       </div>

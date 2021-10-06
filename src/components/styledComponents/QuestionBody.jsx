@@ -4,7 +4,7 @@ import Like from './Like';
 class QuestionBody extends Component {
   render() {
     return (
-      <div className='question-body row'>
+      <div className='question-body horinzontal-align'>
         {/* the question body */}
         <Like />
         <p className='question-content col'>

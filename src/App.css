@@ -8,6 +8,7 @@
   --white: #ffffff;
   --outline: #cfd9de;
   --brand: #05b851;
+  --brand-dark: #23933f;
   --secondary: #011945;
   --background: #f7f9f9;
   --secondary-text: #a2abb3;
@@ -23,11 +24,16 @@
   color: var(--text2-black);
 }
 
+.dont-break {
+  word-wrap: initial;
+}
+
 /*************************************************** 
 QFEED STYLING 
 ***************************************************/
 .qfeed-container {
   padding: 0 !important;
+  overflow: hidden;
 }
 
 .header {
@@ -55,12 +61,13 @@ QFEED STYLING
 }
 
 .horinzontal-align > * {
-  margin-right: 7px;
+  margin-right: 5px;
   margin-bottom: 0;
+  overflow: hidden;
 }
 
 .profile-image {
-  width: 40px;
+  width: 40px !important;
   height: 40px;
   object-fit: cover;
   border-radius: 20px;
@@ -68,14 +75,13 @@ QFEED STYLING
 
 .profile-name {
   font-weight: bold;
+  transition: 0.3s all ease-in;
 }
 
 .question-body {
   display: flex;
   align-items: flex-start;
-  padding-left: 14px;
-  padding-right: 14px;
-  margin-top: 7px;
+  margin-top: 14px;
 }
 
 .question-body > p {
@@ -84,24 +90,27 @@ QFEED STYLING
 
 .question-content {
   margin-top: 7px;
-  padding: 0 !important;
 }
 
 .mr-15 {
   margin-right: 12px;
 }
 
+.engagements {
+  margin-top: 7px;
+}
+
 .like {
-  /* margin-left: 21px; */
-  width: 40px;
-  margin-top: 18px;
-  margin-right: 12px;
-  /* background-color: #05b851; */
+  min-width: 40px;
+  margin-top: 14px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.empty-bar {
+  width: 40px;
 }
 
 .like > p {
@@ -115,11 +124,12 @@ QFEED STYLING
   cursor: pointer;
 }
 
+.like:hover > .profile-name {
+  color: var(--brand-dark);
+}
+
 .engagement-bar {
   align-items: center !important;
-  flex-grow: 1;
-  padding: 0;
-  padding-top: 7px;
 }
 
 .engagement-bar > div {
@@ -138,25 +148,52 @@ QFEED STYLING
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 30px;
+  border-radius: 8px;
 
   transition: 0.3s all ease-in;
 }
 
-..engagement-count {
+.engagement-count {
+  /* color: var(--text-black); */
   transition: 0.3s all ease-in;
 }
 
 .e-btn:hover > .icon-container {
-  background-color: #c8ebdc;
+  background-color: #def1eb;
+}
+
+.e-icon {
+  transition: 0.3s all ease-in;
+}
+
+.e-icon:hover {
+  filter: brightness(0) saturate(100%) invert(49%) sepia(15%) saturate(2063%)
+    hue-rotate(82deg) brightness(90%) contrast(91%);
+}
+
+.e-btn:hover .e-icon {
+  filter: brightness(0) saturate(100%) invert(49%) sepia(15%) saturate(2063%)
+    hue-rotate(82deg) brightness(90%) contrast(91%);
 }
 
 .e-btn:hover > .engagement-count {
-  color: var(--brand);
+  color: var(--brand-dark);
 }
 
 .engagement-bar p {
   margin-bottom: 0;
+}
+
+.view-answers {
+  /* font-weight: bold; */
+  margin: 0;
+  color: var(--brand);
+  margin: 7px 0;
+  cursor: pointer;
+}
+
+.view-answers:hover {
+  color: var(--brand-dark);
 }
 
 /*************************************************** 
@@ -171,4 +208,12 @@ TRENDING STYLING
 ***************************************************/
 .trends-container {
   /* max-width: 375px; */
+}
+
+@media only screen and (max-width: 376px) {
+  .dont-break {
+    min-width: 180px;
+    overflow: none;
+    margin: 0;
+  }
 }

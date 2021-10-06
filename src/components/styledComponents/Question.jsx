@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import EngagementButtons from './EngagementButtons';
 import QuestionBody from './QuestionBody';
 import QuestionProfile from './QuestionProfile';
+import ViewAnswers from './ViewAnswers';
 
 class Question extends Component {
   render() {
@@ -10,6 +11,7 @@ class Question extends Component {
         <QuestionProfile />
         <QuestionBody />
         <EngagementButtons />
+        <ViewAnswers />
       </div>
     );
   }
