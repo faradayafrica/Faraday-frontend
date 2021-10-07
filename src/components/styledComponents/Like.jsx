@@ -12,12 +12,12 @@ class Like extends Component {
   };
 
   render() {
-    let vote = this.state.vote;
+    // let vote = this.state.vote;
 
     const handleLikeClick = () => {
       console.log(this.state.isLiked);
 
-      if (this.state.isLiked == like) {
+      if (this.state.isLiked === like) {
         this.setState({
           isLiked: liked,
           isDisliked: dislike,
@@ -28,9 +28,9 @@ class Like extends Component {
 
     const handleDislikeClick = () => {
       console.log('dislike clicked');
-      let vote = this.state.vote;
+      // let vote = this.state.vote;
 
-      if (this.state.isDisliked == dislike) {
+      if (this.state.isDisliked === dislike) {
         this.setState({
           isDisliked: disliked,
           isLiked: like,

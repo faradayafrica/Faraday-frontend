@@ -17,7 +17,7 @@ class EngagementButtons extends Component {
     const handleCommentClick = () => {
       console.log('comment clicked');
 
-      this.state.isCommented == comment
+      this.state.isCommented === comment
         ? this.setState({ isCommented: commented })
         : this.setState({ isCommented: comment });
     };
@@ -25,7 +25,7 @@ class EngagementButtons extends Component {
     const handleEchoClick = () => {
       console.log('echo clicked');
 
-      this.state.isEchoed == echo
+      this.state.isEchoed === echo
         ? this.setState({ isEchoed: echoed })
         : this.setState({ isEchoed: echo });
     };
@@ -33,7 +33,7 @@ class EngagementButtons extends Component {
     const handleBookmarkClick = () => {
       console.log('bookmark clicked');
 
-      this.state.isBookmarked == bookmark
+      this.state.isBookmarked === bookmark
         ? this.setState({ isBookmarked: bookmarked })
         : this.setState({ isBookmarked: bookmark });
     };
