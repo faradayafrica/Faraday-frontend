@@ -5,7 +5,7 @@ class Qfeed extends Component {
   render() {
     return (
       <div className='qfeed-container col-md-6'>
-        <div className='header'>
+        <div className='header sticky-nav'>
           <Header>Qfeed</Header>
         </div>
         <Question />

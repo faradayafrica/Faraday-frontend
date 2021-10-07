@@ -11,7 +11,10 @@ class QuestionBody extends Component {
           Hello! Can i share my email ID with client before starting a contract?
           I need access to her shopify store and merchant center account before
           I start working with her, before checking these accounts there is no
-          way I can say yes. Please suggest.
+          way I can say yes. Please suggest. Hello! Can i share my email ID with
+          client before starting a contract? I need access to her shopify store
+          and merchant center account before I start working with her, before
+          checking these accounts there is no way I can say yes. Please suggest.
         </p>
       </div>
     );
