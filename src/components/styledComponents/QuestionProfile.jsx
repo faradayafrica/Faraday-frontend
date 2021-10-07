@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import profile from '../../images/profile.png';
-import department from '../../images/department.svg';
+import departmentIcon from '../../images/department.svg';
 
 class QuestionProfile extends Component {
   render() {
+    const { name, department, time, username } = this.props.question;
     return (
       <div className='horinzontal-align txt'>
         <img className='profile-image' src={profile} alt='profile' />
 
         <div className='user-info col'>
           <div className='horinzontal-align'>
-            <p className='profile-name '>Nworie User</p>
-            <p>@username</p>
-            <p>15h</p>
+            <p className='profile-name '>{name}</p>
+            <p>@{username}</p>
+            <p>{time}</p>
           </div>
           <div className='horinzontal-align'>
-            <img src={department} alt='department icon' />
-            <p className='dont-break'>Computer engineering</p>
+            <img src={departmentIcon} alt='department icon' />
+            <p className='dont-break'>{department}</p>
           </div>
         </div>
       </div>
