@@ -3,19 +3,12 @@ import Like from './Like';
 
 class QuestionBody extends Component {
   render() {
+    const { body } = this.props.question;
     return (
       <div className='question-body horinzontal-align'>
         {/* the question body */}
-        <Like />
-        <p className='question-content col'>
-          Hello! Can i share my email ID with client before starting a contract?
-          I need access to her shopify store and merchant center account before
-          I start working with her, before checking these accounts there is no
-          way I can say yes. Please suggest. Hello! Can i share my email ID with
-          client before starting a contract? I need access to her shopify store
-          and merchant center account before I start working with her, before
-          checking these accounts there is no way I can say yes. Please suggest.
-        </p>
+        <Like question={this.props.question} />
+        <p className='question-content col'>{body}</p>
       </div>
     );
   }

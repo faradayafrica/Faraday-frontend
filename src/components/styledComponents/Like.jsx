@@ -8,42 +8,15 @@ class Like extends Component {
   state = {
     isLiked: like,
     isDisliked: dislike,
-    vote: 2,
+    vote: this.props.question.voteCount,
   };
 
   render() {
-    // let vote = this.state.vote;
-
-    const handleLikeClick = () => {
-      console.log(this.state.isLiked);
-
-      if (this.state.isLiked === like) {
-        this.setState({
-          isLiked: liked,
-          isDisliked: dislike,
-          vote: this.state.vote + 1,
-        });
-      }
-    };
-
-    const handleDislikeClick = () => {
-      console.log('dislike clicked');
-      // let vote = this.state.vote;
-
-      if (this.state.isDisliked === dislike) {
-        this.setState({
-          isDisliked: disliked,
-          isLiked: like,
-          vote: this.state.vote - 1,
-        });
-      }
-    };
-
     return (
       <div className='like'>
         <img
           className='e-icon'
-          onClick={handleLikeClick}
+          onClick={this.handleLikeClick}
           src={this.state.isLiked}
           alt='like'
         />
@@ -52,11 +25,36 @@ class Like extends Component {
           className='e-icon'
           src={this.state.isDisliked}
           alt='disliked'
-          onClick={handleDislikeClick}
+          onClick={this.handleDislikeClick}
         />
       </div>
     );
   }
+
+  handleLikeClick = () => {
+    console.log(this.state.isLiked);
+
+    if (this.state.isLiked === like) {
+      this.setState({
+        isLiked: liked,
+        isDisliked: dislike,
+        vote: this.state.vote + 1,
+      });
+    }
+  };
+
+  handleDislikeClick = () => {
+    console.log('dislike clicked');
+    // let vote = this.state.vote;
+
+    if (this.state.isDisliked === dislike) {
+      this.setState({
+        isDisliked: disliked,
+        isLiked: like,
+        vote: this.state.vote - 1,
+      });
+    }
+  };
 }
 
 export default Like;

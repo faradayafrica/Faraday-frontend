@@ -11,32 +11,14 @@ class EngagementButtons extends Component {
     isCommented: comment,
     isEchoed: echo,
     isBookmarked: bookmark,
+
+    commentCount: this.props.question.comment,
+    echoCount: this.props.question.echo,
   };
 
   render() {
-    const handleCommentClick = () => {
-      console.log('comment clicked');
-
-      this.state.isCommented === comment
-        ? this.setState({ isCommented: commented })
-        : this.setState({ isCommented: comment });
-    };
-
-    const handleEchoClick = () => {
-      console.log('echo clicked');
-
-      this.state.isEchoed === echo
-        ? this.setState({ isEchoed: echoed })
-        : this.setState({ isEchoed: echo });
-    };
-
-    const handleBookmarkClick = () => {
-      console.log('bookmark clicked');
-
-      this.state.isBookmarked === bookmark
-        ? this.setState({ isBookmarked: bookmarked })
-        : this.setState({ isBookmarked: bookmark });
-    };
+    const { isCommented, isEchoed, isBookmarked, commentCount, echoCount } =
+      this.state;
 
     return (
       <div className='engagements horinzontal-align'>
@@ -49,46 +31,38 @@ class EngagementButtons extends Component {
             <div className='col txt'>
               <div
                 className='e-btn horinzontal-align'
-                onClick={handleCommentClick}
+                onClick={this.handleCommentClick}
               >
                 <div className='icon-container'>
-                  <img
-                    className='e-icon'
-                    src={this.state.isCommented}
-                    alt='comment'
-                  />
+                  <img className='e-icon' src={isCommented} alt='comment' />
                 </div>
-                <p className='engagement-count'>114</p>
+                <p className='engagement-count'>
+                  {this.renderCount(commentCount)}
+                </p>
               </div>
             </div>
 
             <div className='col txt '>
               <div
                 className='e-btn horinzontal-align '
-                onClick={handleEchoClick}
+                onClick={this.handleEchoClick}
               >
                 <div className='icon-container'>
-                  <img
-                    className='e-icon'
-                    src={this.state.isEchoed}
-                    alt='echo'
-                  />
+                  <img className='e-icon' src={isEchoed} alt='echo' />
                 </div>
-                <p className='engagement-count'>114</p>
+                <p className='engagement-count'>
+                  {this.renderCount(echoCount)}
+                </p>
               </div>
             </div>
 
             <div className='col txt '>
               <div
                 className='e-btn horinzontal-align'
-                onClick={handleBookmarkClick}
+                onClick={this.handleBookmarkClick}
               >
                 <div className='icon-container'>
-                  <img
-                    className='e-icon'
-                    src={this.state.isBookmarked}
-                    alt='bookmark'
-                  />
+                  <img className='e-icon' src={isBookmarked} alt='bookmark' />
                 </div>
               </div>
             </div>
@@ -97,6 +71,43 @@ class EngagementButtons extends Component {
       </div>
     );
   }
+
+  // This handles the Comment click event
+  handleCommentClick = () => {
+    const { commentCount } = this.state;
+    console.log('comment clicked');
+
+    this.state.isCommented === comment
+      ? this.setState({
+          isCommented: commented,
+          commentCount: commentCount + 1,
+        })
+      : this.setState({ isCommented: comment, commentCount: commentCount - 1 });
+  };
+
+  // This handles the Echo click event
+  handleEchoClick = () => {
+    const { echoCount } = this.state;
+    console.log('echo clicked');
+
+    this.state.isEchoed === echo
+      ? this.setState({ isEchoed: echoed, echoCount: echoCount + 1 })
+      : this.setState({ isEchoed: echo, echoCount: echoCount - 1 });
+  };
+
+  // This handles the bookmark click event
+  handleBookmarkClick = () => {
+    console.log('bookmark clicked');
+
+    this.state.isBookmarked === bookmark
+      ? this.setState({ isBookmarked: bookmarked })
+      : this.setState({ isBookmarked: bookmark });
+  };
+
+  // This displays the echo and comment count
+  renderCount = count => {
+    return count === 0 ? ' ' : count;
+  };
 }
 
 export default EngagementButtons;
