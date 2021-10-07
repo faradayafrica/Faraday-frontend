@@ -9,7 +9,8 @@ class Qfeed extends Component {
         username: 'kingpin',
         time: '15h',
         department: 'Computer Science',
-        image: '../images/profile1.png',
+        image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGVoAAWuCfiuU9YLs5VtC8gqevqq-p4RNeMA&usqp=CAU',
         body: 'So React or VueJs or Svelte or Angular for you?',
         voteCount: 15,
         comment: 14,
@@ -20,7 +21,8 @@ class Qfeed extends Component {
         username: 'peace',
         time: '15h',
         department: 'geology',
-        image: '../images/profile2.png',
+        image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcWD22PtNpvHFqyG3PgkPjhqVjiMw-QGmENA&usqp=CAU',
         body: 'Hello',
         voteCount: 0,
         comment: 42,
@@ -31,7 +33,8 @@ class Qfeed extends Component {
         username: 'tesla',
         time: '15h',
         department: 'Space exploration',
-        image: '../images/profile1.png',
+        image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmUbjoL6IYzihcnn3-MDo1E_VjkoRKYg-HLw&usqp=CAU',
         body: `You’re at a point where you lie to yourself that listening to a podcast is productive. Most podcasts transition quickly from productivity to simple entertainment. Why waste 1h and 30 minutes for just 1 or 2 good ideas..`,
         voteCount: -4,
         comment: 20,

@@ -27,7 +27,7 @@ class EngagementButtons extends Component {
         </div>
 
         <div className='col' style={{ padding: '0px' }}>
-          <div className='engagement-bar col horinzontal-align'>
+          <div className='engagement-bar col horinzontal-align ml-2'>
             <div className='col txt'>
               <div
                 className='e-btn horinzontal-align'

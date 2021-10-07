@@ -8,7 +8,7 @@ class ViewAnswers extends Component {
           <div style={{ width: '40px', height: 20 }} className=''></div>
         </div>
 
-        <div className='col'>
+        <div className='col ml-2'>
           <p className='view-answers'>View all answers</p>
         </div>
       </div>

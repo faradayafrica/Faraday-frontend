@@ -42,17 +42,21 @@ QFEED STYLING
 
 .header {
   padding: 1rem 14px;
-  border-bottom: solid 1px var(--outline);
+  border-bottom: solid 0.5px var(--outline);
 }
 
 /* question component */
 .question {
   /* max-width: 620px; */
   background-color: var(--white);
-  border-bottom: solid 1px var(--outline);
+  border-bottom: solid 0.5px var(--outline);
   font-size: 14px;
   padding: 14px;
   padding-bottom: 7px !important;
+}
+
+.col {
+  padding-left: 0px !important;
 }
 
 .question:hover {
@@ -75,6 +79,7 @@ QFEED STYLING
   height: 40px;
   object-fit: cover;
   border-radius: 20px;
+  background-color: var(--outline);
 }
 
 .profile-name {
