@@ -8,7 +8,7 @@ class QuestionBody extends Component {
       <div className='question-body horinzontal-align'>
         {/* the question body */}
         <Like question={this.props.question} />
-        <p className='question-content col'>{body}</p>
+        <p className='question-content col ml-2'>{body}</p>
       </div>
     );
   }

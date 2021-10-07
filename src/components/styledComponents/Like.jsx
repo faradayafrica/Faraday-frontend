@@ -35,11 +35,18 @@ class Like extends Component {
     console.log(this.state.isLiked);
 
     if (this.state.isLiked === like) {
-      this.setState({
-        isLiked: liked,
-        isDisliked: dislike,
-        vote: this.state.vote + 1,
-      });
+      if (this.state.isDisliked === disliked) {
+        this.setState({
+          isLiked: liked,
+          isDisliked: dislike,
+          vote: this.state.vote + 2,
+        });
+      } else {
+        this.setState({
+          isLiked: liked,
+          vote: this.state.vote + 1,
+        });
+      }
     }
   };
 
@@ -48,11 +55,18 @@ class Like extends Component {
     // let vote = this.state.vote;
 
     if (this.state.isDisliked === dislike) {
-      this.setState({
-        isDisliked: disliked,
-        isLiked: like,
-        vote: this.state.vote - 1,
-      });
+      if (this.state.isLiked === liked) {
+        this.setState({
+          isDisliked: disliked,
+          isLiked: like,
+          vote: this.state.vote - 2,
+        });
+      } else {
+        this.setState({
+          isDisliked: disliked,
+          vote: this.state.vote - 1,
+        });
+      }
     }
   };
 }
