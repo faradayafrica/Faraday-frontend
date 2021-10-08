@@ -32,9 +32,11 @@ class EngagementButtons extends Component {
               <div
                 className='e-btn horinzontal-align'
                 onClick={this.handleCommentClick}
+                data-toggle='tooltip'
+                title='Answer'
               >
                 <div className='icon-container'>
-                  <img className='e-icon' src={isCommented} alt='comment' />
+                  <img className='e-icon' src={isCommented} alt='' />
                 </div>
                 <p className='engagement-count'>
                   {this.renderCount(commentCount)}
@@ -46,9 +48,11 @@ class EngagementButtons extends Component {
               <div
                 className='e-btn horinzontal-align '
                 onClick={this.handleEchoClick}
+                data-toggle='tooltip'
+                title='Echo'
               >
                 <div className='icon-container'>
-                  <img className='e-icon' src={isEchoed} alt='echo' />
+                  <img className='e-icon' src={isEchoed} alt='' />
                 </div>
                 <p className='engagement-count'>
                   {this.renderCount(echoCount)}
@@ -60,6 +64,8 @@ class EngagementButtons extends Component {
               <div
                 className='e-btn horinzontal-align'
                 onClick={this.handleBookmarkClick}
+                data-toggle='tooltip'
+                title='Bookmark'
               >
                 <div className='icon-container'>
                   <img className='e-icon' src={isBookmarked} alt='bookmark' />
