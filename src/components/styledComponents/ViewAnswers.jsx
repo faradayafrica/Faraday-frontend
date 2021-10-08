@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class ViewAnswers extends Component {
   render() {
@@ -9,7 +10,9 @@ class ViewAnswers extends Component {
         </div>
 
         <div className='col ml-2'>
-          <p className='view-answers'>View all answers</p>
+          <Link to='/question' style={{ textDecoration: 'none' }}>
+            <p className='view-answers'>View all answers</p>
+          </Link>
         </div>
       </div>
     );

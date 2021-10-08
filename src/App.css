@@ -13,8 +13,8 @@
   --background: #f8f9fa;
   --secondary-text: #a2abb3;
   --records: #8b3745;
-  --text-black: #3f3f41;
-  --text2-black: #595959;
+  --text-black: #212529;
+  --text2-black: #536471;
 
   --brand-highlight: #f2fcf3;
   --danger-highlight: #fcf6f2;
@@ -50,7 +50,7 @@ QFEED STYLING
   /* max-width: 620px; */
   background-color: var(--white);
   border-bottom: solid 0.5px var(--outline);
-  font-size: 14px;
+  font-size: 15px;
   padding: 14px;
   padding-bottom: 7px !important;
 }
@@ -99,6 +99,8 @@ QFEED STYLING
 
 .question-content {
   margin-top: 7px;
+  color: var(--text-black);
+  cursor: pointer;
 }
 
 .mr-15 {
