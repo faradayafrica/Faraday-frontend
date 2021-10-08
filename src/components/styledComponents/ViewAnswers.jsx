@@ -10,7 +10,10 @@ class ViewAnswers extends Component {
         </div>
 
         <div className='col ml-2'>
-          <Link to='/question' style={{ textDecoration: 'none' }}>
+          <Link
+            to={`/questions/${this.props.question._id}`}
+            style={{ textDecoration: 'none' }}
+          >
             <p className='view-answers'>View all answers</p>
           </Link>
         </div>

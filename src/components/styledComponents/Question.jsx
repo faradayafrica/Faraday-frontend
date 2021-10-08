@@ -26,7 +26,7 @@ class Question extends Component {
           isDisliked={this.state.isDisliked}
         />
         <EngagementButtons question={this.props.question} />
-        <ViewAnswers />
+        <ViewAnswers question={this.props.question} />
       </div>
     );
   }

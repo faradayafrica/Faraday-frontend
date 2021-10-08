@@ -29,7 +29,7 @@ class Qfeed extends Component {
             )}
           />
           <Route
-            path='/questions'
+            path='/'
             render={props => (
               <Questions renderQuestion={this.renderQuestion} {...props} />
             )}
