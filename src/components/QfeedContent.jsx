@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Question from './styledComponents/Question';
 import Questions from './Questions';
-import Header from './styledComponents/Header';
 import { Route, Switch } from 'react-router-dom';
 
 // import { Route } from 'react-router-dom';
@@ -17,15 +16,11 @@ class Qfeed extends Component {
   render() {
     return (
       <div className='qfeed-container col-md-6'>
-        <div className='header sticky-nav'>
-          <Header>Qfeed</Header>
-        </div>
-
         <Switch>
           <Route
             path='/questions/:id'
             render={props => (
-              <QuestionPage {...props} questions={this.state.questions} />
+              <QuestionPage questions={this.state.questions} {...props} />
             )}
           />
           <Route

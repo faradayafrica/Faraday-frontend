@@ -10,7 +10,42 @@
             "body": "So React or VueJs or Svelte or Angular for you?",
             "voteCount": 15,
             "comment": 14,
-            "echo": 5
+            "echo": 5,
+            "answers" : [
+                {
+                    "name": "Nehemiar Blaine",
+                    "username": "devgenix",
+                    "_id": "001",
+                    "time": "2m",
+                    "department": "Computer Engineering",
+                    "image":
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGVoAAWuCfiuU9YLs5VtC8gqevqq-p4RNeMA&usqp=CAU",
+                    "body": "Any would serve, it all depends on the demand in your local. Currently React is the most popular",
+                    "isAnswer": true
+                },
+                {
+                    "name": "Isaiag Usman",
+                    "username": "iamisaiah",
+                    "_id": "002",
+                    "time": "14m",
+                    "department": "Fine and Applied Art",
+                    "image":
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGVoAAWuCfiuU9YLs5VtC8gqevqq-p4RNeMA&usqp=CAU",
+                    "body": "gbe bodi eh",
+                    "isAnswer": false
+                },
+                {
+                    "name": "Oge Nworie",
+                    "username": "ogebaby",
+                    "_id": "003",
+                    "time": "1h",
+                    "department": "Architecturing",
+                    "image":
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGVoAAWuCfiuU9YLs5VtC8gqevqq-p4RNeMA&usqp=CAU",
+                    "body": "Is this what this app is for?",
+                    "isAnswer": false
+                }
+            ]
         },
         {
             "name": "Olive Ada",
@@ -23,7 +58,8 @@
             "body": "Hello",
             "voteCount": 0,
             "comment": 42,
-            "echo": 19
+            "echo": 19,
+             "answers" : []
         },
         {
             "name": "Elon Must",
@@ -36,6 +72,7 @@
             "body": "You’re at a point where you lie to yourself that listening to a podcast is productive. Most podcasts transition quickly from productivity to simple entertainment. Why waste 1h and 30 minutes for just 1 or 2 good ideas..",
             "voteCount": -4,
             "comment": 20,
-            "echo": 2
+            "echo": 2,
+             "answers" : []
         }       
 ]

@@ -32,6 +32,15 @@ html {
   word-wrap: initial;
 }
 
+.badge-brand {
+  background-color: var(--brand);
+  color: var(--white);
+}
+
+.borders {
+  border-top: solid 0.5px var(--outline);
+  border-bottom: solid 0.5px var(--outline);
+}
 /*************************************************** 
 QFEED STYLING 
 ***************************************************/
@@ -47,6 +56,14 @@ QFEED STYLING
 
 /* question component */
 .question {
+  /* max-width: 620px; */
+  background-color: var(--white);
+  border-bottom: solid 0.5px var(--outline);
+  font-size: 15px;
+  padding: 14px;
+  padding-bottom: 7px !important;
+}
+.question-page {
   /* max-width: 620px; */
   background-color: var(--white);
   border-bottom: solid 0.5px var(--outline);
@@ -101,6 +118,12 @@ QFEED STYLING
   margin-top: 7px;
   color: var(--text-black);
   cursor: pointer;
+}
+
+.question-page-content {
+  margin-top: 7px;
+  color: var(--text-black);
+  font-size: 23px;
 }
 
 .mr-15 {
@@ -172,6 +195,9 @@ QFEED STYLING
 .e-btn:hover > .icon-container {
   background-color: #def1eb;
 }
+.icon-container:hover {
+  background-color: #def1eb;
+}
 
 .e-icon {
   /* transition: 0.3s all ease-in; */
@@ -183,6 +209,10 @@ QFEED STYLING
 }
 
 .e-btn:hover .e-icon {
+  filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
+    hue-rotate(115deg) brightness(98%) contrast(96%);
+}
+.icon-container:hover .e-icon {
   filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
     hue-rotate(115deg) brightness(98%) contrast(96%);
 }
