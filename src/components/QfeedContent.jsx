@@ -18,7 +18,7 @@ class Qfeed extends Component {
       <div className='qfeed-container col-md-6'>
         <Switch>
           <Route
-            path='/questions/:id'
+            path='/Qfeed/:id'
             render={props => (
               <QuestionPage questions={this.state.questions} {...props} />
             )}
