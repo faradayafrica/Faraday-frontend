@@ -15,7 +15,7 @@ class QuestionBody extends Component {
           isDisliked={this.props.isDisliked}
         />
         <Link
-          to={`/questions/${this.props.question._id}`}
+          to={`/Qfeed/${this.props.question._id}`}
           style={{ textDecoration: 'none' }}
         >
           <p className='question-content col ml-2'>{body}</p>

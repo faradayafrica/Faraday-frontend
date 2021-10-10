@@ -47,6 +47,8 @@ QFEED STYLING
 .qfeed-container {
   padding: 0 !important;
   overflow: hidden;
+  border-left: solid 0.5px var(--outline);
+  border-right: solid 0.5px var(--outline);
 }
 
 .header {
@@ -241,7 +243,158 @@ QFEED STYLING
 SIDENAV STYLING 
 ***************************************************/
 .sidenav-container {
-  /* max-width: 375px; */
+  display: block;
+}
+
+.link-box {
+  padding: 5px;
+}
+
+.sidenav-container .navlink {
+  font-size: 20px;
+  padding: 7px;
+  display: block;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  width: initial;
+
+  display: flex;
+  align-items: flex-end;
+  justify-items: center;
+  color: #343a40;
+}
+
+.sidenav-container .btn {
+  align-items: center;
+  background-color: var(--white);
+  border: none;
+}
+
+.sidenav-container .btn-green {
+  align-items: center;
+  background-color: var(--brand);
+  opacity: 0.9;
+  /* border: none; */
+}
+
+.btn-green p {
+  color: var(--white) !important;
+}
+
+.sidenav-container .btn:hover {
+  background-color: var(--background);
+  color: #343a40;
+}
+.sidenav-container .btn-success:focus {
+  background-color: var(--background);
+  color: #343a40;
+}
+
+.sidenav-container .btn-green:hover {
+  background-color: var(--brand);
+  opacity: 1;
+}
+
+.sidenav-container .active-nav {
+  color: black !important;
+  font-weight: 600;
+}
+
+.sidenav-container p {
+  margin-bottom: 0;
+}
+
+.sidenav-container .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidenav-container .icon svg {
+  margin: 0;
+  align-self: center;
+  fill: #6c757d;
+}
+
+.active-icon svg {
+  fill: #000 !important;
+  /* filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
+    hue-rotate(115deg) brightness(98%) contrast(96%); */
+}
+
+.navlink:hover {
+  background-color: var(--background);
+}
+
+@media only screen and (max-width: 768px) {
+  .sidenav-container {
+    display: flex;
+    border-top: 0.5px solid var(--outline);
+    background-color: var(--white);
+    position: fixed !important;
+    bottom: 0;
+    z-index: 1000;
+  }
+
+  .navlink-brand {
+    display: none;
+  }
+
+  .link-box {
+    padding: 5px;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 60px;
+
+    position: relative;
+    left: 0.75rem;
+    /* background-color: red; */
+  }
+
+  .link-box .btn {
+    margin: 0 20px;
+    margin-bottom: 0;
+  }
+
+  /* .link-box .btn:nth-child(2) {
+    display: none !important;
+    background-color: red;
+  } */
+
+  .link-box .btn-green {
+    position: fixed;
+    bottom: 6rem;
+    right: 2rem;
+    z-index: 1000000;
+  }
+
+  .sidenav-container .btn-green {
+    align-items: center;
+    background-color: var(--brand);
+    opacity: 1;
+    /* border: none; */
+  }
+
+  .sidenav-container p {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 376px) {
+  .link-box {
+    position: initial;
+    left: 0.75rem;
+    /* background-color: red; */
+  }
+
+  .link-box .btn-green {
+    position: fixed;
+    bottom: 5rem;
+    right: 1rem;
+    z-index: 1000000;
+  }
 }
 
 /*************************************************** 
@@ -256,5 +409,9 @@ TRENDING STYLING
     min-width: 180px;
     overflow: none;
     margin: 0;
+  }
+
+  .trends-container {
+    display: none;
   }
 }

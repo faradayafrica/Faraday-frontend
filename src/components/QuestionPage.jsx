@@ -36,15 +36,15 @@ class QuestionPage extends Component {
           {/* question profile ends here */}
           <p className='question-page-content col ml-2'>{newQuestion.body}</p>
           <h6>
-            <span className='badge badge-secondary mx-2'>
+            <span className='badge badge-brand mx-2'>
               {newQuestion.comment} Answers
             </span>
 
-            <span className='badge badge-warning mr-2'>
+            <span className='badge badge-info mr-2'>
               {newQuestion.echo} Echoes
             </span>
 
-            <span className='badge badge-brand'>
+            <span className='badge badge-primary'>
               {newQuestion.voteCount} Votes
             </span>
           </h6>
