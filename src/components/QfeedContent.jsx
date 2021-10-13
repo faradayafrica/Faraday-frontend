@@ -15,7 +15,7 @@ class Qfeed extends Component {
 
   render() {
     return (
-      <div className='qfeed-container col-md-6'>
+      <div className='qfeed-container col-md-6 '>
         <Switch>
           <Route
             path='/Qfeed/:id'
@@ -29,6 +29,8 @@ class Qfeed extends Component {
               <Questions renderQuestion={this.renderQuestion} {...props} />
             )}
           />
+
+          {/* <Redirect push to='not-found' /> */}
         </Switch>
       </div>
     );

@@ -47,8 +47,8 @@ QFEED STYLING
 .qfeed-container {
   padding: 0 !important;
   overflow: hidden;
-  border-left: solid 0.5px var(--outline);
-  border-right: solid 0.5px var(--outline);
+  /* border-left: solid 0.5px var(--outline); */
+  /* border-right: solid 0.5px var(--outline); */
 }
 
 .header {
@@ -122,10 +122,15 @@ QFEED STYLING
   cursor: pointer;
 }
 
+.question-answer {
+  margin-top: 7px;
+  color: var(--text-black);
+}
+
 .question-page-content {
   margin-top: 7px;
   color: var(--text-black);
-  font-size: 23px;
+  font-size: 22px;
 }
 
 .mr-15 {
@@ -239,11 +244,35 @@ QFEED STYLING
   color: var(--brand-dark);
 }
 
+/* the post btn */
+
+/* .screen {
+  height: 100vh;
+  width: 100%;
+  background-color: black;
+  opacity: 0.5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: -100;
+} */
+
+.post-btn {
+  /* z-index: 1000000000; */
+  /* background-color: black; */
+  /* opacity: 0.5; */
+  position: fixed;
+  bottom: 5rem;
+  right: 5rem;
+  overflow: hidden;
+}
 /*************************************************** 
 SIDENAV STYLING 
 ***************************************************/
 .sidenav-container {
   display: block;
+  /* background-color: var(--brand-highlight); */
 }
 
 .link-box {
@@ -264,21 +293,24 @@ SIDENAV STYLING
   color: #343a40;
 }
 
+.dropdown-link {
+  color: #343a40 !important;
+  font-size: 18px;
+  padding: 10px !important;
+  display: block;
+  margin-bottom: 0;
+  width: initial;
+}
+
+.dropdown-link:hover {
+  color: black;
+  background-color: var(--background) !important;
+}
+
 .sidenav-container .btn {
   align-items: center;
   background-color: var(--white);
   border: none;
-}
-
-.sidenav-container .btn-green {
-  align-items: center;
-  background-color: var(--brand);
-  opacity: 0.9;
-  /* border: none; */
-}
-
-.btn-green p {
-  color: var(--white) !important;
 }
 
 .sidenav-container .btn:hover {
@@ -289,8 +321,7 @@ SIDENAV STYLING
   background-color: var(--background);
   color: #343a40;
 }
-
-.sidenav-container .btn-green:hover {
+.btn-green:hover {
   background-color: var(--brand);
   opacity: 1;
 }
@@ -326,60 +357,47 @@ SIDENAV STYLING
   background-color: var(--background);
 }
 
+.btn-green p {
+  color: var(--white) !important;
+}
+
+.btn-green {
+  background-color: var(--brand) !important;
+  opacity: 0.9;
+  color: var(--white) !important;
+}
+
 @media only screen and (max-width: 768px) {
-  .sidenav-container {
+  /* .sidenav-container {
     display: flex;
     border-top: 0.5px solid var(--outline);
     background-color: var(--white);
     position: fixed !important;
     bottom: 0;
     z-index: 1000;
-  }
+  } */
 
   .navlink-brand {
     display: none;
   }
 
   .link-box {
-    padding: 5px;
-    display: flex;
-    width: 100%;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 60px;
-
-    position: relative;
-    left: 0.75rem;
-    /* background-color: red; */
+    display: none !important;
   }
 
-  .link-box .btn {
-    margin: 0 20px;
-    margin-bottom: 0;
-  }
+  /* .nav-post-btn {
+    display: none !important;
+  } */
 
-  /* .link-box .btn:nth-child(2) {
+  /* 
+  .navlink:nth-child(2) {
     display: none !important;
     background-color: red;
   } */
 
-  .link-box .btn-green {
-    position: fixed;
-    bottom: 6rem;
-    right: 2rem;
-    z-index: 1000000;
-  }
-
-  .sidenav-container .btn-green {
-    align-items: center;
-    background-color: var(--brand);
-    opacity: 1;
-    /* border: none; */
-  }
-
-  .sidenav-container p {
+  /* .sidenav-container p {
     display: none;
-  }
+  } */
 }
 
 @media only screen and (max-width: 376px) {

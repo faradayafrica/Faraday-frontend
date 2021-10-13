@@ -7,7 +7,11 @@ class NavLink extends Component {
     const { url } = this.props;
 
     return (
-      <Link to={url} className='' style={{ textDecoration: 'none' }}>
+      <Link
+        to={url}
+        className='align-item-center'
+        style={{ textDecoration: 'none' }}
+      >
         <button
           className={this.renderNavlink(focus, green)}
           onClick={() => this.props.handleLink(item)}
