@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Question from './styledComponents/Question';
 import Questions from './Questions';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 // import { Route } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ class Qfeed extends Component {
 
   render() {
     return (
-      <div className='qfeed-container col-md-6'>
+      <div className='qfeed-container col-md-6 ' style={{ height: '100%' }}>
         <Switch>
           <Route
             path='/Qfeed/:id'
@@ -29,6 +29,8 @@ class Qfeed extends Component {
               <Questions renderQuestion={this.renderQuestion} {...props} />
             )}
           />
+
+          {/* <Redirect push to='not-found' /> */}
         </Switch>
       </div>
     );

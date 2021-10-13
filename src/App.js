@@ -7,10 +7,11 @@ import Courses from './components/Courses';
 import Connect from './components/Connect';
 import Notification from './components/Notification';
 
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import SideNav from './components/SideNav';
 import Body from './components/styledComponents/Body';
 import Post from './components/Post';
+import NotFound from './components/NotFound';
 
 class App extends React.Component {
   render() {
@@ -23,8 +24,10 @@ class App extends React.Component {
             <Route path='/Qfeed' component={Qfeed} />
             <Route path='/Connect' component={Connect} />
             <Route path='/Notification' component={Notification} />
-            <Route path='/Ask a question' component={Post} />
+            <Route path='/Post' component={Post} />
+            <Route path='/not-found' component={NotFound} />
             <Route path='/' exact component={Courses} />
+            <Redirect push to='not-found' />
           </Switch>
         </Body>
       </BrowserRouter>

@@ -11,7 +11,7 @@ class ViewAnswers extends Component {
 
         <div className='col ml-2'>
           <Link
-            to={`/questions/${this.props.question._id}`}
+            to={`/Qfeed/${this.props.question._id}`}
             style={{ textDecoration: 'none' }}
           >
             <p className='view-answers'>View all answers</p>

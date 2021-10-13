@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import faraday from '../images/logo.svg';
 import NavLink from './styledComponents/NavLink';
+import { Link } from 'react-router-dom';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 class SideNav extends Component {
   state = {
@@ -70,63 +72,95 @@ class SideNav extends Component {
         ),
         focus: false,
       },
-      // {
-      //   item: 'More',
-      //   icon: (
-      //     <svg
-      //       width='24'
-      //       height='24'
-      //       viewBox='0 0 24 24'
-      //       xmlns='http://www.w3.org/2000/svg'
-      //     >
-      //       <path d='M6 14C4.89543 14 4 13.1046 4 12C4 10.8954 4.89543 10 6 10C7.10457 10 8 10.8954 8 12C8 12.5304 7.78929 13.0391 7.41421 13.4142C7.03914 13.7893 6.53043 14 6 14Z' />
-      //       <path d='M12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12C14 12.5304 13.7893 13.0391 13.4142 13.4142C13.0391 13.7893 12.5304 14 12 14Z' />
-      //       <path d='M18 14C16.8954 14 16 13.1046 16 12C16 10.8954 16.8954 10 18 10C19.1046 10 20 10.8954 20 12C20 12.5304 19.7893 13.0391 19.4142 13.4142C19.0391 13.7893 18.5304 14 18 14Z' />
-      //     </svg>
-      //   ),
-      //   focus: false,
-      // },
-      {
-        item: 'Ask a question',
-        icon: (
-          <svg
-            width='24'
-            height='24'
-            viewBox='0 0 24 24'
-            xmlns='http://www.w3.org/2000/svg'
-          >
-            <path
-              d='M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C21.9939 17.5203 17.5203 21.9939 12 22ZM4 12.172C4.04732 16.5732 7.64111 20.1095 12.0425 20.086C16.444 20.0622 19.9995 16.4875 19.9995 12.086C19.9995 7.68451 16.444 4.10977 12.0425 4.086C7.64111 4.06246 4.04732 7.59876 4 12V12.172ZM13 17H11V13H7V11H11V7H13V11H17V13H13V17Z'
-              fill='#F7F9F8'
-            />
-          </svg>
-        ),
-        focus: false,
-        green: true,
-      },
     ],
   };
+
   render() {
     return (
-      <div className='sidenav-container  px-2 col-md-3 order-md-first'>
-        <img className='my-4 ml-1 navlink-brand' src={faraday} alt='faraday' />
-
-        <div className=' link-box '>
-          {this.state.links.map(link => (
-            <NavLink
-              key={link.item}
-              link={link}
-              url={link.item}
-              links={this.state.links}
-              handleLink={this.handleLink}
-            />
-          ))}
+      <div className='sidenav-container  px-2 col-md-3 order-md-first '>
+        <div className='position-fixed'>
+          <img
+            className='my-4 ml-1 navlink-brand '
+            src={faraday}
+            alt='faraday'
+          />
+          <div className=' link-box p-2 position-fixed'>
+            {this.state.links.map(link => (
+              <NavLink
+                key={link.item}
+                link={link}
+                url={link.item}
+                links={this.state.links}
+                handleLink={this.handleLink}
+              />
+            ))}
+            {/* More btn */}
+            <Dropdown>
+              <Dropdown.Toggle
+                className='navlink btn  nav-post-btn '
+                variant=''
+                id='dropdown-basic'
+              >
+                <svg
+                  width='24'
+                  height='24'
+                  viewBox='0 0 24 24'
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='#6c757d'
+                >
+                  <path d='M6 14C4.89543 14 4 13.1046 4 12C4 10.8954 4.89543 10 6 10C7.10457 10 8 10.8954 8 12C8 12.5304 7.78929 13.0391 7.41421 13.4142C7.03914 13.7893 6.53043 14 6 14Z' />
+                  <path d='M12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12C14 12.5304 13.7893 13.0391 13.4142 13.4142C13.0391 13.7893 12.5304 14 12 14Z' />
+                  <path d='M18 14C16.8954 14 16 13.1046 16 12C16 10.8954 16.8954 10 18 10C19.1046 10 20 10.8954 20 12C20 12.5304 19.7893 13.0391 19.4142 13.4142C19.0391 13.7893 18.5304 14 18 14Z' />
+                </svg>
+                <p className='mx-2'>More</p>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item className='dropdown-link' href='#/action-2'>
+                  Profile
+                </Dropdown.Item>
+                <Dropdown.Item className='dropdown-link' href='#/action-3'>
+                  Saved Courses
+                </Dropdown.Item>
+                <Dropdown.Item className='dropdown-link' href='#/action-1'>
+                  Bookmarks
+                </Dropdown.Item>
+                <Dropdown.Item className='dropdown-link' href='#/action-1'>
+                  Explore
+                </Dropdown.Item>
+                <Dropdown.Item className='dropdown-link' href='#/action-1'>
+                  Sponsors
+                </Dropdown.Item>
+              </Dropdown.Menu>
+              {/* <button>
+                <p className='mx-2'>More</p>
+              </button> */}
+            </Dropdown>
+            {/* Ask question btn */}
+            <Link to='post' style={{ textDecoration: 'none' }}>
+              <button className='navlink btn  btn-green nav-post-btn '>
+                <svg
+                  width='24'
+                  height='24'
+                  viewBox='0 0 24 24'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <path
+                    d='M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C21.9939 17.5203 17.5203 21.9939 12 22ZM4 12.172C4.04732 16.5732 7.64111 20.1095 12.0425 20.086C16.444 20.0622 19.9995 16.4875 19.9995 12.086C19.9995 7.68451 16.444 4.10977 12.0425 4.086C7.64111 4.06246 4.04732 7.59876 4 12V12.172ZM13 17H11V13H7V11H11V7H13V11H17V13H13V17Z'
+                    fill='#fff'
+                  />
+                </svg>
+                <p className='mx-2 .dont-break'>Make a post</p>
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     );
   }
 
+  onLinkClick = () => {};
   handleLink = item => {
+    // this.props.history.replace(`/${item}`);
     const links = this.state.links.map(link => {
       link.focus = false;
       return link;
