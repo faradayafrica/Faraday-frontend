@@ -76,17 +76,30 @@
              "answers" : []
         },
         {
-            "name": "Elon Must",
-            "username": "tesla",
+            "name": "Hanu",
+            "username": "Fejizy",
              "_id": "04",
             "time": "15h",
             "department": "Space exploration",
             "image":
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmUbjoL6IYzihcnn3-MDo1E_VjkoRKYg-HLw&usqp=CAU",
-            "body": "You’re at a point where you lie to yourself that listening to a podcast is productive. Most podcasts transition quickly from productivity to simple entertainment. Why waste 1h and 30 minutes for just 1 or 2 good ideas..",
+            "body": "I’ve been on this chair since 2:30am and now it’s 4pm, still on this chair.. running a company is not easy..",
             "voteCount": -4,
             "comment": 20,
             "echo": 2,
-             "answers" : []
+             "answers" : [
+{
+                    "name": "Oge Nworie",
+                    "username": "ogebaby",
+                    "_id": "003",
+                    "time": "1h",
+                    "department": "Architecturing",
+                    "image":
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGVoAAWuCfiuU9YLs5VtC8gqevqq-p4RNeMA&usqp=CAU",
+                    "body": "sorry boss. Let me drop my portfolio here sha, you might have a job for meFull moon with faceFull moon with face https://janvinsha.netlify.app",
+                    "isAnswer": false
+                }
+
+             ]
         }       
 ]

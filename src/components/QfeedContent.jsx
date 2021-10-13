@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Question from './styledComponents/Question';
 import Questions from './Questions';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 // import { Route } from 'react-router-dom';
 

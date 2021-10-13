@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Header from './styledComponents/Header';
-import { Link } from 'react-router-dom';
 
 class Questions extends Component {
   render() {

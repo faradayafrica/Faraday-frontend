@@ -122,6 +122,11 @@ QFEED STYLING
   cursor: pointer;
 }
 
+.question-answer {
+  margin-top: 7px;
+  color: var(--text-black);
+}
+
 .question-page-content {
   margin-top: 7px;
   color: var(--text-black);
@@ -267,7 +272,7 @@ SIDENAV STYLING
 ***************************************************/
 .sidenav-container {
   display: block;
-  background-color: var(--brand-highlight);
+  /* background-color: var(--brand-highlight); */
 }
 
 .link-box {
