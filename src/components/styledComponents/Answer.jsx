@@ -8,7 +8,7 @@ class Answer extends Component {
     return (
       <div className='question-page'>
         <QuestionProfile question={this.props.answer} />
-        <p className='question-answer col ml-2' style={{ fontSize: '18px' }}>
+        <p className='question-answer col ml-2' style={{ fontSize: '16px' }}>
           {this.props.answer.body}
         </p>
       </div>

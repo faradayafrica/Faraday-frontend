@@ -47,8 +47,8 @@ QFEED STYLING
 .qfeed-container {
   padding: 0 !important;
   overflow: hidden;
-  border-left: solid 0.5px var(--outline);
-  border-right: solid 0.5px var(--outline);
+  /* border-left: solid 0.5px var(--outline); */
+  /* border-right: solid 0.5px var(--outline); */
 }
 
 .header {
@@ -130,7 +130,7 @@ QFEED STYLING
 .question-page-content {
   margin-top: 7px;
   color: var(--text-black);
-  font-size: 23px;
+  font-size: 22px;
 }
 
 .mr-15 {

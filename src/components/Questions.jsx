@@ -5,7 +5,7 @@ class Questions extends Component {
   render() {
     return (
       <div className='' style={{ position: 'relative' }}>
-        <div className='header sticky-nav'>
+        <div className='header sticky-nav '>
           <Header>Qfeed</Header>
         </div>
         {this.props.renderQuestion()}
