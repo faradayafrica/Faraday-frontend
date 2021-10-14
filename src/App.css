@@ -202,6 +202,7 @@ QFEED STYLING
 .e-btn:hover > .icon-container {
   background-color: #def1eb;
 }
+
 .icon-container:hover {
   background-color: #def1eb;
 }
@@ -358,6 +359,10 @@ SIDENAV STYLING
   background-color: var(--background);
 }
 
+.dropdown-link p {
+  color: black !important;
+}
+
 .btn-green p {
   color: var(--white) !important;
 }
@@ -423,14 +428,15 @@ TRENDING STYLING
   /* max-width: 375px; */
 }
 
+@media only screen and (max-width: 768px) {
+  .trends-container {
+    display: none;
+  }
+}
 @media only screen and (max-width: 376px) {
   .dont-break {
     min-width: 180px;
     overflow: none;
     margin: 0;
-  }
-
-  .trends-container {
-    display: none;
   }
 }

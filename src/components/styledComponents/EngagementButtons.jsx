@@ -51,7 +51,7 @@ class EngagementButtons extends Component {
                 data-toggle='tooltip'
                 title='Echo'
               >
-                <div className='icon-container'>
+                <div className='icon-container icon-container-primary'>
                   <img className='e-icon' src={isEchoed} alt='' />
                 </div>
                 <p className='engagement-count'>

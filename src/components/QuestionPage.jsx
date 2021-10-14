@@ -36,7 +36,7 @@ class QuestionPage extends Component {
           {/* question profile ends here */}
           <p className='question-page-content col'>{newQuestion.body}</p>
           <h6>
-            <span className='badge badge-brand mx-2'>
+            <span className='badge badge-brand mr-2'>
               {newQuestion.comment} Answers
             </span>
 
