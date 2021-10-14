@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 class NavLink extends Component {
   render() {
     const { item, focus, green, icon } = this.props.link;
-    const { url } = this.props;
+    const url = `/${item.toLowerCase()}`;
 
     return (
       <Link

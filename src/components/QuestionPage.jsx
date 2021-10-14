@@ -14,7 +14,7 @@ class QuestionPage extends Component {
     const newQuestion = {
       ...question[0],
     };
-    console.log(newQuestion);
+    // console.log(newQuestion);
 
     return (
       <React.Fragment>
