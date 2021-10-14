@@ -272,6 +272,7 @@ SIDENAV STYLING
 ***************************************************/
 .sidenav-container {
   display: block;
+  border-right: solid 0.5px var(--outline);
   /* background-color: var(--brand-highlight); */
 }
 

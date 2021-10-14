@@ -15,7 +15,7 @@ class Qfeed extends Component {
 
   render() {
     return (
-      <div className='qfeed-container col-md-6 '>
+      <div className='qfeed-container col '>
         <Switch>
           <Route
             path='/Qfeed/:id'
