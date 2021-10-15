@@ -279,7 +279,8 @@ SIDENAV STYLING
 .sidenav-container {
   display: block;
   border-right: solid 0.5px var(--outline);
-  width: 78px;
+  /* border-left: solid 0.5px var(--outline); */
+  width: 65px;
   transition: all 0.5s ease;
   z-index: 100;
   background-color: var(--white);
@@ -452,8 +453,7 @@ SIDENAV STYLING
 
 .menu-nav .icon-container {
   padding: 10px;
-  /* position: relative; */
-  /* right: 40; */
+  margin: 0;
 }
 
 .active .menu-nav .navlink-brand {

@@ -79,7 +79,7 @@ class SideNav extends Component {
     return (
       <div className='sidenav-container  px-2  order-md-first active'>
         <div className='position-fixed'>
-          <nav className='row my-3 ml-2 menu-nav'>
+          <nav className='row my-3 ml-1 menu-nav'>
             <img className=' navlink-brand ' src={faraday} alt='faraday' />
             <div
               className='icon-container icon-container-secondary mr-2'
