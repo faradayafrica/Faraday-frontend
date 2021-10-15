@@ -20,7 +20,7 @@ class QuestionPage extends Component {
       <React.Fragment>
         <div className='header sticky-nav horinzontal-align '>
           <div
-            className='icon-container mr-2'
+            className='icon-container icon-container-secondary mr-2'
             data-toggle='tooltip'
             title='Return'
             onClick={() => this.props.history.goBack()}
