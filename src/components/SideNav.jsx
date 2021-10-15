@@ -79,8 +79,8 @@ class SideNav extends Component {
     return (
       <div className='sidenav-container  px-2  order-md-first active'>
         <div className='position-fixed'>
-          <nav className='row my-4 menu-nav'>
-            <img className=' ml-1 navlink-brand ' src={faraday} alt='faraday' />
+          <nav className='row my-3 ml-2 menu-nav'>
+            <img className=' navlink-brand ' src={faraday} alt='faraday' />
             <div
               className='icon-container icon-container-secondary mr-2'
               data-toggle='tooltip'
@@ -93,6 +93,7 @@ class SideNav extends Component {
                 viewBox='0 0 21 21'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
+                className='e-icon'
               >
                 <path
                   d='M18.625 14.1111H2.625V12.3333H18.625V14.1111ZM18.625 8.77778H7.95833V7H18.625V8.77778Z'

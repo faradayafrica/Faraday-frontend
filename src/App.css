@@ -451,8 +451,9 @@ SIDENAV STYLING
 }
 
 .menu-nav .icon-container {
-  margin: 0 20px;
-  padding: 12px;
+  padding: 10px;
+  /* position: relative; */
+  /* right: 40; */
 }
 
 .active .menu-nav .navlink-brand {
