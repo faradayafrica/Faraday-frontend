@@ -20,7 +20,7 @@ class QuestionPage extends Component {
       <React.Fragment>
         <div className='header sticky-nav horinzontal-align '>
           <div
-            className='icon-container mr-2'
+            className='icon-container icon-container-secondary mr-2'
             data-toggle='tooltip'
             title='Return'
             onClick={() => this.props.history.goBack()}
@@ -36,7 +36,7 @@ class QuestionPage extends Component {
           {/* question profile ends here */}
           <p className='question-page-content col'>{newQuestion.body}</p>
           <h6>
-            <span className='badge badge-brand mx-2'>
+            <span className='badge badge-brand mr-2'>
               {newQuestion.comment} Answers
             </span>
 

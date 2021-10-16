@@ -16,6 +16,7 @@ class NavLink extends Component {
           className={this.renderNavlink(focus, green)}
           onClick={() => this.props.handleLink(item)}
         >
+          <div className='nav-tooltip'>{item}</div>
           <div className={this.renderNavIcon(focus)}>{icon}</div>
           <p className='mx-2'> {item}</p>
         </button>
