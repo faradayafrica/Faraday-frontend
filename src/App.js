@@ -18,6 +18,7 @@ import Bookmarks from './components/other pages/bookmarks';
 import Setting from './components/other pages/setting';
 import Sponsors from './components/other pages/sponsors';
 import SavedCourses from './components/other pages/saved-courses';
+import MobileSidenav from './components/other pages/mobileSidenav';
 
 class App extends React.Component {
   render() {
@@ -25,6 +26,7 @@ class App extends React.Component {
       <BrowserRouter>
         <Body className='row'>
           <SideNav />
+          <MobileSidenav />
           <Switch>
             <Route path='/saved-courses' component={SavedCourses} />
             <Route path='/setting' component={Setting} />

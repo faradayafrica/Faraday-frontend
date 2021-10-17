@@ -133,6 +133,7 @@ class SideNav extends Component {
               <p className='mx-2 .dont-break'>Make a post</p>
             </button>
           </Link>
+
           {/* </div> */}
         </div>
       </div>
