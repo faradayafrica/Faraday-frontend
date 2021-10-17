@@ -18,7 +18,7 @@ class QuestionPage extends Component {
 
     return (
       <React.Fragment>
-        <div className='header sticky-nav horinzontal-align '>
+        <div className=' header-questionpage sticky-nav horinzontal-align '>
           <div
             className='icon-container icon-container-secondary mr-2'
             data-toggle='tooltip'
@@ -27,7 +27,7 @@ class QuestionPage extends Component {
           >
             <img src={Back} alt='' className='e-icon' />
           </div>
-          <Header>Qfeed</Header>
+          <Header>Question by {newQuestion.name}</Header>
         </div>
 
         <div className='question-page'>

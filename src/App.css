@@ -54,6 +54,19 @@ QFEED STYLING
 .header {
   padding: 1rem 14px;
   border-bottom: solid 0.5px var(--outline);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.header-questionpage {
+  z-index: 10000000000000000000 !important;
+  padding: 1rem 14px;
+  border-bottom: solid 0.5px var(--outline);
+  background-color: var(--white);
+  display: flex;
+  justify-content: flex-start !important;
+  position: absolute;
+  width: 100%;
 }
 
 /* question component */
@@ -66,6 +79,17 @@ QFEED STYLING
   padding-bottom: 7px !important;
 }
 .question-page {
+  /* max-width: 620px; */
+  background-color: var(--white);
+  border-bottom: solid 0.5px var(--outline);
+  font-size: 15px;
+  padding: 14px;
+  padding-bottom: 7px !important;
+
+  margin-top: 4rem;
+}
+
+.answer-page {
   /* max-width: 620px; */
   background-color: var(--white);
   border-bottom: solid 0.5px var(--outline);
@@ -460,10 +484,11 @@ SIDENAV STYLING
   display: block;
 }
 
+.mobile-sidenav {
+  display: none;
+}
+
 @media only screen and (max-width: 768px) {
-  .sidenav-container {
-    /* display: none; */
-  }
   .navlink-brand {
     /* display: none; */
   }
@@ -473,7 +498,15 @@ SIDENAV STYLING
   }
 }
 
-@media only screen and (max-width: 376px) {
+@media only screen and (max-width: 576px) {
+  .header {
+    justify-content: center;
+  }
+
+  .sidenav-container {
+    display: none;
+  }
+
   .link-box {
     position: initial;
     left: 0.75rem;
@@ -485,6 +518,55 @@ SIDENAV STYLING
     bottom: 5rem;
     right: 1rem;
     z-index: 1000000;
+  }
+
+  .mobile-sidenav {
+    display: block;
+    background-color: var(--danger);
+  }
+
+  .mobile-sidenav .hanger-menu {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 100;
+  }
+
+  .side {
+    background-color: var(--brand-highlight) !important;
+    position: fixed;
+    left: -300px;
+    transition: 0.3s all ease-in;
+    height: 100%;
+    z-index: 100000000000;
+  }
+
+  .side-active {
+    display: block;
+    left: 0;
+    width: 300px;
+    /* opacity: 1; */
+  }
+
+  .side-header {
+    height: 60px;
+    border-bottom: solid 0.5px var(--outline);
+  }
+
+  .mobile-sidenav .side-close {
+    float: right;
+    margin: 15px;
+  }
+
+  .side .mobile-link {
+    font-size: 22px;
+    color: var(--text-black) !important;
+    padding: 10px 20px;
+    /* margin-bottom: 1rem; */
+  }
+  .side .mobile-link p {
+    color: var(--text-black) !important;
+    margin-left: 1rem !important;
   }
 }
 
