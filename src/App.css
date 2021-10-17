@@ -533,28 +533,31 @@ SIDENAV STYLING
   }
 
   .side {
-    background-color: var(--brand-highlight) !important;
+    background-color: var(--white) !important;
     position: fixed;
     left: -300px;
     transition: 0.3s all ease-in;
     height: 100%;
     z-index: 100000000000;
+    border-right: 0.5px solid var(--outline);
   }
 
   .side-active {
     display: block;
     left: 0;
-    width: 300px;
+    min-width: 70%;
     /* opacity: 1; */
   }
 
   .side-header {
     height: 60px;
-    border-bottom: solid 0.5px var(--outline);
+    /* border-bottom: solid 0.5px var(--outline); */
+    display: flex;
+    justify-content: space-between;
   }
 
   .mobile-sidenav .side-close {
-    float: right;
+    /* float: right; */
     margin: 15px;
   }
 
