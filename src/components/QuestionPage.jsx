@@ -29,7 +29,6 @@ class QuestionPage extends Component {
           </div>
           <Header>Question by {newQuestion.name}</Header>
         </div>
-
         <div className='question-page'>
           <QuestionProfile question={newQuestion} />
 
@@ -52,8 +51,8 @@ class QuestionPage extends Component {
           {/* Here comes the buttons */}
           <QuestionPageButtons question={newQuestion} />
         </div>
-
         <Answers answers={newQuestion.answers} />
+        <div style={{ marginBottom: '3.5rem' }}></div>
       </React.Fragment>
     );
   }

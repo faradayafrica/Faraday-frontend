@@ -59,7 +59,7 @@ QFEED STYLING
 }
 
 .header-questionpage {
-  z-index: 10000000000000000000 !important;
+  z-index: 1000000000;
   padding: 1rem 14px;
   border-bottom: solid 0.5px var(--outline);
   background-color: var(--white);
@@ -420,12 +420,15 @@ SIDENAV STYLING
 
 .nav-tooltip {
   position: absolute !important;
-  left: 78px;
+  left: 68px;
+
   color: var(--text-black);
   padding: 7px 20px;
   background-color: var(--white);
   border-radius: 8px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+  transform: translateY(-20px);
 
   transition: 0s;
   opacity: 0;
@@ -441,6 +444,7 @@ SIDENAV STYLING
   display: block !important;
 
   opacity: 1;
+  transform: translateY(0);
 }
 
 .active .navlink:hover .nav-tooltip {
@@ -485,6 +489,10 @@ SIDENAV STYLING
 }
 
 .mobile-sidenav {
+  display: none;
+}
+
+.bottom-nav {
   display: none;
 }
 
@@ -533,25 +541,34 @@ SIDENAV STYLING
   }
 
   .side {
+    background: transparent;
+    position: fixed;
+    left: -100%;
+    transition: 0.3s all ease-in;
+    height: 100%;
+    z-index: 100000000000;
+    /* opacity: 0; */
+  }
+
+  .side-container {
     background-color: var(--white) !important;
     position: fixed;
-    left: -300px;
     transition: 0.3s all ease-in;
     height: 100%;
     z-index: 100000000000;
     border-right: 0.5px solid var(--outline);
+    min-width: 70%;
   }
 
   .side-active {
     display: block;
     left: 0;
-    min-width: 70%;
-    /* opacity: 1; */
+    min-width: 100%;
+    opacity: 1;
   }
 
   .side-header {
-    height: 60px;
-    /* border-bottom: solid 0.5px var(--outline); */
+    /* height: 60px; */
     display: flex;
     justify-content: space-between;
   }
@@ -562,7 +579,7 @@ SIDENAV STYLING
   }
 
   .side .mobile-link {
-    font-size: 22px;
+    font-size: 20px;
     color: var(--text-black) !important;
     padding: 10px 20px;
     /* margin-bottom: 1rem; */
@@ -570,6 +587,30 @@ SIDENAV STYLING
   .side .mobile-link p {
     color: var(--text-black) !important;
     margin-left: 1rem !important;
+  }
+
+  .bottom-nav {
+    position: fixed;
+    width: 100%;
+    background: var(--white);
+    border-top: 0.5px solid var(--outline);
+    z-index: 100;
+    bottom: 0;
+
+    display: flex;
+    justify-content: space-around;
+  }
+  .bottom-nav p {
+    display: none;
+  }
+  .bottom-nav .navlink {
+    fill: #6c757d;
+  }
+  .bottom-nav .nav-tooltip {
+    display: none;
+  }
+  .navlink:hover .nav-tooltip {
+    display: none !important;
   }
 }
 

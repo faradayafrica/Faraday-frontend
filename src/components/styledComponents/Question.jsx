@@ -54,7 +54,7 @@ class Question extends Component {
       });
       question.voteCount = question.voteCount - 1;
     }
-    console.log('like clicked', question.voteCount);
+    // console.log('like clicked', question.voteCount);
   };
 
   handleDislikeClick = () => {
@@ -79,7 +79,7 @@ class Question extends Component {
       });
       question.voteCount = question.voteCount + 1;
     }
-    console.log('dislike clicked', question.voteCount);
+    // console.log('dislike clicked', question.voteCount);
   };
 }
 

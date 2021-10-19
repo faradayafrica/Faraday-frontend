@@ -86,14 +86,14 @@ class NavDropdown extends Component {
           <Dropdown.Item className='dropdown-link'>
             <Link to='/bookmarks' style={{ textDecoration: 'none' }}>
               <svg
-                width='18'
-                height='18'
-                viewBox='0 0 18 18'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
               >
                 <path
-                  d='M8.81355 10.6136L3.59995 15.8272V0.9H15.2999V15.8272L10.0863 10.6136C9.91756 10.4448 9.68865 10.35 9.44995 10.35C9.21126 10.35 8.98234 10.4448 8.81355 10.6136Z'
+                  d='M11.1136 13.6136L5.9 18.8272V3.9H17.6V18.8272L12.3864 13.6136C12.2176 13.4448 11.9887 13.35 11.75 13.35C11.5113 13.35 11.2824 13.4448 11.1136 13.6136Z'
                   stroke='#6C757D'
                   strokeWidth='1.8'
                   strokeLinejoin='round'

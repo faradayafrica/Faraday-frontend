@@ -4,7 +4,7 @@ import QuestionProfile from './QuestionProfile';
 
 class Answer extends Component {
   render() {
-    console.log(this.props.answer);
+    // console.log(this.props.answer);
     return (
       <div className='answer-page'>
         <QuestionProfile question={this.props.answer} />
