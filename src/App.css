@@ -62,7 +62,7 @@ QFEED STYLING
   z-index: 1000000000;
   padding: 1rem 14px;
   border-bottom: solid 0.5px var(--outline);
-  background-color: var(--brand);
+  background-color: var(--white);
   display: flex;
   justify-content: flex-start !important;
   position: absolute;
@@ -492,6 +492,10 @@ SIDENAV STYLING
   display: none;
 }
 
+.bottom-nav {
+  display: none;
+}
+
 @media only screen and (max-width: 768px) {
   .navlink-brand {
     /* display: none; */
@@ -539,11 +543,11 @@ SIDENAV STYLING
   .side {
     background: transparent;
     position: fixed;
-    left: -300px;
+    left: -100%;
     transition: 0.3s all ease-in;
     height: 100%;
     z-index: 100000000000;
-    opacity: 0;
+    /* opacity: 0; */
   }
 
   .side-container {
@@ -583,6 +587,30 @@ SIDENAV STYLING
   .side .mobile-link p {
     color: var(--text-black) !important;
     margin-left: 1rem !important;
+  }
+
+  .bottom-nav {
+    position: fixed;
+    width: 100%;
+    background: var(--white);
+    border-top: 0.5px solid var(--outline);
+    z-index: 100;
+    bottom: 0;
+
+    display: flex;
+    justify-content: space-around;
+  }
+  .bottom-nav p {
+    display: none;
+  }
+  .bottom-nav .navlink {
+    fill: #6c757d;
+  }
+  .bottom-nav .nav-tooltip {
+    display: none;
+  }
+  .navlink:hover .nav-tooltip {
+    display: none !important;
   }
 }
 

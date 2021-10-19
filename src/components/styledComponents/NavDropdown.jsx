@@ -95,8 +95,8 @@ class NavDropdown extends Component {
                 <path
                   d='M11.1136 13.6136L5.9 18.8272V3.9H17.6V18.8272L12.3864 13.6136C12.2176 13.4448 11.9887 13.35 11.75 13.35C11.5113 13.35 11.2824 13.4448 11.1136 13.6136Z'
                   stroke='#6C757D'
-                  stroke-width='1.8'
-                  stroke-linejoin='round'
+                  strokeWidth='1.8'
+                  strokeLinejoin='round'
                 />
               </svg>
 
