@@ -4,6 +4,11 @@
   box-sizing: border-box !important;
 }
 
+.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 :root {
   --white: #ffffff;
   --outline: #cfd9de;
