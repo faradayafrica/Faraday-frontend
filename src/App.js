@@ -19,6 +19,8 @@ import Setting from './components/other pages/setting';
 import Sponsors from './components/other pages/sponsors';
 import SavedCourses from './components/other pages/saved-courses';
 import MobileSidenav from './components/other pages/mobileSidenav';
+import LoginForm from './components/loginForm';
+import SignUpForm from './components/signUpForm';
 
 class App extends React.Component {
   render() {
@@ -28,6 +30,8 @@ class App extends React.Component {
           <SideNav />
           <MobileSidenav />
           <Switch>
+            <Route path='/signup' component={SignUpForm} />
+            <Route path='/login' component={LoginForm} />
             <Route path='/saved-courses' component={SavedCourses} />
             <Route path='/setting' component={Setting} />
             <Route path='/sponsors' component={Sponsors} />

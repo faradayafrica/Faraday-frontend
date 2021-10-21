@@ -159,7 +159,7 @@ QFEED STYLING
 .question-page-content {
   margin-top: 7px;
   color: var(--text-black);
-  font-size: 22px;
+  font-size: 21px;
 }
 
 .mr-15 {
@@ -302,17 +302,32 @@ QFEED STYLING
   right: 5rem;
   overflow: hidden;
 }
+
 /*************************************************** 
 SIDENAV STYLING 
 ***************************************************/
 .sidenav-container {
   display: block;
-  border-right: solid 0.5px var(--outline);
+  border-right: solid 0.5px var(--outline) !important;
+
   /* border-left: solid 0.5px var(--outline); */
+  min-height: 100vh;
   width: 65px;
   transition: all 0.5s ease;
   z-index: 100;
   background-color: var(--white);
+}
+
+.retry-container {
+  width: 100%;
+
+  display: block;
+  text-align: center;
+}
+
+.retry-container > p {
+  font-size: 16px;
+  color: var(--text2-black);
 }
 
 .sidenav-container.active {
@@ -637,4 +652,79 @@ TRENDING STYLING
     overflow: none;
     margin: 0;
   }
+}
+
+/*************************************************** 
+LOGIN
+***************************************************/
+.login-page {
+  position: fixed;
+  min-height: 100%;
+  min-width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+
+  padding: 1rem;
+  background-color: var(--white) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  position: relative;
+  right: 6px;
+  bottom: 6px;
+  padding: 1rem;
+
+  border-radius: 6px;
+  border: 1px solid var(--outline);
+  background-color: var(--white) !important;
+  width: 100%;
+  max-width: 425px;
+  text-align: center;
+
+  box-shadow: 6px 6px 0px #f7f9f8;
+}
+
+.form-container > .logo-container {
+  text-align: center;
+  margin: auto !important;
+  position: relative;
+  bottom: 3.5rem;
+}
+
+.form-control {
+  border-radius: 0px !important;
+  border: none !important;
+  border-bottom: 2px solid var(--secondary-text) !important;
+  background-color: var(--background) !important;
+  height: 50px !important;
+}
+.form-group {
+  margin-top: 1.5rem;
+}
+
+.form-title {
+  position: relative;
+  top: -0.8rem;
+  margin: 0;
+}
+
+.form-control:focus {
+  background-color: var(--brand-highlight) !important;
+  border-color: var(--brand) !important;
+  box-shadow: none !important;
+}
+
+.form-control:active {
+  background-color: var(--brand-highlight) !important;
+  border-color: var(--brand) !important;
+  box-shadow: none !important;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 10px !important;
 }
