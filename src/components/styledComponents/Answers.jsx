@@ -6,7 +6,7 @@ class Answers extends Component {
     return (
       <div>
         {this.props.answers.map(answer => (
-          <Answer key={answer._id} answer={answer} />
+          <Answer key={answer.id} answer={answer} />
         ))}
       </div>
     );

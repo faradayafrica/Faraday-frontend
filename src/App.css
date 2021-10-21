@@ -159,7 +159,7 @@ QFEED STYLING
 .question-page-content {
   margin-top: 7px;
   color: var(--text-black);
-  font-size: 22px;
+  font-size: 21px;
 }
 
 .mr-15 {
@@ -308,12 +308,26 @@ SIDENAV STYLING
 ***************************************************/
 .sidenav-container {
   display: block;
-  border-right: solid 0.5px var(--outline);
+  border-right: solid 0.5px var(--outline) !important;
+
   /* border-left: solid 0.5px var(--outline); */
+  min-height: 100vh;
   width: 65px;
   transition: all 0.5s ease;
   z-index: 100;
   background-color: var(--white);
+}
+
+.retry-container {
+  width: 100%;
+
+  display: block;
+  text-align: center;
+}
+
+.retry-container > p {
+  font-size: 16px;
+  color: var(--text2-black);
 }
 
 .sidenav-container.active {

@@ -3,14 +3,16 @@ import departmentIcon from '../../images/department.svg';
 
 class QuestionProfile extends Component {
   render() {
-    const { name, department, time, username, image } = this.props.question;
+    const { fname, lname, department, time, username, image } =
+      this.props.question;
     return (
       <div className='horinzontal-align txt'>
         <img className='profile-image' src={image} alt='profile' />
 
         <div className='user-info col ml-2'>
           <div className='horinzontal-align'>
-            <p className='profile-name text-dark'>{name}</p>
+            <p className='profile-name text-dark'>{fname}</p>
+            <p className='profile-name text-dark'>{lname}</p>
             <p>@{username}</p>
             <p>{time}</p>
           </div>
