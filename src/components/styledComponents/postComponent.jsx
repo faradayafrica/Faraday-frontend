@@ -40,7 +40,12 @@ class PostComponent extends Component {
           ) : (
             <TagsInput selectedTags={selectedTags} tags={this.state.tags} />
           )}
-          <button className='btn btn btn-green add-post-btn'>Post</button>
+          <button
+            onClick={this.props.onPost}
+            className='btn btn btn-green add-post-btn'
+          >
+            Post
+          </button>
         </div>
       </div>
     );

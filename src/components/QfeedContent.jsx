@@ -9,15 +9,14 @@ import axios from 'axios';
 // import questionData from '../questions.json';
 import QuestionPage from './QuestionPage';
 
+const apiEndpoint = 'http://localhost:3002/questions';
 class Qfeed extends Component {
   state = {
     questions: [],
   };
 
   async componentDidMount() {
-    const { data: questions } = await axios.get(
-      'http://localhost:3002/questions'
-    );
+    const { data: questions } = await axios.get(apiEndpoint);
 
     this.setState({ questions });
   }
@@ -35,7 +34,11 @@ class Qfeed extends Component {
           <Route
             path='/'
             render={props => (
-              <Questions renderQuestion={this.renderQuestion} {...props} />
+              <Questions
+                renderQuestion={this.renderQuestion}
+                onPost={this.handlePost}
+                {...props}
+              />
             )}
           />
 
@@ -47,6 +50,22 @@ class Qfeed extends Component {
 
   refreshPage = () => {
     window.location.reload(false);
+  };
+
+  //this method adds a questions
+  handlePost = async () => {
+    const obj = {
+      time: '15h',
+
+      body: 'Just here coding',
+    };
+
+    const { data: post } = await axios.post(apiEndpoint, obj);
+    const questions = [post, ...this.state.questions];
+    this.setState({ questions });
+    console.log('post', post);
+
+    // console.log('post');
   };
 
   // This method renders the questions
