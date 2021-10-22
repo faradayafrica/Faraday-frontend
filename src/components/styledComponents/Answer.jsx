@@ -4,12 +4,12 @@ import QuestionProfile from './QuestionProfile';
 
 class Answer extends Component {
   render() {
-    // console.log(this.props.answer);
+    const { answer } = this.props;
     return (
       <div className='answer-page'>
-        <QuestionProfile question={this.props.answer} />
+        <QuestionProfile question={answer} />
         <p className='question-answer col ml-2' style={{ fontSize: '16px' }}>
-          {this.props.answer.body}
+          {answer.body}
         </p>
       </div>
     );

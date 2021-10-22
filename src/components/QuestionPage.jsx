@@ -12,13 +12,15 @@ class QuestionPage extends Component {
   };
 
   render() {
-    const question = this.props.questions.filter(
-      q => q._id === this.props.match.params.id
-    );
+    const { questions, match } = this.props;
+
+    const question = questions.filter(q => q.id === match.params.id);
     const newQuestion = {
       ...question[0],
     };
-    // console.log(newQuestion);
+
+    console.log(this.props.match.params.id);
+    console.log(newQuestion);
 
     return (
       <React.Fragment>

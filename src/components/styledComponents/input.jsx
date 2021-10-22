@@ -4,7 +4,10 @@ class Input extends Component {
   render() {
     const { name, type, placeholder, value, error, onChange } = this.props;
     return (
-      <div className='form-group'>
+      <div className='form-group' style={{ marginTop: '1.5rem' }}>
+        <label className='sr-only' for={name}>
+          {name}
+        </label>
         <input
           // autoFocus
           value={value}
