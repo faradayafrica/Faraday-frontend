@@ -655,6 +655,14 @@ TRENDING STYLING
 }
 
 /*************************************************** 
+LOADER STYLING
+***************************************************/
+/* .loader-container {
+  margin: auto;
+  background-color: red !important;
+} */
+
+/*************************************************** 
 POST
 ***************************************************/
 .post-form {
@@ -673,7 +681,7 @@ textarea {
 }
 
 .link {
-  color: var(--brand);
+  color: var(--text-black);
   cursor: pointer;
 }
 

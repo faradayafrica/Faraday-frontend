@@ -8,14 +8,20 @@ import axios from 'axios';
 
 // import questionData from '../questions.json';
 import QuestionPage from './QuestionPage';
+import Loader from './styledComponents/loader';
 
 const apiEndpoint = 'http://localhost:3002/questions';
 class Qfeed extends Component {
   state = {
+    loading: true,
     questions: [],
   };
 
   async componentDidMount() {
+    //this stops the loader component after some settime
+    this.handleLoading();
+
+    //this fetch data from the back end
     const { data: questions } = await axios.get(apiEndpoint);
 
     this.setState({ questions });
@@ -41,8 +47,6 @@ class Qfeed extends Component {
               />
             )}
           />
-
-          {/* <Redirect push to='not-found' /> */}
         </Switch>
       </div>
     );
@@ -50,6 +54,14 @@ class Qfeed extends Component {
 
   refreshPage = () => {
     window.location.reload(false);
+  };
+
+  handleLoading = () => {
+    // console.log('hi');
+    const loading = false;
+    setTimeout(() => {
+      this.setState({ loading });
+    }, 5000);
   };
 
   //this method adds a questions
@@ -71,7 +83,10 @@ class Qfeed extends Component {
   // This method renders the questions
   renderQuestion = () => {
     if (this.state.questions.length === 0) {
-      return (
+      return this.state.loading === true ? (
+        <Loader />
+      ) : (
+        // <p>hello</p>
         <div className=' retry-container mt-3'>
           <p id='text'>Something went wrong. Please reload</p>
           <button onClick={this.refreshPage} className='btn btn-green '>

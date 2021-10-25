@@ -11,8 +11,6 @@ class Questions extends Component {
         </div>
         <PostComponent onPost={this.props.onPost} />
         {this.props.renderQuestion()}
-
-        <div className='screen'></div>
       </div>
     );
   }
