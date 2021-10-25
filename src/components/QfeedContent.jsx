@@ -8,16 +8,21 @@ import axios from 'axios';
 
 // import questionData from '../questions.json';
 import QuestionPage from './QuestionPage';
+import Loader from './styledComponents/loader';
 
+const apiEndpoint = 'http://localhost:3002/questions';
 class Qfeed extends Component {
   state = {
+    loading: true,
     questions: [],
   };
 
   async componentDidMount() {
-    const { data: questions } = await axios.get(
-      'http://localhost:3002/questions'
-    );
+    //this stops the loader component after some settime
+    this.handleLoading();
+
+    //this fetch data from the back end
+    const { data: questions } = await axios.get(apiEndpoint);
 
     this.setState({ questions });
   }
@@ -35,11 +40,13 @@ class Qfeed extends Component {
           <Route
             path='/'
             render={props => (
-              <Questions renderQuestion={this.renderQuestion} {...props} />
+              <Questions
+                renderQuestion={this.renderQuestion}
+                onPost={this.handlePost}
+                {...props}
+              />
             )}
           />
-
-          {/* <Redirect push to='not-found' /> */}
         </Switch>
       </div>
     );
@@ -49,10 +56,37 @@ class Qfeed extends Component {
     window.location.reload(false);
   };
 
+  handleLoading = () => {
+    // console.log('hi');
+    const loading = false;
+    setTimeout(() => {
+      this.setState({ loading });
+    }, 5000);
+  };
+
+  //this method adds a questions
+  handlePost = async () => {
+    const obj = {
+      time: '15h',
+
+      body: 'Just here coding',
+    };
+
+    const { data: post } = await axios.post(apiEndpoint, obj);
+    const questions = [post, ...this.state.questions];
+    this.setState({ questions });
+    console.log('post', post);
+
+    // console.log('post');
+  };
+
   // This method renders the questions
   renderQuestion = () => {
     if (this.state.questions.length === 0) {
-      return (
+      return this.state.loading === true ? (
+        <Loader />
+      ) : (
+        // <p>hello</p>
         <div className=' retry-container mt-3'>
           <p id='text'>Something went wrong. Please reload</p>
           <button onClick={this.refreshPage} className='btn btn-green '>

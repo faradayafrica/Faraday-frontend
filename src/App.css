@@ -655,6 +655,14 @@ TRENDING STYLING
 }
 
 /*************************************************** 
+LOADER STYLING
+***************************************************/
+/* .loader-container {
+  margin: auto;
+  background-color: red !important;
+} */
+
+/*************************************************** 
 POST
 ***************************************************/
 .post-form {
@@ -673,7 +681,7 @@ textarea {
 }
 
 .link {
-  color: var(--brand);
+  color: var(--text-black);
   cursor: pointer;
 }
 
@@ -708,13 +716,13 @@ TAGS
   flex-wrap: wrap;
   min-height: 45px;
   width: 100%;
-  padding: 0 8px;
+  padding: 0 10px;
   border: 0.5px solid var(--outline);
   border-radius: 6px;
 }
 
 .tags-input:focus-within {
-  border: 1px solid var(--brand);
+  border: 1px solid var(--secondary-text);
 }
 
 .tags-input input {
