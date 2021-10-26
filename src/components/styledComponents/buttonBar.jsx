@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 
 class ButtonBar extends Component {
   render() {
-    const { voteCount, echo, isEchoed, isAnswered, isBookmarked, id } =
-      this.props.question;
+    const { isEchoed, isAnswered, isBookmarked, id } = this.props.question;
 
     return (
       <div className='engagement-bar mt-3'>

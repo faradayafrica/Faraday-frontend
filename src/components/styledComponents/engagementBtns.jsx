@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Bookmarks from './../other pages/bookmarks';
 
 class EngagementBtns extends Component {
   render() {
@@ -13,10 +12,13 @@ class EngagementBtns extends Component {
         </div>
 
         <div
-          className='engagement-bar col-8 horinzontal-align '
+          className='engagement-bar tt col-8 horinzontal-align '
           style={{ justifyContent: 'space-between' }}
         >
-          <div className='icon-container p-2'>
+          <div
+            className='icon-container p-2'
+            onClick={() => this.props.onAnswer(id)}
+          >
             {isAnswered ? (
               <svg
                 width='16'
@@ -56,9 +58,14 @@ class EngagementBtns extends Component {
                 />
               </svg>
             )}
-            <p className='ml-2 '>{this.displayNumber(answers.length)}</p>
+            {answers.length ? (
+              <p className='ml-2 '>{this.displayNumber(answers.length)}</p>
+            ) : null}
           </div>
-          <div className='icon-container p-2'>
+          <div
+            className='icon-container p-2'
+            onClick={() => this.props.onEcho(id)}
+          >
             {isEchoed ? (
               <svg
                 width='18'
@@ -112,11 +119,17 @@ class EngagementBtns extends Component {
                 />
               </svg>
             )}
-            <p className='' style={{ marginLeft: '5px' }}>
-              {this.displayNumber(echo)}
-            </p>
+
+            {echo ? (
+              <p className='' style={{ marginLeft: '5px' }}>
+                {this.displayNumber(echo)}
+              </p>
+            ) : null}
           </div>
-          <div className='icon-container p-2'>
+          <div
+            className='icon-container p-2'
+            onClick={() => this.props.onBookmark(id)}
+          >
             {isBookmarked ? (
               <svg
                 width='18'

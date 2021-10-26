@@ -167,7 +167,7 @@ QFEED STYLING
 }
 
 .engagements {
-  margin-top: 7px;
+  margin-top: 0;
 }
 
 .like {
@@ -322,6 +322,11 @@ QFEED STYLING
   bottom: 5rem;
   right: 5rem;
   overflow: hidden;
+}
+
+.tt {
+  position: relative;
+  left: -14px;
 }
 
 /*************************************************** 
