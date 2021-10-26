@@ -60,6 +60,57 @@ class Qfeed extends Component {
     window.location.reload(false);
   };
 
+  // Methods for the like component
+  handleLikeClick = id => {
+    const questions = [...this.state.questions];
+    const newQuestion = questions.filter(q => q.id === id);
+    const questionIndex = this.state.questions.indexOf(newQuestion[0]);
+
+    if (questions[questionIndex].isDisliked === true) {
+      questions[questionIndex].isLiked = false;
+      questions[questionIndex].isDisliked = false;
+      questions[questionIndex].voteCount =
+        questions[questionIndex].voteCount + 1;
+    } else if (questions[questionIndex].isLiked === false) {
+      questions[questionIndex].isLiked = true;
+      questions[questionIndex].isDisliked = false;
+      questions[questionIndex].voteCount += 1;
+    } else {
+      questions[questionIndex].isLiked = false;
+      questions[questionIndex].isDisliked = false;
+      questions[questionIndex].voteCount -= 1;
+    }
+
+    this.setState({ questions });
+    console.log('like clicked', id);
+  };
+
+  handleDislikeClick = id => {
+    const questions = [...this.state.questions];
+    const newQuestion = questions.filter(q => q.id === id);
+    const questionIndex = this.state.questions.indexOf(newQuestion[0]);
+
+    if (questions[questionIndex].isLiked === true) {
+      questions[questionIndex].isDisLiked = false;
+      questions[questionIndex].isLiked = false;
+      questions[questionIndex].voteCount =
+        questions[questionIndex].voteCount - 1;
+    } else if (questions[questionIndex].isDisliked === false) {
+      questions[questionIndex].isDisliked = true;
+      questions[questionIndex].isLiked = false;
+      questions[questionIndex].voteCount -= 1;
+    } else {
+      questions[questionIndex].isDisliked = false;
+      questions[questionIndex].isLiked = false;
+      questions[questionIndex].voteCount += 1;
+      console.log('3');
+    }
+
+    this.setState({ questions });
+    console.log('dislike clicked', id);
+  };
+  // Methods for the like component ends here
+
   handleAnswer = id => {
     console.log(`I want to answer the question with id of ${id}`);
   };
@@ -120,6 +171,8 @@ class Qfeed extends Component {
               onAnswer={this.handleAnswer}
               onEcho={this.handleEcho}
               onBookmark={this.handleBookmark}
+              onLike={this.handleLikeClick}
+              onDislike={this.handleDislikeClick}
             />
           ))}
 
