@@ -8,6 +8,8 @@ import dislike from '../../images/dislike.svg';
 import disliked from '../../images/disliked.svg';
 import like from '../../images/like.svg';
 import liked from '../../images/liked.svg';
+import EngagementBtns from './engagementBtns';
+import ButtonBar from './buttonBar';
 
 class Question extends Component {
   state = {
@@ -25,7 +27,8 @@ class Question extends Component {
           isLiked={this.state.isLiked}
           isDisliked={this.state.isDisliked}
         />
-        <EngagementButtons question={this.props.question} />
+        {/* <EngagementButtons question={this.props.question} /> */}
+        <EngagementBtns question={this.props.question} />
         <ViewAnswers question={this.props.question} />
       </div>
     );

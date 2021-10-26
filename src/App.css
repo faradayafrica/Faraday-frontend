@@ -231,8 +231,16 @@ QFEED STYLING
   cursor: pointer;
 }
 
+.icon-container > p {
+  color: var(--text2-black);
+}
+
+.icon-container:hover > p {
+  color: var(--text-black);
+  color: var(--brand-dark);
+}
+
 .engagement-count {
-  /* color: var(--text-black); */
   transition: 0.3s all ease-in;
 }
 

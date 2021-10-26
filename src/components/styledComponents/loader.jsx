@@ -2,20 +2,24 @@ import React, { Component } from 'react';
 import '../../loader.scss';
 
 class Loader extends Component {
+  state = {
+    loading: true,
+  };
+
   refreshPage = () => {
     window.location.reload(false);
   };
 
   render() {
     // this displays a retry btn after spinning for a while
-    let loading = true;
+    const loading = false;
     setTimeout(() => {
-      const loading = false;
+      this.setState({ loading });
     }, 5000);
 
     return (
       <React.Fragment>
-        {loading === true ? (
+        {this.state.loading === true ? (
           <div className='loader-container'>
             <div className='loader'></div>
           </div>
