@@ -200,6 +200,13 @@ QFEED STYLING
 
 .engagement-bar {
   align-items: center !important;
+  /* background-color: var(--background); */
+}
+
+.engagement-container {
+  display: flex;
+  width: 70%;
+  justify-content: space-between;
 }
 
 .engagement-bar > div {
@@ -255,6 +262,12 @@ QFEED STYLING
     hue-rotate(115deg) brightness(98%) contrast(96%);
 }
 .icon-container:hover .e-icon {
+  filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
+    hue-rotate(115deg) brightness(98%) contrast(96%);
+}
+.icon-container:hover svg {
+  /* fill: var(--brand) !important; */
+
   filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
     hue-rotate(115deg) brightness(98%) contrast(96%);
 }
@@ -665,9 +678,15 @@ LOADER STYLING
 /*************************************************** 
 POST
 ***************************************************/
+.post-page {
+  border-right: 0.5px solid var(--outline);
+}
+
 .post-form {
   padding: 10px !important;
   border-bottom: 0.5px solid var(--outline);
+  width: 100%;
+  margin-bottom: 0 !important;
 }
 
 .post-btn-area {
@@ -722,7 +741,7 @@ TAGS
 }
 
 .tags-input:focus-within {
-  border: 1px solid var(--secondary-text);
+  border: 0.5px solid var(--secondary-text);
 }
 
 .tags-input input {

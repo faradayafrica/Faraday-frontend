@@ -18,6 +18,7 @@ class EngagementButtons extends Component {
 
   render() {
     const { isCommented, isEchoed, isBookmarked } = this.state;
+    console.log(this.props.question);
 
     return (
       <div className='' style={{ padding: '0px' }}>
