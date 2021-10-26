@@ -34,6 +34,7 @@ class Qfeed extends Component {
               <QuestionPage
                 questions={this.state.questions}
                 onEcho={this.handleEcho}
+                onAnswe={this.handleAnswer}
                 onBookmark={this.handleBookmark}
                 {...props}
               />
@@ -57,6 +58,10 @@ class Qfeed extends Component {
 
   refreshPage = () => {
     window.location.reload(false);
+  };
+
+  handleAnswer = id => {
+    console.log(`I want to answer the question with id of ${id}`);
   };
 
   handleEcho = id => {
@@ -109,7 +114,13 @@ class Qfeed extends Component {
       return (
         <React.Fragment>
           {this.state.questions.map(question => (
-            <Question key={question.id} question={question} />
+            <Question
+              key={question.id}
+              question={question}
+              onAnswer={this.handleAnswer}
+              onEcho={this.handleEcho}
+              onBookmark={this.handleBookmark}
+            />
           ))}
 
           <div className='row justify-content-center my-4 '>

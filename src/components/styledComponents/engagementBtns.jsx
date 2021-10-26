@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
 
-class ButtonBar extends Component {
+class EngagementBtns extends Component {
   render() {
-    const { isEchoed, isAnswered, isBookmarked, id } = this.props.question;
+    const { answers, echo, isEchoed, isAnswered, isBookmarked, id } =
+      this.props.question;
 
     return (
-      <div className='engagement-bar mt-3'>
-        <div className={this.renderClasses()}>
-          <div className='icon-container p-2'>
+      <div className='engagements horinzontal-align'>
+        <div className='empty-bar'>
+          <div style={{ width: '40px', height: 20 }} className=''></div>
+        </div>
+
+        <div
+          className='engagement-bar tt col-8 horinzontal-align '
+          style={{ justifyContent: 'space-between' }}
+        >
+          <div
+            className='icon-container p-2'
+            onClick={() => this.props.onAnswer(id)}
+          >
             {isAnswered ? (
               <svg
-                width='18'
-                height='18'
+                width='16'
+                height='16'
                 viewBox='0 0 14 14'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -31,8 +42,8 @@ class ButtonBar extends Component {
               </svg>
             ) : (
               <svg
-                width='18'
-                height='18'
+                width='16'
+                height='16'
                 viewBox='0 0 14 14'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -47,12 +58,18 @@ class ButtonBar extends Component {
                 />
               </svg>
             )}
+            {answers.length ? (
+              <p className='ml-2 '>{this.displayNumber(answers.length)}</p>
+            ) : null}
           </div>
-          <div className='icon-container' onClick={() => this.props.onEcho(id)}>
+          <div
+            className='icon-container p-2'
+            onClick={() => this.props.onEcho(id)}
+          >
             {isEchoed ? (
               <svg
-                width='20'
-                height='20'
+                width='18'
+                height='18'
                 viewBox='0 0 16 16'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -80,8 +97,8 @@ class ButtonBar extends Component {
               </svg>
             ) : (
               <svg
-                width='20'
-                height='20'
+                width='18'
+                height='18'
                 viewBox='0 0 16 16'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -102,15 +119,21 @@ class ButtonBar extends Component {
                 />
               </svg>
             )}
+
+            {echo ? (
+              <p className='' style={{ marginLeft: '5px' }}>
+                {this.displayNumber(echo)}
+              </p>
+            ) : null}
           </div>
           <div
-            className='icon-container'
+            className='icon-container p-2'
             onClick={() => this.props.onBookmark(id)}
           >
             {isBookmarked ? (
               <svg
-                width='20'
-                height='20'
+                width='18'
+                height='18'
                 viewBox='0 0 16 16'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -123,8 +146,8 @@ class ButtonBar extends Component {
               </svg>
             ) : (
               <svg
-                width='19'
-                height='18'
+                width='18'
+                height='17'
                 viewBox='0 0 15 14'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -147,14 +170,13 @@ class ButtonBar extends Component {
     );
   }
 
-  renderClasses = () => {
-    let classes = 'engagement-container';
-    if (!this.props.fluid) {
-      classes += ' container-fluid ';
+  displayNumber = num => {
+    if (num === 0) {
+      return null;
+    } else {
+      return num;
     }
-
-    return classes;
   };
 }
 
-export default ButtonBar;
+export default EngagementBtns;

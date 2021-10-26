@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Header from './styledComponents/Header';
 import Back from '../images/back.svg';
-// import Question from './styledComponents/Question';
+
 import Answers from './styledComponents/Answers';
 import QuestionProfile from './styledComponents/QuestionProfile';
-import QuestionPageButtons from './styledComponents/QuestionPageButtons';
+
 import Loader from './styledComponents/loader';
 import ButtonBar from './styledComponents/buttonBar';
 

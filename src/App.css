@@ -167,7 +167,7 @@ QFEED STYLING
 }
 
 .engagements {
-  margin-top: 7px;
+  margin-top: 0;
 }
 
 .like {
@@ -231,8 +231,16 @@ QFEED STYLING
   cursor: pointer;
 }
 
+.icon-container > p {
+  color: var(--text2-black);
+}
+
+.icon-container:hover > p {
+  color: var(--text-black);
+  color: var(--brand-dark);
+}
+
 .engagement-count {
-  /* color: var(--text-black); */
   transition: 0.3s all ease-in;
 }
 
@@ -314,6 +322,11 @@ QFEED STYLING
   bottom: 5rem;
   right: 5rem;
   overflow: hidden;
+}
+
+.tt {
+  position: relative;
+  left: -14px;
 }
 
 /*************************************************** 
