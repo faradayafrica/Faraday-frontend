@@ -11,7 +11,8 @@ import axios from 'axios';
 import QuestionPage from './QuestionPage';
 import Loader from './styledComponents/loader';
 
-const apiEndpoint = 'http://localhost:3002/questions';
+// const apiEndpoint = 'http://localhost:3002/questions';
+const apiEndpoint = 'https://api.faraday.africa/qfeed';
 class Qfeed extends Component {
   state = {
     questions: [],
@@ -34,7 +35,7 @@ class Qfeed extends Component {
               <QuestionPage
                 questions={this.state.questions}
                 onEcho={this.handleEcho}
-                onAnswe={this.handleAnswer}
+                onAnswer={this.handleAnswer}
                 onBookmark={this.handleBookmark}
                 {...props}
               />

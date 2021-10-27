@@ -7,7 +7,10 @@ class ButtonBar extends Component {
     return (
       <div className='engagement-bar mt-3'>
         <div className={this.renderClasses()}>
-          <div className='icon-container p-2'>
+          <div
+            className='icon-container p-2'
+            onClick={() => this.props.onAnswer(id)}
+          >
             {isAnswered ? (
               <svg
                 width='18'
