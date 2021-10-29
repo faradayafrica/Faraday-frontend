@@ -33,6 +33,11 @@ class LoginForm extends Form {
       </div>
     );
   }
+
+  doSubmit = () => {
+    // call the backend
+    console.log('login');
+  };
 }
 
 export default LoginForm;
