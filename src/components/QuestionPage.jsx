@@ -61,6 +61,7 @@ class QuestionPage extends Component {
               <ButtonBar
                 question={newQuestion}
                 fluid={true}
+                onAnswer={this.props.onAnswer}
                 onEcho={this.props.onEcho}
                 onBookmark={this.props.onBookmark}
               />

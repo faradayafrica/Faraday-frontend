@@ -891,3 +891,12 @@ LOGIN
   width: 100%;
   padding: 10px !important;
 }
+
+.label-group > * {
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.label-group > :first-child {
+  margin-right: 1rem !important;
+}

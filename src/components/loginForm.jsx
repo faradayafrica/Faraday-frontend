@@ -42,7 +42,7 @@ class LoginForm extends Component {
               error={errors.password}
             />
 
-            <button className='btn btn-green btn-login mt-2'>Login</button>
+            <button className='btn btn-green btn-login my-2'>Login</button>
           </form>
         </div>
       </div>

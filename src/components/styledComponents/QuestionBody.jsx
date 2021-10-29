@@ -4,15 +4,13 @@ import Like from './Like';
 
 class QuestionBody extends Component {
   render() {
-    const { body, voteCount } = this.props.question;
+    const { body } = this.props.question;
     return (
       <div className='question-body horinzontal-align'>
         <Like
-          voteCount={voteCount}
-          handleDislike={this.props.handleDislike}
-          handleLike={this.props.handleLike}
-          isLiked={this.props.isLiked}
-          isDisliked={this.props.isDisliked}
+          onDislike={this.props.onDislike}
+          onLike={this.props.onLike}
+          question={this.props.question}
         />
         <Link
           to={`/Qfeed/${this.props.question.id}`}
