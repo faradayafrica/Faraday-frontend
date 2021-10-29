@@ -3,6 +3,8 @@ import Form from './form';
 import faraday from '../images/logo.svg';
 import Joi from 'joi-browser';
 
+import * as userService from '../services/userService';
+
 class SignUpForm extends Form {
   state = {
     data: {
@@ -22,12 +24,12 @@ class SignUpForm extends Form {
     username: Joi.string().min(3).max(30).required().label('Username'),
     email: Joi.string().email().required().label('Email'),
     password: Joi.string().min(8).required().label('Password'),
-    confirmPassword: Joi.string()
-      .required()
-      .valid(Joi.ref('password'))
-      .options({
-        language: { any: { allowOnly: 'must match password' } },
-      }),
+    confirmPassword: Joi.string().required(),
+    // .valid(Joi.ref('password'))
+    // .label('Please make sure this')
+    // .options({
+    //   language: { any: { allowOnly: 'matches with password' } },
+    // }),
   };
 
   render() {
@@ -39,7 +41,7 @@ class SignUpForm extends Form {
           </div>
           <h3 className='form-title'>Signup</h3>
 
-          <form>
+          <form onSubmit={this.handleSubmit}>
             <div className='horinzontal-align label-group'>
               {this.renderInput('lname', 'Last name')}
               {this.renderInput('fname', 'First name')}
@@ -48,8 +50,12 @@ class SignUpForm extends Form {
             {this.renderInput('username', 'Username')}
             {this.renderInput('email', 'Email')}
 
-            {this.renderInput('password', 'Password', 'text')}
-            {this.renderInput('confirmPassword', 'Confirm Password', 'text')}
+            {this.renderInput('password', 'Password', 'password')}
+            {this.renderInput(
+              'confirmPassword',
+              'Confirm Password',
+              'password'
+            )}
 
             {this.renderButton('Sign up')}
           </form>
@@ -57,6 +63,12 @@ class SignUpForm extends Form {
       </div>
     );
   }
+
+  doSubmit = async () => {
+    // call the backend
+    console.log('signup');
+    await userService.register(this.state.data);
+  };
 }
 
 export default SignUpForm;
