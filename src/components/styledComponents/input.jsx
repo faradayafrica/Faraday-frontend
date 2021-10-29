@@ -2,19 +2,17 @@ import React, { Component } from 'react';
 
 class Input extends Component {
   render() {
-    const { name, type, placeholder, value, error, onChange } = this.props;
+    const { name, placeholder, error, ...rest } = this.props;
     return (
       <div className='form-group' style={{ marginTop: '1.5rem' }}>
-        <label className='sr-only' for={name}>
-          {name}
+        <label className='sr-only' htmlFor={name}>
+          {placeholder}
         </label>
         <input
           // autoFocus
-          value={value}
-          onChange={onChange}
+          {...rest}
           name={name}
           id={name}
-          type={type}
           className='form-control'
           placeholder={placeholder}
         />
