@@ -1,10 +1,11 @@
 import React from 'react';
+import Form from './form';
 import faraday from '../images/logo.svg';
-import Input from './styledComponents/input';
+import Joi from 'joi-browser';
 
-class SignUpForm extends React.Component {
+class SignUpForm extends Form {
   state = {
-    account: {
+    data: {
       fname: '',
       lname: '',
       username: '',
@@ -15,8 +16,21 @@ class SignUpForm extends React.Component {
     errors: {},
   };
 
+  schema = {
+    fname: Joi.string().alphanum().required().label('First name'),
+    lname: Joi.string().alphanum().required().label('Last name'),
+    username: Joi.string().min(3).max(30).required().label('Username'),
+    email: Joi.string().email().required().label('Email'),
+    password: Joi.string().min(8).required().label('Password'),
+    confirmPassword: Joi.string()
+      .required()
+      .valid(Joi.ref('password'))
+      .options({
+        language: { any: { allowOnly: 'must match password' } },
+      }),
+  };
+
   render() {
-    const { account, errors } = this.state;
     return (
       <div className='login-page'>
         <div className='form-container'>
@@ -27,54 +41,17 @@ class SignUpForm extends React.Component {
 
           <form>
             <div className='horinzontal-align label-group'>
-              <Input
-                name='fname'
-                type='text'
-                placeholder={'First name'}
-                // value={account.fname}
-                error={errors.fname}
-              />
-              <Input
-                name='lname'
-                type='text'
-                placeholder={'Last name'}
-                // value={account.lname}
-                error={errors.lname}
-              />
+              {this.renderInput('lname', 'Last name')}
+              {this.renderInput('fname', 'First name')}
             </div>
 
-            <Input
-              name='username'
-              type='text'
-              placeholder={'Username'}
-              // value={account.username}
-              error={errors.username}
-            />
-            <Input
-              name='email'
-              type='text'
-              placeholder={'Email'}
-              // value={account.email}
-              error={errors.email}
-            />
+            {this.renderInput('username', 'Username')}
+            {this.renderInput('email', 'Email')}
 
-            <Input
-              name='password'
-              type='password'
-              placeholder='Password'
-              // value={account.password}
-              error={errors.password}
-            />
+            {this.renderInput('password', 'Password', 'text')}
+            {this.renderInput('confirmPassword', 'Confirm Password', 'text')}
 
-            <Input
-              name='password'
-              type='password'
-              placeholder='Confirm password'
-              // value={account.password}
-              error={errors.password}
-            />
-
-            <button className='btn btn-green btn-login my-2'>Login</button>
+            {this.renderButton('Sign up')}
           </form>
         </div>
       </div>
