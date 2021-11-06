@@ -50,14 +50,14 @@ class SignUpForm extends Form {
             {this.renderInput('username', 'Username')}
             {this.renderInput('email', 'Email')}
 
-            <div className='horinzontal-align label-group mb-3'>
+            {/* <div className='horinzontal-align label-group mb-3'> */}
               {this.renderInput('password', 'Password', 'password')}
               {this.renderInput(
                 'confirmPassword',
                 'Confirm',
                 'password'
               )}
-            </div>
+            {/* </div> */}
 
             {this.renderButton('Sign up')}
           </form>
@@ -68,8 +68,17 @@ class SignUpForm extends Form {
 
   doSubmit = async () => {
     // call the backend
-    console.log('signup');
-    await userService.register(this.state.data);
+    try{
+      console.log('signup'); 
+      await userService.register(this.state.data);
+    }
+    catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        const errors = {...this.state.errors};
+        errors.username = ex.response.data;
+        this.setState({ errors })
+      }
+    }
   };
 }
 
