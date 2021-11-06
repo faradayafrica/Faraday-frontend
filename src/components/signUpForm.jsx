@@ -24,12 +24,12 @@ class SignUpForm extends Form {
     username: Joi.string().min(3).max(30).required().label('Username'),
     email: Joi.string().email().required().label('Email'),
     password: Joi.string().min(8).required().label('Password'),
-    confirmPassword: Joi.string().required(),
-    // .valid(Joi.ref('password'))
-    // .label('Please make sure this')
-    // .options({
-    //   language: { any: { allowOnly: 'matches with password' } },
-    // }),
+    confirmPassword: Joi.string().required()
+    .valid(Joi.ref('password'))
+    .label('Please make sure this')
+    .options({
+      language: { any: { allowOnly: 'matches with password' } },
+    }),
   };
 
   render() {
@@ -43,19 +43,21 @@ class SignUpForm extends Form {
 
           <form onSubmit={this.handleSubmit}>
             <div className='horinzontal-align label-group'>
-              {this.renderInput('lname', 'Last name')}
               {this.renderInput('fname', 'First name')}
+              {this.renderInput('lname', 'Last name')}
             </div>
 
             {this.renderInput('username', 'Username')}
             {this.renderInput('email', 'Email')}
 
-            {this.renderInput('password', 'Password', 'password')}
-            {this.renderInput(
-              'confirmPassword',
-              'Confirm Password',
-              'password'
-            )}
+            <div className='horinzontal-align label-group mb-3'>
+              {this.renderInput('password', 'Password', 'password')}
+              {this.renderInput(
+                'confirmPassword',
+                'Confirm',
+                'password'
+              )}
+            </div>
 
             {this.renderButton('Sign up')}
           </form>

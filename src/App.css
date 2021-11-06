@@ -38,9 +38,17 @@ html {
 }
 
 .badge-brand {
-  background-color: var(--brand);
-  color: var(--white);
+  background-color: var(--brand-highlight);
+  border: .5px solid #A4D9A4 ;
+  color: var(--text2-black);
 }
+
+/* .badge-info {
+  background-color: #EBEEFC !important;
+  border: .5px solid #8ba4ffb7 ;
+  color: var(--text2-black) !important;
+} */
+
 
 .borders {
   border-top: solid 0.5px var(--outline);
@@ -103,6 +111,11 @@ QFEED STYLING
   padding-bottom: 7px !important;
 }
 
+.hl {
+  background-color: var(--brand-highlight);
+  border-bottom: .5px solid var(--brand)
+}
+
 .col {
   padding-left: 0px !important;
 }
@@ -139,6 +152,10 @@ QFEED STYLING
   display: flex;
   align-items: flex-start;
   margin-top: 14px;
+}
+
+.question-tag {
+  color: var(--brand)
 }
 
 .question-body > p {
@@ -196,6 +213,11 @@ QFEED STYLING
 
 .like:hover > .profile-name {
   color: var(--brand-dark);
+}
+
+.badge {
+  padding: .5rem .8rem !important;
+  font-size: 3rem;
 }
 
 .engagement-bar {
@@ -791,8 +813,7 @@ input:focus {
   border-radius: 6px;
   margin: 0 8px 8px 0;
   background: var(--brand-highlight);
-  border: 1px solid var(--secondary-text);
-  border: 1px solid var(--brand);
+  border: .5px solid var(--brand);
 }
 
 .tag .tag-title {
@@ -833,19 +854,16 @@ LOGIN
 
   padding: 1rem;
   background-color: var(--white) !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .form-container {
-  position: relative;
-  right: 6px;
-  bottom: 6px;
+  margin-top: 6rem;
   padding: 1rem;
+  margin-left: auto;
+  margin-right: auto;
 
   border-radius: 6px;
-  border: 1px solid var(--outline);
+  border: .5px solid var(--outline);
   background-color: var(--white) !important;
   width: 100%;
   max-width: 425px;
@@ -864,8 +882,7 @@ LOGIN
 .form-control {
   border-radius: 0px !important;
   border: none !important;
-  border-bottom: 2px solid var(--secondary-text) !important;
-  background-color: var(--background) !important;
+  border-bottom: 1.5px solid var(--secondary-text) !important;
   min-height: 50px !important;
 }
 
@@ -876,14 +893,15 @@ LOGIN
 }
 
 .form-control:focus {
-  background-color: var(--brand-highlight) !important;
-  border-color: var(--brand) !important;
+  /* background-color: var(--brand-highlight) !important; */
+  background-color: var(--background) !important;
+  border-color: var(--text-black) !important;
   box-shadow: none !important;
 }
 
 .form-control:active {
-  background-color: var(--brand-highlight) !important;
-  border-color: var(--brand) !important;
+  /* background-color: var(--brand-highlight) !important; */
+  border-color: var(--text-black) !important;
   box-shadow: none !important;
 }
 
@@ -899,4 +917,44 @@ LOGIN
 
 .label-group > :first-child {
   margin-right: 1rem !important;
+}
+
+.alert {
+  font-size: 13px !important;
+  padding: 5px !important;
+  opacity: .7;
+}
+
+.alert-danger {
+  font-size: 12px !important;
+
+}
+
+
+
+@media screen and (max-width: 567px) {
+  .login-page {
+    position: fixed;
+    height: 100%;
+    min-width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+
+    background-color: var(--white) !important;
+ 
+  }
+
+  .form-container {
+    margin-top: 5rem !important;
+  
+    border-radius: 0;
+    border: none;
+    border-top: 0.5px solid var(--outline);
+    background-color: var(--white) !important;
+    width: 100%;
+    text-align: center;
+  
+    box-shadow: none !important;
+  }
 }

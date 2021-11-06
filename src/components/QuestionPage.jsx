@@ -42,16 +42,20 @@ class QuestionPage extends Component {
 
               {/* question profile ends here */}
               <p className='question-page-content'>{newQuestion.body}</p>
+              <p className='question-tag' style={{fontSize: "18px"}}>{newQuestion.tags.map(tag => (
+            <span key={tag}>#{tag} </span>
+          ))}</p>
+              
               <h6>
                 <span className='badge badge-brand mr-2'>
                   {newQuestion.answers.length} Answers
                 </span>
 
-                <span className='badge badge-info mr-2'>
+                <span className='badge badge-brand mr-2'>
                   {newQuestion.echo} Echoes
                 </span>
 
-                <span className='badge badge-primary'>
+                <span className='badge badge-brand'>
                   {newQuestion.voteCount} Votes
                 </span>
               </h6>

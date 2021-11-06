@@ -4,7 +4,7 @@ import Like from './Like';
 
 class QuestionBody extends Component {
   render() {
-    const { body } = this.props.question;
+    const { body, tags } = this.props.question;
     return (
       <div className='question-body horinzontal-align'>
         <Like
@@ -17,6 +17,12 @@ class QuestionBody extends Component {
           style={{ textDecoration: 'none' }}
         >
           <p className='question-content col ml-2'>{body}</p>
+
+          <p className='question-tag col ml-2'>{tags.map(tag => (
+            <span key={tag}>#{tag} </span>
+          ))}</p>
+
+
         </Link>
       </div>
     );

@@ -16,6 +16,7 @@ class Question extends Component {
           handleLike={this.handleLikeClick}
           onLike={this.props.onLike}
           onDislike={this.props.onDislike}
+         
         />
         {/* <EngagementButtons question={this.props.question} /> */}
         <EngagementBtns
@@ -24,7 +25,7 @@ class Question extends Component {
           onAnswer={this.props.onAnswer}
           onBookmark={this.props.onBookmark}
         />
-        <ViewAnswers question={this.props.question} />
+        {/* <ViewAnswers question ={this.props.question} /> */}
       </div>
     );
   }

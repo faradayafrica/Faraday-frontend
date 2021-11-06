@@ -11,8 +11,8 @@ import axios from 'axios';
 import QuestionPage from './QuestionPage';
 import Loader from './styledComponents/loader';
 
-const apiEndpoint = 'http://localhost:3002/questions';
-// const apiEndpoint = 'https://api.faraday.africa/qfeed';
+const apiEndpoint = 'http://localhost:3002/v1/qfeed';
+// const apiEndpoint = 'https://api.faraday.africa/qfeed/';
 class Qfeed extends Component {
   state = {
     questions: [],
@@ -165,6 +165,7 @@ class Qfeed extends Component {
     } else {
       return (
         <React.Fragment>
+          {console.log(this.state.questions)}
           {this.state.questions.map(question => (
             <Question
               key={question.id}
@@ -174,6 +175,7 @@ class Qfeed extends Component {
               onBookmark={this.handleBookmark}
               onLike={this.handleLikeClick}
               onDislike={this.handleDislikeClick}
+        
             />
           ))}
 
