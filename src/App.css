@@ -942,19 +942,21 @@ LOGIN
     z-index: 1000;
 
     background-color: var(--white) !important;
- 
+    
   }
-
+  
   .form-container {
     margin-top: 5rem !important;
-  
+    
     border-radius: 0;
     border: none;
     border-top: 0.5px solid var(--outline);
     background-color: var(--white) !important;
     width: 100%;
     text-align: center;
-  
+    
     box-shadow: none !important;
+    overflow-y: initial;
+    scroll-margin-left: initial;
   }
 }
