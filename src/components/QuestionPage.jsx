@@ -23,7 +23,7 @@ class QuestionPage extends Component {
     return (
       <React.Fragment>
         {this.props.questions.length === 0 ? (
-          <Loader />
+          <Loader onRefresh={this.props.onRefresh}/>
         ) : (
           <React.Fragment>
             <div className=' header-questionpage sticky-nav horinzontal-align '>
@@ -42,8 +42,8 @@ class QuestionPage extends Component {
 
               {/* question profile ends here */}
               <p className='question-page-content'>{newQuestion.body}</p>
-              <p className='question-tag' style={{fontSize: "18px"}}>{newQuestion.tags.map(tag => (
-            <span key={tag}>#{tag} </span>
+              <p className='question-tag ' style={{fontSize: "18px"}}>{newQuestion.tags.map(tag => (
+            <span key={tag} className="icon-container-secondary" style={{padding: "4px 6px"}}>#{tag} </span>
           ))}</p>
               
               <h6>

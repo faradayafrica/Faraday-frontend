@@ -37,6 +37,7 @@ class Qfeed extends Component {
                 onEcho={this.handleEcho}
                 onAnswer={this.handleAnswer}
                 onBookmark={this.handleBookmark}
+                onRefresh={this.refreshPage}
                 {...props}
               />
             )}
@@ -57,8 +58,12 @@ class Qfeed extends Component {
     );
   }
 
-  refreshPage = () => {
-    window.location.reload(false);
+  refreshPage = async() => {
+    // window.location.reload(false);
+
+    const { data: questions } = await axios.get(apiEndpoint);
+
+    this.setState({ questions });
   };
 
   // Methods for the like component
@@ -161,7 +166,7 @@ class Qfeed extends Component {
   // This method renders the questions
   renderQuestion = () => {
     if (this.state.questions.length === 0) {
-      return <Loader />;
+      return <Loader onRefresh={this.refreshPage}/>;
     } else {
       return (
         <React.Fragment>

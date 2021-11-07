@@ -39,7 +39,7 @@ html {
 
 .badge-brand {
   background-color: var(--brand-highlight);
-  border: .5px solid #A4D9A4 ;
+  border: 0.5px solid #a4d9a4;
   color: var(--text2-black);
 }
 
@@ -48,7 +48,6 @@ html {
   border: .5px solid #8ba4ffb7 ;
   color: var(--text2-black) !important;
 } */
-
 
 .borders {
   border-top: solid 0.5px var(--outline);
@@ -113,15 +112,16 @@ QFEED STYLING
 
 .hl {
   background-color: var(--brand-highlight);
-  border-bottom: .5px solid var(--brand)
+  border-bottom: 0.5px solid var(--brand);
 }
 
 .col {
   padding-left: 0px !important;
 }
 
-.question:hover {
-  background-color: var(--background);
+.question-content:hover {
+  /* opacity: 0.2; */
+  color: var(--text2-black);
 }
 
 .horinzontal-align {
@@ -155,7 +155,7 @@ QFEED STYLING
 }
 
 .question-tag {
-  color: var(--brand)
+  color: var(--brand);
 }
 
 .question-body > p {
@@ -196,6 +196,29 @@ QFEED STYLING
   justify-content: center;
   align-items: center;
 }
+
+.like-icon {
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.like-icon svg {
+  margin: 0;
+}
+
+.like-icon:hover {
+  background-color: var(--brand-highlight);
+}
+
+.like-icon:hover svg {
+  filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
+    hue-rotate(115deg) brightness(98%) contrast(96%);
+}
+
+.bubble {
+}
+
 .empty-bar {
   width: 40px;
 }
@@ -211,12 +234,8 @@ QFEED STYLING
   cursor: pointer;
 }
 
-.like:hover > .profile-name {
-  color: var(--brand-dark);
-}
-
 .badge {
-  padding: .5rem .8rem !important;
+  padding: 0.5rem 0.8rem !important;
   font-size: 3rem;
 }
 
@@ -271,7 +290,8 @@ QFEED STYLING
 }
 
 .icon-container:hover {
-  background-color: #def1eb;
+  /* background-color: #def1eb; */
+  background-color: var(--brand-highlight);
 }
 
 .icon-container-secondary:hover {
@@ -813,7 +833,7 @@ input:focus {
   border-radius: 6px;
   margin: 0 8px 8px 0;
   background: var(--brand-highlight);
-  border: .5px solid var(--brand);
+  border: 0.5px solid var(--brand);
 }
 
 .tag .tag-title {
@@ -863,7 +883,7 @@ LOGIN
   margin-right: auto;
 
   border-radius: 6px;
-  border: .5px solid var(--outline);
+  border: 0.5px solid var(--outline);
   background-color: var(--white) !important;
   width: 100%;
   max-width: 425px;
@@ -922,15 +942,12 @@ LOGIN
 .alert {
   font-size: 13px !important;
   padding: 5px !important;
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .alert-danger {
   font-size: 12px !important;
-
 }
-
-
 
 @media screen and (max-width: 567px) {
   .login-page {
@@ -942,19 +959,18 @@ LOGIN
     z-index: 1000;
 
     background-color: var(--white) !important;
-    
   }
-  
+
   .form-container {
     margin-top: 5rem !important;
-    
+
     border-radius: 0;
     border: none;
     border-top: 0.5px solid var(--outline);
     background-color: var(--white) !important;
     width: 100%;
     text-align: center;
-    
+
     box-shadow: none !important;
     overflow-y: initial;
     scroll-margin-left: initial;

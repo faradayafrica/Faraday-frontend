@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+import "../../animation.scss"
 
 class Like extends Component {
+
+
   render() {
     const { voteCount, isLiked, isDisliked, id } = this.props.question;
     // console.log(this.props.question);
+
+ 
 
     return (
       <div className='like'>
@@ -11,6 +16,7 @@ class Like extends Component {
           data-toggle='tooltip'
           title='like'
           onClick={() => this.props.onLike(id)}
+          className="like-icon bubbly-button"
         >
           {isLiked ? (
             <svg
@@ -45,6 +51,7 @@ class Like extends Component {
           data-toggle='tooltip'
           title='dislike'
           onClick={() => this.props.onDislike(id)}
+          className="like-icon bubbly-button"
         >
           {isDisliked ? (
             <svg
