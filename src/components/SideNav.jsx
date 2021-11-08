@@ -102,8 +102,7 @@ class SideNav extends Component {
               </svg>
             </div>
           </nav>
-          {this.props.user && <p>Hello {this.props.user.name}</p>}
-          {/* <div className=' link-box p-2 position-fixed'> */}
+          {/* {this.props.user && <p>Hello {this.props.user.name}</p>} */}
           {this.state.links.map(link => (
             <NavLink
               key={link.item}

@@ -54,7 +54,16 @@ class App extends React.Component {
             <Route path='/explore' component={Explore} />
             <Route path='/courses' component={Courses} />
             <Route path='/profile' component={Profile} />
-            <Route path='/qfeed' component={Qfeed} />
+            {/* <Route path='/qfeed' component={Qfeed} user={this.state.user}/> */}
+            <Route
+            path='/qfeed'
+            render={props => (
+              <Qfeed
+                user={this.state.user}
+                {...props}
+              />
+            )}
+          />
             <Route path='/connect' component={Connect} />
             <Route path='/notification' component={Notification} />
             <Route path='/post' component={Post} />

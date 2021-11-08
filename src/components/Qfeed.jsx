@@ -8,7 +8,7 @@ class App extends Component {
 
     return (
       <React.Fragment>
-        <QfeedContent />
+        <QfeedContent user={this.props.user}/>
         <Trends />
       </React.Fragment>
     );

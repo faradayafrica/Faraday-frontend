@@ -25,10 +25,6 @@ class Qfeed extends Component {
 
       const { data: questions } = await axios.get(apiEndpoint);
       this.setState({ questions });
-
-      const jwt = localStorage.getItem('token')
-      const user = jwtDecode(jwt);
-      this.setState({ user })
     } 
     catch (ex) {
 
@@ -61,7 +57,7 @@ class Qfeed extends Component {
               <Questions
                 renderQuestion={this.renderQuestion}
                 onPost={this.handlePost}
-                user={this.state.user}
+                user={this.props.user}
                 {...props}
               />
             )}
