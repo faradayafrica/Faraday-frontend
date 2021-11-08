@@ -62,7 +62,7 @@ class SignUpForm extends Form {
             {this.renderButton('Sign up')}
           </form>
 
-          <p className="faraday-terms mt-2">By clicking the sign up button, you agree to our <span className="link-grey icon-container-secondary ">Terms and Condition</span> and <span className="link-grey icon-container-secondary ">Privacy Policy</span></p>
+          <p className="faraday-terms mt-4">By clicking the sign up button, you agree to our <span className="link-grey icon-container-secondary ">Terms and Condition</span> and <span className="link-grey icon-container-secondary ">Privacy Policy</span></p>
         </div>
         {this.renderRedirectBtn("Login", "login", "Already have an account?")}
       </div>
@@ -72,13 +72,14 @@ class SignUpForm extends Form {
   doSubmit = async () => {
     // call the backend
     try{
-      console.log('signup'); 
+      // console.log('signup'); 
       const {data} = await userService.register(this.state.data);
       const jwt = data.access;
-      console.log(jwt)
+      // console.log(jwt)
 
       localStorage.setItem('token', jwt);
-      this.props.history.push('/qfeed');
+      // this.props.history.push('/qfeed');
+      window.location = "/qfeed";
     }
     catch (ex) {
       if (ex.response && ex.response.status === 400) {

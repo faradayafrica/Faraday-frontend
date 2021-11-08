@@ -52,7 +52,8 @@ class NavDropdown extends Component {
                   top: 2,
                 }}
               >
-                Profile
+                {this.props.user? `${this.props.user.name}`: "Profile"}
+               
               </p>
             </Link>
           </Dropdown.Item>
@@ -193,7 +194,9 @@ class NavDropdown extends Component {
               </p>
             </Link>
           </Dropdown.Item>
+
           <Dropdown.Item className='dropdown-link'>
+            <Link to='/logout' style={{ textDecoration: 'none' }}>
             <svg
               width='24'
               height='24'
@@ -213,8 +216,13 @@ class NavDropdown extends Component {
             >
               Logout
             </p>
+            </Link>
           </Dropdown.Item>
-          <Dropdown.Item className='dropdown-link'>
+
+         
+            
+    
+          {!this.props.user && <Dropdown.Item className='dropdown-link'>
             <Link to='/login' style={{ textDecoration: 'none' }}>
               {/* <svg
                 width='24'
@@ -240,7 +248,7 @@ class NavDropdown extends Component {
                 Login
               </p>
             </Link>
-          </Dropdown.Item>
+          </Dropdown.Item>}
         </Dropdown.Menu>
         {/* <button>
                 <p className='mx-2'>More</p>

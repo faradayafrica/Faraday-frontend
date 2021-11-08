@@ -9,7 +9,7 @@ class Questions extends Component {
         <div className='header sticky-nav '>
           <Header>Qfeed</Header>
         </div>
-        <PostComponent onPost={this.props.onPost} />
+        <PostComponent onPost={this.props.onPost} user={this.props.user}/>
         {this.props.renderQuestion()}
       </div>
     );

@@ -221,7 +221,7 @@ class MobileSidenav extends Component {
                       top: 2,
                     }}
                   >
-                    Profile
+                    {this.props.user? `${this.props.user.name}`: "Profile"}
                   </p>
                 </div>
               </Link>
@@ -358,26 +358,30 @@ class MobileSidenav extends Component {
                   </p>
                 </div>
               </Link>
-              <div className='mobile-link'>
-                <svg
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M19 21H10C8.89543 21 8 20.1046 8 19V15H10V19H19V5H10V9H8V5C8 3.89543 8.89543 3 10 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21ZM12 16V13H3V11H12V8L17 12L12 16Z'
-                    fill='#6C757D'
-                  />
-                </svg>
-                <p
-                  className='mx-2 my-auto .dont-break'
-                  style={{ display: 'inline', position: 'relative', top: 2 }}
-                >
-                  Logout
-                </p>
-              </div>
+
+              <Link to='/logout' style={{ textDecoration: 'none' }}>
+                <div className='mobile-link'>
+                  <svg
+                    width='24'
+                    height='24'
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      d='M19 21H10C8.89543 21 8 20.1046 8 19V15H10V19H19V5H10V9H8V5C8 3.89543 8.89543 3 10 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21ZM12 16V13H3V11H12V8L17 12L12 16Z'
+                      fill='#6C757D'
+                    />
+                  </svg>
+                  <p
+                    className='mx-2 my-auto .dont-break'
+                    style={{ display: 'inline', position: 'relative', top: 2 }}
+                  >
+                    Logout
+                  </p>
+                </div>
+              </Link>
+             
             </div>
           </div>
         </div>
