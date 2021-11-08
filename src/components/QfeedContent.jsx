@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import jwtDecode from "jwt-decode"
 import Question from './styledComponents/Question';
 import Questions from './Questions';
 
@@ -20,10 +21,17 @@ class Qfeed extends Component {
 
   async componentDidMount() {
     //this fetch data from the back end
-    const { data: questions } = await axios.get(apiEndpoint);
+    try{
 
-    this.setState({ questions });
+      const { data: questions } = await axios.get(apiEndpoint);
+      this.setState({ questions });
+    } 
+    catch (ex) {
+
+    }
+   
   }
+
 
   render() {
     return (
@@ -49,6 +57,7 @@ class Qfeed extends Component {
               <Questions
                 renderQuestion={this.renderQuestion}
                 onPost={this.handlePost}
+                user={this.props.user}
                 {...props}
               />
             )}
@@ -60,10 +69,15 @@ class Qfeed extends Component {
 
   refreshPage = async() => {
     // window.location.reload(false);
+    try{
 
-    const { data: questions } = await axios.get(apiEndpoint);
+      const { data: questions } = await axios.get(apiEndpoint);
+  
+      this.setState({ questions });
+    } 
+    catch (ex) {
 
-    this.setState({ questions });
+    }
   };
 
   // Methods for the like component

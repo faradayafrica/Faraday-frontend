@@ -41,13 +41,13 @@ class LoginForm extends Form {
     // call the backend
     try {
 
-      console.log('login');
+      // console.log('login');
       const {data} = await authService.login(this.state.data);
       const jwt = data.access;
-      console.log(jwt)
+      // console.log(jwt)
 
       localStorage.setItem('token', jwt);
-      this.props.history.push('/qfeed');
+      window.location = "/qfeed";
     }
     catch (ex) {
       if(ex.response && ex.response.status === 400) {

@@ -26,7 +26,7 @@ class Loader extends Component {
         ) : (
           <div className=' retry-container' style={{ marginTop: '3rem' }}>
             <p id='text'>Something went wrong. Please reload</p>
-            <button onClick={this.props.onRefresh} className='btn btn-green '>
+            <button onClick={this.props.onRefresh} className='btn btn-green bubbly-button'>
               <svg
                 width='24'
                 height='24'

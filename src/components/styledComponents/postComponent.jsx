@@ -15,6 +15,9 @@ class PostComponent extends Component {
       console.log(this.state.tags);
     };
 
+    // const {user} = this.props
+   
+
     return (
       <div className='form-group post-form'>
         <label className='sr-only' htmlFor='newQuestion'>
@@ -62,6 +65,8 @@ class PostComponent extends Component {
             Post
           </button>
         </div>
+     
+        {this.props.user && <p>Hello {this.props.user.name}</p>}
       </div>
     );
   }
