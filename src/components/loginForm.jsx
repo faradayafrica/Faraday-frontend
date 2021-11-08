@@ -40,12 +40,21 @@ class LoginForm extends Form {
     try {
 
       console.log('login');
-      await authService.login(this.state.data)
+      const {data} = await authService.login(this.state.data);
+      const jwt = data.access;
+      console.log(jwt)
+
+      localStorage.setItem('token', jwt);
+      this.props.history.push('/qfeed');
     }
     catch (ex) {
       if(ex.response && ex.response.status === 400) {
         const errors = {...this.state.errors};
-        errors.username = ex.response.data;
+        errors.username = "Username or password is incorrect";
+        this.setState({ errors });
+      } else {
+        const errors = {...this.state.errors};
+        errors.username = "Username or password is incorrect";
         this.setState({ errors });
       }
     }

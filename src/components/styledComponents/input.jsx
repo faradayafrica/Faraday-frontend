@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 class Input extends Component {
   render() {
@@ -16,7 +16,10 @@ class Input extends Component {
           className='form-control'
           placeholder={placeholder}
         />
-        {error && <div className='alert alert-danger my-2'>{error}</div>}
+        {error && 
+          <div className='alert alert-warning my-1 '>
+          <div className="dialog-arrow alert-warning"> </div> <p className="m-0 alert-body" >{error}</p> </div>
+        }
       </div>
     );
   }

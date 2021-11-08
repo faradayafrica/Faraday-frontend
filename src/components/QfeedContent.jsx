@@ -12,7 +12,7 @@ import QuestionPage from './QuestionPage';
 import Loader from './styledComponents/loader';
 
 const apiEndpoint = 'http://localhost:3002/v1/qfeed';
-// const apiEndpoint = 'https://api.faraday.africa/qfeed/';
+// const apiEndpoint = 'https://api.faraday.africa/v1/qfeed/';
 class Qfeed extends Component {
   state = {
     questions: [],

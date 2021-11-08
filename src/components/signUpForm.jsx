@@ -70,7 +70,12 @@ class SignUpForm extends Form {
     // call the backend
     try{
       console.log('signup'); 
-      await userService.register(this.state.data);
+      const {data} = await userService.register(this.state.data);
+      const jwt = data.access;
+      console.log(jwt)
+
+      localStorage.setItem('token', jwt);
+      this.props.history.push('/qfeed');
     }
     catch (ex) {
       if (ex.response && ex.response.status === 400) {
@@ -78,7 +83,7 @@ class SignUpForm extends Form {
         
         
         const errors = {...this.state.errors};
-        errors.username = ex.response.data;
+        errors.username = "Username or email already exist in our database";
         this.setState({ errors })
       }
     }
