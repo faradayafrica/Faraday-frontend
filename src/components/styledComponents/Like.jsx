@@ -2,21 +2,36 @@ import React, { Component } from 'react';
 import "../../animation.scss"
 
 class Like extends Component {
+//   animateButton = (e) => {
 
+//    e.preventDefault();
+//    //reset animation
+//    e.target.classList.remove('animate');
+   
+//    e.target.classList.add('animate');
+//    setTimeout(function(){
+//      e.target.classList.remove('animate');
+//    },700);
+//  };
 
   render() {
     const { voteCount, isLiked, isDisliked, id } = this.props.question;
     // console.log(this.props.question);
 
- 
+    
+    // var bubblyButtons = document.getElementsByClassName("bubbly-button");
+    
+    // for (var i = 0; i < bubblyButtons.length; i++) {
+    //   bubblyButtons[i].addEventListener('click', this.animateButton, false);
+    // }
 
     return (
-      <div className='like'>
+      <div className='like bubbly-button'>
         <div
           data-toggle='tooltip'
           title='like'
           onClick={() => this.props.onLike(id)}
-          className="like-icon bubbly-button"
+          className="like-icon"
         >
           {isLiked ? (
             <svg
@@ -51,7 +66,7 @@ class Like extends Component {
           data-toggle='tooltip'
           title='dislike'
           onClick={() => this.props.onDislike(id)}
-          className="like-icon bubbly-button"
+          className="like-icon "
         >
           {isDisliked ? (
             <svg

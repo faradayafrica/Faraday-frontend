@@ -2,6 +2,7 @@ import React from 'react';
 import Joi from 'joi-browser';
 import Form from './form';
 import faraday from '../images/logo.svg';
+import {Link} from "react-router-dom"
 import * as authService from '../services/authService';
 
 class LoginForm extends Form {
@@ -31,6 +32,7 @@ class LoginForm extends Form {
             {this.renderButton('Login')}
           </form>
         </div>
+        {this.renderRedirectBtn("Sign up", "signup", "Don't have an account?")}
       </div>
     );
   }

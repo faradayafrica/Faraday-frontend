@@ -865,7 +865,7 @@ input:focus {
 LOGIN
 ***************************************************/
 .login-page {
-  position: fixed;
+  position: absolute;
   min-height: 100%;
   min-width: 100%;
   left: 0;
@@ -877,7 +877,7 @@ LOGIN
 }
 
 .form-container {
-  margin-top: 6rem;
+  margin-top: 8rem;
   padding: 1rem;
   margin-left: auto;
   margin-right: auto;
@@ -972,30 +972,26 @@ LOGIN
   font-size: 12px !important;
 }
 
+.link-brand {
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  color: var(--brand) !important;
+}
+
+.link-grey {
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  color: var(--text2-black) !important;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+.faraday-terms {
+  color: var(--text2-black) !important;
+  margin: 0;
+}
+
 @media screen and (max-width: 567px) {
-  .login-page {
-    position: fixed;
-    height: 100%;
-    min-width: 100%;
-    left: 0;
-    top: 0;
-    z-index: 1000;
-
-    background-color: var(--white) !important;
-  }
-
-  .form-container {
-    margin-top: 5rem !important;
-
-    border-radius: 0;
-    border: none;
-    border-top: 0.5px solid var(--outline);
-    background-color: var(--white) !important;
-    width: 100%;
-    text-align: center;
-
-    box-shadow: none !important;
-    overflow-y: initial;
-    scroll-margin-left: initial;
-  }
 }

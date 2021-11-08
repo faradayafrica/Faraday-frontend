@@ -61,7 +61,10 @@ class SignUpForm extends Form {
 
             {this.renderButton('Sign up')}
           </form>
+
+          <p className="faraday-terms mt-2">By clicking the sign up button, you agree to our <span className="link-grey icon-container-secondary ">Terms and Condition</span> and <span className="link-grey icon-container-secondary ">Privacy Policy</span></p>
         </div>
+        {this.renderRedirectBtn("Login", "login", "Already have an account?")}
       </div>
     );
   }
