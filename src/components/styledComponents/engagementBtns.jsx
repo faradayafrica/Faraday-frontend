@@ -16,7 +16,7 @@ class EngagementBtns extends Component {
           style={{ justifyContent: 'space-between' }}
         >
           <div
-            className='icon-container p-2'
+            className='icon-container p-2 '
             onClick={() => this.props.onAnswer(id)}
           >
             {isAnswered ? (
@@ -63,7 +63,7 @@ class EngagementBtns extends Component {
             ) : null}
           </div>
           <div
-            className='icon-container p-2'
+            className='icon-container p-2 bubbly-button'
             onClick={() => this.props.onEcho(id)}
           >
             {isEchoed ? (
@@ -127,7 +127,7 @@ class EngagementBtns extends Component {
             ) : null}
           </div>
           <div
-            className='icon-container p-2'
+            className='icon-container p-2 bubbly-button'
             onClick={() => this.props.onBookmark(id)}
           >
             {isBookmarked ? (

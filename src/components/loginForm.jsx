@@ -2,6 +2,8 @@ import React from 'react';
 import Joi from 'joi-browser';
 import Form from './form';
 import faraday from '../images/logo.svg';
+import {Link} from "react-router-dom"
+import * as authService from '../services/authService';
 
 class LoginForm extends Form {
   state = {
@@ -30,13 +32,34 @@ class LoginForm extends Form {
             {this.renderButton('Login')}
           </form>
         </div>
+        {this.renderRedirectBtn("Sign up", "signup", "Don't have an account?")}
       </div>
     );
   }
 
-  doSubmit = () => {
+  doSubmit = async () => {
     // call the backend
-    console.log('login');
+    try {
+
+      console.log('login');
+      const {data} = await authService.login(this.state.data);
+      const jwt = data.access;
+      console.log(jwt)
+
+      localStorage.setItem('token', jwt);
+      this.props.history.push('/qfeed');
+    }
+    catch (ex) {
+      if(ex.response && ex.response.status === 400) {
+        const errors = {...this.state.errors};
+        errors.username = "Username or password is incorrect";
+        this.setState({ errors });
+      } else {
+        const errors = {...this.state.errors};
+        errors.username = "Username or password is incorrect";
+        this.setState({ errors });
+      }
+    }
   };
 }
 

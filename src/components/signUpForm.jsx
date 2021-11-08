@@ -61,7 +61,10 @@ class SignUpForm extends Form {
 
             {this.renderButton('Sign up')}
           </form>
+
+          <p className="faraday-terms mt-2">By clicking the sign up button, you agree to our <span className="link-grey icon-container-secondary ">Terms and Condition</span> and <span className="link-grey icon-container-secondary ">Privacy Policy</span></p>
         </div>
+        {this.renderRedirectBtn("Login", "login", "Already have an account?")}
       </div>
     );
   }
@@ -70,12 +73,20 @@ class SignUpForm extends Form {
     // call the backend
     try{
       console.log('signup'); 
-      await userService.register(this.state.data);
+      const {data} = await userService.register(this.state.data);
+      const jwt = data.access;
+      console.log(jwt)
+
+      localStorage.setItem('token', jwt);
+      this.props.history.push('/qfeed');
     }
     catch (ex) {
       if (ex.response && ex.response.status === 400) {
+        
+        
+        
         const errors = {...this.state.errors};
-        errors.username = ex.response.data;
+        errors.username = "Username or email already exist in our database";
         this.setState({ errors })
       }
     }

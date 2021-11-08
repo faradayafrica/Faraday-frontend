@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Joi from 'joi-browser';
+import {Link} from "react-router-dom"
 import Input from './styledComponents/input';
+import "../animation.scss"
 
 class Form extends Component {
   state = {
@@ -51,11 +53,25 @@ class Form extends Component {
     return (
       <button
         disabled={this.validate()}
-        className='btn btn-green btn-login my-2'
+        className='btn btn-green btn-login my-2 bubbly-button'
       >
         {label}
       </button>
     );
+  }
+
+  renderRedirectBtn(label, link, msg) {
+    return (
+      <div className="mx-auto text-center mt-3" style={{maxWidth: "425px", alignText: "center"}}>
+          <p>{msg}
+            <Link
+            to={`/${link}`}
+            style={{ textDecoration: 'none' }}
+          >
+            {" "}<span className="icon-container-secondary link-brand bubbly-button" style={{}}>{label} here</span>
+          </Link> </p>
+        </div>
+    )
   }
 
   renderInput(name, placeholder, type = 'text') {

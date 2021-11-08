@@ -51,7 +51,7 @@ class ButtonBar extends Component {
               </svg>
             )}
           </div>
-          <div className='icon-container' onClick={() => this.props.onEcho(id)}>
+          <div className='icon-container bubbly-button' onClick={() => this.props.onEcho(id)}>
             {isEchoed ? (
               <svg
                 width='20'
@@ -107,7 +107,7 @@ class ButtonBar extends Component {
             )}
           </div>
           <div
-            className='icon-container'
+            className='icon-container bubbly-button'
             onClick={() => this.props.onBookmark(id)}
           >
             {isBookmarked ? (

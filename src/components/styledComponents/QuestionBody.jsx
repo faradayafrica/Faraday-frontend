@@ -12,18 +12,17 @@ class QuestionBody extends Component {
           onLike={this.props.onLike}
           question={this.props.question}
         />
-        <Link
-          to={`/Qfeed/${this.props.question.id}`}
-          style={{ textDecoration: 'none' }}
-        >
-          <p className='question-content col ml-2'>{body}</p>
-
-          <p className='question-tag col ml-2'>{tags.map(tag => (
-            <span key={tag}>#{tag} </span>
-          ))}</p>
-
-
-        </Link>
+        <div>
+          <Link
+            to={`/Qfeed/${this.props.question.id}`}
+            style={{ textDecoration: 'none' }}
+          >
+            <p className='question-content col ml-2'>{body}</p>
+          </Link>
+            <p className='question-tag col'>{tags.map(tag => (
+              <span key={tag} className="icon-container-secondary" style={{padding: "4px 6px"}}>#{tag} </span>
+            ))}</p>
+        </div>
       </div>
     );
   }

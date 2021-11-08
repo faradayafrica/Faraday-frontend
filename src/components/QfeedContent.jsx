@@ -12,7 +12,7 @@ import QuestionPage from './QuestionPage';
 import Loader from './styledComponents/loader';
 
 const apiEndpoint = 'http://localhost:3002/v1/qfeed';
-// const apiEndpoint = 'https://api.faraday.africa/qfeed/';
+// const apiEndpoint = 'https://api.faraday.africa/v1/qfeed/';
 class Qfeed extends Component {
   state = {
     questions: [],
@@ -37,6 +37,7 @@ class Qfeed extends Component {
                 onEcho={this.handleEcho}
                 onAnswer={this.handleAnswer}
                 onBookmark={this.handleBookmark}
+                onRefresh={this.refreshPage}
                 {...props}
               />
             )}
@@ -57,8 +58,12 @@ class Qfeed extends Component {
     );
   }
 
-  refreshPage = () => {
-    window.location.reload(false);
+  refreshPage = async() => {
+    // window.location.reload(false);
+
+    const { data: questions } = await axios.get(apiEndpoint);
+
+    this.setState({ questions });
   };
 
   // Methods for the like component
@@ -161,7 +166,7 @@ class Qfeed extends Component {
   // This method renders the questions
   renderQuestion = () => {
     if (this.state.questions.length === 0) {
-      return <Loader />;
+      return <Loader onRefresh={this.refreshPage}/>;
     } else {
       return (
         <React.Fragment>
