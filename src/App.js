@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import ProtectedRoute from './components/common/protectedRoute.jsx';
 
 import Qfeed from './components/Qfeed.jsx';
 import Courses from './components/Courses';
@@ -29,9 +30,11 @@ class App extends React.Component {
   componentDidMount() {
     const user = auth.getCurrentUser();
     this.setState({ user })
+    console.log(this.state.user)
   }
 
   render() {
+    const {user} = this.state;
     return (
       <BrowserRouter>
         <Body className='row'>
@@ -41,23 +44,22 @@ class App extends React.Component {
             <Route path='/signup' component={SignUpForm} />
             <Route path='/login' component={LoginForm} />
             <Route path='/logout' component={Logout} />
-            <Route path='/saved-courses' component={SavedCourses} />
-            <Route path='/setting' component={Setting} />
-            <Route path='/sponsors' component={Sponsors} />
-            <Route path='/bookmarks' component={Bookmarks} />
-            <Route path='/explore' component={Explore} />
-            <Route path='/courses' component={Courses} />
-            <Route path='/profile' component={Profile} />
-            {/* <Route path='/qfeed' component={Qfeed} user={this.state.user}/> */}
-            <Route
+            <ProtectedRoute path='/saved-courses' component={SavedCourses} />
+            <ProtectedRoute path='/setting' component={Setting} />
+            <ProtectedRoute path='/sponsors' component={Sponsors} />
+            <ProtectedRoute path='/bookmarks' component={Bookmarks} />
+            <ProtectedRoute path='/explore' component={Explore} />
+            <ProtectedRoute path='/courses' component={Courses} />
+            <ProtectedRoute path='/profile' component={Profile}/>
+            <ProtectedRoute
             path='/qfeed'
-            render={() => <Qfeed user={this.state.user}/>}
+            render={(props) => <Qfeed user={this.state.user} {...props}/>}
             />
-            <Route path='/connect' component={Connect} />
-            <Route path='/notification' component={Notification} />
-            <Route path='/post' component={Post} />
+            <ProtectedRoute path='/connect' component={Connect} />
+            <ProtectedRoute path='/notification' component={Notification} />
+            <ProtectedRoute path='/post' component={Post} />
             <Route path='/not-found' component={NotFound} />
-            <Route path='/' exact component={Courses} />
+            <ProtectedRoute path='/' exact component={Courses} />
             <Redirect push to='not-found' />
           </Switch>
         </Body>
