@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
-import jwtDecode from "jwt-decode"
-import Question from './styledComponents/Question';
-import Questions from './Questions';
-
 import { Route, Switch } from 'react-router-dom';
-import axios from 'axios';
-
-// import { Route } from 'react-router-dom';
-
-// import questionData from '../questions.json';
+import Questions from './Questions';
+import Question from './styledComponents/Question';
 import QuestionPage from './QuestionPage';
 import Loader from './styledComponents/loader';
+import http from '../services/httpService';
+
 
 const apiEndpoint = 'http://localhost:3002/v1/qfeed';
 // const apiEndpoint = 'https://api.faraday.africa/v1/qfeed/';
@@ -22,8 +17,7 @@ class Qfeed extends Component {
   async componentDidMount() {
     //this fetch data from the back end
     try{
-
-      const { data: questions } = await axios.get(apiEndpoint);
+      const { data: questions } = await http.get(apiEndpoint);
       this.setState({ questions });
     } 
     catch (ex) {
@@ -71,7 +65,7 @@ class Qfeed extends Component {
     // window.location.reload(false);
     try{
 
-      const { data: questions } = await axios.get(apiEndpoint);
+      const { data: questions } = await http.get(apiEndpoint);
   
       this.setState({ questions });
     } 
@@ -169,7 +163,7 @@ class Qfeed extends Component {
       body: 'Just here coding',
     };
 
-    const { data: post } = await axios.post(apiEndpoint, obj);
+    const { data: post } = await http.post(apiEndpoint, obj);
     const questions = [post, ...this.state.questions];
     this.setState({ questions });
     console.log('post', post);
