@@ -2,8 +2,7 @@ import React from 'react';
 import Joi from 'joi-browser';
 import Form from './form';
 import faraday from '../images/logo.svg';
-import {Link} from "react-router-dom"
-import * as authService from '../services/authService';
+import auth from '../services/authService';
 
 class LoginForm extends Form {
   state = {
@@ -40,13 +39,9 @@ class LoginForm extends Form {
   doSubmit = async () => {
     // call the backend
     try {
-
-      // console.log('login');
-      const {data} = await authService.login(this.state.data);
-      const jwt = data.access;
-      // console.log(jwt)
-
-      localStorage.setItem('token', jwt);
+      const {data} = this.state;
+      await auth.login(data);
+      
       window.location = "/qfeed";
     }
     catch (ex) {

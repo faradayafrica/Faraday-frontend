@@ -72,13 +72,9 @@ class SignUpForm extends Form {
   doSubmit = async () => {
     // call the backend
     try{
-      // console.log('signup'); 
-      const {data} = await userService.register(this.state.data);
-      const jwt = data.access;
-      // console.log(jwt)
+      const {data} = this.state;
+      await userService.register(data);
 
-      localStorage.setItem('token', jwt);
-      // this.props.history.push('/qfeed');
       window.location = "/qfeed";
     }
     catch (ex) {

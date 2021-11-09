@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import Qfeed from './components/Qfeed.jsx';
-import jwtDecode from "jwt-decode"
 import Courses from './components/Courses';
 import Connect from './components/Connect';
 import Notification from './components/Notification';
@@ -21,20 +20,15 @@ import MobileSidenav from './components/other pages/mobileSidenav';
 import LoginForm from './components/loginForm';
 import SignUpForm from './components/signUpForm';
 import Logout from './components/styledComponents/logout.jsx';
+import auth from './services/authService.js';
 import './App.css';
 
 class App extends React.Component {
   state ={};
 
   componentDidMount() {
-    try {
-      const jwt = localStorage.getItem('token')
-      const user = jwtDecode(jwt);
-      this.setState({ user })
-    }
-    catch (ex) {
-
-    }
+    const user = auth.getCurrentUser();
+    this.setState({ user })
   }
 
   render() {
@@ -57,13 +51,8 @@ class App extends React.Component {
             {/* <Route path='/qfeed' component={Qfeed} user={this.state.user}/> */}
             <Route
             path='/qfeed'
-            render={props => (
-              <Qfeed
-                user={this.state.user}
-                {...props}
-              />
-            )}
-          />
+            render={() => <Qfeed user={this.state.user}/>}
+            />
             <Route path='/connect' component={Connect} />
             <Route path='/notification' component={Notification} />
             <Route path='/post' component={Post} />
