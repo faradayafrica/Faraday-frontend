@@ -66,7 +66,7 @@ class PostComponent extends Component {
           </button>
         </div>
      
-        {this.props.user && <p>Hello {this.props.user.name}</p>}
+        {/* {this.props.user && <p>Hello {this.props.user.name}</p>} */}
       </div>
     );
   }
