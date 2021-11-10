@@ -375,6 +375,7 @@ QFEED STYLING
 SIDENAV STYLING 
 ***************************************************/
 .sidenav-container {
+  position: relative;
   display: block;
   border-right: solid 0.5px var(--outline) !important;
 
@@ -582,6 +583,76 @@ SIDENAV STYLING
 
 .bottom-nav {
   display: none;
+}
+
+.bottom-nav .navlink:hover {
+  background-color: var(--white);
+}
+
+.profile-img-link {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  border-radius: 2rem;
+}
+
+.profile-wall {
+  height: 200px;
+  background-color: #96deda;
+  /* background-image: linear-gradient(to bottom right, #50c9c3, #96deda); */
+  /* background-image: linear-gradient(to bottom right, #6fd6ff, #bff098); */
+  background-image: linear-gradient(to bottom right, #41c4fd, #c2e9fb);
+  width: 100%;
+  margin-bottom: 8rem;
+}
+
+.profile-wall > img {
+  height: 10rem;
+  width: 10rem;
+  object-fit: cover;
+  background: var(--text2-black);
+
+  position: relative;
+  top: 6rem;
+
+  border-radius: 5rem;
+}
+
+.solution-info {
+  margin-top: 5rem;
+  /* background-color: var(--background); */
+  width: 100%;
+
+  display: flex;
+  justify-content: space-around;
+}
+
+.solution-info .info-item {
+  display: flex;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center;
+}
+
+.solution-info p {
+  margin: 0;
+}
+
+.solution-info .num {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.solution-info .title {
+  font-size: 16px;
+
+  padding: 4px 6px;
+  border-radius: 6px !important;
+  cursor: pointer;
+}
+
+.personal-info p {
+  margin: 0;
 }
 
 @media only screen and (max-width: 768px) {

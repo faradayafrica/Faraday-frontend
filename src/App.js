@@ -6,7 +6,7 @@ import Qfeed from './components/Qfeed.jsx';
 import Courses from './components/Courses';
 import Connect from './components/Connect';
 import Notification from './components/Notification';
-import Profile from './components/other pages/profile';
+// import Profile from './components/other pages/profile';
 
 import SideNav from './components/SideNav';
 import Body from './components/styledComponents/Body';
@@ -29,6 +29,7 @@ class App extends React.Component {
 
   componentDidMount() {
     const user = auth.getCurrentUser();
+    console.log(user)
     this.setState({ user })
     console.log(this.state.user)
   }
@@ -50,7 +51,7 @@ class App extends React.Component {
             <ProtectedRoute path='/bookmarks' component={Bookmarks} />
             <ProtectedRoute path='/explore' component={Explore} />
             <ProtectedRoute path='/courses' component={Courses} />
-            <ProtectedRoute path='/profile' component={Profile}/>
+            {/* <ProtectedRoute path='/profile' component={Profile}/> */}
             <ProtectedRoute
             path='/qfeed'
             render={(props) => <Qfeed user={this.state.user} {...props}/>}

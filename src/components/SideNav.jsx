@@ -78,7 +78,8 @@ class SideNav extends Component {
   render() {
     return (
       <div className='sidenav-container  px-2  order-md-first active'>
-        <div className='position-fixed desktop-sidenav-container'>
+        
+        <div className='position-fixed  '>
           <nav className='row my-3 ml-1 menu-nav'>
             <img className=' navlink-brand ' src={faraday} alt='faraday' />
             <div
@@ -102,7 +103,6 @@ class SideNav extends Component {
               </svg>
             </div>
           </nav>
-          {/* {this.props.user && <p>Hello {this.props.user.name}</p>} */}
           {this.state.links.map(link => (
             <NavLink
               key={link.item}
@@ -111,6 +111,7 @@ class SideNav extends Component {
               handleLink={this.handleLink}
             />
           ))}
+
 
           {/* More btn */}
           <NavDropdown name='More' user={this.props.user}/>
@@ -134,8 +135,11 @@ class SideNav extends Component {
             </button>
           </Link>
 
-          {/* </div> */}
+         
         </div>
+
+      
+        
       </div>
     );
   }

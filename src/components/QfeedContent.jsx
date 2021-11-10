@@ -4,6 +4,7 @@ import Questions from './Questions';
 import Question from './styledComponents/Question';
 import QuestionPage from './QuestionPage';
 import Loader from './styledComponents/loader';
+import Profile from "./other pages/profile"
 import http from '../services/httpService';
 
 
@@ -32,6 +33,16 @@ class Qfeed extends Component {
       <div className='qfeed-container col '>
         <Switch>
           <Route
+            path='/Qfeed/profile'
+            render={props => (
+              <Profile
+                user={this.props.user}
+                {...props}
+              />
+            )}
+          />
+
+          <Route
             path='/Qfeed/:id'
             render={props => (
               <QuestionPage
@@ -44,6 +55,7 @@ class Qfeed extends Component {
               />
             )}
           />
+
 
           <Route
             path='/'
