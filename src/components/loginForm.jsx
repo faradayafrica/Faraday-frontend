@@ -48,7 +48,7 @@ class LoginForm extends Form {
       } else {
         auth.resendEmailConfirmation();
         //redirect to "/confirm-email without doing a full page reload"
-        window.location = '/confirm-email';
+        this.props.history.push('/confirm-email');
       }
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {

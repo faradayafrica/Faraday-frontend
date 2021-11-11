@@ -55,15 +55,17 @@ class ConfirmEmail extends Form {
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         const errors = { ...this.state.errors };
-        errors.username = 'Internal error, please try again';
+        errors.confirmationCode = 'Internal error, please try again';
         this.setState({ errors });
       } else if (ex.response && ex.response.status >= 400) {
         const errors = { ...this.state.errors };
-        errors.username = 'Username or password is incorrect';
+        errors.confirmationCode =
+          'Please make sure the code provided above is correct';
         this.setState({ errors });
       } else {
         const errors = { ...this.state.errors };
-        errors.username = 'Check your internet connection and try again';
+        errors.confirmationCode =
+          'Check your internet connection and try again';
         this.setState({ errors });
       }
     }
