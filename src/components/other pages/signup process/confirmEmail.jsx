@@ -32,6 +32,15 @@ class ConfirmEmail extends Form {
             {this.renderButton('Confirm my email')}
           </form>
         </div>
+        <p className='mx-auto text-center mt-3'>
+          Didn't get a code,
+          <span
+            onClick={async () => await auth.resendEmailConfirmation()}
+            className='icon-container-secondary link-brand bubbly-button'
+          >
+            resend confirmation code
+          </span>
+        </p>
       </div>
     );
   }
