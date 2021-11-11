@@ -55,7 +55,7 @@ class ConfirmEmail extends Form {
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         const errors = { ...this.state.errors };
-        errors.confirmationCode = 'Internal error, please try again';
+        errors.confirmationCode = 'Something went wrong';
         this.setState({ errors });
       } else if (ex.response && ex.response.status >= 400) {
         const errors = { ...this.state.errors };
