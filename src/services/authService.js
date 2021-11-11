@@ -21,7 +21,7 @@ export async function login({ username, password }) {
 export async function confirmEmail({ confirmationCode }) {
   const user = getCurrentUser();
 
-  const url = apiUrl + '/user/verifyotp/';
+  const url = apiUrl + '/users/verifyotp/';
   await http.post(url, {
     email: user.email,
     otp: confirmationCode,
@@ -31,7 +31,7 @@ export async function confirmEmail({ confirmationCode }) {
 export async function resendEmailConfirmation() {
   const user = getCurrentUser();
 
-  const url = apiUrl + '/user/resendotp/';
+  const url = apiUrl + '/users/resendotp/';
   await http.post(url, {
     email: user.email,
   });
