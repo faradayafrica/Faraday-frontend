@@ -603,8 +603,8 @@ SIDENAV STYLING
   height: 150px;
   /* background-image: linear-gradient(to bottom right, #50c9c3, #96deda); */
   /* background-image: linear-gradient(to bottom right, #6fd6ff, #bff098); */
-  /* background-image: linear-gradient(to bottom right, #41c4fd, #c2e9fb); */
-  background-color: var(--outline);
+  background-image: linear-gradient(to bottom right, #41c4fd, #c2e9fb);
+  /* background-color: var(--outline); */
   width: 100%;
 }
 
