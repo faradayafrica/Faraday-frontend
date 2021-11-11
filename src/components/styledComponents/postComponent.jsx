@@ -16,7 +16,6 @@ class PostComponent extends Component {
     };
 
     // const {user} = this.props
-   
 
     return (
       <div className='form-group post-form'>
@@ -65,8 +64,8 @@ class PostComponent extends Component {
             Post
           </button>
         </div>
-     
-        {this.props.user && <p>Hello {this.props.user.first_name} {this.props.user.last_name}</p>}
+
+        {/* {this.props.user && <p>Hello {this.props.user.first_name} {this.props.user.last_name}</p>} */}
       </div>
     );
   }
