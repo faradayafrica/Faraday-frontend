@@ -45,11 +45,14 @@ class LoginForm extends Form {
       window.location = "/qfeed";
     }
     catch (ex) {
-      if(ex.response && ex.response.status >= 400) {
+      if(ex.response && ex.response.status === 500) {
+        const errors = {...this.state.errors};
+        errors.username = "Internal error, please try again";
+        this.setState({ errors });
+      } else if(ex.response && ex.response.status >= 400) {
         const errors = {...this.state.errors};
         errors.username = "Username or password is incorrect";
         this.setState({ errors });
-      
       } else {
         const errors = {...this.state.errors};
         errors.username = "Check your internet connection and try again";
