@@ -24,12 +24,13 @@ class SignUpForm extends Form {
     username: Joi.string().min(3).max(30).required().label('Username'),
     email: Joi.string().email().required().label('Email'),
     password: Joi.string().min(8).required().label('Password'),
-    confirmPassword: Joi.string().required()
-    .valid(Joi.ref('password'))
-    .label('Please make sure this')
-    .options({
-      language: { any: { allowOnly: 'matches with password' } },
-    }),
+    confirmPassword: Joi.string()
+      .required()
+      .valid(Joi.ref('password'))
+      .label('Please make sure this')
+      .options({
+        language: { any: { allowOnly: 'matches with password' } },
+      }),
   };
 
   render() {
@@ -51,40 +52,41 @@ class SignUpForm extends Form {
             {this.renderInput('email', 'Email')}
 
             {/* <div className='horinzontal-align label-group mb-3'> */}
-              {this.renderInput('password', 'Password', 'password')}
-              {this.renderInput(
-                'confirmPassword',
-                'Confirm',
-                'password'
-              )}
+            {this.renderInput('password', 'Password', 'password')}
+            {this.renderInput('confirmPassword', 'Confirm', 'password')}
             {/* </div> */}
 
             {this.renderButton('Sign up')}
           </form>
 
-          <p className="faraday-terms mt-4">By clicking the sign up button, you agree to our <span className="link-grey icon-container-secondary ">Terms and Condition</span> and <span className="link-grey icon-container-secondary ">Privacy Policy</span></p>
+          <p className='faraday-terms mt-4'>
+            By clicking the sign up button, you agree to our{' '}
+            <span className='link-grey icon-container-secondary '>
+              Terms and Condition
+            </span>{' '}
+            and{' '}
+            <span className='link-grey icon-container-secondary '>
+              Privacy Policy
+            </span>
+          </p>
         </div>
-        {this.renderRedirectBtn("Login", "login", "Already have an account?")}
+        {this.renderRedirectBtn('Login', 'login', 'Already have an account?')}
       </div>
     );
   }
 
   doSubmit = async () => {
     // call the backend
-    try{
-      const {data} = this.state;
+    try {
+      const { data } = this.state;
       await userService.register(data);
 
-      window.location = "/qfeed";
-    }
-    catch (ex) {
+      window.location = '/confirm-email';
+    } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        
-        
-        
-        const errors = {...this.state.errors};
-        errors.username = "Username or email already exist in our database";
-        this.setState({ errors })
+        const errors = { ...this.state.errors };
+        errors.username = 'Username or email already exist in our database';
+        this.setState({ errors });
       }
     }
   };

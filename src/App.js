@@ -20,30 +20,32 @@ import SavedCourses from './components/other pages/saved-courses';
 import MobileSidenav from './components/other pages/mobileSidenav';
 import LoginForm from './components/loginForm';
 import SignUpForm from './components/signUpForm';
+import ConfirmEmail from './components/other pages/signup process/confirmEmail.jsx';
 import Logout from './components/styledComponents/logout.jsx';
 import auth from './services/authService.js';
 import './App.css';
 
 class App extends React.Component {
-  state ={};
+  state = {};
 
   componentDidMount() {
     const user = auth.getCurrentUser();
-    console.log(user)
-    this.setState({ user })
-    console.log(this.state.user)
+    // console.log(user);
+    this.setState({ user });
+    // console.log(this.state.user);
   }
 
   render() {
-    const {user} = this.state;
+    const { user } = this.state;
     return (
       <BrowserRouter>
         <Body className='row'>
-          <SideNav  user={this.state.user}/>
-          <MobileSidenav user={this.state.user}/>
+          <SideNav user={this.state.user} />
+          <MobileSidenav user={this.state.user} />
           <Switch>
             <Route path='/signup' component={SignUpForm} />
             <Route path='/login' component={LoginForm} />
+            <Route path='/confirm-email' component={ConfirmEmail} />
             <Route path='/logout' component={Logout} />
             <ProtectedRoute path='/saved-courses' component={SavedCourses} />
             <ProtectedRoute path='/setting' component={Setting} />
@@ -53,8 +55,8 @@ class App extends React.Component {
             <ProtectedRoute path='/courses' component={Courses} />
             {/* <ProtectedRoute path='/profile' component={Profile}/> */}
             <ProtectedRoute
-            path='/qfeed'
-            render={(props) => <Qfeed user={this.state.user} {...props}/>}
+              path='/qfeed'
+              render={props => <Qfeed user={this.state.user} {...props} />}
             />
             <ProtectedRoute path='/connect' component={Connect} />
             <ProtectedRoute path='/notification' component={Notification} />
