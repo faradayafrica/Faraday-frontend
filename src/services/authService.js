@@ -20,16 +20,21 @@ export async function login({ username, password }) {
 
 export async function confirmEmail({ confirmationCode }) {
   const user = getCurrentUser();
-  console.log(confirmationCode, user.username);
 
-  const url = apiUrl + '/user/verifyotp/';
+  const url = apiUrl + '/users/verifyotp/';
   await http.post(url, {
-    confirmationCode,
-    email: user.username,
+    email: user.email,
+    otp: confirmationCode,
   });
-  // const jwt = data.access;
+}
 
-  // localStorage.setItem(tokenKey, jwt);
+export async function resendEmailConfirmation() {
+  const user = getCurrentUser();
+
+  const url = apiUrl + '/users/resendotp/';
+  await http.post(url, {
+    email: user.email,
+  });
 }
 
 export function logout() {
@@ -60,4 +65,5 @@ export default {
   getJwt,
   tokenKey,
   confirmEmail,
+  resendEmailConfirmation,
 };

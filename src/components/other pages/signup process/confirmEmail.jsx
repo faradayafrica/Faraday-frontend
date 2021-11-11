@@ -11,7 +11,7 @@ class ConfirmEmail extends Form {
   };
 
   schema = {
-    confirmationCode: Joi.string().required().label('The confirmation code'),
+    confirmationCode: Joi.string().max(6).required().label('Code'),
   };
 
   render() {
@@ -21,9 +21,9 @@ class ConfirmEmail extends Form {
           <div className='logo-container'>
             <img className='logo' src={faraday} alt='faraday' />
           </div>
-          <h3 className='form-title'>Confirm Email</h3>
-          <p className='mx-5'>
-            We sent you a code, enter it below to confirm your email
+          <h3 className='form-title'>We sent you a code</h3>
+          <p className='mx-3 extra-info'>
+            enter it below to confirm your email.
           </p>
 
           <form onSubmit={this.handleSubmit}>
@@ -32,6 +32,15 @@ class ConfirmEmail extends Form {
             {this.renderButton('Confirm my email')}
           </form>
         </div>
+        <p className='mx-auto text-center mt-3'>
+          Didn't get a code,
+          <span
+            onClick={async () => await auth.resendEmailConfirmation()}
+            className='icon-container-secondary link-brand bubbly-button'
+          >
+            resend code.
+          </span>
+        </p>
       </div>
     );
   }
@@ -46,15 +55,17 @@ class ConfirmEmail extends Form {
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         const errors = { ...this.state.errors };
-        errors.username = 'Internal error, please try again';
+        errors.confirmationCode = 'Internal error, please try again';
         this.setState({ errors });
       } else if (ex.response && ex.response.status >= 400) {
         const errors = { ...this.state.errors };
-        errors.username = 'Username or password is incorrect';
+        errors.confirmationCode =
+          'Please make sure the code provided above is correct';
         this.setState({ errors });
       } else {
         const errors = { ...this.state.errors };
-        errors.username = 'Check your internet connection and try again';
+        errors.confirmationCode =
+          'Check your internet connection and try again';
         this.setState({ errors });
       }
     }

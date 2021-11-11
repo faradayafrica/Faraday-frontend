@@ -2,6 +2,7 @@ import React from 'react';
 import Form from './form';
 import faraday from '../images/logo.svg';
 import Joi from 'joi-browser';
+import { Link } from 'react-router-dom';
 
 import * as userService from '../services/userService';
 
@@ -40,7 +41,7 @@ class SignUpForm extends Form {
           <div className='logo-container'>
             <img className='logo' src={faraday} alt='faraday' />
           </div>
-          <h3 className='form-title'>Signup</h3>
+          <h3 className='form-title'>Create your account</h3>
 
           <form onSubmit={this.handleSubmit}>
             <div className='horinzontal-align label-group'>
@@ -61,13 +62,19 @@ class SignUpForm extends Form {
 
           <p className='faraday-terms mt-4'>
             By clicking the sign up button, you agree to our{' '}
-            <span className='link-grey icon-container-secondary '>
+            <Link
+              to='/terms-and-condition'
+              className='link-grey icon-container-secondary '
+            >
               Terms and Condition
-            </span>{' '}
+            </Link>{' '}
             and{' '}
-            <span className='link-grey icon-container-secondary '>
+            <Link
+              to='/privacy-policy'
+              className='link-grey icon-container-secondary '
+            >
               Privacy Policy
-            </span>
+            </Link>
           </p>
         </div>
         {this.renderRedirectBtn('Login', 'login', 'Already have an account?')}

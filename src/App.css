@@ -23,6 +23,8 @@
 
   --brand-highlight: #f2fcf3;
   --danger-highlight: #fcf6f2;
+
+  --shadow: #9ba5a01a;
 }
 
 html {
@@ -975,7 +977,7 @@ LOGIN
   z-index: 1000;
 
   padding: 1rem;
-  background-color: var(--white) !important;
+  background-color: var(--background) !important;
 }
 
 .form-container {
@@ -991,7 +993,7 @@ LOGIN
   max-width: 425px;
   text-align: center;
 
-  box-shadow: 6px 6px 0px #f7f9f8;
+  box-shadow: 6px 6px 0px var(--shadow);
 }
 
 .form-container > .logo-container {
@@ -1097,8 +1099,46 @@ LOGIN
   margin: 0;
 }
 
+.extra-info {
+  color: var(--text2-black);
+}
+
 @media screen and (max-width: 567px) {
   .form-container {
     margin-top: 4rem;
   }
+}
+
+/************************************
+ Terms and Condition
+************************************ */
+
+.terms-and-condition {
+  position: absolute;
+  min-height: 100%;
+  min-width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+
+  padding: 1rem;
+  background-color: var(--white) !important;
+}
+
+.page-header-wall {
+  background-color: var(--background);
+  color: var(--text2-black);
+
+  max-height: 25rem;
+  height: 70vh;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.terms-and-condition > .container-sm {
+  max-width: 820px;
+  color: var(--text2-black);
 }
