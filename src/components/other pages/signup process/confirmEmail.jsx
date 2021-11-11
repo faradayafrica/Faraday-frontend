@@ -11,7 +11,7 @@ class ConfirmEmail extends Form {
   };
 
   schema = {
-    confirmationCode: Joi.string().required().label('The confirmation code'),
+    confirmationCode: Joi.string().max(6).required().label('Code'),
   };
 
   render() {
@@ -21,9 +21,9 @@ class ConfirmEmail extends Form {
           <div className='logo-container'>
             <img className='logo' src={faraday} alt='faraday' />
           </div>
-          <h3 className='form-title'>Confirm Email</h3>
-          <p className='mx-5'>
-            We sent you a code, enter it below to confirm your email
+          <h3 className='form-title'>We sent you a code</h3>
+          <p className='mx-3 extra-info'>
+            enter it below to confirm your email.
           </p>
 
           <form onSubmit={this.handleSubmit}>
@@ -38,7 +38,7 @@ class ConfirmEmail extends Form {
             onClick={async () => await auth.resendEmailConfirmation()}
             className='icon-container-secondary link-brand bubbly-button'
           >
-            resend confirmation code
+            resend code.
           </span>
         </p>
       </div>

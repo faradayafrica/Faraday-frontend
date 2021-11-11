@@ -21,6 +21,8 @@ import MobileSidenav from './components/other pages/mobileSidenav';
 import LoginForm from './components/loginForm';
 import SignUpForm from './components/signUpForm';
 import ConfirmEmail from './components/other pages/signup process/confirmEmail.jsx';
+import TermsAndCondition from './components/other pages/termsAndCondition.jsx';
+import PrivacyPolicy from './components/other pages/privacyPolicy';
 import Logout from './components/styledComponents/logout.jsx';
 import auth from './services/authService.js';
 import './App.css';
@@ -44,8 +46,10 @@ class App extends React.Component {
           <MobileSidenav user={this.state.user} />
           <Switch>
             <Route path='/signup' component={SignUpForm} />
-            <Route path='/login' component={LoginForm} />
             <Route path='/confirm-email' component={ConfirmEmail} />
+            <Route path='/terms-and-condition' component={TermsAndCondition} />
+            <Route path='/privacy-policy' component={PrivacyPolicy} />
+            <Route path='/login' component={LoginForm} />
             <Route path='/logout' component={Logout} />
             <ProtectedRoute path='/saved-courses' component={SavedCourses} />
             <ProtectedRoute path='/setting' component={Setting} />
