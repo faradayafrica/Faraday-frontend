@@ -46,7 +46,7 @@ export function getCurrentUser() {
     const jwt = localStorage.getItem(tokenKey);
     return jwtDecode(jwt);
   } catch (ex) {
-    return null;
+    return { email_verified: null };
   }
 }
 
