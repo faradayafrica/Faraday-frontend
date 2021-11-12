@@ -92,7 +92,12 @@ class SignUpForm extends Form {
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
-        errors.username = 'Username or email already exist in our database';
+
+        if (ex.response.data.detail[0].indexOf('username') !== -1) {
+          errors.username = ex.response.data.detail[0];
+        } else {
+          errors.email = ex.response.data.detail[0];
+        }
         this.setState({ errors });
       }
     }
