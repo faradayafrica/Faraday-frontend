@@ -50,7 +50,6 @@ class ConfirmEmail extends Form {
     try {
       const { data } = this.state;
       await auth.confirmEmail(data);
-
       window.location = '/qfeed';
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
