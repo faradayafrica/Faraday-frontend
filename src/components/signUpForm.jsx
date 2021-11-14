@@ -60,15 +60,15 @@ class SignUpForm extends Form {
             {this.renderButton('Sign up')}
           </form>
 
-          <p className='faraday-terms mt-4'>
-            By clicking the sign up button, you agree to our{' '}
+          <p className='faraday-terms mt-2 text-sm'>
+            By clicking the sign up button, you agree to our
             <Link
               to='/terms-and-condition'
               className='link-grey icon-container-secondary '
             >
               Terms and Condition
-            </Link>{' '}
-            and{' '}
+            </Link>
+            and
             <Link
               to='/privacy-policy'
               className='link-grey icon-container-secondary '

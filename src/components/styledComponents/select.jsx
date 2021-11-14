@@ -1,18 +1,32 @@
-import React from "react";
+import React from 'react';
 
 const Select = ({ name, label, options, error, ...rest }) => {
   return (
-    <div className="form-group">
-      <label htmlFor={name}>{label}</label>
-      <select name={name} id={name} {...rest} className="form-control">
-        <option value="" />
+    <div className='form-group'>
+      <label className='sr-only' htmlFor={name}>
+        {label}
+      </label>
+      <select
+        name={name}
+        id={name}
+        {...rest}
+        className='form-control '
+        placeholder={name}
+      >
+        {/* <option value=' ' /> */}
+        <option value>{label}</option>
         {options.map(option => (
-          <option key={option._id} value={option._id}>
+          <option key={option.name} value={option.name}>
             {option.name}
           </option>
         ))}
       </select>
-      {error && <div className="alert alert-danger">{error}</div>}
+      {error && (
+        <div className='alert alert-warning my-1 '>
+          <div className='dialog-arrow alert-warning'> </div>{' '}
+          <p className='m-0 alert-body'>{error}</p>{' '}
+        </div>
+      )}
     </div>
   );
 };

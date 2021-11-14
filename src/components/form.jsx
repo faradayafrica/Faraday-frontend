@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import Joi from 'joi-browser';
-import {Link} from "react-router-dom"
+import { Link } from 'react-router-dom';
 import Input from './styledComponents/input';
-import "../animation.scss"
+import Select from './styledComponents/select';
+import '../animation.scss';
 
 class Form extends Component {
   state = {
     data: {},
     errors: {},
   };
+
+  selectedFaculty = '';
 
   validate = () => {
     const options = { abortEarly: false };
@@ -49,6 +52,23 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
+  handleSelectChange = ({ currentTarget: input }) => {
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(input);
+    if (errorMessage) errors[input.name] = errorMessage;
+    else delete errors[input.name];
+
+    const data = { ...this.state.data };
+    data[input.name] = input.value;
+
+    var select = document.getElementById('faculty');
+    var text = select.options[select.selectedIndex].text;
+    this.selectedFaculty = text;
+    // console.log(this.selectedFaculty);
+
+    this.setState({ data, errors });
+  };
+
   renderButton(label) {
     return (
       <button
@@ -62,16 +82,39 @@ class Form extends Component {
 
   renderRedirectBtn(label, link, msg) {
     return (
-      <div className="mx-auto text-center mt-3" style={{maxWidth: "425px", alignText: "center"}}>
-          <p>{msg}
-            <Link
-            to={`/${link}`}
-            style={{ textDecoration: 'none' }}
-          >
-            {" "}<span className="icon-container-secondary link-brand bubbly-button" style={{}}>{label} here</span>
-          </Link> </p>
-        </div>
-    )
+      <div
+        className='mx-auto text-center mt-3 text-md'
+        style={{ maxWidth: '425px', alignText: 'center' }}
+      >
+        <p>
+          {msg}
+          <Link to={`/${link}`} style={{ textDecoration: 'none' }}>
+            {' '}
+            <span
+              className='icon-container-secondary link-brand bubbly-button'
+              style={{}}
+            >
+              {label} here
+            </span>
+          </Link>{' '}
+        </p>
+      </div>
+    );
+  }
+
+  renderSelect(name, label, options) {
+    const { data, errors } = this.state;
+
+    return (
+      <Select
+        name={name}
+        value={data[name]}
+        label={label}
+        options={options}
+        onChange={this.handleSelectChange}
+        error={errors[name]}
+      />
+    );
   }
 
   renderInput(name, placeholder, type = 'text') {
