@@ -27,6 +27,21 @@ export async function confirmEmail({ confirmationCode }) {
     otp: confirmationCode,
   });
 }
+export async function updateSchoolDetail({
+  school,
+  faculty,
+  department,
+  level,
+}) {
+  const user = getCurrentUser();
+
+  console.log(school);
+  // const url = apiUrl + '/users/verifyotp/';
+  // await http.post(url, {
+  //   email: user.email,
+  //   otp: confirmationCode,
+  // });
+}
 
 export async function resendEmailConfirmation() {
   const user = getCurrentUser();

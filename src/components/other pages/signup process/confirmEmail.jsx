@@ -22,7 +22,7 @@ class ConfirmEmail extends Form {
             <img className='logo' src={faraday} alt='faraday' />
           </div>
           <h3 className='form-title'>We sent you a code</h3>
-          <p className='mx-3 extra-info'>
+          <p className='mx-3 extra-info text-md'>
             enter it below to confirm your email.
           </p>
 
@@ -32,7 +32,7 @@ class ConfirmEmail extends Form {
             {this.renderButton('Confirm my email')}
           </form>
         </div>
-        <p className='mx-auto text-center mt-3'>
+        <p className='mx-auto text-center mt-3 text-md'>
           Didn't get a code,
           <span
             onClick={async () => await auth.resendEmailConfirmation()}
@@ -50,7 +50,7 @@ class ConfirmEmail extends Form {
     try {
       const { data } = this.state;
       await auth.confirmEmail(data);
-      window.location = '/qfeed';
+      this.props.history.push('/update-school-detail');
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         const errors = { ...this.state.errors };

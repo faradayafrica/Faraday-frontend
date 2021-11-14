@@ -21,6 +21,7 @@ import MobileSidenav from './components/other pages/mobileSidenav';
 import LoginForm from './components/loginForm';
 import SignUpForm from './components/signUpForm';
 import ConfirmEmail from './components/other pages/signup process/confirmEmail.jsx';
+import AddSchoolDetail from './components/other pages/signup process/addSchoolDetail';
 import TermsAndCondition from './components/other pages/termsAndCondition.jsx';
 import PrivacyPolicy from './components/other pages/privacyPolicy';
 import Logout from './components/styledComponents/logout.jsx';
@@ -47,6 +48,7 @@ class App extends React.Component {
           <Switch>
             <Route path='/signup' component={SignUpForm} />
             <Route path='/confirm-email' component={ConfirmEmail} />
+            <Route path='/update-school-detail' component={AddSchoolDetail} />
             <Route path='/terms-and-condition' component={TermsAndCondition} />
             <Route path='/privacy-policy' component={PrivacyPolicy} />
             <Route path='/login' component={LoginForm} />

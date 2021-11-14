@@ -16,6 +16,7 @@
   --brand-dark: #23933f;
   --secondary: #011945;
   --background: #f8f9fa;
+  --background2: #f1f2f6;
   --secondary-text: #a2abb3;
   --records: #8b3745;
   --text-black: #212529;
@@ -24,7 +25,7 @@
   --brand-highlight: #f2fcf3;
   --danger-highlight: #fcf6f2;
 
-  --shadow: #9ba5a01a;
+  --shadow: #9ba5a02c;
 }
 
 html {
@@ -969,6 +970,8 @@ input:focus {
 LOGIN
 ***************************************************/
 .login-page {
+  font-family: 'Poppins', Arial, sans-serif;
+  color: var(--text2-black);
   position: absolute;
   min-height: 100%;
   min-width: 100%;
@@ -977,7 +980,7 @@ LOGIN
   z-index: 1000;
 
   padding: 1rem;
-  background-color: var(--background) !important;
+  background-color: var(--background2) !important;
 }
 
 .form-container {
@@ -986,14 +989,31 @@ LOGIN
   margin-left: auto;
   margin-right: auto;
 
-  border-radius: 6px;
-  border: 0.5px solid var(--outline);
+  /* border-radius: 6px; */
+  /* border: 0.5px solid var(--outline); */
   background-color: var(--white) !important;
   width: 100%;
   max-width: 425px;
   text-align: center;
 
-  box-shadow: 6px 6px 0px var(--shadow);
+  box-shadow: 5px 5px 0px var(--shadow);
+  transition: all 200ms ease;
+}
+
+form {
+  padding: 1rem;
+}
+
+.form-container:hover {
+  box-shadow: 8px 8px 0px var(--shadow);
+}
+
+.text-sm {
+  font-size: 12px !important;
+}
+
+.text-md {
+  font-size: 14px !important;
 }
 
 .form-container > .logo-container {
@@ -1106,6 +1126,10 @@ LOGIN
 @media screen and (max-width: 567px) {
   .form-container {
     margin-top: 4rem;
+  }
+
+  form {
+    padding: 0;
   }
 }
 
