@@ -156,9 +156,9 @@ class AddSchoolDetail extends Form {
           <div className='logo-container'>
             <img className='logo' src={faraday} alt='faraday' />
           </div>
-          <h3 className='form-title '>You're almost done</h3>
+          <h3 className='form-title '>We’re almost done</h3>
           <p className='mx-3 extra-info text-md'>
-            please enter your school information
+            We just need your academic information.
           </p>
 
           <form onSubmit={this.handleSubmit}>
@@ -219,28 +219,25 @@ class AddSchoolDetail extends Form {
     const { data } = this.state;
     console.log(data);
 
-    var select = document.getElementById('faculty');
-    var text = select.options[select.selectedIndex].text;
-    console.log(text);
+    try {
+      await auth.updateSchoolDetail(data);
 
-    // try {
-    //   await auth.updateSchoolDetail(data);
-    //   window.location = '/qfeed';
-    // } catch (ex) {
-    //   if (ex.response && ex.response.status === 500) {
-    //     const errors = { ...this.state.errors };
-    //     errors.school = 'Something went wrong';
-    //     this.setState({ errors });
-    //   } else if (ex.response && ex.response.status >= 400) {
-    //     const errors = { ...this.state.errors };
-    //     errors.school = 'Please make sure the code provided above is correct';
-    //     this.setState({ errors });
-    //   } else {
-    //     const errors = { ...this.state.errors };
-    //     errors.school = 'Check your internet connection and try again';
-    //     this.setState({ errors });
-    //   }
-    // }
+      window.location = '/update-personal-data';
+    } catch (ex) {
+      if (ex.response && ex.response.status === 500) {
+        const errors = { ...this.state.errors };
+        errors.school = 'Something went wrong';
+        this.setState({ errors });
+      } else if (ex.response && ex.response.status === 400) {
+        const errors = { ...this.state.errors };
+        errors.school = `There's an auth error`;
+        this.setState({ errors });
+      } else {
+        const errors = { ...this.state.errors };
+        errors.school = 'Check your internet connection and try again';
+        this.setState({ errors });
+      }
+    }
   };
 }
 

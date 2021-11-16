@@ -461,7 +461,17 @@ SIDENAV STYLING
   color: #343a40;
 }
 .btn-green:hover {
-  background-color: var(--brand);
+  background-color: var(--text);
+  opacity: 1;
+}
+.btn-green-outline {
+  color: var(--text2-black) !important;
+  opacity: 1;
+  transition: all 0.3s ease-in !important;
+  border: 0.5px solid transparent !important;
+}
+.btn-green-outline:hover {
+  border: 0.5px solid var(--secondary-text) !important;
   opacity: 1;
 }
 
@@ -985,6 +995,7 @@ LOGIN
 
 .form-container {
   margin-top: 8rem;
+  /* margin-bottom: 4rem; */
   padding: 1rem;
   margin-left: auto;
   margin-right: auto;
@@ -1030,6 +1041,19 @@ form {
   min-height: 50px !important;
 }
 
+.form-control input:not(:placeholder-shown) {
+  border-radius: 0px !important;
+  border: none !important;
+  border-bottom: 1.5px solid var(--brand) !important;
+  background-color: var(--background);
+  /* background-color: var(--brand-highlight); */
+  min-height: 50px !important;
+}
+
+.log select {
+  background-color: var(--background) !important;
+}
+
 .form-title {
   position: relative;
   top: -0.8rem;
@@ -1045,6 +1069,28 @@ form {
 
 .form-control:active {
   /* background-color: var(--brand-highlight) !important; */
+  border-color: var(--text-black) !important;
+  box-shadow: none !important;
+}
+
+.static-input {
+  background-color: var(--brand-highlight) !important;
+  border-bottom: none !important;
+
+  padding: 0;
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+.static-input:focus {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.form-control:active {
+  border-color: transparent !important;
+  background-color: transparent !important;
   border-color: var(--text-black) !important;
   box-shadow: none !important;
 }
@@ -1123,6 +1169,15 @@ form {
   color: var(--text2-black);
 }
 
+.form-control-file {
+  min-width: 400px;
+  min-height: 400px;
+  background-color: red;
+}
+.form-control-file > * {
+  margin: auto;
+}
+
 @media screen and (max-width: 567px) {
   .form-container {
     margin-top: 4rem;
@@ -1150,7 +1205,7 @@ form {
 }
 
 .page-header-wall {
-  background-color: var(--background);
+  background-color: var(--background2);
   color: var(--text2-black);
 
   max-height: 25rem;

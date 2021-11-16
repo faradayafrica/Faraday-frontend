@@ -28,6 +28,21 @@ class ConfirmEmail extends Form {
 
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
+            <div className='form-group log' style={{ marginTop: '1.5rem' }}>
+              <div class='form-group log'>
+                <label className='sr-only' htmlFor='email'>
+                  email
+                </label>
+                <input
+                  // autoFocus
+                  readonly
+                  value={auth.getCurrentUser().email}
+                  name='email'
+                  id='email'
+                  className='form-control static-input'
+                />
+              </div>
+            </div>
             {this.renderInput('confirmationCode', 'Enter Confirmation Code')}
             {this.renderButton('Confirm my email')}
           </form>
