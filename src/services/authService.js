@@ -1,11 +1,23 @@
 import http from './httpService';
 import { apiUrl } from '../config.json';
 import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 
 const apiEndpoint = apiUrl + '/users/login/';
 const tokenKey = 'token';
 
 http.setJwt(getJwt());
+
+// axios.interceptors.request.use(
+//   config => {
+//     const jwt = getJwt();
+//     config.headers.authorization = `Bearer ${jwt}`;
+//     return config;
+//   },
+//   error => {
+//     return Promise.reject(error);
+//   }
+// );
 
 export async function login({ username, password }) {
   let newUsername = username.toLowerCase();
@@ -27,20 +39,16 @@ export async function confirmEmail({ confirmationCode }) {
     otp: confirmationCode,
   });
 }
-export async function updateSchoolDetail({
-  school,
-  faculty,
-  department,
-  level,
-}) {
-  const user = getCurrentUser();
-
-  console.log(school);
-  // const url = apiUrl + '/users/verifyotp/';
-  // await http.post(url, {
-  //   email: user.email,
-  //   otp: confirmationCode,
-  // });
+export async function updateSchoolDetail(user) {
+  const url = apiUrl + '/users/edu_update/';
+  const jwt = getJwt();
+  await http.patch(url, {
+    ...user,
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      'Content-Type': 'application/json',
+    },
+  });
 }
 
 export async function resendEmailConfirmation() {
@@ -81,4 +89,5 @@ export default {
   tokenKey,
   confirmEmail,
   resendEmailConfirmation,
+  updateSchoolDetail,
 };

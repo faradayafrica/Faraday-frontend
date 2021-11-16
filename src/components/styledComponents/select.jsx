@@ -2,7 +2,7 @@ import React from 'react';
 
 const Select = ({ name, label, options, error, ...rest }) => {
   return (
-    <div className='form-group'>
+    <div className='form-group log'>
       <label className='sr-only' htmlFor={name}>
         {label}
       </label>
