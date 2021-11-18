@@ -42,12 +42,12 @@ export async function confirmEmail({ confirmationCode }) {
 export async function updateSchoolDetail(user) {
   const url = apiUrl + '/users/edu_update/';
   const jwt = getJwt();
-  await http.patch(url, {
+  await axios.patch(url, {
     ...user,
-    headers: {
-      Authorization: `Bearer ${jwt}`,
-      'Content-Type': 'application/json',
-    },
+    // headers: {
+    //   Authorization: `Bearer ${jwt}`,
+    //   'Content-Type': 'application/json',
+    // },
   });
 }
 

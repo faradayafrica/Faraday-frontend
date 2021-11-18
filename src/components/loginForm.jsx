@@ -1,5 +1,6 @@
 import React from 'react';
 import Joi from 'joi-browser';
+import Myspinner from './spinner';
 import Form from './form';
 import faraday from '../images/logo.svg';
 import auth from '../services/authService';
@@ -18,6 +19,10 @@ class LoginForm extends Form {
   render() {
     return (
       <div className='login-page'>
+        {/* the spinner */}
+        <div id='spinnerContainer' className='spinner-container vanish'>
+          <Myspinner />
+        </div>
         <div className='form-container'>
           <div className='logo-container'>
             <img className='logo' src={faraday} alt='faraday' />
@@ -37,10 +42,15 @@ class LoginForm extends Form {
   }
 
   doSubmit = async () => {
+    //Activate spinner
+    const spinner = document.getElementById('spinnerContainer');
+    spinner.classList.remove('vanish');
+
     // call the backend
     try {
       const { data } = this.state;
       await auth.login(data);
+      spinner.classList.add('vanish');
 
       const user = auth.getCurrentUser();
       if (user.email_verified) {
@@ -55,14 +65,17 @@ class LoginForm extends Form {
         const errors = { ...this.state.errors };
         errors.username = 'Internal error, please try again';
         this.setState({ errors });
+        spinner.classList.add('vanish');
       } else if (ex.response && ex.response.status >= 400) {
         const errors = { ...this.state.errors };
         errors.username = 'Username or password is incorrect';
         this.setState({ errors });
+        spinner.classList.add('vanish');
       } else {
         const errors = { ...this.state.errors };
         errors.username = 'Check your internet connection and try again';
         this.setState({ errors });
+        spinner.classList.add('vanish');
       }
     }
   };

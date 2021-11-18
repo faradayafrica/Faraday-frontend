@@ -23,6 +23,9 @@ class PersonalData extends Form {
   render() {
     return (
       <div className='login-page'>
+        <div className='progress-container mx-auto mt-3'>
+          <div className='progress progress-75'></div>
+        </div>
         <div className='form-container'>
           <div className='logo-container'>
             <img className='logo' src={faraday} alt='faraday' />

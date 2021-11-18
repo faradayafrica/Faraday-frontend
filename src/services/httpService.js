@@ -19,7 +19,7 @@ axios.interceptors.response.use(null, error => {
 
 function setJwt(jwt) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
-  axios.defaults.headers.common['Content-Type'] = `application/json`;
+  // axios.defaults.headers.common['Content-Type'] = `application/json`;
 }
 
 export default {
