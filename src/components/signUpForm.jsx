@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Form from './form';
+import Myspinner from './spinner';
 import faraday from '../images/logo.svg';
-import Joi from 'joi-browser';
+import Joi, { errors } from 'joi-browser';
 import { Link } from 'react-router-dom';
 
 import * as userService from '../services/userService';
@@ -16,7 +17,7 @@ class SignUpForm extends Form {
       password: '',
       confirmPassword: '',
     },
-    errors: {},
+    errors: { email: '' },
   };
 
   schema = {
@@ -37,6 +38,10 @@ class SignUpForm extends Form {
   render() {
     return (
       <div className='login-page'>
+        {/* the spinner */}
+        <div id='spinnerContainer' className='spinner-container vanish'>
+          <Myspinner />
+        </div>
         <div className='form-container'>
           <div className='logo-container'>
             <img className='logo' src={faraday} alt='faraday' />
@@ -83,10 +88,15 @@ class SignUpForm extends Form {
   }
 
   doSubmit = async () => {
+    //Activate spinner
+    const spinner = document.getElementById('spinnerContainer');
+    spinner.classList.remove('vanish');
+
     // call the backend
     try {
       const { data } = this.state;
       await userService.register(data);
+      spinner.classList.add('vanish');
 
       window.location = '/confirm-email';
     } catch (ex) {
@@ -98,6 +108,17 @@ class SignUpForm extends Form {
         } else {
           errors.email = ex.response.data.detail[0];
         }
+        this.setState({ errors });
+        spinner.classList.add('vanish');
+      } else if (ex.response && ex.response.status === 500) {
+        const errors = { ...this.state.errors };
+        errors.email = 'Something went wrong, check back later';
+        spinner.classList.add('vanish');
+        this.setState({ errors });
+      } else {
+        const errors = { ...this.state.errors };
+        errors.email = 'Check your internet connection and try again';
+        spinner.classList.add('vanish');
         this.setState({ errors });
       }
     }

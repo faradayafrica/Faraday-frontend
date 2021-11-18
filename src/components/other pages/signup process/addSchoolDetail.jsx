@@ -1,5 +1,6 @@
 import React from 'react';
 import Joi from 'joi-browser';
+import Myspinner from '../../spinner';
 import Form from '../../form';
 import faraday from '../../../images/logo.svg';
 import auth from '../../../services/authService';
@@ -152,6 +153,13 @@ class AddSchoolDetail extends Form {
   render() {
     return (
       <div className='login-page'>
+        {/* the spinner */}
+        <div id='spinnerContainer' className='spinner-container vanish'>
+          <Myspinner />
+        </div>
+        <div className='progress-container mx-auto mt-3'>
+          <div className='progress progress-50'></div>
+        </div>
         <div className='form-container'>
           <div className='logo-container'>
             <img className='logo' src={faraday} alt='faraday' />
@@ -214,13 +222,17 @@ class AddSchoolDetail extends Form {
   };
 
   doSubmit = async () => {
-    // call the backend
+    //Activate spinner
+    const spinner = document.getElementById('spinnerContainer');
+    spinner.classList.remove('vanish');
 
+    // call the backend
     const { data } = this.state;
     console.log(data);
 
     try {
       await auth.updateSchoolDetail(data);
+      spinner.classList.add('vanish');
 
       window.location = '/update-personal-data';
     } catch (ex) {
@@ -228,14 +240,17 @@ class AddSchoolDetail extends Form {
         const errors = { ...this.state.errors };
         errors.school = 'Something went wrong';
         this.setState({ errors });
-      } else if (ex.response && ex.response.status === 400) {
+        spinner.classList.add('vanish');
+      } else if (ex.response && ex.response.status === 401) {
         const errors = { ...this.state.errors };
         errors.school = `There's an auth error`;
         this.setState({ errors });
+        spinner.classList.add('vanish');
       } else {
         const errors = { ...this.state.errors };
         errors.school = 'Check your internet connection and try again';
         this.setState({ errors });
+        spinner.classList.add('vanish');
       }
     }
   };
