@@ -223,6 +223,7 @@ class AddSchoolDetail extends Form {
 
   doSubmit = async () => {
     //Activate spinner
+    const progress = document.getElementById('progressBar');
     const spinner = document.getElementById('spinnerContainer');
     spinner.classList.remove('vanish');
 
@@ -232,9 +233,9 @@ class AddSchoolDetail extends Form {
 
     try {
       await auth.updateSchoolDetail(data);
-      spinner.classList.add('vanish');
-
+      progress.classList.add('progress-75');
       window.location = '/update-personal-data';
+      spinner.classList.add('vanish');
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         const errors = { ...this.state.errors };

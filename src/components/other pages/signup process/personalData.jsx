@@ -1,6 +1,7 @@
 import React from 'react';
 import Joi from 'joi-browser';
 import Form from '../../form';
+import Myspinner from '../../spinner';
 import faraday from '../../../images/logo.svg';
 import {
   getSchools,
@@ -23,6 +24,10 @@ class PersonalData extends Form {
   render() {
     return (
       <div className='login-page'>
+        {/* the spinner */}
+        <div id='spinnerContainer' className='spinner-container vanish'>
+          <Myspinner />
+        </div>
         <div className='progress-container mx-auto mt-3'>
           <div className='progress progress-75'></div>
         </div>
@@ -67,14 +72,41 @@ class PersonalData extends Form {
   };
 
   doSubmit = async () => {
+    //Activate spinner
+    const spinner = document.getElementById('spinnerContainer');
+    const progress = document.getElementById('progressBar');
+    spinner.classList.remove('vanish');
+
+    //onTry
+    progress.classList.remove('vanish');
+    progress.classList.add('progress-25');
     // call the backend
 
     const { data } = this.state;
     console.log(data);
 
-    var select = document.getElementById('faculty');
-    var text = select.options[select.selectedIndex].text;
-    console.log(text);
+    //  try {
+    //    await auth.updateSchoolDetail(data);
+    //    progress.classList.add('progress-75');
+    //    window.location = '/update-personal-data';
+    //    spinner.classList.add('vanish');
+    //  } catch (ex) {
+    //    if (ex.response && ex.response.status === 500) {
+    //      const errors = { ...this.state.errors };
+    //      errors.school = 'Something went wrong';
+    //      this.setState({ errors });
+    //      spinner.classList.add('vanish');
+    //    } else if (ex.response && ex.response.status === 401) {
+    //      const errors = { ...this.state.errors };
+    //      errors.school = `There's an auth error`;
+    //      this.setState({ errors });
+    //      spinner.classList.add('vanish');
+    //    } else {
+    //      const errors = { ...this.state.errors };
+    //      errors.school = 'Check your internet connection and try again';
+    //      this.setState({ errors });
+    //      spinner.classList.add('vanish');
+    //    }}
   };
 }
 

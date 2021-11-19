@@ -32,7 +32,7 @@ class ConfirmEmail extends Form {
           <Myspinner />
         </div>
         <div className='progress-container mx-auto mt-3'>
-          <div className='progress progress-25'></div>
+          <div id='progressBar' className='progress progress-25'></div>
         </div>
         <div className='form-container'>
           <div className='logo-container'>
@@ -111,14 +111,17 @@ class ConfirmEmail extends Form {
   doSubmit = async () => {
     //Activate spinner
     const spinner = document.getElementById('spinnerContainer');
+    const progress = document.getElementById('progressBar');
     spinner.classList.remove('vanish');
 
     // call the backend
     try {
       const { data } = this.state;
       await auth.confirmEmail(data);
-      spinner.classList.add('vanish');
+      progress.classList.add('progress-50');
+
       this.props.history.push('/update-school-detail');
+      spinner.classList.add('vanish');
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         const errors = { ...this.state.errors };
