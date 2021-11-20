@@ -233,8 +233,8 @@ class AddSchoolDetail extends Form {
 
     try {
       await auth.updateSchoolDetail(data);
-      progress.classList.add('progress-75');
       window.location = '/update-personal-data';
+      progress.classList.add('progress-75');
       spinner.classList.add('vanish');
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {

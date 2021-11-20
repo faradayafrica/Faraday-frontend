@@ -6,32 +6,31 @@ class FileInput extends React.Component {
     this.fileInputRef = React.createRef();
   }
   render() {
-    const { name, label, ...rest } = this.props;
+    const { name, image, ...rest } = this.props;
     return (
-      <div className='form-group'>
-        <label htmlFor={name} className='sr-only'>
-          {label}
-        </label>
-        <button
+      <div className='form-group mt-4'>
+        <img
+          className='add-profile-btn'
+          src={image}
+          id='img'
+          alt=''
           onClick={event => {
-            event.preventDefault();
             this.fileInputRef.current.click();
           }}
-          className='btn add-profile-btn'
-        >
-          Add Image
-        </button>
-        <input
-          {...rest}
-          name={name}
-          id={name}
-          className='form-control'
-          type='file'
-          id={name}
-          style={{ display: 'none' }}
-          ref={this.fileInputRef}
-          accept='images/*'
         />
+
+        <input
+          type='file'
+          name='image-upload'
+          id={name}
+          accept='image/*'
+          onChange={this.imageHandler}
+          ref={this.fileInputRef}
+          style={{ display: 'none' }}
+        />
+        <label htmlFor={name} className='sr-only'>
+          Add Image
+        </label>
       </div>
     );
   }

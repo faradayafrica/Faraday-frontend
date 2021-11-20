@@ -12,6 +12,7 @@ class Form extends Component {
   };
 
   selectedFaculty = '';
+  selectedMonth = '';
 
   validate = () => {
     const options = { abortEarly: false };
@@ -40,6 +41,19 @@ class Form extends Component {
     this.doSubmit();
   };
 
+  imageHandler = e => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        const data = { ...this.state.data };
+        data['image'] = reader.result;
+        this.setState({ data });
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
   handleChange = ({ currentTarget: input }) => {
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(input);
@@ -65,6 +79,23 @@ class Form extends Component {
     var text = select.options[select.selectedIndex].text;
     this.selectedFaculty = text;
     // console.log(this.selectedFaculty);
+
+    this.setState({ data, errors });
+  };
+
+  handleDateChange = ({ currentTarget: input }) => {
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(input);
+    if (errorMessage) errors[input.name] = errorMessage;
+    else delete errors[input.name];
+
+    const data = { ...this.state.data };
+    data[input.name] = input.value;
+
+    var select = document.getElementById('month');
+    var text = select.options[select.selectedIndex].text;
+    this.selectedMonth = text;
+    console.log(this.selectedMonth);
 
     this.setState({ data, errors });
   };
@@ -126,6 +157,21 @@ class Form extends Component {
         value={data[name]}
         label={label}
         options={options}
+        onChange={this.handleDateChange}
+        error={errors[name]}
+      />
+    );
+  }
+
+  renderGenderSelect(name, label, options) {
+    const { data, errors } = this.state;
+
+    return (
+      <Select
+        name={name}
+        value={data[name]}
+        label={label}
+        options={options}
         onChange={this.handleChange}
         error={errors[name]}
       />
@@ -145,6 +191,37 @@ class Form extends Component {
         onChange={this.handleChange}
         error={errors[name]}
       />
+    );
+  }
+
+  renderFileInput(name) {
+    const { data } = this.state;
+
+    return (
+      <div className='form-group mt-4'>
+        <img
+          className='add-profile-btn'
+          src={data.image}
+          id='img'
+          alt=''
+          onClick={event => {
+            this.fileInputRef.current.click();
+          }}
+        />
+
+        <input
+          type='file'
+          name='image-upload'
+          id={name}
+          accept='image/*'
+          onChange={this.imageHandler}
+          ref={this.fileInputRef}
+          style={{ display: 'none' }}
+        />
+        <label htmlFor={name} className='sr-only'>
+          Add Image
+        </label>
+      </div>
     );
   }
 }
