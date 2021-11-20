@@ -54,7 +54,8 @@ class LoginForm extends Form {
 
       const user = auth.getCurrentUser();
       if (user.email_verified) {
-        window.location = '/qfeed';
+        // window.location = '/qfeed';
+        this.props.history.push('/');
       } else {
         auth.resendEmailConfirmation();
         //redirect to "/confirm-email without doing a full page reload"

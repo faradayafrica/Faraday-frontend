@@ -27,12 +27,17 @@ class ConfirmEmail extends Form {
             <p className='m-4 alert-body'>Code Sent!</p>{' '}
           </div>
         </div>
+        <div id='cannotSend' onClick={this.hidePopup} className='popup vanish'>
+          <div className='alert alert-warning my-1 mx-auto  text-center'>
+            <p className='m-4 alert-body'>Can't send code at the moment!</p>
+          </div>
+        </div>
         {/* the spinner */}
         <div id='spinnerContainer' className='spinner-container vanish'>
           <Myspinner />
         </div>
         <div className='progress-container mx-auto mt-3'>
-          <div className='progress progress-25'></div>
+          <div id='progressBar' className='progress progress-25'></div>
         </div>
         <div className='form-container'>
           <div className='logo-container'>
@@ -46,13 +51,13 @@ class ConfirmEmail extends Form {
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             <div className='form-group log' style={{ marginTop: '1.5rem' }}>
-              <div class='form-group log'>
+              <div className='form-group log'>
                 <label className='sr-only' htmlFor='email'>
                   email
                 </label>
                 <input
                   // autoFocus
-                  readonly
+                  readOnly
                   value={auth.getCurrentUser().email}
                   name='email'
                   id='email'
@@ -73,6 +78,22 @@ class ConfirmEmail extends Form {
             resend code.
           </span>
         </p>
+
+        {/* Replaces the resend button for 5secs after it has been clicked */}
+        <p className='mx-auto text-center mt-3 text-md vanish'>
+          Didn't get a code,
+          <span
+            id='test'
+            onClick={() => {
+              const popup = document.getElementById('cannotSend');
+              popup.classList.remove('vanish');
+            }}
+            className='icon-container-secondary link-brand bubbly-button'
+          >
+            {console.log(new Date())}
+            Hello
+          </span>
+        </p>
       </div>
     );
   }
@@ -80,6 +101,8 @@ class ConfirmEmail extends Form {
   hidePopup = () => {
     const popup = document.getElementById('popupContainer');
     popup.classList.add('vanish');
+    const cannotSend = document.getElementById('cannotSend');
+    cannotSend.classList.add('vanish');
   };
 
   doResend = async () => {
@@ -111,14 +134,17 @@ class ConfirmEmail extends Form {
   doSubmit = async () => {
     //Activate spinner
     const spinner = document.getElementById('spinnerContainer');
+    const progress = document.getElementById('progressBar');
     spinner.classList.remove('vanish');
 
     // call the backend
     try {
       const { data } = this.state;
       await auth.confirmEmail(data);
-      spinner.classList.add('vanish');
+      progress.classList.add('progress-50');
+
       this.props.history.push('/update-school-detail');
+      spinner.classList.add('vanish');
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         const errors = { ...this.state.errors };

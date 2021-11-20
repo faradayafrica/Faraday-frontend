@@ -5,19 +5,9 @@ import axios from 'axios';
 
 const apiEndpoint = apiUrl + '/users/login/';
 const tokenKey = 'token';
+const refreshKey = 'refresh';
 
 http.setJwt(getJwt());
-
-// axios.interceptors.request.use(
-//   config => {
-//     const jwt = getJwt();
-//     config.headers.authorization = `Bearer ${jwt}`;
-//     return config;
-//   },
-//   error => {
-//     return Promise.reject(error);
-//   }
-// );
 
 export async function login({ username, password }) {
   let newUsername = username.toLowerCase();
@@ -26,7 +16,22 @@ export async function login({ username, password }) {
     password,
   });
   const jwt = data.access;
+  const refresh = data.refresh;
 
+  localStorage.setItem(tokenKey, jwt);
+  localStorage.setItem(refreshKey, refresh);
+}
+
+export async function refreshJwt() {
+  const refresh_token = getRefresh();
+  const response = await http.post(
+    'https://api.faraday.africa/v1/users/refresh_token/',
+    {
+      refresh: refresh_token,
+    }
+  );
+
+  const jwt = response.data.access;
   localStorage.setItem(tokenKey, jwt);
 }
 
@@ -39,15 +44,19 @@ export async function confirmEmail({ confirmationCode }) {
     otp: confirmationCode,
   });
 }
+
 export async function updateSchoolDetail(user) {
   const url = apiUrl + '/users/edu_update/';
   const jwt = getJwt();
   await axios.patch(url, {
     ...user,
-    // headers: {
-    //   Authorization: `Bearer ${jwt}`,
-    //   'Content-Type': 'application/json',
-    // },
+  });
+}
+export async function updatePersonalDetail(data) {
+  const url = apiUrl + '/users/bio_update/';
+
+  await axios.patch(url, {
+    ...data,
   });
 }
 
@@ -80,14 +89,24 @@ export function getJwt() {
     return null;
   }
 }
+export function getRefresh() {
+  try {
+    return localStorage.getItem(refreshKey);
+  } catch (ex) {
+    return null;
+  }
+}
 
 export default {
   login,
   logout,
   getCurrentUser,
   getJwt,
+  getRefresh,
   tokenKey,
   confirmEmail,
   resendEmailConfirmation,
   updateSchoolDetail,
+  updatePersonalDetail,
+  refreshJwt,
 };

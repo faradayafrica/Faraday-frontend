@@ -42,6 +42,11 @@ class SignUpForm extends Form {
         <div id='spinnerContainer' className='spinner-container vanish'>
           <Myspinner />
         </div>
+
+        <div className='progress-container mx-auto mt-3'>
+          <div id='progressBar' className='progress vanish'></div>
+        </div>
+
         <div className='form-container'>
           <div className='logo-container'>
             <img className='logo' src={faraday} alt='faraday' />
@@ -90,15 +95,17 @@ class SignUpForm extends Form {
   doSubmit = async () => {
     //Activate spinner
     const spinner = document.getElementById('spinnerContainer');
+    const progress = document.getElementById('progressBar');
     spinner.classList.remove('vanish');
 
     // call the backend
     try {
       const { data } = this.state;
       await userService.register(data);
-      spinner.classList.add('vanish');
-
+      progress.classList.remove('vanish');
+      progress.classList.add('progress-25');
       window.location = '/confirm-email';
+      spinner.classList.add('vanish');
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
