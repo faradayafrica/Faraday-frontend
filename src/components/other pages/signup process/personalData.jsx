@@ -1,24 +1,46 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Joi from 'joi-browser';
 import Form from '../../form';
 import Myspinner from '../../spinner';
 import faraday from '../../../images/logo.svg';
-import {
-  getSchools,
-  getFaculties,
-  getLevel,
-} from '../../../services/schoolService';
 
 class PersonalData extends Form {
   state = {
     data: {
+      image: 'https://api.faraday.africa/images/default.jpg',
       bio: '',
+      day: '',
+      month: '',
+      year: '',
     },
     errors: {},
   };
 
+  constructor() {
+    super();
+    this.fileInputRef = React.createRef();
+  }
+
   schema = {
+    image: Joi.required().label('image'),
     bio: Joi.string().max(160).label('Bio'),
+    day: Joi.number().label('Day'),
+    month: Joi.string().label('Month'),
+    year: Joi.string().label('Year'),
+  };
+
+  imageHandler = e => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        const data = { ...this.state.data };
+        data['image'] = reader.result;
+        this.setState({ data });
+        console.log(this.state.data.image);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
   };
 
   render() {
@@ -29,7 +51,7 @@ class PersonalData extends Form {
           <Myspinner />
         </div>
         <div className='progress-container mx-auto mt-3'>
-          <div className='progress progress-75'></div>
+          <div id='progressBar' className='progress progress-75'></div>
         </div>
         <div className='form-container'>
           <div className='logo-container'>
@@ -42,16 +64,84 @@ class PersonalData extends Form {
 
           <form onSubmit={this.handleSubmit}>
             <div className='form-group'>
-              <label for='exampleFormControlFile1'>Example file input</label>
+              {/* <button
+                onClick={event => {
+                  event.preventDefault();
+                  this.fileInputRef.current.click();
+                }}
+                className='btn add-profile-btn'
+              >
+                Add Image
+              </button>
               <input
                 type='file'
-                className='form-control-file'
-                id='exampleFormControlFile1'
+                style={{ display: 'none' }}
+                ref={this.fileInputRef}
+                accept='image/*'
+                onChange={event => {
+                  const file = event.target.files[0];
+                  if (file && file.type.substr(0, 5) === 'image ') {
+                    const data = { ...this.state.data };
+                    data['image'] = file;
+                    this.setState({ data });
+                    console.log(file, this.state.data);
+                  } else {
+                    const data = { ...this.state.data };
+                    data['image'] = null;
+                    this.setState({ data });
+                  }
+                }
+              }
+              /> */}
+
+              <img
+                className='add-profile-btn'
+                src={this.state.data.image}
+                id='img'
+                alt=''
+                onClick={event => {
+                  this.fileInputRef.current.click();
+                }}
               />
+
+              <input
+                type='file'
+                name='image-upload'
+                id='input'
+                accept='image/*'
+                onChange={this.imageHandler}
+                ref={this.fileInputRef}
+                style={{ display: 'none' }}
+              />
+              <label htmlFor='input' className='sr-only'>
+                Add Image
+              </label>
             </div>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
-
             {this.renderInput('bio', 'Your bio')}
+
+            <div className='horinzontal-align label-group'>
+              {/* {this.renderSelect('school', 'School', this.state.schools)} */}
+              <div className=' col-4'>
+                {this.renderDateSelect('year', 'Year', [
+                  { name: '1999' },
+                  { name: '1993' },
+                ])}
+              </div>
+              <div className='col-4 mr-3'>
+                {this.renderDateSelect('month', 'Month', [
+                  { name: 'May' },
+                  { name: 'January' },
+                ])}
+              </div>
+              <div className='col'>
+                {this.renderDateSelect('day', 'Day', [
+                  { name: '1' },
+                  { name: '2' },
+                  { name: '3' },
+                ])}
+              </div>
+            </div>
 
             {this.renderButton('Next')}
             <button
@@ -79,7 +169,7 @@ class PersonalData extends Form {
 
     //onTry
     progress.classList.remove('vanish');
-    progress.classList.add('progress-25');
+    progress.classList.add('progress-100');
     // call the backend
 
     const { data } = this.state;
