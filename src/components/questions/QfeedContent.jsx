@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Questions from './Questions';
-import Question from './styledComponents/Question';
+import Question from '../styledComponents/Question';
 import QuestionPage from './QuestionPage';
-import Loader from './styledComponents/loader';
-import Profile from "./other pages/profile"
-import http from '../services/httpService';
+import Loader from '../styledComponents/loader';
+import Profile from "../other pages/profile"
+import http from '../../services/httpService';
 
 
 const apiEndpoint = 'http://localhost:3002/v1/qfeed';

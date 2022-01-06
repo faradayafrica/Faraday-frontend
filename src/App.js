@@ -2,16 +2,16 @@ import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import ProtectedRoute from './components/common/protectedRoute.jsx';
 
-import Qfeed from './components/Qfeed.jsx';
-import Courses from './components/Courses';
-import Connect from './components/Connect';
+import Qfeed from './routes/Qfeed.jsx';
+import Courses from './routes/Courses';
+import Connect from './routes/Connect';
 import Notification from './components/Notification';
 // import Profile from './components/other pages/profile';
 
 import SideNav from './components/SideNav';
 import Body from './components/styledComponents/Body';
 import Post from './components/Post';
-import NotFound from './components/NotFound';
+import NotFound from './routes/NotFound';
 import Explore from './components/other pages/explore';
 import Bookmarks from './components/other pages/bookmarks';
 import Setting from './components/other pages/setting';
@@ -28,6 +28,7 @@ import PrivacyPolicy from './components/other pages/privacyPolicy';
 import Logout from './components/styledComponents/logout.jsx';
 import auth from './services/authService.js';
 import './App.css';
+import MobileNav from './components/MobileNav.js';
 
 class App extends React.Component {
   state = {};
@@ -45,7 +46,8 @@ class App extends React.Component {
       <BrowserRouter>
         <Body className='row'>
           <SideNav user={this.state.user} />
-          <MobileSidenav user={this.state.user} />
+          {/* <MobileSidenav user={this.state.user} /> */}
+          <MobileNav user={this.state.user} />
           <Switch>
             <Route path='/signup' component={SignUpForm} />
             <Route path='/confirm-email' component={ConfirmEmail} />
@@ -64,7 +66,7 @@ class App extends React.Component {
             {/* <ProtectedRoute path='/profile' component={Profile}/> */}
             <ProtectedRoute
               path='/qfeed'
-              render={props => <Qfeed user={this.state.user} {...props} />}
+              render={(props) => <Qfeed user={this.state.user} {...props} />}
             />
             <ProtectedRoute path='/connect' component={Connect} />
             <ProtectedRoute path='/notification' component={Notification} />

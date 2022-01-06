@@ -1,7 +1,7 @@
 import React from 'react';
 import Joi from 'joi-browser';
 import Myspinner from './spinner';
-import Form from './form';
+import Form from './common/Form';
 import faraday from '../images/logo.svg';
 import auth from '../services/authService';
 

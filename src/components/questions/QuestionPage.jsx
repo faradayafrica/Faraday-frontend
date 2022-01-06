@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import Header from './styledComponents/Header';
-import Back from '../images/back.svg';
+import Header from '../styledComponents/Header';
+import Back from '../../images/back.svg';
 
-import Answers from './styledComponents/Answers';
-import QuestionProfile from './styledComponents/QuestionProfile';
+import Answers from '../styledComponents/Answers';
+import QuestionProfile from '../styledComponents/QuestionProfile';
 
-import Loader from './styledComponents/loader';
-import ButtonBar from './styledComponents/buttonBar';
+import Loader from '../styledComponents/loader';
+import ButtonBar from '../styledComponents/buttonBar';
 
 class QuestionPage extends Component {
   render() {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Header from './styledComponents/Header';
-import PostComponent from './styledComponents/postComponent';
+import Header from '../styledComponents/Header';
+import PostComponent from '../styledComponents/postComponent';
 
 class Questions extends Component {
   render() {
