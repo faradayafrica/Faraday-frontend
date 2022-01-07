@@ -795,7 +795,7 @@ SIDENAV STYLING
   }
   .side .mobile-link p {
     color: var(--text-black) !important;
-    margin-left: 1rem !important;
+    margin-left: 1rem;
   }
 
   .bottom-nav {
@@ -979,7 +979,7 @@ input:focus {
 LOGIN
 ***************************************************/
 .login-page {
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
   color: var(--text2-black);
   position: absolute;
   min-height: 100%;
