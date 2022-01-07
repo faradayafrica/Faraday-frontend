@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import Form from './form';
+import Form from './common/Form';
 import Myspinner from './spinner';
 import faraday from '../images/logo.svg';
 import Joi, { errors } from 'joi-browser';

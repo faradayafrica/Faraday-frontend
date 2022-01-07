@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Joi from 'joi-browser';
 import { Link } from 'react-router-dom';
-import Input from './styledComponents/input';
-import Select from './styledComponents/select';
-import '../animation.scss';
+import Input from '../styledComponents/input';
+import Select from '../styledComponents/select';
+import '../../animation.scss';
 
 class Form extends Component {
   state = {

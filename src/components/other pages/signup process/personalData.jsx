@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import Joi from 'joi-browser';
-import Form from '../../form';
+import Form from '../../common/Form';
 import Myspinner from '../../spinner';
 import faraday from '../../../images/logo.svg';
 import addImage from '../../../images/Add Image.svg';
