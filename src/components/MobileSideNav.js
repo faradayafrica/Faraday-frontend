@@ -65,7 +65,7 @@ function MobileNav({ user }) {
                   </svg>
                 </div>
               </div>
-              <div className='d-flex mt-3'>
+              <div className='d-flex mt-4'>
                 <img
                   src={Avatar}
                   alt=''

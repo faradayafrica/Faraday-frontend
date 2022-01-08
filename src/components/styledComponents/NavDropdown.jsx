@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import image from "../../images/profile.png"
-import Dropdown from 'react-bootstrap/Dropdown';
-
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+// import image from "../../images/profile.png"
+import Dropdown from "react-bootstrap/Dropdown";
 
 class NavDropdown extends Component {
   render() {
- 
     return (
       <Dropdown>
         <Dropdown.Toggle
@@ -31,39 +29,7 @@ class NavDropdown extends Component {
           <p className='mx-2'>{this.props.name}</p>
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <Dropdown.Item className='dropdown-link'>
-            <Link to='/qfeed/profile' style={{ textDecoration: 'none' }}>
-            {!this.props.user || this.props.user  .profile_pic === "/images/default.png"? 
-                 <svg
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='my-auto'
-                  >
-                    <path
-                      d='M12 22C10.488 22.0043 8.9952 21.6622 7.63598 21C7.13853 20.758 6.66191 20.4754 6.21098 20.155L6.07398 20.055C4.8338 19.1396 3.81985 17.9522 3.10998 16.584C2.37571 15.1679 1.99489 13.5952 1.99993 12C1.99993 6.47715 6.47713 2 12 2C17.5228 2 22 6.47715 22 12C22.005 13.5944 21.6245 15.1664 20.891 16.582C20.1821 17.9494 19.1696 19.1364 17.931 20.052C17.4637 20.394 16.9679 20.6951 16.449 20.952L16.369 20.992C15.0089 21.6577 13.5142 22.0026 12 22ZM12 17C10.5015 16.9971 9.12764 17.834 8.44298 19.167C10.6844 20.2772 13.3156 20.2772 15.557 19.167V19.162C14.8715 17.8305 13.4976 16.9954 12 17ZM12 15C14.1661 15.0028 16.1634 16.1701 17.229 18.056L17.244 18.043L17.258 18.031L17.241 18.046L17.231 18.054C19.76 15.8691 20.6643 12.3423 19.4986 9.21011C18.333 6.07788 15.3431 4.00032 12.001 4.00032C8.65889 4.00032 5.66897 6.07788 4.50333 9.21011C3.33769 12.3423 4.24198 15.8691 6.77098 18.054C7.83724 16.169 9.83434 15.0026 12 15ZM12 14C9.79084 14 7.99998 12.2091 7.99998 10C7.99998 7.79086 9.79084 6 12 6C14.2091 6 16 7.79086 16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0608 14 12 14ZM12 8C10.8954 8 9.99998 8.89543 9.99998 10C9.99998 11.1046 10.8954 12 12 12C13.1045 12 14 11.1046 14 10C14 8.89543 13.1045 8 12 8Z'
-                      fill='#6C757D'
-                    />
-                  </svg>: 
-                  <img className="profile-img-link" src={this.props.user.profile_pic} alt="" />
-              }
-
-              <p
-                className='mx-2 my-auto .dont-break'
-                style={{
-                  display: 'inline',
-                  position: 'relative',
-                  top: 2,
-                }}
-              >
-                {this.props.user? `${this.props.user.first_name}`: "Profile"}
-               
-              </p>
-            </Link>
-          </Dropdown.Item>
-          <Dropdown.Item className='dropdown-link'>
+          {/* <Dropdown.Item className='dropdown-link'>
             <Link to='/saved-courses' style={{ textDecoration: 'none' }}>
               <svg
                 width='24'
@@ -89,64 +55,9 @@ class NavDropdown extends Component {
                 Saved Courses
               </p>
             </Link>
-          </Dropdown.Item>
+          </Dropdown.Item> */}
           <Dropdown.Item className='dropdown-link'>
-            <Link to='/bookmarks' style={{ textDecoration: 'none' }}>
-              <svg
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  d='M11.1136 13.6136L5.9 18.8272V3.9H17.6V18.8272L12.3864 13.6136C12.2176 13.4448 11.9887 13.35 11.75 13.35C11.5113 13.35 11.2824 13.4448 11.1136 13.6136Z'
-                  stroke='#6C757D'
-                  strokeWidth='1.8'
-                  strokeLinejoin='round'
-                />
-              </svg>
-
-              <p
-                className='mx-2 my-auto .dont-break'
-                style={{
-                  display: 'inline',
-                  position: 'relative',
-                  top: 2,
-                }}
-              >
-                Bookmarks
-              </p>
-            </Link>
-          </Dropdown.Item>
-          <Dropdown.Item className='dropdown-link'>
-            <Link to='/explore' style={{ textDecoration: 'none' }}>
-              <svg
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  d='M18.677 19.6069L12.962 13.8909C10.4196 15.6984 6.91642 15.2562 4.90285 12.8738C2.88929 10.4914 3.03714 6.96349 5.24298 4.7579C7.44824 2.55134 10.9765 2.40285 13.3594 4.41631C15.7422 6.42977 16.1846 9.93334 14.377 12.4759L20.092 18.1919L18.678 19.6059L18.677 19.6069ZM9.48498 4.99988C7.58868 4.99946 5.95267 6.33057 5.56745 8.18733C5.18224 10.0441 6.15369 11.9162 7.89366 12.6701C9.63362 13.4241 11.6639 12.8527 12.7552 11.3019C13.8466 9.75117 13.699 7.64721 12.402 6.2639L13.007 6.8639L12.325 6.1839L12.313 6.1719C11.5648 5.41907 10.5464 4.99702 9.48498 4.99988Z'
-                  fill='#6C757D'
-                />
-              </svg>
-              <p
-                className='mx-2 my-auto .dont-break'
-                style={{
-                  display: 'inline',
-                  position: 'relative',
-                  top: 2,
-                }}
-              >
-                Explore
-              </p>
-            </Link>
-          </Dropdown.Item>
-          <Dropdown.Item className='dropdown-link'>
-            <Link to='/sponsors' style={{ textDecoration: 'none' }}>
+            <Link to='/sponsors' style={{ textDecoration: "none" }}>
               <svg
                 width='24'
                 height='24'
@@ -163,10 +74,10 @@ class NavDropdown extends Component {
               <p
                 className='mx-2 my-auto .dont-break'
                 style={{
-                  display: 'inline',
-                  position: 'relative',
+                  display: "inline",
+                  position: "relative",
                   top: 2,
-                  color: '#5551FE',
+                  color: "#5551FE",
                 }}
               >
                 Sponsors
@@ -174,7 +85,7 @@ class NavDropdown extends Component {
             </Link>
           </Dropdown.Item>
           <Dropdown.Item className='dropdown-link'>
-            <Link to='/setting' style={{ textDecoration: 'none' }}>
+            <Link to='/setting' style={{ textDecoration: "none" }}>
               <svg
                 width='24'
                 height='24'
@@ -191,8 +102,8 @@ class NavDropdown extends Component {
               <p
                 className='mx-2 my-auto .dont-break'
                 style={{
-                  display: 'inline',
-                  position: 'relative',
+                  display: "inline",
+                  position: "relative",
                   top: 2,
                 }}
               >
@@ -202,33 +113,28 @@ class NavDropdown extends Component {
           </Dropdown.Item>
 
           <Dropdown.Item className='dropdown-link'>
-            <Link to='/logout' style={{ textDecoration: 'none' }}>
-            <svg
-              width='24'
-              height='24'
-              viewBox='0 0 24 24'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M19 21H10C8.89543 21 8 20.1046 8 19V15H10V19H19V5H10V9H8V5C8 3.89543 8.89543 3 10 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21ZM12 16V13H3V11H12V8L17 12L12 16Z'
-                fill='#6C757D'
-              />
-            </svg>
+            <Link to='/logout' style={{ textDecoration: "none" }}>
+              <svg
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  d='M19 21H10C8.89543 21 8 20.1046 8 19V15H10V19H19V5H10V9H8V5C8 3.89543 8.89543 3 10 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21ZM12 16V13H3V11H12V8L17 12L12 16Z'
+                  fill='#6C757D'
+                />
+              </svg>
 
-            <p
-              className='mx-2 my-auto .dont-break'
-              style={{ display: 'inline', position: 'relative', top: 2 }}
-            >
-              Logout
-            </p>
+              <p
+                className='mx-2 my-auto .dont-break'
+                style={{ display: "inline", position: "relative", top: 2 }}
+              >
+                Logout
+              </p>
             </Link>
           </Dropdown.Item>
-
-         
-            
-    
-          
         </Dropdown.Menu>
         {/* <button>
                 <p className='mx-2'>More</p>

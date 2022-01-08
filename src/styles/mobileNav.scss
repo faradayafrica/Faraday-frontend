@@ -11,6 +11,10 @@ p {
   & > div:first-of-type {
     justify-content: space-between;
     align-items: center;
+
+    h3 {
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -19,10 +23,14 @@ p {
   z-index: 1000;
 }
 
+.icon-container {
+  padding: 0;
+}
+
 .name {
   font-style: normal;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 16px;
   letter-spacing: -0.02em;
   color: #343a40;
@@ -42,7 +50,7 @@ p {
 
 .side-account-info {
   font-weight: 600;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 19px;
   letter-spacing: -0.02em;
   color: #343a40;
@@ -54,22 +62,19 @@ p {
 
 .ques-solu {
   font-weight: 600;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 14px;
   letter-spacing: -0.02em;
   color: #343a40;
 
   span {
     font-weight: normal;
-    font-size: 12px;
-    line-height: 14px;
-    letter-spacing: -0.02em;
     color: #343a40;
   }
 }
 
 .side .mobile-link {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .side .mobile-link p {
