@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import img from '../../images/profile3.png';
+import React, { Component } from "react";
+import img from "../../images/profile3.png";
+import QfeedNav from "../questions/QfeedNav";
 
 class Profile extends Component {
   render() {
@@ -40,7 +41,7 @@ class Profile extends Component {
               <p className='bio mx-auto'>
                 Wow, this should be great but it isn't. I love the way you built
                 heaven only to make it hell for me. Spap nice one. That's
-                basically all I can say about myself{' '}
+                basically all I can say about myself{" "}
               </p>
               <div className='school'>
                 <svg
@@ -78,6 +79,8 @@ class Profile extends Component {
             </div>
           </div>
         )}
+
+        <QfeedNav />
       </React.Fragment>
     );
   }

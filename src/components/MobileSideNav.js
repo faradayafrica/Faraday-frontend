@@ -6,7 +6,7 @@ import BookMarkIcon from "../images/Bookmarks.svg";
 import "../styles/mobileNav.scss";
 
 function MobileNav({ user }) {
-  console.log(user);
+  // console.log(user);
 
   const handleMobileMenuClick = () => {
     let mobileSidenav = document.querySelector(".side");
@@ -52,20 +52,20 @@ function MobileNav({ user }) {
                   onClick={handleMobileMenuClick}
                 >
                   <svg
-                    width='24'
-                    height='24'
+                    width='30'
+                    height='30'
                     viewBox='0 0 24 24'
                     fill='none'
                     xmlns='http://www.w3.org/2000/svg'
                   >
                     <path
-                      d='M17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41L17.59 5Z'
+                      d='M15.59 7L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41L15.59 7Z'
                       fill='#6C757D'
                     />
                   </svg>
                 </div>
               </div>
-              <div className='d-flex mt-3'>
+              <div className='d-flex mt-4'>
                 <img
                   src={Avatar}
                   alt=''
