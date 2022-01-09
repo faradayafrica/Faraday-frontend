@@ -4,9 +4,9 @@ import ProtectedRoute from './components/common/protectedRoute.jsx';
 
 import Qfeed from './routes/Qfeed.jsx';
 import Courses from './routes/Courses';
-import Connect from './routes/Connect';
+import Direct from './routes/Direct';
 import Notification from './components/Notification';
-// import Profile from './components/other pages/profile';
+import Profile from './components/other pages/profile';
 
 import SideNav from './components/SideNav';
 import Body from './components/styledComponents/Body';
@@ -17,7 +17,7 @@ import Bookmarks from './components/other pages/bookmarks';
 import Setting from './components/other pages/setting';
 import Sponsors from './components/other pages/sponsors';
 import SavedCourses from './components/other pages/saved-courses';
-import MobileSidenav from './components/other pages/mobileSidenav';
+// import MobileSidenav from './components/other pages/mobileSidenav';
 import LoginForm from './components/loginForm';
 import SignUpForm from './components/signUpForm';
 import ConfirmEmail from './components/other pages/signup process/confirmEmail.jsx';
@@ -63,12 +63,15 @@ class App extends React.Component {
             <ProtectedRoute path='/bookmarks' component={Bookmarks} />
             <ProtectedRoute path='/explore' component={Explore} />
             <ProtectedRoute path='/courses' component={Courses} />
-            {/* <ProtectedRoute path='/profile' component={Profile}/> */}
+            <ProtectedRoute
+              path='/profile'
+              render={(props) => <Profile user={this.state.user} {...props} />}
+            />
             <ProtectedRoute
               path='/qfeed'
               render={(props) => <Qfeed user={this.state.user} {...props} />}
             />
-            <ProtectedRoute path='/connect' component={Connect} />
+            <ProtectedRoute path='/direct' component={Direct} />
             <ProtectedRoute path='/notification' component={Notification} />
             <ProtectedRoute path='/post' component={Post} />
             <Route path='/not-found' component={NotFound} />

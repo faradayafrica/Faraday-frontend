@@ -64,7 +64,7 @@ class SideNav extends Component {
         focus: false,
       },
       {
-        item: "Connect",
+        item: "Direct",
         icon: (
           <svg
             width='24'
@@ -135,7 +135,7 @@ class SideNav extends Component {
   render() {
     const { user } = this.props;
     return (
-      <div className='sidenav-container  px-2  order-md-first active'>
+      <div className='sidenav-container position-relative  px-2  order-md-first active'>
         <div className='position-fixed  d-flex flex-column justify-content-between h-100'>
           <div>
             <nav className='row my-3 ml-1 menu-nav'>
@@ -192,21 +192,22 @@ class SideNav extends Component {
               </button>
             </Link>
           </div>
+        </div>
 
-          <div className='d-flex mb-2 border'>
-            <img
-              src={Avatar}
-              alt=''
-              className='rounded-circle mr-2'
-              width='40px'
-              height='40px'
-            />
-            <div>
-              <h2 className='name'>
-                {user?.first_name} {user?.last_name}
-              </h2>
-              <p className='username'>@{user?.username}</p>
-            </div>
+        <div className='d-flex border-top border-bottom px-2 py-3 position-absolute fixed-bottom profile-sideNav'>
+          <div className='nav-tooltip'>Profile</div>
+          <img
+            src={Avatar}
+            alt=''
+            className='rounded-circle mr-2'
+            width='40px'
+            height='40px'
+          />
+          <div className='profile-info'>
+            <h2 className='name'>
+              {user?.first_name} {user?.last_name}
+            </h2>
+            <p className='username'>@{user?.username}</p>
           </div>
         </div>
       </div>

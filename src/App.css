@@ -394,8 +394,7 @@ SIDENAV STYLING
   position: relative;
   display: block;
   border-right: solid 0.5px var(--outline) !important;
-
-  /* border-left: solid 0.5px var(--outline); */
+  border-left: solid 0.5px var(--outline);
   min-height: 100vh;
   width: 65px;
   transition: all 0.5s ease;
@@ -441,7 +440,15 @@ SIDENAV STYLING
   display: none;
 }
 
+.sidenav-container .profile-info {
+  display: none;
+}
+
 .sidenav-container.active .navlink p {
+  display: block;
+}
+
+.sidenav-container.active .profile-info {
   display: block;
 }
 
@@ -555,6 +562,14 @@ SIDENAV STYLING
 }
 
 .navlink:hover .nav-tooltip {
+  transition: all 0.5s ease;
+  display: block !important;
+
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sidenav-container:not(.active) .profile-sideNav:hover .nav-tooltip {
   transition: all 0.5s ease;
   display: block !important;
 

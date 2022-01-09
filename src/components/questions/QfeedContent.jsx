@@ -6,6 +6,7 @@ import QuestionPage from './QuestionPage';
 import Loader from '../styledComponents/loader';
 import Profile from "../other pages/profile"
 import http from '../../services/httpService';
+import QfeedNav from './QfeedNav';
 
 
 const apiEndpoint = 'http://localhost:3002/v1/qfeed';
@@ -34,17 +35,12 @@ class Qfeed extends Component {
         <Switch>
           <Route
             path='/Qfeed/profile'
-            render={props => (
-              <Profile
-                user={this.props.user}
-                {...props}
-              />
-            )}
+            render={(props) => <Profile user={this.props.user} {...props} />}
           />
 
           <Route
             path='/Qfeed/:id'
-            render={props => (
+            render={(props) => (
               <QuestionPage
                 questions={this.state.questions}
                 onEcho={this.handleEcho}
@@ -56,12 +52,12 @@ class Qfeed extends Component {
             )}
           />
 
-
           <Route
             path='/'
-            render={props => (
+            render={(props) => (
               <Questions
                 renderQuestion={this.renderQuestion}
+                renderNavigation={this.renderNavigation}
                 onPost={this.handlePost}
                 user={this.props.user}
                 {...props}
@@ -190,7 +186,7 @@ class Qfeed extends Component {
     } else {
       return (
         <React.Fragment>
-          {console.log(this.state.questions)}
+          {/* {console.log(this.state.questions)} */}
           {this.state.questions.map(question => (
             <Question
               key={question.id}
@@ -219,6 +215,15 @@ class Qfeed extends Component {
       );
     }
   };
+
+  // This function renders the navigation
+  renderNavigation = () => {
+    return (
+      <>
+        <QfeedNav />
+      </>
+    )
+  }
 }
 
 export default Qfeed;
