@@ -1,16 +1,13 @@
 .qfeedNav-container {
   position: fixed;
   bottom: 0;
+  z-index: 1000;
 }
 
 .btn--add {
   width: 44px;
   height: 44px;
   outline: 8px solid #fff;
-  // filter: drop-shadow(0px 8px 24px rgba(25, 32, 56, 0.04));
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
   display: block !important;
   box-shadow: 0px 0px 30px rgba(5, 184, 80, 0.397);
   margin-left: auto;

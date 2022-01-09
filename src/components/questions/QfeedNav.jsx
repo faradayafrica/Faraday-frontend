@@ -92,25 +92,31 @@ function QfeedNav() {
     let activeItem = document.querySelector(".nav__active");
     let navBorder = document.querySelector(".nav__border");
 
-    // console.log(activeItem);
-
     offsetMenuBorder(activeItem, navBorder);
+  }, []);
+
+  useEffect(() => {
+    let activeItem = document.querySelector(".nav__active");
+    let navBorder = document.querySelector(".nav__border");
 
     window.addEventListener("resize", () => {
-      offsetMenuBorder(activeItem, navBorder);
+      if (window.innerWidth < 578) offsetMenuBorder(activeItem, navBorder);
     });
   });
 
   function offsetMenuBorder(element, navBorder) {
     const offsetActiveItem = element.getBoundingClientRect();
-    let container = document.querySelector(".qfeedNav-container");
+    const container = document.querySelector(".qfeedNav-container");
 
-    const left =
-      Math.floor(
-        offsetActiveItem.left -
-          container.offsetLeft -
-          (navBorder.offsetWidth - offsetActiveItem.width) / 2
-      ) + "px";
+    let left;
+    if (container && offsetActiveItem) {
+      left =
+        Math.floor(
+          offsetActiveItem.left -
+            container.offsetLeft -
+            (navBorder.offsetWidth - offsetActiveItem.width) / 2
+        ) + "px";
+    }
     navBorder.style.transform = `translate3d(${left}, 0 , 0)`;
   }
 
@@ -130,10 +136,10 @@ function QfeedNav() {
         </svg>
       </button>
 
-      {/* ${link.item.toLowerCase() */}
+      {/* */}
       <div className='qfeedNav-links'>
         {links.map((link, i) => (
-          <Link key={i} to={`#}`}>
+          <Link key={i} to={`/${link.item.toLowerCase()}`}>
             <button
               className={`btn ${i === 0 ? "nav__active" : "nav__button"}`}
               onClick={(e) => handleClick(e)}
