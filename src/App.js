@@ -6,7 +6,7 @@ import Qfeed from "./routes/Qfeed.jsx";
 import Courses from "./routes/Courses";
 import Direct from "./routes/Direct";
 import Notification from "./components/Notification";
-import Profile from "./components/other pages/profile";
+import Profile from "./routes/Profile";
 
 import SideNav from "./components/SideNav";
 import Body from "./components/styledComponents/Body";
@@ -29,7 +29,7 @@ import Logout from "./components/styledComponents/logout.jsx";
 import auth from "./services/authService.js";
 import "./App.css";
 import MobileSideNav from "./components/MobileSideNav.js";
-import QfeedNav from "./components/questions/QfeedNav.jsx";
+import MobileBottomNav from "./components/MobileBottomNav.jsx";
 
 class App extends React.Component {
   state = {};
@@ -49,7 +49,7 @@ class App extends React.Component {
           <SideNav user={user} />
           {/* <MobileSidenav user={this.state.user} /> */}
           <MobileSideNav user={user} />
-          <QfeedNav />
+          <MobileBottomNav />
           <Switch>
             <Route path='/signup' component={SignUpForm} />
             <Route path='/confirm-email' component={ConfirmEmail} />

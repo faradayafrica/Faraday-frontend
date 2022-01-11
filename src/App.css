@@ -1291,3 +1291,7 @@ form {
   max-width: 820px;
   color: var(--text2-black);
 }
+
+.bookmark-icon {
+  fill: none !important;
+}

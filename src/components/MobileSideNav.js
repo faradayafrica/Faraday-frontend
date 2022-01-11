@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Avatar from "../images/profile1.png";
 import ProfileIcon from "../images/profile.svg";
 import BookMarkIcon from "../images/Bookmarks.svg";
-import "../styles/mobileNav.scss";
+import "../styles/mobileSideNav.scss";
 
 function MobileNav({ user }) {
   // console.log(user);
@@ -93,7 +93,7 @@ function MobileNav({ user }) {
             <div className='side-links'>
               <div onClick={handleMobileMenuClick}>
                 <Link
-                  to='/qfeed/profile'
+                  to='/profile'
                   style={{
                     textDecoration: "none",
                   }}

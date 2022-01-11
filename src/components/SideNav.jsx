@@ -113,14 +113,15 @@ class SideNav extends Component {
         item: "Bookmarks",
         icon: (
           <svg
-            width='24'
-            height='24'
-            viewBox='0 0 24 24'
+            width='14'
+            height='18'
+            viewBox='0 0 14 18'
             fill='none'
             xmlns='http://www.w3.org/2000/svg'
+            className='bookmark-icon'
           >
             <path
-              d='M11.1136 13.6136L5.9 18.8272V3.9H17.6V18.8272L12.3864 13.6136C12.2176 13.4448 11.9887 13.35 11.75 13.35C11.5113 13.35 11.2824 13.4448 11.1136 13.6136Z'
+              d='M6.1136 10.6136L0.9 15.8272V0.9H12.6V15.8272L7.38639 10.6136C7.21761 10.4448 6.98869 10.35 6.75 10.35C6.5113 10.35 6.28239 10.4448 6.1136 10.6136Z'
               stroke='#6C757D'
               strokeWidth='1.8'
               strokeLinejoin='round'
