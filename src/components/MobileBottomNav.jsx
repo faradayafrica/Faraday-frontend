@@ -93,6 +93,14 @@ function MobileBottomNav() {
     if (!allowedRoutes.includes(location.pathname.replace("/", ""))) {
       setAllowNav(!allowNav);
     }
+
+    let navBorder = document.querySelector(".nav__border");
+
+    if (location.pathname === "/profile") {
+      navBorder.style.opacity = "0";
+    } else {
+      navBorder.style.opacity = "1";
+    }
   }, [location.pathname]);
 
   const handleClick = (e) => {

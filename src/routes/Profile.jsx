@@ -1,20 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ProfileNav from "../components/profile/ProfileNav";
 import ProfileData from "../components/profile/ProfileData";
 import "../styles/profile.scss";
+import ProfileInfo from "../components/profile/ProfileInfo";
 
 function Profile({ user }) {
-  // useEffect(() => {
-  //   document.querySelector(".nav__border").style.display = "none";
-  // }, []);
-
   return (
-    <React.Fragment>
-      <div className=''>
-        <ProfileNav user={user} />
-        <ProfileData user={user} />
-      </div>
-    </React.Fragment>
+    <div className='profile__container'>
+      <ProfileNav user={user} />
+      <ProfileData user={user} />
+      <ProfileInfo />
+    </div>
   );
 }
 

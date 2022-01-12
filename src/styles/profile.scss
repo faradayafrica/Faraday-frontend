@@ -1,8 +1,11 @@
 @import "./__base";
 
-.profile__nav {
+.profile__container {
+  padding: 20px;
   font-family: Work Sans;
+}
 
+.profile__nav {
   h1,
   h2,
   h3,
@@ -33,9 +36,57 @@
   .profile__btn {
     border: 2px solid var(--outline);
     border-radius: 8px !important;
+  }
+}
 
-    & + .profile__btn {
-      margin-left: 10px;
-    }
+.profile__user {
+  margin: 1rem 0;
+
+  h2 {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+    color: #3f3f41;
+    margin-bottom: 0;
+  }
+
+  .username {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: -0.02em;
+    color: #6c757d;
+  }
+
+  .description {
+    font-size: 14px;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+    color: #3f3f41;
+    margin: 0.8rem 0 0.4rem;
+  }
+}
+
+.profile__school {
+  font-size: 12px;
+  line-height: 14px;
+  letter-spacing: -0.02em;
+  color: #6c757d;
+  align-items: center;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  svg {
+    margin-right: 5px;
+  }
+}
+
+.ques-solu {
+  p {
+    margin-bottom: 0;
   }
 }

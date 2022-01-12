@@ -17,7 +17,7 @@ function ProfileNav({ user }) {
           />
         </svg>
 
-        <div className='flex flex-col'>
+        <div className=' flex-col'>
           <h3>
             {user?.last_name} {user?.first_name}
           </h3>
