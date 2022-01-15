@@ -90,3 +90,9 @@
     margin-bottom: 0;
   }
 }
+
+.profile__nav__toggle {
+  border-top: 1px solid var(--outline);
+  border-bottom: 1px solid var(--outline);
+  padding: -20px;
+}
