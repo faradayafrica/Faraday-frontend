@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Questions from "./Questions";
 import Question from "../styledComponents/Question";
 import QuestionPage from "./QuestionPage";
-import Loader from "../styledComponents/loader";
+import Loader from "../styledComponents/Loader";
 import http from "../../services/httpService";
 
 const apiEndpoint = "http://localhost:3002/v1/qfeed";

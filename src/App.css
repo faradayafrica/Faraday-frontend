@@ -438,7 +438,6 @@ SIDENAV STYLING
 
 .sidenav-container .navlink p {
   display: none;
-  transition: all 10s;
 }
 
 .sidenav-container .profile-info {
@@ -447,7 +446,6 @@ SIDENAV STYLING
 
 .sidenav-container.active .navlink p {
   display: block;
-  /* transition: display 2s; */
 }
 
 .sidenav-container.active .profile-info {
