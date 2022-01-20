@@ -16,13 +16,13 @@ function ProfileData({ user }) {
                 viewBox='0 0 14 18'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
-                class='bookmark-icon'
+                className='bookmark-icon'
               >
                 <path
                   d='M6.1136 10.6136L0.9 15.8272V0.9H12.6V15.8272L7.38639 10.6136C7.21761 10.4448 6.98869 10.35 6.75 10.35C6.5113 10.35 6.28239 10.4448 6.1136 10.6136Z'
                   stroke='#6C757D'
-                  stroke-width='1.8'
-                  stroke-linejoin='round'
+                  strokeWidth='1.8'
+                  strokeLinejoin='round'
                 ></path>
               </svg>
             </button>

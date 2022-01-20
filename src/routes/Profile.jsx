@@ -7,9 +7,12 @@ import ProfileInfo from "../components/profile/ProfileInfo";
 function Profile({ user }) {
   return (
     <div className='profile__container'>
-      <ProfileNav user={user} />
-      <ProfileData user={user} />
-      <ProfileInfo />
+      <div>
+        <ProfileNav user={user} />
+        <ProfileData user={user} />
+        <ProfileInfo />
+      </div>
+      <div className='w-100 border profile-trends'></div>
     </div>
   );
 }

@@ -6,10 +6,10 @@ import Trends from "../components/Trends";
 class App extends Component {
   render() {
     return (
-      <React.Fragment>
+      <div className='qfeed__container'>
         <QfeedContent user={this.props.user} />
         <Trends />
-      </React.Fragment>
+      </div>
     );
   }
 }

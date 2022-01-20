@@ -28,8 +28,7 @@ import PrivacyPolicy from "./components/other pages/privacyPolicy";
 import Logout from "./components/styledComponents/logout.jsx";
 import auth from "./services/authService.js";
 import "./App.css";
-import MobileSideNav from "./components/MobileSideNav.js";
-import MobileBottomNav from "./components/MobileBottomNav.jsx";
+import MobileSideNav from "./components/MobileSideNav.jsx";
 
 class App extends React.Component {
   state = {};
@@ -45,11 +44,9 @@ class App extends React.Component {
     const { user } = this.state;
     return (
       <BrowserRouter>
-        <Body className='row'>
+        <Body className=''>
           <SideNav user={user} />
-          {/* <MobileSidenav user={this.state.user} /> */}
           <MobileSideNav user={user} />
-          <MobileBottomNav />
           <Switch>
             <Route path='/signup' component={SignUpForm} />
             <Route path='/confirm-email' component={ConfirmEmail} />

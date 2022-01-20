@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-class TermsAndCondition extends React.Component {
+class TermsAndCondition extends Component {
   render() {
     return (
       <div className='login-page terms-and-condition mb-5'>

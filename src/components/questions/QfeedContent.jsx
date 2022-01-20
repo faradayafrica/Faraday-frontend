@@ -5,7 +5,6 @@ import Question from "../styledComponents/Question";
 import QuestionPage from "./QuestionPage";
 import Loader from "../styledComponents/loader";
 import http from "../../services/httpService";
-import MobileBottomNav from "../MobileBottomNav";
 
 const apiEndpoint = "http://localhost:3002/v1/qfeed";
 // const apiEndpoint = 'https://api.faraday.africa/v1/qfeed/';

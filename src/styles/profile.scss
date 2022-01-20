@@ -1,8 +1,25 @@
 @import "./__base";
 
 .profile__container {
-  padding: 20px;
   font-family: Work Sans;
+  display: grid;
+  grid-template-columns: 1fr;
+
+  > div {
+    padding: 20px;
+  }
+
+  @media (min-width: 567px) {
+    grid-template-columns: 1fr 300px;
+
+    .profile-trends {
+      display: block;
+    }
+  }
+}
+
+.profile-trends {
+  display: none;
 }
 
 .profile__nav {

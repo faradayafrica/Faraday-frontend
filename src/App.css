@@ -397,7 +397,7 @@ SIDENAV STYLING
   border-left: solid 0.5px var(--outline);
   min-height: 100vh;
   width: 65px;
-  transition: all 0.5s ease;
+  transition: width 0.5s ease;
   z-index: 100;
   background-color: var(--white);
 }
@@ -438,6 +438,7 @@ SIDENAV STYLING
 
 .sidenav-container .navlink p {
   display: none;
+  transition: all 10s;
 }
 
 .sidenav-container .profile-info {
@@ -446,6 +447,7 @@ SIDENAV STYLING
 
 .sidenav-container.active .navlink p {
   display: block;
+  /* transition: display 2s; */
 }
 
 .sidenav-container.active .profile-info {
@@ -1294,4 +1296,18 @@ form {
 
 .bookmark-icon {
   fill: none !important;
+}
+
+/************************************
+ Qfeed
+************************************ */
+.qfeed__container {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media screen and (min-width: 762px) {
+  .qfeed__container {
+    grid-template-columns: 1fr 300px;
+  }
 }
