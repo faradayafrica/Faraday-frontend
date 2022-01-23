@@ -2,39 +2,64 @@ import React from "react";
 import img from "../../images/profile3.png";
 import { Link } from "react-router-dom";
 
-function ProfileData({ user }) {
+function ProfileData({ user, otherProfile }) {
   return (
     <div className='profile__data'>
       <div className='flex justify-content-between'>
         <img className='rounded-circle' src={img} alt='' />
         <div className='align-self-end'>
-          <Link to='/bookmarks'>
-            <button className='btn profile__btn'>
-              <svg
-                width='14'
-                height='18'
-                viewBox='0 0 14 18'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'
-                className='bookmark-icon'
-              >
-                <path
-                  d='M6.1136 10.6136L0.9 15.8272V0.9H12.6V15.8272L7.38639 10.6136C7.21761 10.4448 6.98869 10.35 6.75 10.35C6.5113 10.35 6.28239 10.4448 6.1136 10.6136Z'
-                  stroke='#6C757D'
-                  strokeWidth='1.8'
-                  strokeLinejoin='round'
-                ></path>
-              </svg>
-            </button>
-          </Link>
+          {otherProfile ? (
+            <>
+              <Link to='/bookmarks'>
+                <button className='btn profile__btn'>
+                  <svg
+                    width='24'
+                    height='24'
+                    viewBox='0 0 24 24'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path d='M19.2 19.4H4.8C3.80589 19.4 3 18.5941 3 17.6V6.7217C3.04195 5.75829 3.83568 4.99909 4.8 5H19.2C20.1941 5 21 5.80589 21 6.8V17.6C21 18.5941 20.1941 19.4 19.2 19.4ZM4.8 8.4812V17.6H19.2V8.4812L12 13.28L4.8 8.4812ZM5.52 6.8L12 11.12L18.48 6.8H5.52Z' />
+                  </svg>
+                </button>
+              </Link>
 
-          <button className='btn profile__btn ml-3'>Edit Profile</button>
+              <button className='btn profile__btn profile__btn--follow ml-3'>
+                Follow
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to='/bookmarks'>
+                <button className='btn profile__btn'>
+                  <svg
+                    width='14'
+                    height='18'
+                    viewBox='0 0 14 18'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='bookmark-icon'
+                  >
+                    <path
+                      d='M6.1136 10.6136L0.9 15.8272V0.9H12.6V15.8272L7.38639 10.6136C7.21761 10.4448 6.98869 10.35 6.75 10.35C6.5113 10.35 6.28239 10.4448 6.1136 10.6136Z'
+                      stroke='#6C757D'
+                      strokeWidth='1.8'
+                      strokeLinejoin='round'
+                    ></path>
+                  </svg>
+                </button>
+              </Link>
+
+              <button className='btn profile__btn ml-3'>Edit Profile</button>
+            </>
+          )}
         </div>
       </div>
 
       <div className='profile__user'>
-        <h2>Nworie Kingsley</h2>
-        <p className='username'>@nworiekingslee</p>
+        <h2>
+          {user.last_name} {user.first_name}
+        </h2>
+        <p className='username'>@{user.username}</p>
         <p className='description'>
           A brand designer and frontend developer. currently working with
           @devgenix, @favouritejome1 on a unique edtech solution.
