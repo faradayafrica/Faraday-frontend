@@ -7,6 +7,7 @@ import QuestionProfile from "../styledComponents/QuestionProfile";
 
 import Loader from "../styledComponents/Loader";
 import ButtonBar from "../styledComponents/buttonBar";
+import Like from "../styledComponents/Like.jsx";
 
 class QuestionPage extends Component {
   render() {
@@ -40,6 +41,11 @@ class QuestionPage extends Component {
             <div className='question-page'>
               <QuestionProfile question={newQuestion} />
 
+              <Like
+                onDislike={this.props.onDislike}
+                onLike={this.props.onLike}
+                question={question}
+              />
               {/* question profile ends here */}
               <p className='question-page-content'>{newQuestion.body}</p>
               <p className='question-tag ' style={{ fontSize: "18px" }}>

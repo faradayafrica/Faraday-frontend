@@ -1,26 +1,31 @@
-import React, { Component } from 'react';
-import departmentIcon from '../../images/department.svg';
+import React, { Component } from "react";
+// import departmentIcon from "../../images/department.svg";
+import MenuIcon from "../../images/dropdown-menu.svg";
 
 class QuestionProfile extends Component {
   render() {
-    const { fname, lname, department, time, username, image } =
-      this.props.question;
+    const { fname, lname, username, image } = this.props.question;
     return (
-      <div className='horinzontal-align txt'>
+      <div className='horinzontal-align txt w-100'>
         <img className='profile-image' src={image} alt='profile' />
 
-        <div className='user-info col ml-2'>
-          <div className='horinzontal-align'>
-            <p className='profile-name text-dark'>{fname}</p>
-            <p className='profile-name text-dark'>{lname}</p>
-            <p>@{username}</p>
-            <p>{time}</p>
+        <div className='ml-2 d-flex justify-content-between'>
+          <div>
+            <p className='profile-name text-dark mb-0'>
+              {fname} {lname}
+            </p>
+            <p className='mb-0'>@{username}</p>
           </div>
-          <div className='horinzontal-align'>
+
+          <button className='btn mr-0 p-0 d-block'>
+            <img src={MenuIcon} alt='' />
+          </button>
+        </div>
+
+        {/* <div className='horinzontal-align'>
             <img src={departmentIcon} alt='department icon' />
             <p className='dont-break'>{department}</p>
-          </div>
-        </div>
+          </div> */}
       </div>
     );
   }

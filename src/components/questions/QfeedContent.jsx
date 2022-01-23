@@ -34,6 +34,10 @@ class Qfeed extends Component {
                 onAnswer={this.handleAnswer}
                 onBookmark={this.handleBookmark}
                 onRefresh={this.refreshPage}
+                handleDislike={this.handleDislikeClick}
+                handleLike={this.handleLikeClick}
+                onLike={this.props.onLike}
+                onDislike={this.props.onDislike}
                 {...props}
               />
             )}

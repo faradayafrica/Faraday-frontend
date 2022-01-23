@@ -9,13 +9,7 @@ class Question extends Component {
     return (
       <div className='question '>
         <QuestionProfile question={this.props.question} />
-        <QuestionBody
-          question={this.props.question}
-          handleDislike={this.handleDislikeClick}
-          handleLike={this.handleLikeClick}
-          onLike={this.props.onLike}
-          onDislike={this.props.onDislike}
-        />
+        <QuestionBody question={this.props.question} />
         {/* <EngagementButtons question={this.props.question} /> */}
         <EngagementBtns
           question={this.props.question}
