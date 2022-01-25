@@ -189,7 +189,7 @@ function SideNav({ user }) {
 
             {/* Ask question btn */}
             <Link to='/post' style={{ textDecoration: "none" }}>
-              <button className='navlink btn  btn-green nav-post-btn '>
+              <button className='navlink btn mx-2 btn-green nav-post-btn '>
                 <div className='nav-tooltip nav-tooltip-brand'>Ask</div>
                 <svg
                   width='24'
@@ -202,7 +202,7 @@ function SideNav({ user }) {
                     fill='#fff'
                   />
                 </svg>
-                <p className='mx-2 .dont-break'>Make a post</p>
+                Post
               </button>
             </Link>
           </div>

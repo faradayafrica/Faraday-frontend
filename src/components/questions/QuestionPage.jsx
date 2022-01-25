@@ -8,12 +8,19 @@ import QuestionProfile from "../styledComponents/QuestionProfile";
 import Loader from "../styledComponents/Loader";
 import ButtonBar from "../styledComponents/buttonBar";
 import Like from "../styledComponents/Like.jsx";
+import {
+  QuestionContent,
+  QuestionTitle,
+  QuestionTitleContainer,
+} from "../styled/QuestionPageStyled";
+import DropAnswer from "./DropAnswer";
 
 class QuestionPage extends Component {
   render() {
     const { questions, match } = this.props;
 
     const question = questions.filter((q) => q.id === match.params.id);
+    console.log(question);
     const newQuestion = {
       ...question[0],
     };
@@ -41,41 +48,40 @@ class QuestionPage extends Component {
             <div className='question-page'>
               <QuestionProfile question={newQuestion} />
 
-              <Like
-                onDislike={this.props.onDislike}
-                onLike={this.props.onLike}
-                question={question}
-              />
-              {/* question profile ends here */}
-              <p className='question-page-content'>{newQuestion.body}</p>
-              <p className='question-tag ' style={{ fontSize: "18px" }}>
-                {newQuestion.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className='icon-container-secondary'
-                    style={{ padding: "4px 6px" }}
-                  >
-                    #{tag}{" "}
-                  </span>
-                ))}
-              </p>
+              <QuestionTitleContainer>
+                <Like
+                  onDislike={this.props.onDislike}
+                  onLike={this.props.onLike}
+                  question={question}
+                />
+                <QuestionTitle>
+                  <h2 className='question__title'>{newQuestion.body}</h2>
+                  <p className='question__tags'>
+                    {newQuestion.tags.map((tag) => (
+                      <span key={tag} className=''>
+                        #{tag}
+                      </span>
+                    ))}
+                  </p>
+                </QuestionTitle>
+              </QuestionTitleContainer>
+              <QuestionContent>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Porttitor laoreet convallis platea nec amet non maecenas.
+                  Ipsum feugiat eu, ullamcorper odio. Feugiat nisl nibh quis
+                  dignissim eget faucibus semper. Lorem ipsum dolor sit amet,
+                  consectetur adipiscing elit.
+                </p>
+                <p>
+                  Porttitor laoreet convallis platea nec amet non maecenas.
+                  Ipsum feugiat eu, ullamcorper odio. Feugiat nisl nibh quis
+                  dignissim eget faucibus semper. This contains more information
+                  about the question, what have been tried, parameter for the
+                  equations, ...
+                </p>
+              </QuestionContent>
 
-              <h6>
-                <span className='badge badge-brand mr-2'>
-                  {newQuestion.answers.length} Answers
-                </span>
-
-                <span className='badge badge-brand mr-2'>
-                  {newQuestion.echo} Echoes
-                </span>
-
-                <span className='badge badge-brand'>
-                  {newQuestion.voteCount} Votes
-                </span>
-              </h6>
-
-              {/* Here comes the buttons */}
-              {/* <QuestionPageButtons question={newQuestion} /> */}
               <ButtonBar
                 question={newQuestion}
                 fluid={true}
@@ -84,8 +90,8 @@ class QuestionPage extends Component {
                 onBookmark={this.props.onBookmark}
               />
             </div>
+            <DropAnswer />
             <Answers answers={newQuestion.answers} />
-            <div style={{ marginBottom: "3.5rem" }}></div>
           </React.Fragment>
         )}
       </React.Fragment>
