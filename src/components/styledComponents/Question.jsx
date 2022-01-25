@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import QuestionBody from './QuestionBody';
-import QuestionProfile from './QuestionProfile';
-import ViewAnswers from './ViewAnswers';
+import React, { Component } from "react";
+import QuestionBody from "./QuestionBody";
+import QuestionProfile from "./QuestionProfile";
 
-import EngagementBtns from './engagementBtns';
+import EngagementBtns from "./engagementBtns";
 
 class Question extends Component {
   render() {
@@ -16,7 +15,6 @@ class Question extends Component {
           handleLike={this.handleLikeClick}
           onLike={this.props.onLike}
           onDislike={this.props.onDislike}
-         
         />
         {/* <EngagementButtons question={this.props.question} /> */}
         <EngagementBtns

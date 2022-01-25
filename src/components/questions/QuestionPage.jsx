@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import Header from '../styledComponents/Header';
-import Back from '../../images/back.svg';
+import React, { Component } from "react";
+import Header from "../styledComponents/Header";
+import Back from "../../images/back.svg";
 
-import Answers from '../styledComponents/Answers';
-import QuestionProfile from '../styledComponents/QuestionProfile';
+import Answers from "../styledComponents/Answers";
+import QuestionProfile from "../styledComponents/QuestionProfile";
 
-import Loader from '../styledComponents/loader';
-import ButtonBar from '../styledComponents/buttonBar';
+import Loader from "../styledComponents/Loader";
+import ButtonBar from "../styledComponents/buttonBar";
 
 class QuestionPage extends Component {
   render() {
     const { questions, match } = this.props;
 
-    const question = questions.filter(q => q.id === match.params.id);
+    const question = questions.filter((q) => q.id === match.params.id);
     const newQuestion = {
       ...question[0],
     };
@@ -23,7 +23,7 @@ class QuestionPage extends Component {
     return (
       <React.Fragment>
         {this.props.questions.length === 0 ? (
-          <Loader onRefresh={this.props.onRefresh}/>
+          <Loader onRefresh={this.props.onRefresh} />
         ) : (
           <React.Fragment>
             <div className=' header-questionpage sticky-nav horinzontal-align '>
@@ -42,10 +42,18 @@ class QuestionPage extends Component {
 
               {/* question profile ends here */}
               <p className='question-page-content'>{newQuestion.body}</p>
-              <p className='question-tag ' style={{fontSize: "18px"}}>{newQuestion.tags.map(tag => (
-            <span key={tag} className="icon-container-secondary" style={{padding: "4px 6px"}}>#{tag} </span>
-          ))}</p>
-              
+              <p className='question-tag ' style={{ fontSize: "18px" }}>
+                {newQuestion.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className='icon-container-secondary'
+                    style={{ padding: "4px 6px" }}
+                  >
+                    #{tag}{" "}
+                  </span>
+                ))}
+              </p>
+
               <h6>
                 <span className='badge badge-brand mr-2'>
                   {newQuestion.answers.length} Answers
@@ -71,7 +79,7 @@ class QuestionPage extends Component {
               />
             </div>
             <Answers answers={newQuestion.answers} />
-            <div style={{ marginBottom: '3.5rem' }}></div>
+            <div style={{ marginBottom: "3.5rem" }}></div>
           </React.Fragment>
         )}
       </React.Fragment>

@@ -1,7 +1,3 @@
-p {
-  margin-bottom: 0 !important;
-}
-
 .side-header {
   font-family: "work sans";
   background: #f9fafb;
@@ -15,6 +11,10 @@ p {
     h3 {
       margin-bottom: 0;
     }
+  }
+
+  p {
+    margin-bottom: 0 !important;
   }
 }
 
