@@ -9,6 +9,11 @@ export const QuestionBodyContent = styled.div`
     font-size: 18px;
     line-height: 130%;
     color: #3f3f41;
+    transition: color 200ms ease-in;
+
+    &:hover {
+      color: #05b851;
+    }
   }
 
   .question__tags {

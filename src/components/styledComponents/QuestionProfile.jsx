@@ -1,12 +1,29 @@
 import React, { Component } from "react";
 // import departmentIcon from "../../images/department.svg";
-import { ReactComponent as MenuIcon } from "../../images/dropdown-menu.svg";
+
+import DropdownComp from "../Dropdown";
 import { QuestionProfileHeading } from "../styled/QuestionPageStyled";
 
 class QuestionProfile extends Component {
   render() {
     const { fname, lname, username, image } = this.props.question;
-    console.log(this.props.question);
+    // console.log(this.props.question);
+
+    let dropdownItems = [
+      {
+        name: "Bookmark",
+        link: "#",
+      },
+      {
+        name: "Share",
+        link: "#",
+      },
+      {
+        name: "Report",
+        link: "#",
+      },
+    ];
+
     return (
       <QuestionProfileHeading>
         <div>
@@ -20,9 +37,7 @@ class QuestionProfile extends Component {
               <p className='profile__username'>@{username}</p>
             </div>
 
-            <button className='btn p-0'>
-              <MenuIcon />
-            </button>
+            <DropdownComp dropdownItems={dropdownItems} />
           </div>
         </div>
         <span className='profile__date'>September 15, 2021</span>

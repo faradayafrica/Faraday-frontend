@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const WelcomeContent = styled.div`
   background: #05b851;
   width: 100%;
-  padding: 20px;
+  padding: 28px;
   font-family: Work Sans;
 
   h2 {
@@ -22,6 +22,20 @@ export const WelcomeContent = styled.div`
     font-weight: bold;
     font-size: 14px;
     line-height: 16px;
+  }
+
+  button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-family: Work Sans;
+    background: #ffffff6c;
+    color: #fff;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 8px;
+    text-align: left;
+    margin-top: 1rem;
   }
 
   @media (min-width: 576px) {

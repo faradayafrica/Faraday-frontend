@@ -19,7 +19,7 @@ function QuestionBody({ question }) {
   return (
     <>
       <QuestionBodyContent>
-        <div className='question-body horinzontal-align'>
+        <div className='my-2'>
           <div>
             <Link
               to={`/Qfeed/${question.id}`}
