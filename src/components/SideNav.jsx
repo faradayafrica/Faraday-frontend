@@ -148,7 +148,7 @@ function SideNav({ user }) {
 
   return (
     <>
-      <div className='sidenav-container  px-2  order-md-first active'>
+      <div className='sidenav-container  px-2 position-relative order-md-first active'>
         <div className='position-fixed  d-flex flex-column justify-content-between h-100'>
           <div>
             <nav className='row my-3 ml-1 menu-nav'>
@@ -189,8 +189,8 @@ function SideNav({ user }) {
 
             {/* Ask question btn */}
             <Link to='/post' style={{ textDecoration: "none" }}>
-              <button className='navlink btn mx-2 btn-green nav-post-btn '>
-                <div className='nav-tooltip nav-tooltip-brand'>Ask</div>
+              <button className='navlink btn btn-green nav-post-btn '>
+                <span className='nav-tooltip nav-tooltip-brand'>Ask</span>
                 <svg
                   width='24'
                   height='24'
@@ -202,26 +202,25 @@ function SideNav({ user }) {
                     fill='#fff'
                   />
                 </svg>
-                Post
+                <p className='ml-2.dont-break'>Post</p>
               </button>
             </Link>
           </div>
-        </div>
 
-        <div className='d-flex border-top border-bottom px-2 py-3 position-absolute fixed-bottom profile-sideNav'>
-          <div className='nav-tooltip'>Profile</div>
-          <img
-            src={Avatar}
-            alt=''
-            className='rounded-circle mr-2'
-            width='40px'
-            height='40px'
-          />
-          <div className='profile-info'>
-            <h2 className='name'>
-              {user?.first_name} {user?.last_name}
-            </h2>
-            <p className='username'>@{user?.username}</p>
+          <div className='d-flex border-top border-bottom px-2 py-3 align-items-end fixed- bottom profile-sideNav'>
+            <img
+              src={Avatar}
+              alt=''
+              className='rounded-circle mr-2'
+              width='40px'
+              height='40px'
+            />
+            <div className='profile-info'>
+              <h2 className='name'>
+                {user?.first_name} {user?.last_name}
+              </h2>
+              <p className='username'>@{user?.username}</p>
+            </div>
           </div>
         </div>
       </div>

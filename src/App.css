@@ -1307,3 +1307,7 @@ form {
     grid-template-columns: 1fr 300px;
   }
 }
+
+.dropdown-toggle::after {
+  display: none !important;
+}

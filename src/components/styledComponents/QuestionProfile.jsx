@@ -30,7 +30,7 @@ class QuestionProfile extends Component {
           <img src={image} alt='profile' className='profile-image' />
 
           <div className='profile__heading'>
-            <div>
+            <div className='profile__details'>
               <h3>
                 {fname} {lname}
               </h3>

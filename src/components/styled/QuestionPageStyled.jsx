@@ -55,6 +55,10 @@ export const QuestionProfileHeading = styled.div`
     display: flex;
   }
 
+  .profile__details {
+    align-self: flex-start;
+  }
+
   .profile__heading {
     display: flex;
     justify-content: space-between;
