@@ -12,7 +12,7 @@ class Answer extends Component {
         <QuestionProfile question={answer} />
 
         <div className='d-flex'>
-          <div>
+          <div className='d-flex flex-column align-items-center'>
             <Like
               onDislike={this.props.onDislike}
               onLike={this.props.onLike}

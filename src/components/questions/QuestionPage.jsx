@@ -6,7 +6,7 @@ import Answers from "../styledComponents/Answers";
 import QuestionProfile from "../styledComponents/QuestionProfile";
 
 import Loader from "../styledComponents/Loader";
-import ButtonBar from "../styledComponents/buttonBar";
+import ButtonBar from "../styledComponents/ButtonBar";
 import Like from "../styledComponents/Like.jsx";
 import {
   QuestionContent,
