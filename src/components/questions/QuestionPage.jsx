@@ -53,6 +53,8 @@ class QuestionPage extends Component {
                   onDislike={this.props.onDislike}
                   onLike={this.props.onLike}
                   question={question}
+                  handleDislike={this.props.handleDislikeClick}
+                  handleLike={this.props.handleLikeClick}
                 />
                 <QuestionTitle>
                   <h2 className='question__title'>{newQuestion.body}</h2>
