@@ -1,27 +1,47 @@
-import React, { Component } from 'react';
-import departmentIcon from '../../images/department.svg';
+import React, { Component } from "react";
+// import departmentIcon from "../../images/department.svg";
+
+import DropdownComp from "../Dropdown";
+import { QuestionProfileHeading } from "../styled/QuestionPageStyled";
 
 class QuestionProfile extends Component {
   render() {
-    const { fname, lname, department, time, username, image } =
-      this.props.question;
-    return (
-      <div className='horinzontal-align txt'>
-        <img className='profile-image' src={image} alt='profile' />
+    const { fname, lname, username, image } = this.props.question;
+    // console.log(this.props.question);
 
-        <div className='user-info col ml-2'>
-          <div className='horinzontal-align'>
-            <p className='profile-name text-dark'>{fname}</p>
-            <p className='profile-name text-dark'>{lname}</p>
-            <p>@{username}</p>
-            <p>{time}</p>
-          </div>
-          <div className='horinzontal-align'>
-            <img src={departmentIcon} alt='department icon' />
-            <p className='dont-break'>{department}</p>
+    let dropdownItems = [
+      {
+        name: "Bookmark",
+        link: "#",
+      },
+      {
+        name: "Share",
+        link: "#",
+      },
+      {
+        name: "Report",
+        link: "#",
+      },
+    ];
+
+    return (
+      <QuestionProfileHeading>
+        <div>
+          <img src={image} alt='profile' className='profile-image' />
+
+          <div className='profile__heading'>
+            <div className='profile__details'>
+              <h3>
+                {fname} {lname}
+              </h3>
+              <p className='profile__username'>@{username}</p>
+            </div>
+
+            <DropdownComp dropdownItems={dropdownItems} />
           </div>
         </div>
-      </div>
+        <span className='profile__date'>September 15, 2021</span>
+      </QuestionProfileHeading>
     );
   }
 }

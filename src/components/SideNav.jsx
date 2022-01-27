@@ -1,16 +1,18 @@
-import React from "react";
-import faraday from "../images/logo.svg";
-import NavLink from "./styledComponents/NavLink";
-import { Link } from "react-router-dom";
-import NavDropdown from "./styledComponents/NavDropdown";
-import Avatar from "../images/profile1.png";
-import { useState } from "react";
-import MobileBottomNav from "./MobileBottomNav";
+import React from 'react';
+import faraday from '../images/logo.svg';
+import NavLink from './styledComponents/NavLink';
+import { Link } from 'react-router-dom';
+import NavDropdown from './styledComponents/NavDropdown';
+import Avatar from '../images/profile1.png';
+import { useState } from 'react';
+import MobileBottomNav from './MobileBottomNav';
+import { getCurrentUser } from '../services/authService';
 
 function SideNav({ user }) {
+  const currentUser = getCurrentUser();
   const [links, setLinks] = useState([
     {
-      item: "Qfeed",
+      item: 'Qfeed',
       icon: (
         <svg
           width='24'
@@ -34,7 +36,7 @@ function SideNav({ user }) {
       mobile: true,
     },
     {
-      item: "Explore",
+      item: 'Explore',
       icon: (
         <svg
           width='24'
@@ -53,7 +55,7 @@ function SideNav({ user }) {
       mobile: true,
     },
     {
-      item: "Direct",
+      item: 'Direct',
       icon: (
         <svg
           width='24'
@@ -68,7 +70,7 @@ function SideNav({ user }) {
       mobile: true,
     },
     {
-      item: "Notification",
+      item: 'Notification',
       icon: (
         <svg
           width='24'
@@ -83,7 +85,7 @@ function SideNav({ user }) {
       mobile: true,
     },
     {
-      item: "Profile",
+      item: 'Profile',
       icon: (
         <svg
           width='24'
@@ -98,10 +100,11 @@ function SideNav({ user }) {
           />
         </svg>
       ),
+      url: `/me/${currentUser.username}`,
       focus: false,
     },
     {
-      item: "Bookmarks",
+      item: 'Bookmarks',
       icon: (
         <svg
           width='14'
@@ -124,19 +127,19 @@ function SideNav({ user }) {
   ]);
 
   const onMenuClick = () => {
-    let sideNav = document.querySelector(".sidenav-container");
+    let sideNav = document.querySelector('.sidenav-container');
 
-    sideNav.classList.toggle("active");
+    sideNav.classList.toggle('active');
   };
 
-  const handleLink = (item) => {
+  const handleLink = item => {
     // history.replace(`/${item}`);
-    const allLinks = links.map((link) => {
+    const allLinks = links.map(link => {
       link.focus = false;
       return link;
     });
 
-    links.filter((link) => {
+    links.filter(link => {
       if (link.item === item) {
         link.focus = true;
       }
@@ -148,7 +151,7 @@ function SideNav({ user }) {
 
   return (
     <>
-      <div className='sidenav-container  px-2  order-md-first active'>
+      <div className='sidenav-container  px-2 position-relative order-md-first active'>
         <div className='position-fixed  d-flex flex-column justify-content-between h-100'>
           <div>
             <nav className='row my-3 ml-1 menu-nav'>
@@ -175,7 +178,7 @@ function SideNav({ user }) {
               </div>
             </nav>
 
-            {links?.map((link) => (
+            {links?.map(link => (
               <NavLink
                 key={link.item}
                 link={link}
@@ -188,9 +191,9 @@ function SideNav({ user }) {
             <NavDropdown name='More' user={user} />
 
             {/* Ask question btn */}
-            <Link to='/post' style={{ textDecoration: "none" }}>
-              <button className='navlink btn  btn-green nav-post-btn '>
-                <div className='nav-tooltip nav-tooltip-brand'>Ask</div>
+            <Link to='/post' style={{ textDecoration: 'none' }}>
+              <button className='navlink btn btn-green nav-post-btn '>
+                <span className='nav-tooltip nav-tooltip-brand'>Ask</span>
                 <svg
                   width='24'
                   height='24'
@@ -202,26 +205,25 @@ function SideNav({ user }) {
                     fill='#fff'
                   />
                 </svg>
-                <p className='mx-2 .dont-break'>Make a post</p>
+                <p className='ml-2.dont-break'>Post</p>
               </button>
             </Link>
           </div>
-        </div>
 
-        <div className='d-flex border-top border-bottom px-2 py-3 position-absolute fixed-bottom profile-sideNav'>
-          <div className='nav-tooltip'>Profile</div>
-          <img
-            src={Avatar}
-            alt=''
-            className='rounded-circle mr-2'
-            width='40px'
-            height='40px'
-          />
-          <div className='profile-info'>
-            <h2 className='name'>
-              {user?.first_name} {user?.last_name}
-            </h2>
-            <p className='username'>@{user?.username}</p>
+          <div className='d-flex border-top border-bottom px-2 py-3 align-items-end fixed- bottom profile-sideNav'>
+            <img
+              src={Avatar}
+              alt=''
+              className='rounded-circle mr-2'
+              width='40px'
+              height='40px'
+            />
+            <div className='profile-info'>
+              <h2 className='name'>
+                {user?.first_name} {user?.last_name}
+              </h2>
+              <p className='username'>@{user?.username}</p>
+            </div>
           </div>
         </div>
       </div>

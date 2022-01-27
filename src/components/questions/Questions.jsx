@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Header from "../styledComponents/Header";
+import WelcomeComp from "../WelcomeComp";
 // import PostComponent from "../styledComponents/postComponent";
 
 class Questions extends Component {
@@ -9,6 +10,7 @@ class Questions extends Component {
         <div className='header sticky-nav '>
           <Header>Question feed</Header>
         </div>
+        <WelcomeComp />
         {/* <PostComponent onPost={this.props.onPost} user={this.props.user} /> */}
         {this.props.renderQuestion()}
 

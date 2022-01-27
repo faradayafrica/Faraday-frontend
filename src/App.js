@@ -1,34 +1,34 @@
-import React from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import ProtectedRoute from "./components/common/protectedRoute.jsx";
+import React from 'react';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import ProtectedRoute from './components/common/protectedRoute.jsx';
 
-import Qfeed from "./routes/Qfeed.jsx";
-import Courses from "./routes/Courses";
-import Direct from "./routes/Direct";
-import Notification from "./components/Notification";
-import Profile from "./routes/Profile";
+import Qfeed from './routes/Qfeed.jsx';
+import Courses from './routes/Courses';
+import Direct from './routes/Direct';
+import Notification from './components/Notification';
+import Profile from './routes/Profile';
 
-import SideNav from "./components/SideNav";
-import Body from "./components/styledComponents/Body";
-import Post from "./components/Post";
-import NotFound from "./routes/NotFound";
-import Explore from "./components/other pages/explore";
-import Bookmarks from "./components/other pages/bookmarks";
-import Setting from "./components/other pages/setting";
-import Sponsors from "./components/other pages/sponsors";
-import SavedCourses from "./components/other pages/saved-courses";
+import SideNav from './components/SideNav';
+import Body from './components/styledComponents/Body';
+import Post from './components/Post';
+import NotFound from './routes/NotFound';
+import Explore from './components/other pages/explore';
+import Bookmarks from './components/other pages/bookmarks';
+import Setting from './components/other pages/setting';
+import Sponsors from './components/other pages/sponsors';
+import SavedCourses from './components/other pages/saved-courses';
 // import MobileSidenav from './components/other pages/mobileSidenav';
-import LoginForm from "./components/loginForm";
-import SignUpForm from "./components/signUpForm";
-import ConfirmEmail from "./components/other pages/signup process/confirmEmail.jsx";
-import AddSchoolDetail from "./components/other pages/signup process/addSchoolDetail";
-import PersonalData from "./components/other pages/signup process/personalData";
-import TermsAndCondition from "./components/other pages/termsAndCondition.jsx";
-import PrivacyPolicy from "./components/other pages/privacyPolicy";
-import Logout from "./components/styledComponents/logout.jsx";
-import auth from "./services/authService.js";
-import "./App.css";
-import MobileSideNav from "./components/MobileSideNav.jsx";
+import LoginForm from './components/loginForm';
+import SignUpForm from './components/signUpForm';
+import ConfirmEmail from './components/other pages/signup process/confirmEmail.jsx';
+import AddSchoolDetail from './components/other pages/signup process/addSchoolDetail';
+import PersonalData from './components/other pages/signup process/personalData';
+import TermsAndCondition from './components/other pages/termsAndCondition.jsx';
+import PrivacyPolicy from './components/other pages/privacyPolicy';
+import Logout from './components/styledComponents/logout.jsx';
+import auth from './services/authService.js';
+import './App.css';
+import MobileSideNav from './components/MobileSideNav.jsx';
 
 class App extends React.Component {
   state = {};
@@ -42,6 +42,7 @@ class App extends React.Component {
 
   render() {
     const { user } = this.state;
+
     return (
       <BrowserRouter>
         <Body className=''>
@@ -62,20 +63,23 @@ class App extends React.Component {
             <ProtectedRoute path='/bookmarks' component={Bookmarks} />
             <ProtectedRoute path='/explore' component={Explore} />
             <ProtectedRoute path='/courses' component={Courses} />
-            <ProtectedRoute
+            {/* <ProtectedRoute
               path='/profile'
-              render={(props) => <Profile user={this.state.user} {...props} />}
-            />
-            <ProtectedRoute
+              render={props => <Profile user={this.state.user} {...props} />}
+            /> */}
+            {/* <ProtectedRoute
               path='/qfeed'
               render={(props) => <Qfeed user={this.state.user} {...props} />}
-            />
+            /> */}
+            <ProtectedRoute path='/qfeed' render={props => <Qfeed />} />
             <ProtectedRoute path='/direct' component={Direct} />
             <ProtectedRoute path='/notification' component={Notification} />
             <ProtectedRoute path='/post' component={Post} />
+            {/* <ProtectedRoute path='/:username' render={props => <Profile />} /> */}
+            <ProtectedRoute path='/me/:username' component={Profile} />
             <Route path='/not-found' component={NotFound} />
-            <ProtectedRoute path='/' exact component={Courses} />
-            <Redirect push to='not-found' />
+            <ProtectedRoute path='/' exact component={Qfeed} />
+            <Redirect push to='/not-found' />
           </Switch>
         </Body>
       </BrowserRouter>

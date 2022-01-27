@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function ProfileNav({ user }) {
   return (
@@ -19,7 +19,8 @@ function ProfileNav({ user }) {
 
         <div className=' flex-col'>
           <h3>
-            {user?.last_name} {user?.first_name}
+            {user.last_name ? user.last_name : 'First'}{' '}
+            {user.first_name ? user.first_name : 'Surname'}
           </h3>
           <p className=''>143 Question</p>
         </div>

@@ -1,21 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import Avatar from "../images/profile1.png";
-import ProfileIcon from "../images/profile.svg";
-import BookMarkIcon from "../images/Bookmarks.svg";
-import "../styles/mobileSideNav.scss";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Avatar from '../images/profile1.png';
+import ProfileIcon from '../images/profile.svg';
+import BookMarkIcon from '../images/Bookmarks.svg';
+import '../styles/mobileSideNav.scss';
+import { getCurrentUser } from '../services/authService';
+import { useLocation } from 'react-router-dom';
 
 function MobileNav({ user }) {
   const [isProfile, setIsProfile] = useState(false);
+  const currentUser = getCurrentUser();
   // console.log(user);
 
   const location = useLocation();
 
   useEffect(() => {
-    const allowedRoutes = "profile";
+    const allowedRoutes = 'profile';
 
-    if (allowedRoutes.includes(location.pathname.replace("/", ""))) {
+    if (allowedRoutes.includes(location.pathname.replace('/', ''))) {
       setIsProfile(true);
     } else {
       setIsProfile(false);
@@ -23,9 +25,9 @@ function MobileNav({ user }) {
   }, [location.pathname]);
 
   const handleMobileMenuClick = () => {
-    let mobileSidenav = document.querySelector(".side");
+    let mobileSidenav = document.querySelector('.side');
 
-    mobileSidenav.classList.toggle("side-active");
+    mobileSidenav.classList.toggle('side-active');
   };
 
   return (
@@ -109,9 +111,9 @@ function MobileNav({ user }) {
             <div className='side-links'>
               <div onClick={handleMobileMenuClick}>
                 <Link
-                  to='/profile'
+                  to={`/me/${currentUser.username}`}
                   style={{
-                    textDecoration: "none",
+                    textDecoration: 'none',
                   }}
                 >
                   <div className='mobile-link'>
@@ -120,8 +122,8 @@ function MobileNav({ user }) {
                     <p
                       className='my-auto .dont-break'
                       style={{
-                        display: "inline",
-                        position: "relative",
+                        display: 'inline',
+                        position: 'relative',
                         top: 2,
                       }}
                     >
@@ -129,14 +131,14 @@ function MobileNav({ user }) {
                     </p>
                   </div>
                 </Link>
-                <Link to='/bookmarks' style={{ textDecoration: "none" }}>
+                <Link to='/bookmarks' style={{ textDecoration: 'none' }}>
                   <div className='mobile-link'>
                     <img src={BookMarkIcon} alt='' className='icon' />
                     <p
                       className='my-auto .dont-break'
                       style={{
-                        display: "inline",
-                        position: "relative",
+                        display: 'inline',
+                        position: 'relative',
                         top: 2,
                       }}
                     >
@@ -144,7 +146,7 @@ function MobileNav({ user }) {
                     </p>
                   </div>
                 </Link>
-                <Link to='/sponsors' style={{ textDecoration: "none" }}>
+                <Link to='/sponsors' style={{ textDecoration: 'none' }}>
                   <div className='mobile-link'>
                     <svg
                       width='24'
@@ -162,17 +164,17 @@ function MobileNav({ user }) {
                     <p
                       className='my-auto .dont-break'
                       style={{
-                        display: "inline",
-                        position: "relative",
+                        display: 'inline',
+                        position: 'relative',
                         top: 2,
-                        color: "#5551FE",
+                        color: '#5551FE',
                       }}
                     >
                       Sponsors
                     </p>
                   </div>
                 </Link>
-                <Link to='/setting' style={{ textDecoration: "none" }}>
+                <Link to='/setting' style={{ textDecoration: 'none' }}>
                   <div className='mobile-link'>
                     <svg
                       width='24'
@@ -190,8 +192,8 @@ function MobileNav({ user }) {
                     <p
                       className='my-auto .dont-break'
                       style={{
-                        display: "inline",
-                        position: "relative",
+                        display: 'inline',
+                        position: 'relative',
                         top: 2,
                       }}
                     >
@@ -199,7 +201,7 @@ function MobileNav({ user }) {
                     </p>
                   </div>
                 </Link>
-                <Link to='/logout' style={{ textDecoration: "none" }}>
+                <Link to='/logout' style={{ textDecoration: 'none' }}>
                   <div className='mobile-link'>
                     <svg
                       width='24'
@@ -217,8 +219,8 @@ function MobileNav({ user }) {
                     <p
                       className='mr-1 my-auto .dont-break'
                       style={{
-                        display: "inline",
-                        position: "relative",
+                        display: 'inline',
+                        position: 'relative',
                         top: 2,
                       }}
                     >
