@@ -1,16 +1,18 @@
-import React from "react";
-import faraday from "../images/logo.svg";
-import NavLink from "./styledComponents/NavLink";
-import { Link } from "react-router-dom";
-import NavDropdown from "./styledComponents/NavDropdown";
-import Avatar from "../images/profile1.png";
-import { useState } from "react";
-import MobileBottomNav from "./MobileBottomNav";
+import React from 'react';
+import faraday from '../images/logo.svg';
+import NavLink from './styledComponents/NavLink';
+import { Link } from 'react-router-dom';
+import NavDropdown from './styledComponents/NavDropdown';
+import Avatar from '../images/profile1.png';
+import { useState } from 'react';
+import MobileBottomNav from './MobileBottomNav';
+import { getCurrentUser } from '../services/authService';
 
 function SideNav({ user }) {
+  const currentUser = getCurrentUser();
   const [links, setLinks] = useState([
     {
-      item: "Qfeed",
+      item: 'Qfeed',
       icon: (
         <svg
           width='24'
@@ -34,7 +36,7 @@ function SideNav({ user }) {
       mobile: true,
     },
     {
-      item: "Explore",
+      item: 'Explore',
       icon: (
         <svg
           width='24'
@@ -53,7 +55,7 @@ function SideNav({ user }) {
       mobile: true,
     },
     {
-      item: "Direct",
+      item: 'Direct',
       icon: (
         <svg
           width='24'
@@ -68,7 +70,7 @@ function SideNav({ user }) {
       mobile: true,
     },
     {
-      item: "Notification",
+      item: 'Notification',
       icon: (
         <svg
           width='24'
@@ -83,7 +85,7 @@ function SideNav({ user }) {
       mobile: true,
     },
     {
-      item: "Profile",
+      item: 'Profile',
       icon: (
         <svg
           width='24'
@@ -98,10 +100,11 @@ function SideNav({ user }) {
           />
         </svg>
       ),
+      url: `/me/${currentUser.username}`,
       focus: false,
     },
     {
-      item: "Bookmarks",
+      item: 'Bookmarks',
       icon: (
         <svg
           width='14'
@@ -124,19 +127,19 @@ function SideNav({ user }) {
   ]);
 
   const onMenuClick = () => {
-    let sideNav = document.querySelector(".sidenav-container");
+    let sideNav = document.querySelector('.sidenav-container');
 
-    sideNav.classList.toggle("active");
+    sideNav.classList.toggle('active');
   };
 
-  const handleLink = (item) => {
+  const handleLink = item => {
     // history.replace(`/${item}`);
-    const allLinks = links.map((link) => {
+    const allLinks = links.map(link => {
       link.focus = false;
       return link;
     });
 
-    links.filter((link) => {
+    links.filter(link => {
       if (link.item === item) {
         link.focus = true;
       }
@@ -175,7 +178,7 @@ function SideNav({ user }) {
               </div>
             </nav>
 
-            {links?.map((link) => (
+            {links?.map(link => (
               <NavLink
                 key={link.item}
                 link={link}
@@ -188,7 +191,7 @@ function SideNav({ user }) {
             <NavDropdown name='More' user={user} />
 
             {/* Ask question btn */}
-            <Link to='/post' style={{ textDecoration: "none" }}>
+            <Link to='/post' style={{ textDecoration: 'none' }}>
               <button className='navlink btn btn-green nav-post-btn '>
                 <span className='nav-tooltip nav-tooltip-brand'>Ask</span>
                 <svg

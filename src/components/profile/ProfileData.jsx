@@ -1,16 +1,24 @@
-import React from "react";
-import img from "../../images/profile3.png";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import img from '../../images/profile3.png';
+import { Link } from 'react-router-dom';
+import { getCurrentUser } from '../../services/authService';
 
-function ProfileData({ user, otherProfile }) {
+function ProfileData({ user }) {
+  const currentUser = getCurrentUser();
+
+  console.log(user);
   return (
     <div className='profile__data'>
       <div className='flex justify-content-between'>
-        <img className='rounded-circle' src={img} alt='' />
+        <img
+          className='rounded-circle'
+          src={img}
+          alt={`photo of ${user.last_name} ${user.first_name}`}
+        />
         <div className='align-self-end'>
-          {otherProfile ? (
+          {!currentUser.username === user.username ? (
             <>
-              <Link to='/bookmarks'>
+              <Link to='/direct'>
                 <button className='btn profile__btn'>
                   <svg
                     width='24'
@@ -57,12 +65,14 @@ function ProfileData({ user, otherProfile }) {
 
       <div className='profile__user'>
         <h2>
-          {user.last_name} {user.first_name}
+          {user.last_name ? user.last_name : 'First'}{' '}
+          {user.first_name ? user.first_name : 'Surname'}
         </h2>
         <p className='username'>@{user.username}</p>
         <p className='description'>
-          A brand designer and frontend developer. currently working with
-          @devgenix, @favouritejome1 on a unique edtech solution.
+          {user.bio
+            ? user.bio
+            : `A student of ${user.profile.school}, currently in ${user.profile.level} level. Give me a follow to stay connected with me.`}
         </p>
 
         <div>
@@ -79,7 +89,7 @@ function ProfileData({ user, otherProfile }) {
                 fill='#A2ABB3'
               />
             </svg>
-            <p>Nnamdi Azikwe University, Awka</p>
+            <p>{user.profile.school ? user.profile.school : ' '}</p>
           </div>
           <div className='flex profile__school'>
             <svg
@@ -94,22 +104,21 @@ function ProfileData({ user, otherProfile }) {
                 fill='#A2ABB3'
               />
             </svg>
-            <p> Electronics and Computer Engineering</p>
+            <p>{user.profile.department}</p>
           </div>
         </div>
       </div>
 
       <div className='flex justify-between'>
         <p className='flex ques-solu border-right'>
-          118
-          <span>Questions</span>
+          118 <span>Questions</span>
         </p>
         <p className='flex ques-solu border-right'>
           24
           <span>Solutions</span>
         </p>
         <p className='flex ques-solu'>
-          92
+          {user.profile.followers_count}
           <span>Followers</span>
         </p>
       </div>

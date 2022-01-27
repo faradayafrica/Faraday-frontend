@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import Header from "../styledComponents/Header";
-import Back from "../../images/back.svg";
+import React, { Component } from 'react';
+import Header from '../styledComponents/Header';
+import Back from '../../images/back.svg';
 
-import Answers from "../styledComponents/Answers";
-import QuestionProfile from "../styledComponents/QuestionProfile";
+import Answers from '../styledComponents/Answers';
+import QuestionProfile from '../styledComponents/QuestionProfile';
 
-import Loader from "../styledComponents/Loader";
-import ButtonBar from "../styledComponents/ButtonBar";
-import Like from "../styledComponents/Like.jsx";
+import Loader from '../styledComponents/loader';
+import ButtonBar from '../styledComponents/buttonBar';
+import Like from '../styledComponents/Like.jsx';
 import {
   QuestionContent,
   QuestionTitle,
   QuestionTitleContainer,
-} from "../styled/QuestionPageStyled";
-import DropAnswer from "./DropAnswer";
+} from '../styled/QuestionPageStyled';
+import DropAnswer from './DropAnswer';
 
 class QuestionPage extends Component {
   render() {
     const { questions, match } = this.props;
 
-    const question = questions.filter((q) => q.id === match.params.id);
+    const question = questions.filter(q => q.id === match.params.id);
     console.log(question);
     const newQuestion = {
       ...question[0],
@@ -57,7 +57,7 @@ class QuestionPage extends Component {
                 <QuestionTitle>
                   <h2 className='question__title'>{newQuestion.body}</h2>
                   <p className='question__tags'>
-                    {newQuestion.tags.map((tag) => (
+                    {newQuestion.tags.map(tag => (
                       <span key={tag} className=''>
                         #{tag}
                       </span>

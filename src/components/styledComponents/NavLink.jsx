@@ -1,16 +1,17 @@
-import { Link } from "react-router-dom";
-import React, { Component } from "react";
+import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
 
 class NavLink extends Component {
   render() {
-    const { item, focus, green, icon } = this.props.link;
-    const url = `/${item.toLowerCase()}`;
+    const { item, focus, green, icon, url } = this.props.link;
+    const newUrl = `/${item.toLowerCase()}`;
 
     return (
       <Link
-        to={url}
+        //url comes from the profile link as props
+        to={url ? url : newUrl}
         className='align-item-center'
-        style={{ textDecoration: "none" }}
+        style={{ textDecoration: 'none' }}
       >
         <button
           className={this.renderNavlink(focus, green)}
@@ -25,22 +26,22 @@ class NavLink extends Component {
   }
 
   renderNavlink = (focus, green) => {
-    let classes = "navlink btn ";
+    let classes = 'navlink btn ';
     if (focus) {
-      classes += "active-nav ";
+      classes += 'active-nav ';
     }
     if (green === true) {
-      classes += " btn-green";
+      classes += ' btn-green';
     }
 
     return classes;
   };
 
-  renderNavIcon = (focus) => {
+  renderNavIcon = focus => {
     if (focus === true) {
-      return "icon active-icon";
+      return 'icon active-icon';
     } else {
-      return "icon";
+      return 'icon';
     }
   };
 }
