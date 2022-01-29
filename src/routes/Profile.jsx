@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import ProfileNav from '../components/profile/ProfileNav';
-import Loader from '../components/styledComponents/loader';
-import ProfileData from '../components/profile/ProfileData';
-import '../styles/profile.scss';
-import ProfileInfo from '../components/profile/ProfileInfo';
-import { apiUrl } from '../config.json';
-import http from '../services/httpService';
+import React, { useEffect, useState } from "react";
+import ProfileNav from "../components/profile/ProfileNav";
+import Loader from "../components/styledComponents/Loader";
+import ProfileData from "../components/profile/ProfileData";
+import "../styles/profile.scss";
+import ProfileInfo from "../components/profile/ProfileInfo";
+import { apiUrl } from "../config.json";
+import http from "../services/httpService";
 
 function Profile({ match }) {
   const userEndpoint = apiUrl + `/users/${match.params.username}/`;
