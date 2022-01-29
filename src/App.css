@@ -90,12 +90,11 @@ QFEED STYLING
   padding: 1rem 14px;
   border-bottom: solid 0.5px var(--outline);
   display: flex;
-  justify-content: flex-start;
+  /* justify-content: flex-start; */
   align-items: center;
-  position: absolute;
+  position: fixed;
   background-color: white;
   width: 100%;
-  z-index: 1000000000;
 }
 
 .header-no-outline {
@@ -771,8 +770,8 @@ SIDENAV STYLING
 
   .mobile-sidenav .hanger-menu {
     position: fixed;
-    top: 16px;
-    left: 16px;
+    top: 20px;
+    left: 20px;
     z-index: 100;
   }
 
