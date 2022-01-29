@@ -4,23 +4,23 @@ import "../../animation.scss";
 import { ReactComponent as IncreaseIcon } from "../../images/arrow-inc.svg";
 import { ReactComponent as DecreaseIcon } from "../../images/arrow-dec.svg";
 
-function Like({ voteCount = 0, isLiked = true, isDisliked, id }) {
-  const animateButton = (e) => {
-    e.preventDefault();
-    //reset animation
-    e.target.classList.remove("animate");
-
-    e.target.classList.add("animate");
-    setTimeout(function () {
-      e.target.classList.remove("animate");
-    }, 700);
-  };
-
-  // const { voteCount = 0, isLiked = true, isDisliked, id } = props.question;
-  // console.log(props.question);
+function Like({ question, handleDislike, handleLike, answer }) {
+  // console.log(question);
+  console.log(answer);
 
   useEffect(() => {
     var bubblyButtons = document.getElementsByClassName("bubbly-button");
+
+    const animateButton = (e) => {
+      e.preventDefault();
+      //reset animation
+      e.target.classList.remove("animate");
+
+      e.target.classList.add("animate");
+      setTimeout(function () {
+        e.target.classList.remove("animate");
+      }, 700);
+    };
 
     for (var i = 0; i < bubblyButtons.length; i++) {
       bubblyButtons[i].addEventListener("click", animateButton, false);
@@ -31,18 +31,20 @@ function Like({ voteCount = 0, isLiked = true, isDisliked, id }) {
     <div className='like bubbly-button'>
       <button
         data-toggle='tooltip'
-        title='like' // onClick={() => props.onLike(id)}
+        title='like'
+        onClick={() => handleLike(question)}
         className='btn like-icon'
       >
-        <IncreaseIcon fill={isLiked ? "#3F3F41" : "none"} />
+        <IncreaseIcon fill={question?.isLiked ? "#3F3F41" : "none"} />
       </button>
-      <p className='profile-name my-0'>{voteCount}</p>
+      <p className='profile-name my-0'>{question?.voteCount}</p>
       <button
         data-toggle='tooltip'
-        title='dislike' // onClick={() => props.onDislike(id)}
+        title='dislike'
+        onClick={() => handleDislike(question)}
         className='btn like-icon'
       >
-        <DecreaseIcon fill={isDisliked ? "#3F3F41" : "none"} />
+        <DecreaseIcon fill={question?.isDisliked ? "#3F3F41" : "none"} />
       </button>
     </div>
   );

@@ -6,7 +6,7 @@ import { QuestionProfileHeading } from "../styled/QuestionPageStyled";
 
 class QuestionProfile extends Component {
   render() {
-    const { fname, lname, username, image } = this.props.question;
+    const { fname, lname, username, image } = this?.props?.question;
     // console.log(this.props.question);
 
     let dropdownItems = [

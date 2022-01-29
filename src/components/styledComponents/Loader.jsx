@@ -13,13 +13,13 @@ function Loader({ onRefresh }) {
   // this displays a retry btn after spinning for a while
   useEffect(() => {
     setTimeout(() => {
-      setLoading(true);
+      setLoading(false);
     }, 5000);
 
     return () => {
-      setLoading(false);
+      setLoading(true);
     };
-  });
+  }, []);
 
   return (
     <React.Fragment>
@@ -30,7 +30,10 @@ function Loader({ onRefresh }) {
       ) : (
         <div className=' retry-container' style={{ marginTop: "3rem" }}>
           <p id='text'>Something went wrong. Please reload</p>
-          <button onClick={onRefresh} className='btn btn-green bubbly-button'>
+          <button
+            onClick={() => onRefresh}
+            className='btn btn-green bubbly-button'
+          >
             <svg
               width='24'
               height='24'
