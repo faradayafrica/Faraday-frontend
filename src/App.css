@@ -91,6 +91,20 @@ QFEED STYLING
   border-bottom: solid 0.5px var(--outline);
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  position: absolute;
+  background-color: white;
+  width: 100%;
+  z-index: 1000000000;
+}
+
+.header-no-outline {
+  padding: 1rem 14px;
+  display: flex;
+  justify-content: flex-start;
+  position: absolute;
+  /* width: 100%; */
+  z-index: 1000000000;
 }
 
 .header-questionpage {
@@ -756,9 +770,9 @@ SIDENAV STYLING
   }
 
   .mobile-sidenav .hanger-menu {
-    position: absolute;
-    top: 14px;
-    left: 14px;
+    position: fixed;
+    top: 16px;
+    left: 16px;
     z-index: 100;
   }
 
@@ -992,7 +1006,7 @@ input:focus {
 LOGIN
 ***************************************************/
 .login-page {
-  font-family: "Poppins", Arial, sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
   color: var(--text2-black);
   position: absolute;
   min-height: 100%;

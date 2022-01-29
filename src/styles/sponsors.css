@@ -1,0 +1,59 @@
+.sponsors-container {
+  /* background-color: #fbf7f4; */
+}
+
+.over-nav {
+  background-color: white;
+  /* background-color: white !important; */
+  margin-bottom: 1rem;
+}
+
+.right-side {
+  /* background-color: #5551fe; */
+  background-color: #fbf7f4;
+}
+
+.subscription-card-container {
+  margin-top: 6rem;
+}
+
+.subscription-card {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.subscription-info {
+  /* display: flex; */
+}
+
+.subscription-price {
+  display: flex;
+  align-items: center;
+}
+
+.subscription-price > p {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.sponsorship-value {
+  padding: 2px 1rem;
+  background-color: #f3ece4;
+  border-radius: 8px;
+}
+
+@media only screen and (max-width: 576px) {
+  /* .sponsors-container {
+    background-color: #fbf7f4;
+    height: 100vh;
+  }
+
+  .over-nav {
+    background-color: #fbf7f4;
+  } */
+
+  .subscription-card-container {
+    margin-top: 2rem;
+  }
+}

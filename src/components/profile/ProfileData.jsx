@@ -16,26 +16,7 @@ function ProfileData({ user }) {
           alt={`photo of ${user.last_name} ${user.first_name}`}
         />
         <div className='align-self-end'>
-          {!currentUser.username === user.username ? (
-            <>
-              <Link to='/direct'>
-                <button className='btn profile__btn'>
-                  <svg
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path d='M19.2 19.4H4.8C3.80589 19.4 3 18.5941 3 17.6V6.7217C3.04195 5.75829 3.83568 4.99909 4.8 5H19.2C20.1941 5 21 5.80589 21 6.8V17.6C21 18.5941 20.1941 19.4 19.2 19.4ZM4.8 8.4812V17.6H19.2V8.4812L12 13.28L4.8 8.4812ZM5.52 6.8L12 11.12L18.48 6.8H5.52Z' />
-                  </svg>
-                </button>
-              </Link>
-
-              <button className='btn profile__btn profile__btn--follow ml-3'>
-                Follow
-              </button>
-            </>
-          ) : (
+          {currentUser.username === user.username ? (
             <>
               <Link to='/bookmarks'>
                 <button className='btn profile__btn'>
@@ -58,6 +39,25 @@ function ProfileData({ user }) {
               </Link>
 
               <button className='btn profile__btn ml-3'>Edit Profile</button>
+            </>
+          ) : (
+            <>
+              <Link to='/direct'>
+                <button className='btn profile__btn'>
+                  <svg
+                    width='24'
+                    height='24'
+                    viewBox='0 0 24 24'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path d='M19.2 19.4H4.8C3.80589 19.4 3 18.5941 3 17.6V6.7217C3.04195 5.75829 3.83568 4.99909 4.8 5H19.2C20.1941 5 21 5.80589 21 6.8V17.6C21 18.5941 20.1941 19.4 19.2 19.4ZM4.8 8.4812V17.6H19.2V8.4812L12 13.28L4.8 8.4812ZM5.52 6.8L12 11.12L18.48 6.8H5.52Z' />
+                  </svg>
+                </button>
+              </Link>
+
+              <button className='btn profile__btn profile__btn--follow ml-3'>
+                Follow
+              </button>
             </>
           )}
         </div>
