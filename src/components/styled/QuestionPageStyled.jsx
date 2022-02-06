@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
 export const QuestionBodyContent = styled.div`
-  font-family: Work Sans;
-
   .question__title {
+    font-family: Work Sans;
     font-style: normal;
     font-weight: bold;
     font-size: 18px;
@@ -37,7 +36,7 @@ export const QuestionBodyContent = styled.div`
 `;
 
 export const QuestionTitleContainer = styled.div`
-  font-family: Work Sans;
+  /* font-family: Work Sans; */
   display: flex;
   align-items: center;
 `;
@@ -49,7 +48,7 @@ export const QuestionTitle = styled(QuestionBodyContent)`
 `;
 
 export const QuestionProfileHeading = styled.div`
-  font-family: Work Sans;
+  /* font-family: Work Sans; */
 
   > div {
     display: flex;
@@ -107,11 +106,11 @@ export const QuestionProfileHeading = styled.div`
 
 export const QuestionContent = styled.div`
   p {
-    font-family: Work Sans;
+    /* font-family: Work Sans; */
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
-    line-height: 130%;
+    /* line-height: 130%; */
     color: #3f3f41;
     margin-bottom: 0;
   }
@@ -125,7 +124,7 @@ export const DropAnswerContainer = styled.div`
   padding: 14px;
 
   h3 {
-    font-family: Work Sans;
+    /* font-family: Work Sans; */
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -134,7 +133,7 @@ export const DropAnswerContainer = styled.div`
   }
 
   textarea {
-    font-family: Work Sans;
+    /* font-family: Work Sans; */
     width: 100%;
     height: 100%;
     min-height: 100px;
@@ -144,7 +143,7 @@ export const DropAnswerContainer = styled.div`
 `;
 
 export const EngagementBtn = styled.div`
-  font-family: Work Sans;
+  /* font-family: Work Sans; */
   display: flex;
   justify-content: space-between;
   align-items: center;
