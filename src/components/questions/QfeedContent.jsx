@@ -8,7 +8,7 @@ import Loader from '../styledComponents/loader';
 import http from '../../services/httpService';
 
 const apiEndpoint = 'http://localhost:3002/v1/qfeed';
-// const apiEndpoint = 'https://api.faraday.africa/v1/qfeed/';
+// const apiEndpoint = 'https://api.faraday.africa/v1/qfeed/que/fetch/';
 // const apiEndpoint = 'https://jsonplaceholder.typicode.com/posts';
 class Qfeed extends Component {
   state = {

@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import img from '../../images/profile3.png';
 import { Link } from 'react-router-dom';
 import { getCurrentUser } from '../../services/authService';
 
-function ProfileData({ user }) {
+function ProfileData({ user, questions }) {
   const currentUser = getCurrentUser();
 
-  console.log(user);
+  console.log('user', user);
+  console.log('profile', user.profile);
   return (
     <div className='profile__data'>
       <div className='flex justify-content-between'>
         <img
           className='rounded-circle'
           src={img}
-          alt={`photo of ${user.last_name} ${user.first_name}`}
+          alt={`${user.last_name} ${user.first_name}`}
         />
         <div className='align-self-end'>
           {currentUser.username === user.username ? (
@@ -38,7 +39,9 @@ function ProfileData({ user }) {
                 </button>
               </Link>
 
-              <button className='btn profile__btn ml-3'>Edit Profile</button>
+              <Link to={`/editprofile/${user.username}`}>
+                <button className='btn profile__btn ml-3'>Edit Profile</button>
+              </Link>
             </>
           ) : (
             <>
@@ -89,7 +92,7 @@ function ProfileData({ user }) {
                 fill='#A2ABB3'
               />
             </svg>
-            <p>{user.profile.school ? user.profile.school : ' '}</p>
+            <p>{user.profile.school ? user.profile.school : '__'}</p>
           </div>
           <div className='flex profile__school'>
             <svg
@@ -104,17 +107,17 @@ function ProfileData({ user }) {
                 fill='#A2ABB3'
               />
             </svg>
-            <p>{user.profile.department}</p>
+            <p>{user.profile.department ? user.profile.department : '__'}</p>
           </div>
         </div>
       </div>
 
       <div className='flex justify-between'>
         <p className='flex ques-solu border-right'>
-          118 <span>Questions</span>
+          __ <span>Questions</span>
         </p>
         <p className='flex ques-solu border-right'>
-          24
+          __
           <span>Solutions</span>
         </p>
         <p className='flex ques-solu'>

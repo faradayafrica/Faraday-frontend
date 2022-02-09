@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ProfileNav({ user }) {
+function ProfileNav({ user, questionCount }) {
   return (
     <div className='profile__nav'>
       <div className='d-flex'>
@@ -22,7 +22,7 @@ function ProfileNav({ user }) {
             {user.last_name ? user.last_name : 'First'}{' '}
             {user.first_name ? user.first_name : 'Surname'}
           </h3>
-          <p className=''>143 Question</p>
+          <p className=''>{questionCount ? questionCount : '__'}</p>
         </div>
       </div>
     </div>

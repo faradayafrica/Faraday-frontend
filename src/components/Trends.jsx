@@ -1,12 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import SponsorAd from './sponsors/SponsorAd';
 
 class Trends extends Component {
   render() {
     return (
-      <div className='trends-container bg-secondary'>
-        <div>
-          <span className='badge badge-warning'>Trending</span>
-        </div>
+      <div className='trends-container p-3'>
+        <SponsorAd />
       </div>
     );
   }

@@ -92,9 +92,15 @@ QFEED STYLING
   display: flex;
   /* justify-content: flex-start; */
   align-items: center;
-  position: fixed;
+  position: absolute;
   background-color: white;
   width: 100%;
+}
+
+@media only screen and (max-width: 576px) {
+  .header {
+    position: fixed;
+  }
 }
 
 .header-no-outline {
@@ -1080,10 +1086,16 @@ form {
 }
 
 .form-title {
-  position: relative;
+  /* position: relative; */
   top: -0.8rem;
   margin: 0;
 }
+
+/* .section-header {
+  position: relative;
+  margin-top: 4rem;
+  margin: 0;
+} */
 
 .form-control:focus {
   /* background-color: var(--brand-highlight) !important; */
@@ -1323,4 +1335,18 @@ form {
 
 .dropdown-toggle::after {
   display: none !important;
+}
+
+/************************************
+ Profile Page
+************************************ */
+.profile__container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.section-header {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  font-family: Poppins, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-black);
 }

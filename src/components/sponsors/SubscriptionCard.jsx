@@ -13,7 +13,7 @@ const SubscriptionCard = ({ card }) => {
         </div>
       </div>
       <div>
-        <a href={card.url} target='_blank'>
+        <a href={card.url} rel='noreferrer' target='_blank'>
           <button className='btn btn-dark'>Select</button>
         </a>
       </div>

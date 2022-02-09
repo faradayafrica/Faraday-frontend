@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Joi from 'joi-browser';
 import { Link } from 'react-router-dom';
 import Input from '../styledComponents/input';
+import TextArea from '../styledComponents/TextArea';
 import Select from '../styledComponents/select';
 import '../../animation.scss';
 
@@ -183,6 +184,22 @@ class Form extends Component {
 
     return (
       <Input
+        type={type}
+        name={name}
+        value={data[name]}
+        label={placeholder}
+        placeholder={placeholder}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  }
+
+  renderTextArea(name, placeholder, type = 'text') {
+    const { data, errors } = this.state;
+
+    return (
+      <TextArea
         type={type}
         name={name}
         value={data[name]}
