@@ -34,7 +34,7 @@ class QuestionPage extends Component {
           <Loader onRefresh={this.props.onRefresh} />
         ) : (
           <React.Fragment>
-            <div className=' header-questionpage sticky-nav horinzontal-align '>
+            {/* <div className=' header-questionpage sticky-nav horinzontal-align '>
               <div
                 className='icon-container icon-container-secondary mr-2'
                 data-toggle='tooltip'
@@ -44,7 +44,11 @@ class QuestionPage extends Component {
                 <img src={Back} alt='' className='e-icon' />
               </div>
               <Header>Question by {newQuestion.fname}</Header>
-            </div>
+            </div> */}
+
+            <h1 className='section-header mx-3'>
+              Question by {newQuestion.fname}
+            </h1>
             <div className='question-page'>
               <QuestionProfile question={newQuestion} />
 

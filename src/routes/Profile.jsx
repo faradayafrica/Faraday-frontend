@@ -82,7 +82,7 @@ function Profile({ match }) {
         />
         <ProfileInfo />
       </div>
-      <div className='w-100 border profile-trends'>
+      <div className='w-100 profile-trends'>
         <SponsorAd />
       </div>
     </div>

@@ -199,14 +199,14 @@ class EditProfile extends Form {
           <div id='spinnerContainer' className='spinner-container vanish'>
             <Myspinner />
           </div>
-          <h1 className='section-header'>
-            Edit Profile {this.props.match.params.username}
-          </h1>
           <form onSubmit={this.handleSubmit}>
+            <h1 className='section-header'>
+              Edit Profile {this.props.match.params.username}
+            </h1>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             {this.renderInput('fname', 'First name')}
             {this.renderInput('lname', 'Last name')}
-            {this.renderTextArea('bio', 'Your bio')}
+            {this.renderTextArea('bio', 'Your bio', 3)}
             {this.renderGenderSelect('gender', 'Gender', this.state.gender)}
             {this.renderSelect('school', 'School', this.state.schools)}
             {this.renderSelect('faculty', 'Faculty', this.state.faculties)}
@@ -224,7 +224,7 @@ class EditProfile extends Form {
             </button>
           </form>
         </div>
-        <div className='w-100 border profile-trends'>
+        <div className='w-100 profile-trends'>
           <SponsorAd />
         </div>
       </div>

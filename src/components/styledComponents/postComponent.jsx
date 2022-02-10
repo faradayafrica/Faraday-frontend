@@ -22,12 +22,6 @@ class PostComponent extends Component {
         <label className='sr-only' htmlFor='newQuestion'>
           Question
         </label>
-        <textarea
-          className='form-control'
-          id='newQuestion'
-          rows='3'
-          placeholder='Ask a question or share an idea'
-        ></textarea>
 
         <div className='post-btn-area mt-2'>
           {this.state.isTags === false ? (

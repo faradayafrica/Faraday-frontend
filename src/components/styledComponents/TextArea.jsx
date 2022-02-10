@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 
 class Input extends Component {
   render() {
-    const { name, placeholder, error, ...rest } = this.props;
+    const { isTitle, rows, name, placeholder, error, ...rest } = this.props;
+    const classes = isTitle ? 'form-control form-title' : 'form-control';
+
     return (
-      <div className='form-group log' style={{ marginTop: '1.5rem' }}>
+      <div className='form-group log ' style={{ marginTop: '1.5rem' }}>
         <label className='sr-only' htmlFor={name}>
           {placeholder}
         </label>
@@ -13,9 +15,9 @@ class Input extends Component {
           {...rest}
           name={name}
           id={name}
-          className='form-control'
+          className={classes}
           placeholder={placeholder}
-          rows='3'
+          rows={rows}
         ></textarea>
 
         {error && (
