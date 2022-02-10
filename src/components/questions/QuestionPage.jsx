@@ -1,25 +1,19 @@
-
 import React from "react";
 import Header from "../styledComponents/Header";
 import Back from "../../images/back.svg";
-
-
-import Answers from '../styledComponents/Answers';
-import QuestionProfile from '../styledComponents/QuestionProfile';
-
-import Loader from '../styledComponents/loader';
-import ButtonBar from '../styledComponents/buttonBar';
-import Like from '../styledComponents/Like.jsx';
+import Answers from "../styledComponents/Answers";
+import QuestionProfile from "../styledComponents/QuestionProfile";
+import Loader from "../styledComponents/Loader";
+import ButtonBar from "../styledComponents/ButtonBar";
+import Like from "../styledComponents/Like.jsx";
 import {
   QuestionContent,
   QuestionTitle,
   QuestionTitleContainer,
-
 } from "../styled/QuestionPageStyled";
 import DropAnswer from "./DropAnswer";
 import { useEffect } from "react";
 import { useState } from "react";
-
 
 function QuestionPage({
   questions,
@@ -38,7 +32,6 @@ function QuestionPage({
     const question = questions.filter((q) => q.id === match.params.id);
     setQuestion([...question]);
   }, [match.params.id, questions]);
-
 
   return (
     <React.Fragment>
@@ -60,7 +53,6 @@ function QuestionPage({
           <div className='question-page'>
             <QuestionProfile question={question[0]} />
 
-
             <QuestionTitleContainer>
               <Like
                 question={question[0]}
@@ -75,7 +67,6 @@ function QuestionPage({
                       #{tag}
                     </span>
                   ))}
-
                 </p>
               </QuestionTitle>
             </QuestionTitleContainer>
