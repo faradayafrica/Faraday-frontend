@@ -2,7 +2,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box !important;
-  font-family: "Poppins", Arial, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .btn:focus {
@@ -15,7 +15,7 @@
   --outline: #cfd9de;
   --brand: #05b851;
   --brand-dark: #23933f;
-  --secondary: #011945;
+  --secondary: #7494cf;
   --background: #f8f9fa;
   --background2: #f1f2f6;
   --secondary-text: #a2abb3;

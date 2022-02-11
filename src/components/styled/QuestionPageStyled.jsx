@@ -5,7 +5,7 @@ export const QuestionBodyContent = styled.div`
     font-family: Work Sans;
     font-style: normal;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 130%;
     color: #3f3f41;
     transition: color 200ms ease-in;
