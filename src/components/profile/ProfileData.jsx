@@ -1,7 +1,9 @@
+
 import React from 'react';
 import img from '../../images/profile3.png';
 import { Link } from 'react-router-dom';
 import { getCurrentUser } from '../../services/authService';
+
 
 function ProfileData({ user, questions }) {
   const currentUser = getCurrentUser();
@@ -68,8 +70,8 @@ function ProfileData({ user, questions }) {
 
       <div className='profile__user'>
         <h2>
-          {user.last_name ? user.last_name : 'First'}{' '}
-          {user.first_name ? user.first_name : 'Surname'}
+          {user.last_name ? user.last_name : "First"}{" "}
+          {user.first_name ? user.first_name : "Surname"}
         </h2>
         <p className='username'>@{user.username}</p>
         <p className='description'>
@@ -92,7 +94,9 @@ function ProfileData({ user, questions }) {
                 fill='#A2ABB3'
               />
             </svg>
+
             <p>{user.profile.school ? user.profile.school : '__'}</p>
+
           </div>
           <div className='flex profile__school'>
             <svg

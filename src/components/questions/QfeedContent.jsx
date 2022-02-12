@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Questions from './Questions';
@@ -9,6 +10,7 @@ import http from '../../services/httpService';
 
 const apiEndpoint = 'http://localhost:3002/v1/qfeed';
 // const apiEndpoint = 'https://api.faraday.africa/v1/qfeed/que/fetch/';
+
 // const apiEndpoint = 'https://jsonplaceholder.typicode.com/posts';
 class Qfeed extends Component {
   state = {
@@ -30,7 +32,7 @@ class Qfeed extends Component {
         <Switch>
           <Route
             path='/Qfeed/:id'
-            render={props => (
+            render={(props) => (
               <QuestionPage
                 questions={this.state.questions}
                 onEcho={this.handleEcho}
@@ -39,8 +41,6 @@ class Qfeed extends Component {
                 onRefresh={this.refreshPage}
                 handleDislike={this.handleDislikeClick}
                 handleLike={this.handleLikeClick}
-                onLike={this.props.onLike}
-                onDislike={this.props.onDislike}
                 {...props}
               />
             )}
@@ -48,7 +48,7 @@ class Qfeed extends Component {
 
           <Route
             path='/'
-            render={props => (
+            render={(props) => (
               <Questions
                 renderQuestion={this.renderQuestion}
                 onPost={this.handlePost}
@@ -75,63 +75,81 @@ class Qfeed extends Component {
   };
 
   // Methods for the like component
-  handleLikeClick = id => {
-    const questions = [...this.state.questions];
-    const newQuestion = questions.filter(q => q.id === id);
-    const questionIndex = this.state.questions.indexOf(newQuestion[0]);
 
-    if (questions[questionIndex].isDisliked === true) {
-      questions[questionIndex].isLiked = false;
-      questions[questionIndex].isDisliked = false;
-      questions[questionIndex].voteCount =
-        questions[questionIndex].voteCount + 1;
-    } else if (questions[questionIndex].isLiked === false) {
+  handleLikeClick = (question) => {
+    const questions = [...this.state.questions];
+    const questionIndex = this.state.questions.indexOf(question);
+
+    if (questions[questionIndex].isLiked === false) {
       questions[questionIndex].isLiked = true;
       questions[questionIndex].isDisliked = false;
       questions[questionIndex].voteCount += 1;
-    } else {
-      questions[questionIndex].isLiked = false;
-      questions[questionIndex].isDisliked = false;
-      questions[questionIndex].voteCount -= 1;
     }
 
+    // if (questions[questionIndex].isDisliked === true) {
+    //   questions[questionIndex].isLiked = false;
+    //   questions[questionIndex].isDisliked = false;
+    //   questions[questionIndex].voteCount =
+    //     questions[questionIndex].voteCount + 1;
+    // } else if (questions[questionIndex].isLiked === false) {
+    //   questions[questionIndex].isLiked = true;
+    //   questions[questionIndex].isDisliked = false;
+    //   questions[questionIndex].voteCount += 1;
+    // } else {
+    //   questions[questionIndex].isLiked = false;
+    //   questions[questionIndex].isDisliked = false;
+    //   questions[questionIndex].voteCount -= 1;
+    // }
+
     this.setState({ questions });
-    console.log('like clicked', id);
+
+    // console.log("like clicked", id);
   };
 
-  handleDislikeClick = id => {
+  handleDislikeClick = (question) => {
     const questions = [...this.state.questions];
-    const newQuestion = questions.filter(q => q.id === id);
-    const questionIndex = this.state.questions.indexOf(newQuestion[0]);
+    // const newQuestion = questions.filter((q) => q.id === id);
+    const questionIndex = this.state.questions.indexOf(question);
 
-    if (questions[questionIndex].isLiked === true) {
-      questions[questionIndex].isDisLiked = false;
-      questions[questionIndex].isLiked = false;
-      questions[questionIndex].voteCount =
-        questions[questionIndex].voteCount - 1;
-    } else if (questions[questionIndex].isDisliked === false) {
+    if (
+      questions[questionIndex].isLiked === true ||
+      (questions[questionIndex].isLiked === false &&
+        questions[questionIndex].isDisliked === false)
+    ) {
       questions[questionIndex].isDisliked = true;
       questions[questionIndex].isLiked = false;
       questions[questionIndex].voteCount -= 1;
-    } else {
-      questions[questionIndex].isDisliked = false;
-      questions[questionIndex].isLiked = false;
-      questions[questionIndex].voteCount += 1;
-      console.log('3');
     }
 
+    // if (questions[questionIndex].isLiked === true) {
+    //   questions[questionIndex].isDisLiked = false;
+    //   questions[questionIndex].isLiked = false;
+    //   questions[questionIndex].voteCount =
+    //     questions[questionIndex].voteCount - 1;
+    // } else if (questions[questionIndex].isDisliked === false) {
+    //   questions[questionIndex].isDisliked = true;
+    //   questions[questionIndex].isLiked = false;
+    //   questions[questionIndex].voteCount -= 1;
+    // } else {
+    //   questions[questionIndex].isDisliked = false;
+    //   questions[questionIndex].isLiked = false;
+    //   questions[questionIndex].voteCount += 1;
+    //   console.log("3");
+    // }
+
     this.setState({ questions });
-    console.log('dislike clicked', id);
+
+    // console.log("dislike clicked", id);
   };
   // Methods for the like component ends here
 
-  handleAnswer = id => {
+  handleAnswer = (id) => {
     console.log(`I want to answer the question with id of ${id}`);
   };
 
-  handleEcho = id => {
+  handleEcho = (id) => {
     const questions = [...this.state.questions];
-    const newQuestion = questions.filter(q => q.id === id);
+    const newQuestion = questions.filter((q) => q.id === id);
     const questionIndex = this.state.questions.indexOf(newQuestion[0]);
 
     questions[questionIndex].isEchoed = !questions[questionIndex].isEchoed;
@@ -144,9 +162,9 @@ class Qfeed extends Component {
     this.setState({ questions });
   };
 
-  handleBookmark = id => {
+  handleBookmark = (id) => {
     const questions = [...this.state.questions];
-    const newQuestion = questions.filter(q => q.id === id);
+    const newQuestion = questions.filter((q) => q.id === id);
     const questionIndex = this.state.questions.indexOf(newQuestion[0]);
 
     questions[questionIndex].isBookmarked =
@@ -158,15 +176,15 @@ class Qfeed extends Component {
   //this method adds a questions
   handlePost = async () => {
     const obj = {
-      time: '15h',
+      time: "15h",
 
-      body: 'Just here coding',
+      body: "Just here coding",
     };
 
     const { data: post } = await http.post(apiEndpoint, obj);
     const questions = [post, ...this.state.questions];
     this.setState({ questions });
-    console.log('post', post);
+    console.log("post", post);
 
     // console.log('post');
   };
@@ -179,7 +197,7 @@ class Qfeed extends Component {
       return (
         <React.Fragment>
           {/* {console.log(this.state.questions)} */}
-          {this.state.questions.map(question => (
+          {this.state.questions.map((question) => (
             <Question
               key={question.id}
               question={question}
@@ -194,10 +212,10 @@ class Qfeed extends Component {
           <div className='row justify-content-center my-4 '>
             <button
               className='navlink btn btn-sm mb-5'
-              style={{ background: '#f8f9fa' }}
+              style={{ background: "#f8f9fa" }}
             >
               <div className='icon active-icon'></div>
-              <p className='mx-2 mb-0' style={{ borderRadius: '8px' }}>
+              <p className='mx-2 mb-0' style={{ borderRadius: "8px" }}>
                 Load more
               </p>
             </button>

@@ -15,9 +15,9 @@ function MobileNav({ user }) {
   const location = useLocation();
 
   useEffect(() => {
-    const allowedRoutes = 'profile';
+    const allowedRoutes = '/me';
 
-    if (allowedRoutes.includes(location.pathname.replace('/', ''))) {
+    if (location.pathname.includes(allowedRoutes)) {
       setIsProfile(true);
     } else {
       setIsProfile(false);

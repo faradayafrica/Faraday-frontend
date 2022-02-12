@@ -1,29 +1,38 @@
-import React, { Component } from 'react';
-import Header from '../styledComponents/Header';
-import Back from '../../images/back.svg';
-
-import Answers from '../styledComponents/Answers';
-import QuestionProfile from '../styledComponents/QuestionProfile';
-
-import Loader from '../styledComponents/loader';
-import ButtonBar from '../styledComponents/buttonBar';
-import Like from '../styledComponents/Like.jsx';
+import React from "react";
+import Header from "../styledComponents/Header";
+import Back from "../../images/back.svg";
+import Answers from "../styledComponents/Answers";
+import QuestionProfile from "../styledComponents/QuestionProfile";
+import Loader from "../styledComponents/Loader";
+import ButtonBar from "../styledComponents/ButtonBar";
+import Like from "../styledComponents/Like.jsx";
 import {
   QuestionContent,
   QuestionTitle,
   QuestionTitleContainer,
-} from '../styled/QuestionPageStyled';
-import DropAnswer from './DropAnswer';
+} from "../styled/QuestionPageStyled";
+import DropAnswer from "./DropAnswer";
+import { useEffect } from "react";
+import { useState } from "react";
 
-class QuestionPage extends Component {
-  render() {
-    const { questions, match } = this.props;
+function QuestionPage({
+  questions,
+  match,
+  onRefresh,
+  handleLike,
+  handleDislike,
+  history,
+  onAnswer,
+  onEcho,
+  onBookmark,
+}) {
+  const [question, setQuestion] = useState([]);
 
-    const question = questions.filter(q => q.id === match.params.id);
-    console.log(question);
-    const newQuestion = {
-      ...question[0],
-    };
+  useEffect(() => {
+    const question = questions.filter((q) => q.id === match.params.id);
+    setQuestion([...question]);
+  }, [match.params.id, questions]);
+
 
     // console.log(this.props.match.params.id);
     // console.log(newQuestion);
@@ -52,55 +61,59 @@ class QuestionPage extends Component {
             <div className='question-page'>
               <QuestionProfile question={newQuestion} />
 
-              <QuestionTitleContainer>
-                <Like
-                  onDislike={this.props.onDislike}
-                  onLike={this.props.onLike}
-                  question={question}
-                />
-                <QuestionTitle>
-                  <h2 className='question__title'>{newQuestion.body}</h2>
-                  <p className='question__tags'>
-                    {newQuestion.tags.map(tag => (
-                      <span key={tag} className=''>
-                        #{tag}
-                      </span>
-                    ))}
-                  </p>
-                </QuestionTitle>
-              </QuestionTitleContainer>
-              <QuestionContent>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Porttitor laoreet convallis platea nec amet non maecenas.
-                  Ipsum feugiat eu, ullamcorper odio. Feugiat nisl nibh quis
-                  dignissim eget faucibus semper. Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit.
-                </p>
-                <p>
-                  Porttitor laoreet convallis platea nec amet non maecenas.
-                  Ipsum feugiat eu, ullamcorper odio. Feugiat nisl nibh quis
-                  dignissim eget faucibus semper. This contains more information
-                  about the question, what have been tried, parameter for the
-                  equations, ...
-                </p>
-              </QuestionContent>
 
-              <ButtonBar
-                question={newQuestion}
-                fluid={true}
-                onAnswer={this.props.onAnswer}
-                onEcho={this.props.onEcho}
-                onBookmark={this.props.onBookmark}
+            <QuestionTitleContainer>
+              <Like
+                question={question[0]}
+                handleDislike={handleDislike}
+                handleLike={handleLike}
               />
-            </div>
-            <DropAnswer />
-            <Answers answers={newQuestion.answers} />
-          </React.Fragment>
-        )}
-      </React.Fragment>
-    );
-  }
+              <QuestionTitle>
+                <h2 className='question__title'>{question[0]?.body}</h2>
+                <p className='question__tags'>
+                  {question[0]?.tags.map((tag) => (
+                    <span key={tag} className=''>
+                      #{tag}
+                    </span>
+                  ))}
+                </p>
+              </QuestionTitle>
+            </QuestionTitleContainer>
+            <QuestionContent>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Porttitor laoreet convallis platea nec amet non maecenas. Ipsum
+                feugiat eu, ullamcorper odio. Feugiat nisl nibh quis dignissim
+                eget faucibus semper. Lorem ipsum dolor sit amet, consectetur
+                adipiscing elit.
+              </p>
+              <p>
+                Porttitor laoreet convallis platea nec amet non maecenas. Ipsum
+                feugiat eu, ullamcorper odio. Feugiat nisl nibh quis dignissim
+                eget faucibus semper. This contains more information about the
+                question, what have been tried, parameter for the equations, ...
+              </p>
+            </QuestionContent>
+
+            <ButtonBar
+              question={question[0]}
+              fluid={true}
+              onAnswer={onAnswer}
+              onEcho={onEcho}
+              onBookmark={onBookmark}
+            />
+          </div>
+          <DropAnswer />
+          <Answers
+            answers={question[0]?.answers}
+            question={question[0]}
+            handleDislike={handleDislike}
+            handleLike={handleLike}
+          />
+        </React.Fragment>
+      )}
+    </React.Fragment>
+  );
 }
 
 export default QuestionPage;
