@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const ButtonStyled = styled.button`
-  font-family: Work Sans;
+  /* font-family: Work Sans; */
   padding: 0.8rem 2rem;
   border: none;
   border-radius: 8px;

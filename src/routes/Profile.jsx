@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import Loader from '../components/styledComponents/loader';
 import ProfileData from '../components/profile/ProfileData';
@@ -6,6 +7,7 @@ import SponsorAd from '../components/sponsors/SponsorAd';
 import { apiUrl } from '../config.json';
 import http from '../services/httpService';
 import '../styles/profile.scss';
+
 
 function Profile({ match }) {
   // const userEndpoint = apiUrl + `/users/${match.params.username}/`;

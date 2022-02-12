@@ -4,7 +4,7 @@ import { ReactComponent as BookmarkIcon } from "../../images/bookmark-question.s
 
 class ButtonBar extends Component {
   render() {
-    const { isEchoed, isBookmarked, id } = this.props.question;
+    const { isEchoed, isBookmarked, id } = this?.props?.question;
 
     return (
       <div className='d-flex justify-content-end mt-3'>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "../styles/mobileBottomNav.scss";
@@ -6,28 +6,40 @@ import "../styles/mobileBottomNav.scss";
 function MobileBottomNav({ links, handleLink }) {
   const [allowNav, setAllowNav] = useState(true);
   const location = useLocation();
+  const bottomNav = useRef();
 
   useEffect(() => {
     const allowedRoutes = [
-      "qfeed",
-      "explore",
-      "notification",
-      "direct",
-      "profile",
+      "/qfeed",
+      "/explore",
+      "/notification",
+      "/direct",
+      "/profile",
+      "/me/",
     ];
 
-    if (!allowedRoutes.includes(location.pathname.replace("/", ""))) {
+    if (!location.pathname.includes(allowedRoutes)) {
       setAllowNav(false);
+    } else {
+      setAllowNav(true);
     }
 
     let navBorder = document.querySelector(".nav__border");
 
-    if (location.pathname === "/profile") {
-      navBorder.style.display = "none";
+    if (!allowedRoutes.includes(location.pathname)) {
+      // console.log(navBorder);
+      navBorder.style.display = "none !important";
     } else {
       navBorder.style.display = "block";
     }
+
+    // console.log(location.pathname);
   }, [location.pathname]);
+
+  // useEffect(() => {
+  //   console.log(allowNav, "allowNav");
+  //   console.log(bottomNav, "bottomNav");
+  // }, [allowNav]);
 
   const handleClick = (e, item) => {
     let activeItem = document.querySelector(".nav__active");
@@ -81,7 +93,10 @@ function MobileBottomNav({ links, handleLink }) {
   }
 
   return (
-    <div className={`qfeedNav-container ${allowNav ? "block" : "none"}`}>
+    <div
+      ref={bottomNav}
+      className={`qfeedNav-container ${allowNav ? "block" : "hidden"}`}
+    >
       <div className='qfeedNav-links'>
         {links?.map((link, i) => {
           return (

@@ -4,7 +4,7 @@ export const WelcomeContent = styled.div`
   background: #05b851;
   width: 100%;
   padding: 28px;
-  font-family: Work Sans;
+  /* font-family: Work Sans; */
 
   h2 {
     color: #fff;
@@ -28,7 +28,7 @@ export const WelcomeContent = styled.div`
     display: flex;
     justify-content: space-between;
     width: 100%;
-    font-family: Work Sans;
+    /* font-family: Work Sans; */
     background: #ffffff6c;
     color: #fff;
     padding: 0.8rem;
