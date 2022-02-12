@@ -1,14 +1,16 @@
-import React, { Component } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
-import Questions from "./Questions";
-import Question from "../styledComponents/Question";
-import QuestionPage from "./QuestionPage";
-import NotFound from "../../routes/NotFound";
-import Loader from "../styledComponents/Loader";
-import http from "../../services/httpService";
 
-const apiEndpoint = "http://localhost:3002/v1/qfeed";
-// const apiEndpoint = 'https://api.faraday.africa/v1/qfeed/';
+import React, { Component } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import Questions from './Questions';
+import Question from '../styledComponents/Question';
+import QuestionPage from './QuestionPage';
+import NotFound from '../../routes/NotFound';
+import Loader from '../styledComponents/loader';
+import http from '../../services/httpService';
+
+const apiEndpoint = 'http://localhost:3002/v1/qfeed';
+// const apiEndpoint = 'https://api.faraday.africa/v1/qfeed/que/fetch/';
+
 // const apiEndpoint = 'https://jsonplaceholder.typicode.com/posts';
 class Qfeed extends Component {
   state = {

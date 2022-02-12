@@ -56,4 +56,13 @@
   .subscription-card-container {
     margin-top: 2rem;
   }
+
+  .header {
+    position: fixed;
+  }
+}
+
+.subscription-ad {
+  border-radius: 1rem;
+  background-color: #fbf7f4;
 }

@@ -7,6 +7,7 @@ import Courses from './routes/Courses';
 import Direct from './routes/Direct';
 import Notification from './components/Notification';
 import Profile from './routes/Profile';
+import EditProfile from './components/profile/EditProfile.jsx';
 
 import SideNav from './components/SideNav';
 import Body from './components/styledComponents/Body';
@@ -77,6 +78,10 @@ class App extends React.Component {
             <ProtectedRoute path='/post' component={Post} />
             {/* <ProtectedRoute path='/:username' render={props => <Profile />} /> */}
             <ProtectedRoute path='/me/:username' component={Profile} />
+            <ProtectedRoute
+              path='/editprofile/:username'
+              component={EditProfile}
+            />
             <Route path='/not-found' component={NotFound} />
             <ProtectedRoute path='/' exact component={Qfeed} />
             <Redirect push to='/not-found' />
