@@ -7,9 +7,11 @@ class Questions extends Component {
   render() {
     return (
       <div className='' style={{ position: 'relative' }}>
-        <div className='header sticky-nav '>
+        {/* <div className='header sticky-nav '>
           <Header>Question feed</Header>
-        </div>
+        </div> */}
+
+        <h1 className='section-header mx-3'>Qfeed</h1>
 
         <WelcomeComp />
         {/* <PostComponent onPost={this.props.onPost} user={this.props.user} /> */}

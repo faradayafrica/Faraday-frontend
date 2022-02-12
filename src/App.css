@@ -140,8 +140,6 @@ QFEED STYLING
   font-size: 15px;
   padding: 14px;
   padding-bottom: 7px !important;
-
-  margin-top: 4rem;
 }
 
 .answer-page {
@@ -931,6 +929,12 @@ textarea {
   background: var(--secondary-text) !important;
 }
 
+.form-title {
+  font-size: 24px !important;
+  font-family: 'Work sans', 'Courier New', Courier, monospace;
+  font-weight: 600 !important;
+}
+
 /*************************************************** 
 TAGS
 ***************************************************/
@@ -942,12 +946,12 @@ TAGS
   min-height: 45px;
   width: 100%;
   padding: 0 10px;
-  border: 0.5px solid var(--outline);
+  /* border-bottom: 0.5px solid var(--secondary-text); */
   border-radius: 6px;
 }
 
 .tags-input:focus-within {
-  border: 0.5px solid var(--secondary-text);
+  /* border-bottom: 0.5px solid var(--text2-black); */
 }
 
 .tags-input input {
@@ -983,8 +987,8 @@ input:focus {
   list-style: none;
   border-radius: 6px;
   margin: 0 8px 8px 0;
-  background: var(--brand-highlight);
-  border: 0.5px solid var(--brand);
+  background: var(--background2);
+  /* border: 0.5px solid var(--secondary-text); */
 }
 
 .tag .tag-close-icon {
@@ -1340,7 +1344,7 @@ form {
 
 /************************************
  Profile Page
-************************************ */
+ ************************************ */
 .profile__container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -1350,4 +1354,10 @@ form {
   margin-bottom: 1rem;
   font-family: Poppins, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: var(--text-black);
+}
+
+@media screen and (max-width: 762px) {
+  .section-header {
+    font-size: 32px !important;
+  }
 }

@@ -33,25 +33,34 @@ function QuestionPage({
     setQuestion([...question]);
   }, [match.params.id, questions]);
 
-  return (
-    <React.Fragment>
-      {question.length === 0 ? (
-        <Loader onRefresh={onRefresh} />
-      ) : (
-        <React.Fragment>
-          <div className=' header-questionpage sticky-nav horinzontal-align '>
-            <div
-              className='icon-container icon-container-secondary mr-2'
-              data-toggle='tooltip'
-              title='Return'
-              onClick={() => history.goBack()}
-            >
-              <img src={Back} alt='' className='e-icon' />
-            </div>
-            <Header>Question by {question[0]?.fname}</Header>
-          </div>
-          <div className='question-page'>
-            <QuestionProfile question={question[0]} />
+
+    // console.log(this.props.match.params.id);
+    // console.log(newQuestion);
+
+    return (
+      <React.Fragment>
+        {this.props.questions.length === 0 ? (
+          <Loader onRefresh={this.props.onRefresh} />
+        ) : (
+          <React.Fragment>
+            {/* <div className=' header-questionpage sticky-nav horinzontal-align '>
+              <div
+                className='icon-container icon-container-secondary mr-2'
+                data-toggle='tooltip'
+                title='Return'
+                onClick={() => this.props.history.goBack()}
+              >
+                <img src={Back} alt='' className='e-icon' />
+              </div>
+              <Header>Question by {newQuestion.fname}</Header>
+            </div> */}
+
+            <h1 className='section-header mx-3'>
+              Question by {newQuestion.fname}
+            </h1>
+            <div className='question-page'>
+              <QuestionProfile question={newQuestion} />
+
 
             <QuestionTitleContainer>
               <Like

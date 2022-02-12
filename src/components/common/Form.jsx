@@ -101,12 +101,12 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
-  renderButton(label) {
+  renderButton(label, isFluid) {
+    const classes = isFluid
+      ? 'btn btn-green btn-login my-2 bubbly-button'
+      : 'btn btn-bg btn-green my-2';
     return (
-      <button
-        disabled={this.validate()}
-        className='btn btn-green btn-login my-2 bubbly-button'
-      >
+      <button disabled={this.validate()} className={classes}>
         {label}
       </button>
     );
@@ -195,15 +195,17 @@ class Form extends Component {
     );
   }
 
-  renderTextArea(name, placeholder, type = 'text') {
+  renderTextArea(name, placeholder, rows = 2, isTitle) {
     const { data, errors } = this.state;
 
     return (
       <TextArea
-        type={type}
+        type='text'
         name={name}
+        rows={rows}
         value={data[name]}
         label={placeholder}
+        isTitle={isTitle}
         placeholder={placeholder}
         onChange={this.handleChange}
         error={errors[name]}

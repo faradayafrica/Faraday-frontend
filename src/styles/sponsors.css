@@ -8,13 +8,18 @@
   margin-bottom: 1rem;
 }
 
+.left-side {
+  /* background-color: #5551fe; */
+  /* background-color: #fbf7f4; */
+}
+
 .right-side {
   /* background-color: #5551fe; */
   background-color: #fbf7f4;
 }
 
 .subscription-card-container {
-  margin-top: 6rem;
+  margin-top: 2rem;
 }
 
 .subscription-card {
