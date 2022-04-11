@@ -3,7 +3,7 @@ import Header from "../styledComponents/Header";
 import Back from "../../images/back.svg";
 import Answers from "../styledComponents/Answers";
 import QuestionProfile from "../styledComponents/QuestionProfile";
-import Loader from "../styledComponents/Loader";
+import Loader from "../styledComponents/loader";
 import ButtonBar from "../styledComponents/ButtonBar";
 import Like from "../styledComponents/Like.jsx";
 import {
@@ -33,17 +33,16 @@ function QuestionPage({
     setQuestion([...question]);
   }, [match.params.id, questions]);
 
+  // console.log(this.props.match.params.id);
+  // console.log(question);
 
-    // console.log(this.props.match.params.id);
-    // console.log(newQuestion);
-
-    return (
-      <React.Fragment>
-        {this.props.questions.length === 0 ? (
-          <Loader onRefresh={this.props.onRefresh} />
-        ) : (
-          <React.Fragment>
-            {/* <div className=' header-questionpage sticky-nav horinzontal-align '>
+  return (
+    <React.Fragment>
+      {this.props.questions.length === 0 ? (
+        <Loader onRefresh={this.props.onRefresh} />
+      ) : (
+        <React.Fragment>
+          {/* <div className=' header-questionpage sticky-nav horinzontal-align '>
               <div
                 className='icon-container icon-container-secondary mr-2'
                 data-toggle='tooltip'
@@ -52,15 +51,12 @@ function QuestionPage({
               >
                 <img src={Back} alt='' className='e-icon' />
               </div>
-              <Header>Question by {newQuestion.fname}</Header>
+              <Header>Question by {question.fname}</Header>
             </div> */}
 
-            <h1 className='section-header mx-3'>
-              Question by {newQuestion.fname}
-            </h1>
-            <div className='question-page'>
-              <QuestionProfile question={newQuestion} />
-
+          <h1 className="section-header mx-3">Question by {question.fname}</h1>
+          <div className="question-page">
+            <QuestionProfile question={question} />
 
             <QuestionTitleContainer>
               <Like
@@ -69,10 +65,10 @@ function QuestionPage({
                 handleLike={handleLike}
               />
               <QuestionTitle>
-                <h2 className='question__title'>{question[0]?.body}</h2>
-                <p className='question__tags'>
+                <h2 className="question__title">{question[0]?.body}</h2>
+                <p className="question__tags">
                   {question[0]?.tags.map((tag) => (
-                    <span key={tag} className=''>
+                    <span key={tag} className="">
                       #{tag}
                     </span>
                   ))}
