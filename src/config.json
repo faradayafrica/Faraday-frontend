@@ -1,4 +1,4 @@
 {
 
-  "apiUrl": "https://faradayapi.herokuapp.com"
+  "apiUrl": "https://faradayapi.herokuapp.com/v1"
 }
