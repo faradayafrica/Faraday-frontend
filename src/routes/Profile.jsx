@@ -1,13 +1,11 @@
-
-import React, { useEffect, useState } from 'react';
-import Loader from '../components/styledComponents/loader';
-import ProfileData from '../components/profile/ProfileData';
-import ProfileInfo from '../components/profile/ProfileInfo';
-import SponsorAd from '../components/sponsors/SponsorAd';
-import { apiUrl } from '../config.json';
-import http from '../services/httpService';
-import '../styles/profile.scss';
-
+import React, { useEffect, useState } from "react";
+import Loader from "../components/styledComponents/Loader";
+import ProfileData from "../components/profile/ProfileData";
+import ProfileInfo from "../components/profile/ProfileInfo";
+import SponsorAd from "../components/sponsors/SponsorAd";
+import { apiUrl } from "../config.json";
+import http from "../services/httpService";
+import "../styles/profile.scss";
 
 function Profile({ match }) {
   // const userEndpoint = apiUrl + `/users/${match.params.username}/`;
@@ -16,7 +14,7 @@ function Profile({ match }) {
   //   apiUrl + `/users/${match.params.username}/solutions/`;
 
   //from Mockoon
-  const userEndpoint = 'http://localhost:3002/v1/users/devgenix/';
+  const userEndpoint = "http://localhost:3002/v1/users/devgenix/";
   const userQuestionEndpoint = apiUrl + `/users/${match.params.username}/ques/`;
   const userSolutionEndpoint =
     apiUrl + `/users/${match.params.username}/solutions/`;
@@ -36,14 +34,14 @@ function Profile({ match }) {
   }, []);
 
   useEffect(() => {
-    document.title = user.username ? `@${user.username} Profile` : 'Faraday';
+    document.title = user.username ? `@${user.username} Profile` : "Faraday";
   }, [user]);
 
   useEffect(() => {
     async function getUserQuestions() {
       const questionResult = await http.get(userQuestionEndpoint);
       setQuestions(questionResult.data);
-      console.log('QUEs', questions);
+      console.log("QUEs", questions);
     }
 
     getUserQuestions();
@@ -53,7 +51,7 @@ function Profile({ match }) {
     async function getUserSolutions() {
       const solutionResult = await http.get(userSolutionEndpoint);
       setSolutions(solutionResult.data);
-      console.log('SOLn', solutions);
+      console.log("SOLn", solutions);
     }
 
     getUserSolutions();
