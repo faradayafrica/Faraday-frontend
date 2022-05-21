@@ -1,11 +1,11 @@
-import http from './httpService';
-import { apiUrl } from '../config.json';
-import jwtDecode from 'jwt-decode';
-import axios from 'axios';
+import http from "./httpService";
+import { apiUrl } from "../config.json";
+import jwtDecode from "jwt-decode";
+import axios from "axios";
 
-const apiEndpoint = apiUrl + '/users/login/';
-const tokenKey = 'token';
-const refreshKey = 'refresh';
+const apiEndpoint = apiUrl + "/users/login/";
+const tokenKey = "token";
+const refreshKey = "refresh";
 
 http.setJwt(getJwt());
 
@@ -25,7 +25,7 @@ export async function login({ username, password }) {
 export async function refreshJwt() {
   const refresh_token = getRefresh();
   const response = await http.post(
-    'https://api.faraday.africa/v1/users/refresh_token/',
+    `${process.env.REACT_APP_API_URL + "/users/refresh/"}`,
     {
       refresh: refresh_token,
     }
@@ -38,7 +38,7 @@ export async function refreshJwt() {
 export async function confirmEmail({ confirmationCode }) {
   const user = getCurrentUser();
 
-  const url = apiUrl + '/users/verifyotp/';
+  const url = apiUrl + "/users/verifyotp/";
   await http.post(url, {
     email: user.email,
     otp: confirmationCode,
@@ -46,7 +46,7 @@ export async function confirmEmail({ confirmationCode }) {
 }
 
 export async function updateSchoolDetail(user) {
-  const url = apiUrl + '/users/edu_update/';
+  const url = apiUrl + "/users/edu_update/";
   // const jwt = getJwt();
   await axios.patch(url, {
     ...user,
@@ -54,14 +54,14 @@ export async function updateSchoolDetail(user) {
 }
 
 export async function editUserProfile(user) {
-  const url = apiUrl + '/users/edu_update/';
+  const url = apiUrl + "/users/edu_update/";
   await axios.patch(url, {
     ...user,
   });
 }
 
 export async function updatePersonalDetail(data) {
-  const url = apiUrl + '/users/bio_update/';
+  const url = apiUrl + "/users/bio_update/";
 
   await axios.patch(url, {
     ...data,
@@ -71,7 +71,7 @@ export async function updatePersonalDetail(data) {
 export async function resendEmailConfirmation() {
   const user = getCurrentUser();
 
-  const url = apiUrl + '/users/resendotp/';
+  const url = apiUrl + "/users/resendotp/";
   await http.post(url, {
     email: user.email,
   });
