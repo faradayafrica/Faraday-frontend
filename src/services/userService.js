@@ -1,12 +1,11 @@
-import http from './httpService';
-import { apiUrl } from '../config.json';
-import auth from './authService';
+import http from "./httpService";
+import auth from "./authService";
 
-const apiEndpoint = apiUrl + '/users/register/';
+const apiEndpoint = process.env.REACT_APP_API_URL + "/users/register/";
 
 export async function register(user) {
   let newUsername = user.username.toLowerCase();
-  const {data} = await http.post(apiEndpoint, {
+  const { data } = await http.post(apiEndpoint, {
     fname: user.fname,
     lname: user.lname,
     username: newUsername,

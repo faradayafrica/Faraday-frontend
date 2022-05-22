@@ -3,21 +3,22 @@ import Loader from "../components/styledComponents/Loader";
 import ProfileData from "../components/profile/ProfileData";
 import ProfileInfo from "../components/profile/ProfileInfo";
 import SponsorAd from "../components/sponsors/SponsorAd";
-import { apiUrl } from "../config.json";
 import http from "../services/httpService";
 import "../styles/profile.scss";
 
 function Profile({ match }) {
-  // const userEndpoint = apiUrl + `/users/${match.params.username}/`;
-  // const userQuestionEndpoint = apiUrl + `/users/${match.params.username}/ques/`;
+  // const userEndpoint = process.env.REACT_APP_API_URL + `/users/${match.params.username}/`;
+  // const userQuestionEndpoint = process.env.REACT_APP_API_URL + `/users/${match.params.username}/ques/`;
   // const userSolutionEndpoint =
-  //   apiUrl + `/users/${match.params.username}/solutions/`;
+  //   process.env.REACT_APP_API_URL + `/users/${match.params.username}/solutions/`;
 
   //from Mockoon
   const userEndpoint = "http://localhost:3002/v1/users/devgenix/";
-  const userQuestionEndpoint = apiUrl + `/users/${match.params.username}/ques/`;
+  const userQuestionEndpoint =
+    process.env.REACT_APP_API_URL + `/users/${match.params.username}/ques/`;
   const userSolutionEndpoint =
-    apiUrl + `/users/${match.params.username}/solutions/`;
+    process.env.REACT_APP_API_URL +
+    `/users/${match.params.username}/solutions/`;
 
   //the profile renders as soon as the user info comes in and the page fetches the questions later
   const [user, setUser] = useState({});

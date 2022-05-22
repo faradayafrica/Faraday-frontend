@@ -1,9 +1,8 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 
-const apiEndpoint = apiUrl + "/users/login/";
+const apiEndpoint = process.env.REACT_APP_API_URL + "/users/login/";
 const tokenKey = "token";
 const refreshKey = "refresh";
 
@@ -38,7 +37,7 @@ export async function refreshJwt() {
 export async function confirmEmail({ confirmationCode }) {
   const user = getCurrentUser();
 
-  const url = apiUrl + "/users/verifyotp/";
+  const url = process.env.REACT_APP_API_URL + "/users/verifyotp/";
   await http.post(url, {
     email: user.email,
     otp: confirmationCode,
@@ -46,7 +45,7 @@ export async function confirmEmail({ confirmationCode }) {
 }
 
 export async function updateSchoolDetail(user) {
-  const url = apiUrl + "/users/edu_update/";
+  const url = process.env.REACT_APP_API_URL + "/users/edu_update/";
   // const jwt = getJwt();
   await axios.patch(url, {
     ...user,
@@ -54,14 +53,14 @@ export async function updateSchoolDetail(user) {
 }
 
 export async function editUserProfile(user) {
-  const url = apiUrl + "/users/edu_update/";
+  const url = process.env.REACT_APP_API_URL + "/users/edu_update/";
   await axios.patch(url, {
     ...user,
   });
 }
 
 export async function updatePersonalDetail(data) {
-  const url = apiUrl + "/users/bio_update/";
+  const url = process.env.REACT_APP_API_URL + "/users/bio_update/";
 
   await axios.patch(url, {
     ...data,
@@ -71,7 +70,7 @@ export async function updatePersonalDetail(data) {
 export async function resendEmailConfirmation() {
   const user = getCurrentUser();
 
-  const url = apiUrl + "/users/resendotp/";
+  const url = process.env.REACT_APP_API_URL + "/users/resendotp/";
   await http.post(url, {
     email: user.email,
   });
