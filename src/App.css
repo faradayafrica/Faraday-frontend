@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   padding: 0;
   margin: 0;
@@ -931,7 +935,7 @@ textarea {
 
 .form-title {
   font-size: 24px !important;
-  font-family: 'Work sans', 'Courier New', Courier, monospace;
+  font-family: "Work sans", "Courier New", Courier, monospace;
   font-weight: 600 !important;
 }
 
@@ -1016,7 +1020,7 @@ input:focus {
 LOGIN
 ***************************************************/
 .login-page {
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
   color: var(--text2-black);
   position: absolute;
   min-height: 100%;
@@ -1346,13 +1350,13 @@ form {
  Profile Page
  ************************************ */
 .profile__container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .section-header {
   margin-top: 3rem;
   margin-bottom: 1rem;
-  font-family: Poppins, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Poppins, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: var(--text-black);
 }
 
