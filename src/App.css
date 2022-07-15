@@ -220,9 +220,9 @@ QFEED STYLING
   font-size: 21px;
 }
 
-.mr-15 {
+/* .mr-15 {
   margin-right: 12px;
-}
+} */
 
 .engagements {
   margin-top: 0;
@@ -802,7 +802,7 @@ SIDENAV STYLING
     height: 100%;
     z-index: 100000000000;
     border-right: 0.5px solid var(--outline);
-    min-width: 70%;
+    min-width: 100%;
   }
 
   .side-active {
@@ -826,12 +826,11 @@ SIDENAV STYLING
   .side .mobile-link {
     font-size: 20px;
     color: var(--text-black) !important;
-    padding: 10px 20px;
-    /* margin-bottom: 1rem; */
+    margin-bottom: 2px;
   }
-  .side .mobile-link p {
-    color: var(--text-black) !important;
-    margin-left: 1rem;
+  .mobile-link svg {
+    fill: var(--text-black) !important;
+    /* margin-left: 1rem; */
   }
 
   .bottom-nav {

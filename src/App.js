@@ -46,7 +46,7 @@ class App extends React.Component {
 
     return (
       <BrowserRouter>
-        <div className='container-lg p-0 mx-auto flex outline outline-1'>
+        <div className=' bg-red-50 max-w-[1024px] p-0 mx-auto flex'>
           <SideNav user={user} />
           <MobileSideNav user={user} />
           <Switch>
