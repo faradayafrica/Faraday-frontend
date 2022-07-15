@@ -12,7 +12,7 @@
 
 :root {
   --white: #ffffff;
-  --outline: #cfd9de;
+  --outline: #ECECF0;
   --brand: #05b851;
   --brand-dark: #23933f;
   --secondary: #7494cf;
@@ -24,7 +24,7 @@
   --text2-black: #536471;
 
   --brand-highlight: #f2fcf3;
-  --danger-highlight: #fcf6f2;
+  --danger-highlight: #F1FBEF;
 
   --shadow: #9ba5a02c;
 }
@@ -407,15 +407,15 @@ QFEED STYLING
 SIDENAV STYLING 
 ***************************************************/
 .sidenav-container {
-  position: relative;
-  display: block;
-  border-right: solid 0.5px var(--outline) !important;
-  border-left: solid 0.5px var(--outline);
+  /* position: relative; */
+  /* display: block; */
+  border-right: solid 0.5px var(--outline);
+  /* border-left: solid 0.5px var(--outline); */
   min-height: 100vh;
-  width: 65px;
+  /* width: 65px; */
   transition: width 0.5s ease;
-  z-index: 100;
-  background-color: var(--white);
+  /* z-index: 100; */
+  /* background-color: var(--white); */
 }
 
 .retry-container {
@@ -430,9 +430,9 @@ SIDENAV STYLING
   color: var(--text2-black);
 }
 
-.sidenav-container.active {
+/* .sidenav-container.active {
   width: 200px !important;
-}
+} */
 
 .link-box {
   padding: 5px;
@@ -512,8 +512,9 @@ SIDENAV STYLING
 }
 
 .sidenav-container .active-nav {
-  color: black !important;
+  color: var(--brand) !important;
   font-weight: 600;
+  background-color: var(--brand-highlight);
 }
 
 .sidenav-container p {
@@ -532,8 +533,12 @@ SIDENAV STYLING
   fill: #6c757d;
 }
 
+.active-icon {
+  color: red;
+}
+
 .active-icon svg {
-  fill: #000 !important;
+  fill: var(--brand) !important;
   /* filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
     hue-rotate(115deg) brightness(98%) contrast(96%); */
 }

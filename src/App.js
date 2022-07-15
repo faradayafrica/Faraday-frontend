@@ -46,7 +46,7 @@ class App extends React.Component {
 
     return (
       <BrowserRouter>
-        <Body className=''>
+        <div className='container-lg p-0 mx-auto flex outline outline-1'>
           <SideNav user={user} />
           <MobileSideNav user={user} />
           <Switch>
@@ -86,7 +86,7 @@ class App extends React.Component {
             <ProtectedRoute path='/' exact component={Qfeed} />
             <Redirect push to='/not-found' />
           </Switch>
-        </Body>
+        </div>
       </BrowserRouter>
     );
   }

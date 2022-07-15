@@ -6,7 +6,7 @@ import Trends from "../components/Trends";
 class App extends Component {
   render() {
     return (
-      <div className='qfeed__container'>
+      <div className="w-full">
         <QfeedContent user={this.props.user} />
         <Trends />
       </div>

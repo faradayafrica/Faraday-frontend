@@ -54,8 +54,8 @@ function QuestionPage({
               <Header>Question by {question.fname}</Header>
             </div> */}
 
-          <h1 className='section-header mx-3'>Question by {question.fname}</h1>
-          <div className='question-page'>
+          <h1 className="section-header mx-3">Question by {question.fname}</h1>
+          <div className="question-page">
             <QuestionProfile question={question} />
 
             <QuestionTitleContainer>
@@ -65,10 +65,10 @@ function QuestionPage({
                 handleLike={handleLike}
               />
               <QuestionTitle>
-                <h2 className='question__title'>{question[0]?.body}</h2>
-                <p className='question__tags'>
+                <h2 className="question__title">{question[0]?.body}</h2>
+                <p className="question__tags">
                   {question[0]?.tags.map((tag) => (
-                    <span key={tag} className=''>
+                    <span key={tag} className="">
                       #{tag}
                     </span>
                   ))}
