@@ -36,13 +36,38 @@ function SideNav({ user }) {
     {
       item: "Notification",
       icon: (
+        // <svg
+        //   width="24"
+        //   height="24"
+        //   viewBox="0 0 24 24"
+        //   xmlns="http://www.w3.org/2000/svg"
+        // >
+        //   <path d="M12 22C10.8954 22 10 21.1046 10 20H14C14 21.1046 13.1046 22 12 22ZM20 19H4V17L6 16V10.5C6 7.038 7.421 4.793 10 4.18V2H14V4.18C16.579 4.792 18 7.036 18 10.5V16L20 17V19ZM12 5.75C10.7797 5.6712 9.60278 6.21728 8.875 7.2C8.25255 8.18456 7.94714 9.33638 8 10.5V17H16V10.5C16.0528 9.33639 15.7474 8.18458 15.125 7.2C14.3972 6.21728 13.2203 5.6712 12 5.75Z" />
+        // </svg>
+
         <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
+          width="18"
+          height="21"
+          viewBox="0 0 18 21"
+          fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <path d="M12 22C10.8954 22 10 21.1046 10 20H14C14 21.1046 13.1046 22 12 22ZM20 19H4V17L6 16V10.5C6 7.038 7.421 4.793 10 4.18V2H14V4.18C16.579 4.792 18 7.036 18 10.5V16L20 17V19ZM12 5.75C10.7797 5.6712 9.60278 6.21728 8.875 7.2C8.25255 8.18456 7.94714 9.33638 8 10.5V17H16V10.5C16.0528 9.33639 15.7474 8.18458 15.125 7.2C14.3972 6.21728 13.2203 5.6712 12 5.75Z" />
+          <path
+            d="M12 15.5H6V16.5C6 18.1569 7.34315 19.5 9 19.5C10.6569 19.5 12 18.1569 12 16.5V15.5Z"
+            stroke="#6C757D"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="transparent"
+          />
+          <path
+            d="M2 15.5H16C16.5523 15.5 17 15.0523 17 14.5V13.9142C17 13.649 16.8946 13.3947 16.7071 13.2071L16.1963 12.6963C16.0706 12.5706 16 12.4001 16 12.2224V8.5C16 4.634 12.866 1.49999 8.99998 1.5C5.134 1.50001 2 4.63401 2 8.5V12.2224C2 12.4002 1.9294 12.5706 1.80372 12.6963L1.29289 13.2071C1.10536 13.3947 1 13.649 1 13.9142V14.5C1 15.0523 1.44772 15.5 2 15.5Z"
+            stroke="#6C757D"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="transparent"
+          />
         </svg>
       ),
       focus: false,
@@ -110,7 +135,7 @@ function SideNav({ user }) {
 
   return (
     <>
-      <div className="w-72 px-4 bg-white sidenav-container active">
+      <div className="w-80 px-2 bg-white sidenav-container active">
         <div className="position-fixed  d-flex flex-column justify-content-between h-100">
           <div>
             <nav className="row my-3 ml-1 menu-nav pb-4">
@@ -128,7 +153,7 @@ function SideNav({ user }) {
 
             {/* Ask question btn */}
             <Link to="/post" style={{ textDecoration: "none" }}>
-              <button className="navlink btn btn-green nav-post-btn px-4">
+              <button className="navlink btn btn-green nav-post-btn py-2 px-3">
                 <span className="nav-tooltip nav-tooltip-brand">Ask</span>
                 <svg
                   width="24"
@@ -141,7 +166,7 @@ function SideNav({ user }) {
                     fill="#fff"
                   />
                 </svg>
-                <p className="ml-2 dont-break">Post</p>
+                <p className="ml-2 ">Add a question</p>
               </button>
             </Link>
           </div>
