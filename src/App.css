@@ -539,14 +539,13 @@ SIDENAV STYLING
   fill: #6c757d;
 }
 
-.active-icon {
-  color: red;
-}
+
 
 .active-icon svg {
   fill: var(--brand) !important;
-  /* filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
-    hue-rotate(115deg) brightness(98%) contrast(96%); */
+  /* stroke: var(--brand) !important; */
+  filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
+    hue-rotate(115deg) brightness(98%) contrast(96%);
 }
 
 .navlink:hover {
@@ -792,17 +791,16 @@ SIDENAV STYLING
   }
 
   .side {
-    background: transparent;
     position: fixed;
-    left: -100%;
+    left: -200%;
     transition: 0.3s all ease-in;
     height: 100%;
     z-index: 100000000000;
-    /* opacity: 0; */
+    /* display: none; */
   }
-
+  
   .side-container {
-    background-color: var(--white) !important;
+    /* background-color: var(--white) !important; */
     position: fixed;
     transition: 0.3s all ease-in;
     height: 100%;
@@ -812,14 +810,15 @@ SIDENAV STYLING
   }
 
   .side-active {
+    border-top-right-radius: 60px;
     display: block;
     left: 0;
     min-width: 100%;
     opacity: 1;
   }
-
+  
   .side-header {
-    /* height: 60px; */
+    border-top-right-radius: 60px;
     display: flex;
     justify-content: space-between;
   }
