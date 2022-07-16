@@ -34,56 +34,68 @@ function MobileNav({ user }) {
       <div className="mobile-sidenav ">
         {/* Hamburger */}
         {!isProfile && (
-          <div
-            className="p-2 rounded-xl bg-slate-200 cursor-pointer hover:bg-slate-300 absolute top-4 left-4 z-40 "
-            id="sidenav-btn"
-            data-toggle="tooltip"
-            title="mobile-sidenav"
-            onClick={handleMobileMenuClick}
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <div className="w-full absolute top-0 left-0  z-40">
+            <div
+              className="p-3 m-2 rounded-xl bg-white cursor-pointer  "
+              id="sidenav-btn"
+              data-toggle="tooltip"
+              title="mobile-sidenav"
+              onClick={handleMobileMenuClick}
             >
-              <path
-                d="M21 18H3V16H21V18ZM21 13H3V11H21V13ZM21 8H3V6H21V8Z"
-                fill="#3F3F41"
-              />
-            </svg>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M21 18H3V16H21V18ZM21 13H3V11H21V13ZM21 8H3V6H21V8Z"
+                  fill="#3F3F41"
+                />
+              </svg>
+            </div>
           </div>
         )}
 
-        <div className="side">
+        <div className="side bg-red-200">
           <div className="side-container">
             <div className="side-overlay" onClick={handleMobileMenuClick}></div>
             <div className="side-header">
               <div className="flex justify-start">
                 <div
-                  className="p-2 bg-slate-200 rounded-xl float-left cursor-pointer"
+                  className="p-2 bg-background2 rounded-xl float-left cursor-pointer"
                   data-toggle="tooltip"
                   title="close"
                   onClick={handleMobileMenuClick}
                 >
                   <svg
-                    width="30"
-                    height="30"
+                    width="24"
+                    height="24"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M15.59 7L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41L15.59 7Z"
-                      fill="#6C757D"
+                      d="M18 18L6 6"
+                      stroke="#6C757D"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M18 6L6 18"
+                      stroke="#6C757D"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                 </div>
 
                 <h3 className="text-lg font-bold ">Account info</h3>
               </div>
-              <div className="mt-4 bg-red-100 rounded-xl p-3">
+              <div className="mt-4 bg-background2 rounded-xl p-3">
                 <div className="flex">
                   <img
                     src={Avatar}
@@ -115,7 +127,7 @@ function MobileNav({ user }) {
             <div className="side-links">
               <div onClick={handleMobileMenuClick}>
                 <Link to="/" style={{ textDecoration: "none" }}>
-                  <div className="mobile-link flex items-center rounded-t-xl bg-red-100 mx-3 px-3 py-3">
+                  <div className="mobile-link bg-background2 flex items-center rounded-t-xl mx-3 px-3 py-3">
                     <svg
                       width="24"
                       height="24"
@@ -141,7 +153,7 @@ function MobileNav({ user }) {
                   to={`/me/${currentUser.username}`}
                   style={{ textDecoration: "none" }}
                 >
-                  <div className="mobile-link flex items-center bg-red-100 mx-3 px-3 py-3">
+                  <div className="mobile-link bg-background2 flex items-center  mx-3 px-3 py-3">
                     <svg
                       width="24"
                       height="24"
@@ -156,7 +168,7 @@ function MobileNav({ user }) {
                 </Link>
 
                 <Link to="/notification" style={{ textDecoration: "none" }}>
-                  <div className="mobile-link flex items-center bg-red-100 mx-3 px-3 py-3">
+                  <div className="mobile-link bg-background2 flex items-center  mx-3 px-3 py-3">
                     <svg
                       width="24"
                       height="24"
@@ -172,7 +184,7 @@ function MobileNav({ user }) {
                 </Link>
 
                 <Link to="/logout" style={{ textDecoration: "none" }}>
-                  <div className="mobile-link flex items-center rounded-b-xl bg-red-100 mx-3 px-3 py-3">
+                  <div className="mobile-link bg-background2 flex items-center rounded-b-xl mx-3 px-3 py-3">
                     <svg
                       width="24"
                       height="24"
