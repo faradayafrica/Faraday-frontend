@@ -72,10 +72,10 @@ function Profile({ match }) {
   return !user.username ? (
     <Loader onRefresh={refreshPage} />
   ) : (
-    <div className='profile__container'>
+    <div className="w-full">
       <div>
         {/* <ProfileNav user={user} /> */}
-        <h1 className=' section-header'>Profile</h1>
+        <h1 className=" section-header">Profile</h1>
         <ProfileData
           user={user}
           userQuestions={questions}
@@ -83,7 +83,7 @@ function Profile({ match }) {
         />
         <ProfileInfo />
       </div>
-      <div className='w-100 profile-trends'>
+      <div className="w-100 profile-trends">
         <SponsorAd />
       </div>
     </div>
