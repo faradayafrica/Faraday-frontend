@@ -30,7 +30,7 @@ function SideNav({ user }) {
           />
         </svg>
       ),
-      focus: true,
+      focus: false,
       mobile: true,
     },
     {
@@ -172,8 +172,6 @@ function SideNav({ user }) {
           </div>
         </div>
       </div>
-
-      <MobileBottomNav links={links} handleLink={handleLink} />
     </>
   );
 }

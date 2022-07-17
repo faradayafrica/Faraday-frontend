@@ -8,15 +8,16 @@ module.exports = {
     extend: {colors: {
       'brand': '#05b851',
       'brand-dark': '#23933f',
+      'faraday-night': '#333B47',
+      'night-secondary': '#6C757D',
       'secondary': '#7494cf',
       'background': '#f8f9fa',
       'background2': '#f1f2f6',
       'secondary-text': '#a2abb3',
       'records': '#8b3745',
-      'faraday-night': '#333B47',
       'text2-black': '#536471',
 
-      'brand-highlight': '#f2fcf3',
+      'brand-highlight': '#F1FBEF',
       'danger-highlight': '#F1FBEF',
 
       'shadow': '#9ba5a02c',
