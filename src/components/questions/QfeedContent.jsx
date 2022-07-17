@@ -6,14 +6,16 @@ import QuestionPage from "./QuestionPage";
 import NotFound from "../../routes/NotFound";
 import Loader from "../styledComponents/Loader";
 import http from "../../services/httpService";
+import data from "../../questions.json";
 
-const apiEndpoint = "http://localhost:3002/v1/qfeed";
-// const apiEndpoint = 'https://api.faraday.africa/v1/qfeed/que/fetch/';
+// const apiEndpoint = "https://faradayapi.azurewebsites.net/v1/qfeed/que/fetch/";
+// const apiEndpoint = process.env.REACT_APP_API_URL + "qfeed/que/fetch/";
+console.log("data", data);
+// const dummy = ;
 
-// const apiEndpoint = 'https://jsonplaceholder.typicode.com/posts';
 class Qfeed extends Component {
   state = {
-    questions: [],
+    questions: [...data],
   };
 
   async componentDidMount() {
@@ -27,10 +29,10 @@ class Qfeed extends Component {
 
   render() {
     return (
-      <div className='qfeed-container col '>
+      <div className="qfeed-container col ">
         <Switch>
           <Route
-            path='/Qfeed/:id'
+            path="/Qfeed/:id"
             render={(props) => (
               <QuestionPage
                 questions={this.state.questions}
@@ -46,7 +48,7 @@ class Qfeed extends Component {
           />
 
           <Route
-            path='/'
+            path="/"
             render={(props) => (
               <Questions
                 renderQuestion={this.renderQuestion}
@@ -57,8 +59,8 @@ class Qfeed extends Component {
             )}
           />
 
-          <Route path='/not-found' component={NotFound} />
-          <Redirect push to='/not-found' />
+          <Route path="/not-found" component={NotFound} />
+          <Redirect push to="/not-found" />
         </Switch>
       </div>
     );
@@ -208,13 +210,13 @@ class Qfeed extends Component {
             />
           ))}
 
-          <div className='row justify-content-center my-4 '>
+          <div className="row justify-content-center my-4 ">
             <button
-              className='navlink btn btn-sm mb-5'
+              className="navlink btn btn-sm mb-5"
               style={{ background: "#f8f9fa" }}
             >
-              <div className='icon active-icon'></div>
-              <p className='mx-2 mb-0' style={{ borderRadius: "8px" }}>
+              <div className="icon active-icon"></div>
+              <p className="mx-2 mb-0" style={{ borderRadius: "8px" }}>
                 Load more
               </p>
             </button>
