@@ -1,6 +1,10 @@
 .question-component {
-    border-top: 1px theme('colors.outline') solid;
+    /* border-top: 1px theme('colors.outline') solid; */
     border-bottom: 1px theme('colors.outline') solid;
+}
+
+.comment {
+    border-top: 1px theme('colors.outline') solid;
 }
 
 .qfeed-wrapper {

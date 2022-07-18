@@ -19,7 +19,7 @@ module.exports = {
       'text2-black': '#536471',
 
       'brand-highlight': '#F1FBEF',
-      'danger-highlight': '#F1FBEF',
+      'danger-highlight': '#FBEFF5',
 
       'shadow': '#9ba5a02c',
   
