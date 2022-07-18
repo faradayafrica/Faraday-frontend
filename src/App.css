@@ -1071,12 +1071,9 @@ form {
   box-shadow: 8px 8px 0px var(--shadow);
 }
 
-.text-sm {
-  font-size: 12px !important;
-}
 
 .text-md {
-  font-size: 14px !important;
+  font-size: 14px;
 }
 
 .form-container > .logo-container {
