@@ -1,0 +1,10 @@
+.question-component {
+    border-top: 1px theme('colors.outline') solid;
+    border-bottom: 1px theme('colors.outline') solid;
+}
+
+.qfeed-wrapper {
+    border-right: 1px theme('colors.outline') solid;
+    border-left: 1px theme('colors.outline') solid;
+
+}

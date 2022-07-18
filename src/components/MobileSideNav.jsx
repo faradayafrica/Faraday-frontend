@@ -29,10 +29,10 @@ function MobileNav() {
   }, [location.pathname]);
 
   const renderBottomLink = (focus) => {
-    let qfeedClasses = "w-50 h-14 flex justify-center items-center rounded-xl";
+    let qfeedClasses = "w-50 h-12 flex justify-center items-center rounded-xl";
 
     if (focus === true) {
-      qfeedClasses += " bg-background-highlight active-icon";
+      qfeedClasses += " bg-brand-highlight active-icon";
       return qfeedClasses;
     } else {
       return qfeedClasses;
@@ -62,7 +62,7 @@ function MobileNav() {
         {!isProfile && (
           <div className="w-full fixed top-0 left-0  z-40 p-2">
             {/* fixed top nav for mobile */}
-            <div className="rounded-xl bg-white flex justify-between">
+            <div className="shadow-shadow rounded-xl bg-white flex justify-between">
               <img
                 className="p-3 rounded-xl cursor-pointer  "
                 data-toggle="tooltip"

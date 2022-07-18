@@ -37,11 +37,14 @@ html {
   color: var(--text2-black);
 }
 
-.flow {
+.shadow-shadow {
+  box-shadow: 2px 3px 39px rgba(108, 117, 125, 0.1), 8px 8px 61px rgba(5, 184, 81, 0.1);
+}
+/* .flow {
 
 
   color: theme('colors.brand');
-}
+} */
 
 .dont-break {
   word-wrap: initial;
@@ -415,7 +418,7 @@ SIDENAV STYLING
 .sidenav-container {
   /* position: relative; */
   /* display: block; */
-  border-right: solid 0.5px var(--outline);
+  /* border-right: solid 0.5px var(--outline); */
   /* border-left: solid 0.5px var(--outline); */
   min-height: 100vh;
   /* width: 65px; */
@@ -567,6 +570,7 @@ SIDENAV STYLING
 }
 
 .btn-green {
+  border-radius: 50px !important;
   background-color: var(--brand) !important;
   opacity: 0.9;
   color: var(--white) !important;
@@ -786,7 +790,6 @@ SIDENAV STYLING
 
   .mobile-sidenav {
     display: block;
-    background-color: var(--danger);
   }
 
   .mobile-sidenav .hanger-menu {
@@ -816,7 +819,7 @@ SIDENAV STYLING
   }
 
   .side-active {
-    border-top-right-radius: 60px;
+    /* border-top-right-radius: 60px; */
     display: block;
     left: 0;
     min-width: 100%;
@@ -824,7 +827,7 @@ SIDENAV STYLING
   }
   
   .side-header {
-    border-top-right-radius: 60px;
+    /* border-top-right-radius: 60px; */
     display: flex;
     justify-content: space-between;
   }
