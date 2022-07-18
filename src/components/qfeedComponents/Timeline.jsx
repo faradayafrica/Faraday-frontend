@@ -7,7 +7,7 @@ import data from "../../questions.json";
 
 const TimeLine = () => {
   const [questions, setQuestions] = useState(data.results);
-  const currentUser = getCurrentUser();
+  //   const currentUser = getCurrentUser();
   console.log("Timeline", questions);
 
   return (
@@ -16,13 +16,12 @@ const TimeLine = () => {
       <div className="">
         <h1 className="text-2xl sm:text-2xl m-3 font-bold">Question Feed</h1>
 
-        {/* The question component */}
-        <Question />
-        <Question />
-        <Question />
-        <Question />
+        {/* The questions */}
+        {questions.map((question) => (
+          <Question question={question} key={question.id} />
+        ))}
 
-        <div className="h-[3000px] w-full bg-red-100"></div>
+        <div className="h-[65px] w-full"></div>
       </div>
     </>
   );
