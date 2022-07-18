@@ -13,7 +13,7 @@ import bell from "../images/nav/bell.svg";
 import qfeed from "../images/nav/qfeed.svg";
 import close from "../images/nav/close_md.svg";
 
-function MobileNav({ user }) {
+function MobileNav() {
   const [isQfeed, setQfeed] = useState();
   const [isNotification, setNotification] = useState();
   const [isProfile, setIsProfile] = useState(false);
@@ -24,17 +24,15 @@ function MobileNav({ user }) {
   const location = useLocation();
 
   useEffect(() => {
-    // the function you want to call
     setQfeed(location.pathname === "/");
     setNotification(location.pathname === "/notification");
-    console.log("Qfeed", location.pathname);
   }, [location.pathname]);
 
   const renderBottomLink = (focus) => {
     let qfeedClasses = "w-50 h-14 flex justify-center items-center rounded-xl";
 
     if (focus === true) {
-      qfeedClasses += " bg-brand-highlight active-icon";
+      qfeedClasses += " bg-background-highlight active-icon";
       return qfeedClasses;
     } else {
       return qfeedClasses;
@@ -59,7 +57,7 @@ function MobileNav({ user }) {
 
   return (
     <>
-      <div className="mobile-sidenav ">
+      <div className="mobile-sidenav">
         {/* Hamburger */}
         {!isProfile && (
           <div className="w-full fixed top-0 left-0  z-40 p-2">
@@ -115,7 +113,7 @@ function MobileNav({ user }) {
         <div className="side">
           <div className="side-container">
             <div className="side-overlay" onClick={handleMobileMenuClick}></div>
-            <div className="side-header bg-white">
+            <div className="side-header bg-background">
               <div className="flex justify-start">
                 <div
                   className="p-2 rounded-xl float-left cursor-pointer"
@@ -133,21 +131,21 @@ function MobileNav({ user }) {
                 style={{ textDecoration: "none" }}
                 onClick={handleMobileMenuClick}
               >
-                <div className="mt-4 bg-background rounded-xl p-3">
-                  <div className="flex">
+                <div className="mt-4 bg-white rounded-xl p-3">
+                  <div className="flex items-center">
                     <img
                       src={Avatar}
                       alt=""
-                      className="rounded-full mr-2 h-10 w-10"
+                      className="rounded-full mr-2 h-11 w-11"
                       width="40px"
                       height="40px"
                     />
                     <div>
                       <h2 className="name ">
-                        {user?.first_name} {user?.last_name}
+                        {currentUser?.first_name} {currentUser?.last_name}
                       </h2>
                       <p className="username text-night-secondary">
-                        @{user?.username}
+                        @{currentUser?.username}
                       </p>
                     </div>
                   </div>
@@ -164,21 +162,21 @@ function MobileNav({ user }) {
               </Link>
             </div>
 
-            <div className="side-links bg-white">
+            <div className="side-links bg-background">
               <div onClick={handleMobileMenuClick}>
                 <Link to="/" style={{ textDecoration: "none" }}>
-                  <div className="mobile-link bg-background flex items-center rounded-t-xl mx-3 px-3 py-3">
+                  <div className="mobile-link bg-white flex items-center rounded-t-xl mx-3 px-3 py-3">
                     <img src={qfeed} alt="qfeed" />
-                    <p className="m-0 ml-2 text-lg font-medium text-faraday-night">
+                    <p className="m-0 ml-2 text-lg font-normal text-faraday-night">
                       Qfeed
                     </p>
                   </div>
                 </Link>
 
                 <Link to="/notification" style={{ textDecoration: "none" }}>
-                  <div className="mobile-link bg-background flex items-center  mx-3 px-3 py-3">
+                  <div className="mobile-link bg-white flex items-center  mx-3 px-3 py-3">
                     <img src={bell} alt="notification" />
-                    <p className="m-0 ml-2 text-lg font-medium text-faraday-night">
+                    <p className="m-0 ml-2 text-lg font-normal text-faraday-night">
                       Notification
                     </p>
                   </div>
@@ -188,18 +186,18 @@ function MobileNav({ user }) {
                   to={`/me/${currentUser.username}`}
                   style={{ textDecoration: "none" }}
                 >
-                  <div className="mobile-link bg-background flex items-center rounded-b-xl mx-3 px-3 py-3">
+                  <div className="mobile-link bg-white flex items-center rounded-b-xl mx-3 px-3 py-3">
                     <img src={profile} alt="profile" />
-                    <p className="m-0 ml-2 text-lg font-medium text-faraday-night">
+                    <p className="m-0 ml-2 text-lg font-normal text-faraday-night">
                       Profile
                     </p>
                   </div>
                 </Link>
 
                 <Link to="/logout" style={{ textDecoration: "none" }}>
-                  <div className="mt-4 mobile-link bg-background flex items-center rounded-xl mx-3 px-3 py-3">
+                  <div className="mt-4 mobile-link bg-white flex items-center rounded-xl mx-3 px-3 py-3">
                     <img src={logout} alt="logout" />
-                    <p className="m-0 ml-2 text-lg font-medium text-faraday-night">
+                    <p className="m-0 ml-2 text-lg font-normal text-faraday-night">
                       Logout
                     </p>
                   </div>
@@ -207,7 +205,7 @@ function MobileNav({ user }) {
               </div>
             </div>
 
-            <span className="version text-night-seconday">
+            <span className="version text-night-secondary">
               PointBreak v1.0.0
             </span>
           </div>

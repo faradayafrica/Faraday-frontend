@@ -18,7 +18,6 @@ import Bookmarks from './components/other pages/bookmarks';
 import Setting from './components/other pages/setting';
 import Sponsors from './components/other pages/sponsors';
 import SavedCourses from './components/other pages/saved-courses';
-// import MobileSidenav from './components/other pages/mobileSidenav';
 import LoginForm from './components/loginForm';
 import SignUpForm from './components/signUpForm';
 import ConfirmEmail from './components/other pages/signup process/confirmEmail.jsx';
@@ -27,28 +26,16 @@ import PersonalData from './components/other pages/signup process/personalData';
 import TermsAndCondition from './components/other pages/termsAndCondition.jsx';
 import PrivacyPolicy from './components/other pages/privacyPolicy';
 import Logout from './components/styledComponents/logout.jsx';
-import auth from './services/authService.js';
 import './App.css';
 import MobileSideNav from './components/MobileSideNav.jsx';
 
-class App extends React.Component {
-  state = {};
-
-  componentDidMount() {
-    const user = auth.getCurrentUser();
-    // console.log(user);
-    this.setState({ user });
-    // console.log(this.state.user);
-  }
-
+class App extends React.Component {  
   render() {
-    const { user } = this.state;
-
     return (
       <BrowserRouter>
         <div className=' bg-red-50 max-w-[1024px] p-0 mx-auto flex'>
-          <SideNav user={user} />
-          <MobileSideNav user={user} />
+          <SideNav/>
+          <MobileSideNav />
           <Switch>
             <Route path='/signup' component={SignUpForm} />
             <Route path='/confirm-email' component={ConfirmEmail} />

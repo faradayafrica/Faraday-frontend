@@ -2,7 +2,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box !important;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .btn:focus {
@@ -762,7 +762,7 @@ SIDENAV STYLING
   }
 }
 
-@media only screen and (max-width: 576px) {
+@media only screen and (max-width: 640px) {
   .header {
     justify-content: center;
   }
@@ -874,9 +874,7 @@ TRENDING STYLING
 ***************************************************/
 
 @media only screen and (max-width: 768px) {
-  .trends-container {
-    display: none;
-  }
+ 
 }
 @media only screen and (max-width: 376px) {
   .dont-break {
