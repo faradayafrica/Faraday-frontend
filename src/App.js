@@ -33,7 +33,7 @@ class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <div className=' bg-red-50 max-w-[1024px] p-0 mx-auto flex'>
+        <div className='text-faraday-night max-w-[1024px] p-0 mx-auto flex'>
           <SideNav/>
           <MobileSideNav />
           <Switch>

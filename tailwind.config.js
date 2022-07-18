@@ -10,6 +10,7 @@ module.exports = {
       'brand-dark': '#23933f',
       'faraday-night': '#333B47',
       'night-secondary': '#6C757D',
+      'outline': '#ECECF0',
       'secondary': '#7494cf',
       'background': '#f8f9fa',
       'background2': '#f1f2f6',
