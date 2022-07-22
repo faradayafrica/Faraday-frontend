@@ -15,7 +15,7 @@ console.log("data", data);
 
 class Qfeed extends Component {
   state = {
-    questions: [...data],
+    questions: [],
   };
 
   async componentDidMount() {
