@@ -1,14 +1,21 @@
 import { useState, useEffect } from "react";
-import { getCurrentUser } from "../../services/authService";
+import http from "../../services/httpService";
 import Question from "./Question";
+import { Link } from "react-router-dom";
+import ask from "../../images/qfeed/ask.svg";
 
 import "../../styles/qfeed.css";
 import data from "../../questions.json";
 
 const TimeLine = () => {
   const [questions, setQuestions] = useState(data.results);
-  //   const currentUser = getCurrentUser();
-  console.log("Timeline", questions);
+  console.log("Timeline", questions[0]);
+
+  useEffect(() => {
+    const apiEndpoint = process.env.REACT_APP_API_URL + "qfeed/que/fetch/";
+    const data = http.get(apiEndpoint);
+    console.log("data", data);
+  });
 
   return (
     <>
@@ -21,7 +28,14 @@ const TimeLine = () => {
           <Question question={question} key={question.id} />
         ))}
 
-        <div className="h-[65px] w-full"></div>
+        <Link
+          to="/post"
+          className="sm:hidden fixed right-6 bottom-20 h-16 w-16"
+        >
+          {" "}
+          <img className="ask-shadow rounded-full" src={ask} alt="" />
+        </Link>
+        <div className="h-[65px] w-full "></div>
       </div>
     </>
   );
