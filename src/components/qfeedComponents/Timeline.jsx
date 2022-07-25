@@ -30,7 +30,7 @@ const TimeLine = () => {
 
         <Link
           to="/post"
-          className="sm:hidden fixed right-6 bottom-20 h-16 w-16"
+          className="sm:hidden fixed right-6 bottom-20 h-16 w-16 z-40"
         >
           {" "}
           <img className="ask-shadow rounded-full" src={ask} alt="" />

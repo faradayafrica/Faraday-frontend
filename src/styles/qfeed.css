@@ -12,3 +12,9 @@
     border-left: 1px theme('colors.outline') solid;
 
 }
+
+.question-overlay {
+    /* filter: blur(8px);
+    -webkit-filter: blur(8px); */
+
+}
