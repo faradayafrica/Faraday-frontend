@@ -1,22 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import profile1 from "../../images/profile2.png";
 import arrow from "../../images/qfeed/arrow-right.svg";
 import love from "../../images/qfeed/love.svg";
+import redLove from "../../images/qfeed/red-love.svg";
 import smiley from "../../images/qfeed/smiley.svg";
 import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
+import http from "../../services/httpService";
 
 const Question = ({ question }) => {
+  const [isLiked, setLiked] = useState(question.liked);
+  const [likes, setLikes] = useState(question.likes);
   const [isButtonPannel, setButtonPannel] = useState(false);
-  //   console.log("question", question);
+  // console.log("question", question);
+
+  const apiEndpoint = process.env.REACT_APP_API_URL + "que/vote_que/";
 
   let smileyClasses =
     "hover:bg-brand-highlight px-2  h-8 flex justify-around items-center rounded-lg";
+
+  let loveClasses =
+    "hover:bg-danger-highlight h-8 px-2 flex justify-around items-center rounded-lg mr-2";
 
   if (!isButtonPannel) {
     smileyClasses += " bg-background ";
   } else {
     smileyClasses += " bg-brand-highlight icon-brand";
+  }
+
+  if (!isLiked) {
+    loveClasses += " bg-background ";
+  } else {
+    loveClasses += " bg-danger-highlight text-danger";
   }
 
   const handleButtonPannel = () => {
@@ -28,7 +43,26 @@ const Question = ({ question }) => {
     setButtonPannel(false);
   };
 
-  const handleLike = () => {};
+  const handleLike = async (postid, value) => {
+    const oldValue = likes;
+    const oldLiked = isLiked;
+    hideButtonPannel();
+    if (!isLiked) {
+      setLikes(likes + 1);
+      setLiked(true);
+    } else {
+      setLikes(likes - 1);
+      setLiked(false);
+    }
+
+    try {
+      const data = await http.post(apiEndpoint, { postid, value });
+    } catch (err) {
+      setLiked(oldLiked);
+      setLikes(oldValue);
+      console.warn("error", err.message);
+    }
+  };
 
   return (
     <div className="question-component bg-brnd-highlight pl-3 pt-3 sm:pt-4  flex justify-start">
@@ -53,12 +87,21 @@ const Question = ({ question }) => {
 
         {/* QUestion reaction */}
         <div className=" flex items-center h-12">
-          {question.likes !== 0 ? (
-            <button className="bg-background hover:bg-danger-highlight h-8 px-2 flex justify-around items-center rounded-lg mr-2">
-              <img className="h-4 w-4" src={love} alt="react to question" />{" "}
-              <span className="ml-1 font-medium text-sm">
-                {question?.likes}
-              </span>
+          {likes !== 0 ? (
+            <button
+              className={loveClasses}
+              onClick={() => handleLike(question.id, likes)}
+            >
+              {isLiked ? (
+                <img
+                  className="h-4 w-4"
+                  src={redLove}
+                  alt="take back reaction"
+                />
+              ) : (
+                <img className="h-4 w-4" src={love} alt="react to question" />
+              )}
+              <span className="ml-1 font-medium text-sm">{likes}</span>
             </button>
           ) : (
             ""
@@ -72,22 +115,41 @@ const Question = ({ question }) => {
           </button>
           {/* Hidden engagement buttons can be found here */}
           {isButtonPannel ? (
-            <span className="ask-shadow bg-white relative right-8 bottom-10 p-[2px] rounded-full border border-brand-highlight">
-              <button className=" p-2 rounded-full hover:bg-background">
-                <img
-                  className="h-[18px] w-[18px]"
-                  src={love}
-                  alt="react to question"
-                />
-              </button>
-              <button className=" p-2 rounded-full hover:bg-background mx-2">
+            <span
+              onClick={() => hideButtonPannel()}
+              className="ask-shadow bg-white relative right-8 bottom-10 p-2 rounded-full border border-brand-highlight"
+            >
+              {isLiked ? (
+                <button
+                  className=" p-2 rounded-full hover:bg-danger-highlight"
+                  onClick={() => handleLike(question.id, likes)}
+                >
+                  <img
+                    className="h-4 w-4"
+                    src={redLove}
+                    alt="take back reaction"
+                  />
+                </button>
+              ) : (
+                <button
+                  className=" p-2 rounded-full icon-brand-hover hover:bg-brand-highlight"
+                  onClick={() => handleLike(question.id, likes)}
+                >
+                  <img
+                    className="h-[18px] w-[18px]"
+                    src={love}
+                    alt="react to question"
+                  />
+                </button>
+              )}
+              <button className=" p-2 rounded-full icon-brand-hover hover:bg-brand-highlight mx-2">
                 <img
                   className="h-[18px] w-[18px]"
                   src={share}
                   alt="share this question"
                 />
               </button>
-              <button className=" p-2 rounded-full hover:bg-background">
+              <button className=" p-2 rounded-full icon-brand-hover hover:bg-brand-highlight">
                 <img
                   className="h-[18px] w-[18px]"
                   src={link}

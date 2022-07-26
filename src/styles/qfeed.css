@@ -13,8 +13,14 @@
 
 }
 
-.icon-brand > img, svg {
-        filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
-          hue-rotate(115deg) brightness(98%) contrast(96%);
-      
+.icon-brand > img, .icon-brand > svg {
+    filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
+      hue-rotate(115deg) brightness(98%) contrast(96%);
+}
+
+
+.icon-brand-hover:hover > img, .icon-brand-hover:hover > svg {
+    
+    filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
+      hue-rotate(115deg) brightness(98%) contrast(96%);
 }
