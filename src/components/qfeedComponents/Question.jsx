@@ -14,7 +14,7 @@ const Question = ({ question }) => {
   const [isButtonPannel, setButtonPannel] = useState(false);
   // console.log("question", question);
 
-  const apiEndpoint = process.env.REACT_APP_API_URL + "que/vote_que/";
+  const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
 
   let smileyClasses =
     "hover:bg-brand-highlight px-2  h-8 flex justify-around items-center rounded-lg";
@@ -43,7 +43,7 @@ const Question = ({ question }) => {
     setButtonPannel(false);
   };
 
-  const handleLike = async (postid, value) => {
+  const handleLike = async (postid) => {
     const oldValue = likes;
     const oldLiked = isLiked;
     hideButtonPannel();
@@ -56,7 +56,8 @@ const Question = ({ question }) => {
     }
 
     try {
-      const data = await http.post(apiEndpoint, { postid, value });
+      const { data } = await http.post(apiEndpoint, { postid, value: likes });
+      console.log(data);
     } catch (err) {
       setLiked(oldLiked);
       setLikes(oldValue);
@@ -122,7 +123,7 @@ const Question = ({ question }) => {
               {isLiked ? (
                 <button
                   className=" p-2 rounded-full hover:bg-danger-highlight"
-                  onClick={() => handleLike(question.id, likes)}
+                  onClick={() => handleLike(question.id)}
                 >
                   <img
                     className="h-4 w-4"
@@ -133,7 +134,7 @@ const Question = ({ question }) => {
               ) : (
                 <button
                   className=" p-2 rounded-full icon-brand-hover hover:bg-brand-highlight"
-                  onClick={() => handleLike(question.id, likes)}
+                  onClick={() => handleLike(question.id)}
                 >
                   <img
                     className="h-[18px] w-[18px]"

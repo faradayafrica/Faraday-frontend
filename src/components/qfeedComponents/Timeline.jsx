@@ -13,7 +13,7 @@ const TimeLine = () => {
   console.log("dummy", dummy.results);
 
   useEffect(async () => {
-    const apiEndpoint = process.env.REACT_APP_API_URL + "qfeed/que/fetch/";
+    const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
     try {
       const { data } = await http.get(apiEndpoint);
       setQuestions(data.results);
