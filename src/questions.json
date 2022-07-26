@@ -30,7 +30,7 @@
       "content": "To give more context, I got logged out, the hacker replaced my email, changed my phone number and password. Leaving the only way to recover the account to be through his own email. There’s no way of even logging in. None of the solutions provided by Facebook worked for me. I need help",
       "comments": 2,
       "likes": 1,
-      "liked": null
+      "liked": true
     },
     {
       "id": "c64ffce4-045b-4617-a984-d18416b88c98",
@@ -59,7 +59,7 @@
       "content": "",
       "comments": 0,
       "likes": 3,
-      "liked": null
+      "liked": false
     },
     {
       "id": "65455db5-c4d9-4c68-afd4-5bce735713e1",
@@ -88,7 +88,7 @@
       "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In porta cursus enim lobortis aliquam enim feugiat ut. Pretium fames ultricies mollis tempus felis sit tortor vel malesuada.",
       "comments": 0,
       "likes": 0,
-      "liked": null
+      "liked": true
     },
     {
       "id": "e19554c2-3889-430d-9575-c697c7608dd7",
@@ -117,7 +117,7 @@
       "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In porta cursus enim lobortis aliquam enim feugiat ut. Pretium fames ultricies mollis tempus felis sit tortor vel malesuada. Amet viverra cursus pharetra augue sagittis in. Ut eros, commodo commodo vestibulum faucibus ut nisl.",
       "comments": 0,
       "likes": 0,
-      "liked": null
+      "liked": true
     },
     {
       "id": "ef814530-9f51-49aa-aff2-c3fb5edc50bf",
@@ -146,7 +146,7 @@
       "content": "a Quee",
       "comments": 0,
       "likes": 0,
-      "liked": null
+      "liked": true
     }
   ]
 }
