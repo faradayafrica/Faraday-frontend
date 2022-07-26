@@ -5,17 +5,18 @@ import { Link } from "react-router-dom";
 import ask from "../../images/qfeed/ask.svg";
 
 import "../../styles/qfeed.css";
-import data from "../../questions.json";
+import dummy from "../../questions.json";
 
 const TimeLine = () => {
-  const [questions, setQuestions] = useState(data.results);
-  console.log("Timeline", questions[0]);
+  const [questions, setQuestions] = useState(dummy.results);
+  console.log("dummy", dummy.results);
 
-  useEffect(() => {
-    const apiEndpoint = process.env.REACT_APP_API_URL + "qfeed/que/fetch/";
-    const data = http.get(apiEndpoint);
-    console.log("data", data);
-  });
+  // useEffect(async () => {
+  //   const apiEndpoint = process.env.REACT_APP_API_URL + "qfeed/que/fetch/";
+  //   const data = await http.get(apiEndpoint);
+  //   console.log("data", data.data);
+  //   setQuestions(data.data.results);
+  // });
 
   return (
     <>
