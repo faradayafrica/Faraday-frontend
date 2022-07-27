@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import profile1 from "../../images/profile2.png";
+import { Link } from "react-router-dom";
+// import profile1 from "../../images/profile2.png";
 import arrow from "../../images/qfeed/arrow-right.svg";
 import love from "../../images/qfeed/love.svg";
 import redLove from "../../images/qfeed/red-love.svg";
@@ -12,7 +13,7 @@ const Question = ({ question }) => {
   const [isLiked, setLiked] = useState(question.liked);
   const [likes, setLikes] = useState(question.likes);
   const [isButtonPannel, setButtonPannel] = useState(false);
-  // console.log("question", question);
+  console.log("question", question);
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
 
@@ -47,6 +48,7 @@ const Question = ({ question }) => {
     const oldValue = likes;
     const oldLiked = isLiked;
     hideButtonPannel();
+
     if (!isLiked) {
       setLikes(likes + 1);
       setLiked(true);
@@ -56,8 +58,11 @@ const Question = ({ question }) => {
     }
 
     try {
-      const { data } = await http.post(apiEndpoint, { postid, value: likes });
-      console.log(data);
+      const { data } = await http.post(apiEndpoint, {
+        postid,
+        value: "upvote",
+      });
+      console.log("I liked this niqqa", data.liked);
     } catch (err) {
       setLiked(oldLiked);
       setLikes(oldValue);
@@ -67,7 +72,11 @@ const Question = ({ question }) => {
 
   return (
     <div className="question-component bg-brnd-highlight pl-3 pt-3 sm:pt-4  flex justify-start">
-      <img src={profile1} className="w-12 h-12 rounded-full mr-2" alt="" />
+      <img
+        src={question?.user.profile_pic}
+        className="w-12 h-12 rounded-full mr-2"
+        alt=""
+      />
       <section className=" p-0 w-full">
         <div className="pr-2" onClick={() => hideButtonPannel()}>
           {/* Profile details */}
@@ -76,7 +85,7 @@ const Question = ({ question }) => {
               {question?.first_name} {question?.last_name} Ada Obi
             </span>
             <span className="mr-2">{question?.user.username}</span>{" "}
-            <span>2h</span>
+            <span>{question?.created}</span>
           </p>
           {/* Question head */}
           <p className="text-sm sm:text-lg leading-[120%] font-semibold m-0 mb-1">
@@ -162,12 +171,14 @@ const Question = ({ question }) => {
             ""
           )}
         </div>
-        <div className="comment text-base sm:text-lg font-semibold text-brand py-[14px] bg-brnd-highlight flex justify-between">
-          {question.comments === 0 ? "Leave a comment" : ""}{" "}
-          {question.comments === 1 ? `${question.comments} comment` : ""}{" "}
-          {question.comments > 1 ? `${question.comments} comments` : ""}{" "}
-          <img className="mr-2" src={arrow} alt="" />
-        </div>
+        <Link to={`/qfeed/${question.id}`}>
+          <div className="comment text-base sm:text-lg font-semibold text-brand py-[14px] bg-brnd-highlight flex justify-between">
+            {question.comments === 0 ? "Leave a comment" : ""}{" "}
+            {question.comments === 1 ? `${question.comments} comment` : ""}{" "}
+            {question.comments > 1 ? `${question.comments} comments` : ""}{" "}
+            <img className="mr-2" src={arrow} alt="" />
+          </div>
+        </Link>
       </section>
     </div>
   );
