@@ -15,14 +15,15 @@ class NotFound extends Component {
             src={notFound}
             alt=""
           />
-          <Link to="/" className="text-faraday-night">
-            <p className="mt-3 w-60 text-lg mx-auto">
-              Click here to navigate back to the{" "}
-              <span className="text-brand font-bold hover:underline">
-                Question Feed
-              </span>
-            </p>
-          </Link>
+
+          <div className="p-3 border-brand-highlight rounded-xl border bg-background mt-3">
+            <p> Click here to navigate back to the Question feed</p>
+            <Link to="/">
+              <button className="px-4 py-[10px] rounded-xl text-semibold text-white bg-brand hover:bg-brand-dark">
+                Qfeed
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     );

@@ -13,6 +13,7 @@ const Qfeed = () => {
     try {
       const { data } = await http.get(apiEndpoint);
       setQuestions(data.results);
+      console.log("all recieved ques", data.results);
       // console.log("Q", data);
     } catch (err) {
       console.warn(err.message);

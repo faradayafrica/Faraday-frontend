@@ -9,11 +9,11 @@ import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
 
-const Question = ({ question }) => {
+const Question = ({ question, questions }) => {
   const [isLiked, setLiked] = useState(question.liked);
   const [likes, setLikes] = useState(question.likes);
   const [isButtonPannel, setButtonPannel] = useState(false);
-  console.log("question", question);
+  // console.log("question", question);
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
 
@@ -62,7 +62,8 @@ const Question = ({ question }) => {
         postid,
         value: "upvote",
       });
-      console.log("I liked this niqqa", data.liked);
+
+      console.log("data", data);
     } catch (err) {
       setLiked(oldLiked);
       setLikes(oldValue);
@@ -71,7 +72,7 @@ const Question = ({ question }) => {
   };
 
   return (
-    <div className="question-component bg-brnd-highlight pl-3 pt-3 sm:pt-4  flex justify-start">
+    <div className="question-component pl-3 pt-3 sm:pt-4  flex justify-start">
       <img
         src={question?.user.profile_pic}
         className="w-12 h-12 rounded-full mr-2"
@@ -84,13 +85,13 @@ const Question = ({ question }) => {
             <span className="mr-2 font-semibold text-faraday-night">
               {question?.first_name} {question?.last_name} Ada Obi
             </span>
-            <span className="mr-2">{question?.user.username}</span>{" "}
+            <span className="mr-2">@{question?.user.username}</span>{" "}
             <span>{question?.created}</span>
           </p>
           {/* Question head */}
-          <p className="text-sm sm:text-lg leading-[120%] font-semibold m-0 mb-1">
+          <h3 className="text-sm sm:text-lg leading-[120%] font-semibold m-0 mb-1">
             {question?.title}
-          </p>
+          </h3>
           {/* Question body --optional */}
           <p className="text-sm sm:text-base m-0 mb-2">{question?.content}</p>
         </div>
