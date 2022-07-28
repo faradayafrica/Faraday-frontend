@@ -15,17 +15,17 @@ const DiscussionPage = ({ match, questions }) => {
 
   //   console.log("QPage", question);
   useEffect(async () => {
-    const apiEndpoint = process.env.REACT_APP_API_URL + "qfeed/que/details/";
+    const apiEndpoint =
+      process.env.REACT_APP_API_URL + `qfeed/que/${match.params.id}/`;
     try {
-      const { data } = await http.post(apiEndpoint, {
-        postid: match.params.id,
-      });
+      const { data } = await http.get(apiEndpoint);
       console.log("a particular ques", data);
+      setQuestion(data);
       // console.log("Q", data);
     } catch (err) {
       console.warn(err.message);
     }
-  });
+  }, [question]);
 
   let loveClasses =
     "hover:bg-danger-highlight h-12 px-4 flex justify-around items-center rounded-xl mr-4";

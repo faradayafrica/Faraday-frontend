@@ -8,6 +8,12 @@ import http from "../services/httpService";
 const Qfeed = () => {
   const [questions, setQuestions] = useState([]);
 
+  const updateQuestions = (updatedQuestions) => {
+    // console.log("compare", questions);
+    setQuestions([...updatedQuestions]);
+    console.log("present 4rm Qfeed", updatedQuestions);
+  };
+
   useEffect(async () => {
     const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
     try {
@@ -32,7 +38,13 @@ const Qfeed = () => {
 
         <Route
           path="/"
-          render={(props) => <TimeLine questions={questions} {...props} />}
+          render={(props) => (
+            <TimeLine
+              questions={questions}
+              handleUpdatedQuestions={updateQuestions}
+              {...props}
+            />
+          )}
         />
 
         <Route path="/not-found" component={NotFound} />
