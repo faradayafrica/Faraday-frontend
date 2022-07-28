@@ -27,6 +27,7 @@ const TimeLine = (props) => {
               <Question
                 question={question}
                 questions={props.questions}
+                handleUpdatedQuestions={props.handleUpdatedQuestions}
                 key={question.id}
               />
             ))}

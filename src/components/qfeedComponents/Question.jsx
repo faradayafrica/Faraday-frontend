@@ -9,9 +9,8 @@ import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
 
-const Question = ({ question, questions }) => {
-  const [isLiked, setLiked] = useState(question.liked);
-  const [likes, setLikes] = useState(question.likes);
+const Question = (props) => {
+  const [question, setQuestion] = useState(props.question);
   const [isButtonPannel, setButtonPannel] = useState(false);
   // console.log("question", question);
 
@@ -29,7 +28,7 @@ const Question = ({ question, questions }) => {
     smileyClasses += " bg-brand-highlight icon-brand";
   }
 
-  if (!isLiked) {
+  if (!question.liked) {
     loveClasses += " bg-background ";
   } else {
     loveClasses += " bg-danger-highlight text-danger";
@@ -37,7 +36,6 @@ const Question = ({ question, questions }) => {
 
   const handleButtonPannel = () => {
     setButtonPannel(!isButtonPannel);
-    // console.log("toggle");
   };
 
   const hideButtonPannel = () => {
@@ -45,16 +43,23 @@ const Question = ({ question, questions }) => {
   };
 
   const handleLike = async (postid) => {
-    const oldValue = likes;
-    const oldLiked = isLiked;
+    const oldLikes = question.likes;
+    const oldLiked = question.liked;
+    const updatedQuestion = { ...question };
+
+    const clonedQuestions = [...props.questions];
+    var index = clonedQuestions.findIndex((q) => q.id === question.id);
+
     hideButtonPannel();
 
-    if (!isLiked) {
-      setLikes(likes + 1);
-      setLiked(true);
+    if (!question.liked) {
+      updatedQuestion.likes = oldLikes + 1;
+      updatedQuestion.liked = !oldLiked;
+      setQuestion({ ...updatedQuestion });
     } else {
-      setLikes(likes - 1);
-      setLiked(false);
+      updatedQuestion.likes = oldLikes - 1;
+      updatedQuestion.liked = !oldLiked;
+      setQuestion({ ...updatedQuestion });
     }
 
     try {
@@ -63,10 +68,17 @@ const Question = ({ question, questions }) => {
         value: "upvote",
       });
 
+      if (index !== -1) {
+        clonedQuestions[index] = { ...data };
+      }
+      props.handleUpdatedQuestions(clonedQuestions);
+
+      console.log("index", index);
+      console.log("new", clonedQuestions[index]);
       console.log("data", data);
     } catch (err) {
-      setLiked(oldLiked);
-      setLikes(oldValue);
+      updatedQuestion.liked = oldLiked;
+      setQuestion({ ...updatedQuestion });
       console.warn("error", err.message);
     }
   };
@@ -98,12 +110,12 @@ const Question = ({ question, questions }) => {
 
         {/* QUestion reaction */}
         <div className=" flex items-center h-12">
-          {likes !== 0 ? (
+          {question.likes !== 0 ? (
             <button
               className={loveClasses}
-              onClick={() => handleLike(question.id, likes)}
+              onClick={() => handleLike(question.id)}
             >
-              {isLiked ? (
+              {question.liked ? (
                 <img
                   className="h-4 w-4"
                   src={redLove}
@@ -112,7 +124,7 @@ const Question = ({ question, questions }) => {
               ) : (
                 <img className="h-4 w-4" src={love} alt="react to question" />
               )}
-              <span className="ml-1 font-medium text-sm">{likes}</span>
+              <span className="ml-1 font-medium text-sm">{question.likes}</span>
             </button>
           ) : (
             ""
@@ -130,7 +142,7 @@ const Question = ({ question, questions }) => {
               onClick={() => hideButtonPannel()}
               className="ask-shadow bg-white relative right-8 bottom-10 p-2 rounded-full border border-brand-highlight"
             >
-              {isLiked ? (
+              {question.liked ? (
                 <button
                   className=" p-2 rounded-full hover:bg-danger-highlight"
                   onClick={() => handleLike(question.id)}
