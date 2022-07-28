@@ -24,7 +24,11 @@ const TimeLine = (props) => {
         ) : (
           <>
             {questions.map((question) => (
-              <Question question={question} key={question.id} />
+              <Question
+                question={question}
+                questions={props.questions}
+                key={question.id}
+              />
             ))}
           </>
         )}

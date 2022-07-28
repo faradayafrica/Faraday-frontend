@@ -11,6 +11,7 @@ function Loader({ onRefresh }) {
   // };
 
   // this displays a retry btn after spinning for a while
+  // This is wrong, it updates state for an unmounted component
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
