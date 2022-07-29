@@ -3,14 +3,11 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import ProtectedRoute from './components/common/protectedRoute.jsx';
 
 import Qfeed from './routes/Qfeed.jsx';
-import Courses from './routes/Courses';
-import Direct from './routes/Direct';
 import Notification from './components/Notification';
 import Profile from './routes/Profile';
 import EditProfile from './components/profile/EditProfile.jsx';
 
 import SideNav from './components/SideNav';
-import Body from './components/styledComponents/Body';
 import Post from './components/Post';
 import NotFound from './routes/NotFound';
 import Explore from './components/other pages/explore';
@@ -50,20 +47,9 @@ class App extends React.Component {
             <ProtectedRoute path='/sponsors' component={Sponsors} />
             <ProtectedRoute path='/bookmarks' component={Bookmarks} />
             <ProtectedRoute path='/explore' component={Explore} />
-            <ProtectedRoute path='/courses' component={Courses} />
-            {/* <ProtectedRoute
-              path='/profile'
-              render={props => <Profile user={this.state.user} {...props} />}
-            /> */}
-            {/* <ProtectedRoute
-              path='/qfeed'
-              render={(props) => <Qfeed user={this.state.user} {...props} />}
-            /> */}
             <ProtectedRoute path='/qfeed' render={props => <Qfeed />} />
-            <ProtectedRoute path='/direct' component={Direct} />
             <ProtectedRoute path='/notification' component={Notification} />
             <ProtectedRoute path='/post' component={Post} />
-            {/* <ProtectedRoute path='/:username' render={props => <Profile />} /> */}
             <ProtectedRoute path='/me/:username' component={Profile} />
             <ProtectedRoute
               path='/editprofile/:username'

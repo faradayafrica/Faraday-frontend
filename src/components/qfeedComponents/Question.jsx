@@ -84,7 +84,7 @@ const Question = (props) => {
   return (
     <div className="question-component pl-3 pt-3 sm:pt-4  flex justify-start">
       <img
-        src={question?.user.profile_pic}
+        src={`https://api.faraday.africa${question?.user.profile_pic}`}
         className="w-12 h-12 rounded-full mr-2"
         alt=""
       />
