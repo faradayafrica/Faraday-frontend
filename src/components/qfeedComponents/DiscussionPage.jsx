@@ -16,7 +16,7 @@ const DiscussionPage = ({ match, questions }) => {
   //   console.log("QPage", question);
   useEffect(async () => {
     const apiEndpoint =
-      process.env.REACT_APP_API_URL + `/qfeed/que/${match.params.id}/`;
+      process.env.REACT_APP_API_URL + `/qfeed/que/fetch/${match.params.id}/`;
     try {
       const { data } = await http.get(apiEndpoint);
       console.log("a particular ques", data);
