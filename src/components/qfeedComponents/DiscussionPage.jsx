@@ -1,17 +1,72 @@
 import { useState, useEffect } from "react";
-import pics from "../../images/profile1.png";
+import Loader from "../styledComponents/Loader";
 
 import love from "../../images/qfeed/love.svg";
 import redLove from "../../images/qfeed/red-love.svg";
-import smiley from "../../images/qfeed/smiley.svg";
 import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
 
-const DiscussionPage = ({ match, questions }) => {
+const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
 
   const [question, setQuestion] = useState(thisQuestion);
+  const [loader, setloader] = useState(false);
+
+  const handleLike = async (postid) => {
+    const oldLikes = question.likes;
+    const oldLiked = question.liked;
+    const updatedQuestion = { ...question };
+
+    const clonedQuestions = [...questions];
+    var index = clonedQuestions.findIndex((q) => q.id === question.id);
+
+    if (!question.liked) {
+      updatedQuestion.likes = oldLikes + 1;
+      updatedQuestion.liked = !oldLiked;
+      setQuestion({ ...updatedQuestion });
+    } else {
+      updatedQuestion.likes = oldLikes - 1;
+      updatedQuestion.liked = !oldLiked;
+      setQuestion({ ...updatedQuestion });
+    }
+
+    try {
+      const apiEndpoint =
+        process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
+      const { data } = await http.post(apiEndpoint, {
+        postid,
+        value: "upvote",
+      });
+
+      if (index !== -1) {
+        clonedQuestions[index] = { ...data };
+      }
+      handleUpdatedQuestions(clonedQuestions);
+
+      console.log("index", index);
+      console.log("new", clonedQuestions[index]);
+      console.log("data", data);
+    } catch (err) {
+      updatedQuestion.liked = oldLiked;
+      setQuestion({ ...updatedQuestion });
+      console.warn("error", err.message);
+    }
+  };
+
+  const retry = async () => {
+    setloader(true);
+    const apiEndpoint =
+      process.env.REACT_APP_API_URL + `/qfeed/que/fetch/${match.params.id}/`;
+    try {
+      const { data } = await http.get(apiEndpoint);
+      console.log("a particular ques", data);
+      setQuestion(data);
+      setloader(false);
+    } catch (err) {
+      console.warn(err.message);
+    }
+  };
 
   //   console.log("QPage", question);
   useEffect(async () => {
@@ -25,7 +80,7 @@ const DiscussionPage = ({ match, questions }) => {
     } catch (err) {
       console.warn(err.message);
     }
-  }, [question]);
+  }, []);
 
   let loveClasses =
     "hover:bg-danger-highlight h-12 px-4 flex justify-around items-center rounded-xl mr-4";
@@ -50,7 +105,7 @@ const DiscussionPage = ({ match, questions }) => {
             />
             <p className="m-0 text-night-secondary text-sm sm:text-base">
               <span className="font-semibold text-faraday-night mr-2">
-                Name
+                {question?.user.firstname} {question?.user.lastname}
               </span>{" "}
               <span className="">@{question?.user.username}</span>
             </p>
@@ -68,7 +123,10 @@ const DiscussionPage = ({ match, questions }) => {
 
             {/* Engagement buttons  */}
             <div className="flex items-center h-12 ">
-              <button className={loveClasses}>
+              <button
+                className={loveClasses}
+                onClick={() => handleLike(match.params.id)}
+              >
                 {question?.liked ? (
                   <img
                     className="h-5 w-5"
@@ -95,12 +153,23 @@ const DiscussionPage = ({ match, questions }) => {
             </div>
           </div>
         ) : (
-          <div className="p-3 border-brand-highlight rounded-xl border bg-background m-3">
-            <p>Question currently unavailable</p>
-            <button className="px-4 py-[10px] rounded-xl text-semibold text-white bg-brand hover:bg-brand-dark">
-              Retry
-            </button>
-          </div>
+          <>
+            {!loader ? (
+              <div className="p-3 border-brand-highlight rounded-xl border bg-background m-3">
+                <>
+                  <p>Question currently unavailable</p>
+                  <button
+                    onClick={() => retry()}
+                    className="px-4 py-[10px] rounded-xl text-semibold text-white bg-brand hover:bg-brand-dark"
+                  >
+                    Retry
+                  </button>
+                </>
+              </div>
+            ) : (
+              <Loader />
+            )}
+          </>
         )}
       </div>
     </>

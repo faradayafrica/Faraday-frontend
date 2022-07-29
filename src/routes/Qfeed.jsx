@@ -32,7 +32,11 @@ const Qfeed = () => {
         <Route
           path="/qfeed/:id"
           render={(props) => (
-            <DiscussionPage questions={questions} {...props} />
+            <DiscussionPage
+              questions={questions}
+              handleUpdatedQuestions={updateQuestions}
+              {...props}
+            />
           )}
         />
 
