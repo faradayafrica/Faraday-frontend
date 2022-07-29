@@ -96,7 +96,7 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
         {question ? (
           <div className="pl-3 pr-2 py-3">
             <img
-              src={question?.user.profile_pic}
+              src={`https://api.faraday.africa${question?.user.profile_pic}`}
               className="w-12 h-12 rounded-full mr-3 float-left"
               alt={question?.user.firstname}
             />

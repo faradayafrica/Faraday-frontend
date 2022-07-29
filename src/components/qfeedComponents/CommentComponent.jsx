@@ -2,7 +2,7 @@ const CommentComponent = ({ comment }) => {
   return (
     <div className=" pt-3 pb-1 flex ">
       <img
-        src={comment?.user.profile_pic}
+        src={`https://api.faraday.africa${comment?.user.profile_pic}`}
         className="w-12 h-12 rounded-full mr-3 "
         alt=""
       />
