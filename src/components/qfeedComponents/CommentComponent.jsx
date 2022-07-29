@@ -9,8 +9,7 @@ const CommentComponent = ({ comment }) => {
       <div className=" w-full text-faraday-night">
         <p className="m-0  text-xs sm:text-base mr-2">
           <span className="mr-2 font-semibold">
-            {comment?.user.firstname}
-            {comment?.user.lastname}
+            {comment?.user.firstname} {comment?.user.lastname}
           </span>
           <span className="mr-2 text-night-secondary">
             @{comment?.user.username}
