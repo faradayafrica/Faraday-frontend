@@ -42,6 +42,7 @@ const Question = (props) => {
     setButtonPannel(false);
   };
 
+  // This could go 2 levels up the family tree (@Qfeed) so that there's no need to recreate the function @DiscussionPage
   const handleLike = async (postid) => {
     const oldLikes = question.likes;
     const oldLiked = question.liked;
@@ -72,9 +73,6 @@ const Question = (props) => {
         clonedQuestions[index] = { ...data };
       }
       props.handleUpdatedQuestions(clonedQuestions);
-
-      console.log("index", index);
-      console.log("new", clonedQuestions[index]);
       console.log("data", data);
     } catch (err) {
       updatedQuestion.liked = oldLiked;
@@ -95,7 +93,7 @@ const Question = (props) => {
           {/* Profile details */}
           <p className="flex m-0 text-night-secondary mb-1 text-xs sm:text-sm">
             <span className="mr-2 font-semibold text-faraday-night">
-              {question?.first_name} {question?.last_name} Ada Obi
+              {question?.user.firstname} {question?.user.lastname}
             </span>
             <span className="mr-2">@{question?.user.username}</span>{" "}
             <span>{question?.created}</span>
