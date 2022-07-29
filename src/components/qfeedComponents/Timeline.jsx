@@ -20,7 +20,7 @@ const TimeLine = (props) => {
         <h1 className="text-2xl sm:text-2xl m-3 font-bold">Question Feed</h1>
         {/* The questions */}
         {questions.length === 0 ? (
-          <Loader />
+          <Loader msg="This might take a while..." />
         ) : (
           <>
             {questions.map((question) => (

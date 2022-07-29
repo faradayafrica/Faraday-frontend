@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Comments from "./Comments";
 import Loader from "../styledComponents/Loader";
 
 import love from "../../images/qfeed/love.svg";
@@ -9,9 +10,14 @@ import http from "../../services/httpService";
 
 const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
+  const apiEndpoint =
+    process.env.REACT_APP_API_URL + `/qfeed/que/fetch/${match.params.id}/`;
+  const commentsApiEndpoint =
+    process.env.REACT_APP_API_URL + `/qfeed/que/comments/${match.params.id}/`;
 
   const [question, setQuestion] = useState(thisQuestion);
-  const [loader, setloader] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [loader, setLoader] = useState(true);
 
   const handleLike = async (postid) => {
     const oldLikes = question.likes;
@@ -38,15 +44,10 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
         postid,
         value: "upvote",
       });
-
       if (index !== -1) {
         clonedQuestions[index] = { ...data };
       }
       handleUpdatedQuestions(clonedQuestions);
-
-      console.log("index", index);
-      console.log("new", clonedQuestions[index]);
-      console.log("data", data);
     } catch (err) {
       updatedQuestion.liked = oldLiked;
       setQuestion({ ...updatedQuestion });
@@ -55,35 +56,31 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
   };
 
   const retry = async () => {
-    setloader(true);
-    const apiEndpoint =
-      process.env.REACT_APP_API_URL + `/qfeed/que/fetch/${match.params.id}/`;
+    setLoader(true);
     try {
       const { data } = await http.get(apiEndpoint);
       console.log("a particular ques", data);
       setQuestion(data);
-      setloader(false);
     } catch (err) {
       console.warn(err.message);
+      setLoader(false);
     }
   };
 
-  //   console.log("QPage", question);
   useEffect(async () => {
-    const apiEndpoint =
-      process.env.REACT_APP_API_URL + `/qfeed/que/fetch/${match.params.id}/`;
     try {
+      const commentData = await http.get(commentsApiEndpoint);
+      setComments([...commentData.data.results]);
       const { data } = await http.get(apiEndpoint);
-      console.log("a particular ques", data);
       setQuestion(data);
-      // console.log("Q", data);
     } catch (err) {
       console.warn(err.message);
+      setLoader(false);
     }
   }, []);
 
   let loveClasses =
-    "hover:bg-danger-highlight h-12 px-4 flex justify-around items-center rounded-xl mr-4";
+    "hover:bg-danger-highlight h-[40px] px-3 flex justify-around items-center rounded-lg mr-4";
 
   if (!question?.liked) {
     loveClasses += " bg-background ";
@@ -101,7 +98,7 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
             <img
               src={question?.user.profile_pic}
               className="w-12 h-12 rounded-full mr-3 float-left"
-              alt=""
+              alt={question?.user.firstname}
             />
             <p className="m-0 text-night-secondary text-sm sm:text-base">
               <span className="font-semibold text-faraday-night mr-2">
@@ -122,52 +119,67 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
             </p>
 
             {/* Engagement buttons  */}
-            <div className="flex items-center h-12 ">
-              <button
-                className={loveClasses}
-                onClick={() => handleLike(match.params.id)}
-              >
-                {question?.liked ? (
+            <div className="mt-3 py-2 border-background2 border-t-[1px] border-b-[1px]">
+              <div className="flex justify-between pr-12 sm:w-96 items-center ">
+                <button
+                  className={loveClasses}
+                  onClick={() => handleLike(match.params.id)}
+                >
+                  {question?.liked ? (
+                    <img
+                      className="h-[18px] w-[18px]"
+                      src={redLove}
+                      alt="take back reaction"
+                    />
+                  ) : (
+                    <img
+                      className="h-[18px] w-[18px]"
+                      src={love}
+                      alt="react to question"
+                    />
+                  )}
+                  <span className="ml-1 font-medium text-lg">
+                    {question?.likes ? question?.likes : ""}
+                  </span>
+                </button>
+                <button className="icon-brand-hover hover:bg-brand-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background mr-4">
                   <img
-                    className="h-5 w-5"
-                    src={redLove}
-                    alt="take back reaction"
+                    className="h-[18px] w-[18px]"
+                    src={share}
+                    alt="share this question"
                   />
-                ) : (
-                  <img className="h-5 w-5" src={love} alt="react to question" />
-                )}
-                <span className="ml-1 font-medium text-lg">
-                  {question?.likes}
-                </span>
-              </button>
-              <button className="icon-brand-hover hover:bg-brand-highlight px-4 h-12 flex justify-around items-center rounded-lg bg-background mr-4">
-                <img
-                  className="h-5 w-5"
-                  src={share}
-                  alt="share this question"
-                />
-              </button>
-              <button className="icon-brand-hover hover:bg-brand-highlight px-4 h-12 flex justify-around items-center rounded-lg bg-background">
-                <img className="h-5 w-5" src={link} alt="copy question link" />
-              </button>
+                </button>
+                <button className="icon-brand-hover hover:bg-brand-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background">
+                  <img
+                    className="h-[18px] w-[18px]"
+                    src={link}
+                    alt="copy question link"
+                  />
+                </button>
+              </div>
             </div>
+
+            {/* Comments here */}
+            <Comments comments={comments} />
           </div>
         ) : (
           <>
-            {!loader ? (
-              <div className="p-3 border-brand-highlight rounded-xl border bg-background m-3">
+            {loader ? (
+              <Loader msg="This might take a while..." />
+            ) : (
+              <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
                 <>
-                  <p>Question currently unavailable</p>
+                  <p className="text-sm sm:text-base ">
+                    Question currently unavailable
+                  </p>
                   <button
                     onClick={() => retry()}
-                    className="px-4 py-[10px] rounded-xl text-semibold text-white bg-brand hover:bg-brand-dark"
+                    className="px-4 py-[9px] rounded-lg font-semibold text-white bg-brand hover:bg-brand-dark"
                   >
                     Retry
                   </button>
                 </>
               </div>
-            ) : (
-              <Loader />
             )}
           </>
         )}
