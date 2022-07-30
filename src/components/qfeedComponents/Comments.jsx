@@ -60,10 +60,12 @@ const Comments = ({
             placeholder="Contribute to this discussion"
             onChange={handleChange}
           />
-          <PrimaryButton
-            cta="Post"
-            action={() => postComment(questionid, comment)}
-          />
+          <div className="m-0 ml-2">
+            <PrimaryButton
+              cta="Post"
+              action={() => postComment(questionid, comment)}
+            />
+          </div>
         </label>
       </div>
 

@@ -7,23 +7,40 @@ import http from "../services/httpService";
 
 const Qfeed = () => {
   const [questions, setQuestions] = useState([]);
+  const [loader, setLoader] = useState(true);
+
+  const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
 
   const updateQuestions = (updatedQuestions) => {
-    // console.log("compare", questions);
     setQuestions([...updatedQuestions]);
     console.log("present 4rm Qfeed", updatedQuestions);
   };
 
-  useEffect(async () => {
-    const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
+  const retry = async () => {
+    setLoader(true);
     try {
       const { data } = await http.get(apiEndpoint);
       setQuestions(data.results);
       console.log("all recieved ques", data.results);
-      // console.log("Q", data);
     } catch (err) {
       console.warn(err.message);
+      setLoader(false);
     }
+  };
+
+  useEffect(() => {
+    async function fetchQuestions() {
+      try {
+        const { data } = await http.get(apiEndpoint);
+        setQuestions(data.results);
+        console.log("all recieved ques", data.results);
+      } catch (err) {
+        console.warn(err.message);
+        setLoader(false);
+      }
+    }
+
+    fetchQuestions();
   }, []);
 
   return (
@@ -46,6 +63,8 @@ const Qfeed = () => {
             <TimeLine
               questions={questions}
               handleUpdatedQuestions={updateQuestions}
+              retry={retry}
+              loader={loader}
               {...props}
             />
           )}

@@ -75,6 +75,7 @@ const Question = (props) => {
       console.log("data", data);
     } catch (err) {
       updatedQuestion.liked = oldLiked;
+      updatedQuestion.likes = oldLikes;
       setQuestion({ ...updatedQuestion });
       console.warn("error", err.message);
     }
