@@ -52,6 +52,7 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
       handleUpdatedQuestions(clonedQuestions);
     } catch (err) {
       updatedQuestion.liked = oldLiked;
+      updatedQuestion.likes = oldLikes;
       setQuestion({ ...updatedQuestion });
       console.warn("error", err.message);
     }
@@ -80,6 +81,7 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
   };
 
   useEffect(() => {
+    console.log(question);
     async function fetchQuestionData() {
       try {
         const { data } = await http.get(apiEndpoint);
@@ -161,7 +163,7 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
                       alt="react to question"
                     />
                   )}
-                  <span className="ml-1 font-medium text-lg">
+                  <span className="ml-1 font-medium text-base">
                     {question?.likes ? question?.likes : ""}
                   </span>
                 </button>
