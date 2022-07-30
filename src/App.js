@@ -15,7 +15,7 @@ import AddSchoolDetail from './components/other pages/signup process/addSchoolDe
 import PersonalData from './components/other pages/signup process/personalData';
 import TermsAndCondition from './components/other pages/termsAndCondition.jsx';
 import PrivacyPolicy from './components/other pages/privacyPolicy';
-import Logout from './components/styledComponents/Logout.jsx';
+import Logout from './routes/Logout.jsx';
 import './App.css';
 import MobileSideNav from './components/styledComponents/MobileSideNav.jsx';
 
