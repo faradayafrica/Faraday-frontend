@@ -1,9 +1,7 @@
 import React from "react";
 import Form from "./common/Form";
-import SponsorAd from "../components/sponsors/SponsorAd";
 import Joi from "joi-browser";
 import TagsInput from "../components/styledComponents/tagsInput";
-import PostComponent from "./styledComponents/postComponent";
 class Post extends Form {
   state = {
     data: {
@@ -37,9 +35,6 @@ class Post extends Form {
             {this.renderTextArea("body", "Write your question content here", 4)}
             {this.renderButton("Post Question", false)}
           </form>
-        </div>
-        <div className="w-100 profile-trends">
-          <SponsorAd />
         </div>
       </div>
     );

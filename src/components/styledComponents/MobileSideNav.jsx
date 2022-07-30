@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Avatar from "../images/profile1.png";
-import "../styles/mobileSideNav.scss";
-import { getCurrentUser } from "../services/authService";
+import "../../styles/mobileSideNav.scss";
 import { useLocation } from "react-router-dom";
+import { getCurrentUser } from "../../services/authService";
 
 // icons import
-import logout from "../images/nav/logout.svg";
-import menu from "../images/nav/menu.svg";
-import profile from "../images/nav/profile.svg";
-import bell from "../images/nav/bell.svg";
-import qfeed from "../images/nav/qfeed.svg";
-import close from "../images/nav/close_md.svg";
+import logout from "../../images/nav/logout.svg";
+import menu from "../../images/nav/menu.svg";
+import profile from "../../images/nav/profile.svg";
+import bell from "../../images/nav/bell.svg";
+import qfeed from "../../images/nav/qfeed.svg";
+import close from "../../images/nav/close_md.svg";
 
 function MobileNav() {
   const [isQfeed, setQfeed] = useState();
   const [isNotification, setNotification] = useState();
   const [isProfile, setIsProfile] = useState(false);
   const currentUser = getCurrentUser();
-  // console.log(user);
 
   // console.log("current Pathname 👉️", window.location.pathname);
   const location = useLocation();
@@ -134,8 +132,8 @@ function MobileNav() {
                 <div className="mt-4 bg-white rounded-xl p-3">
                   <div className="flex items-center">
                     <img
-                      src={Avatar}
-                      alt=""
+                      src={`https://api.faraday.africa${currentUser?.profile_pic}`}
+                      alt={`${currentUser?.first_name} ${currentUser?.last_name}`}
                       className="rounded-full mr-2 h-11 w-11"
                       width="40px"
                       height="40px"

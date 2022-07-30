@@ -9,7 +9,7 @@ const TimeLine = (props) => {
   const [questions, setQuestions] = useState([]);
   // console.log("Q1", props.questions);
 
-  useEffect(async () => {
+  useEffect(() => {
     setQuestions(props.questions);
   }, [props.questions]);
 
@@ -20,7 +20,9 @@ const TimeLine = (props) => {
         <h1 className="text-2xl sm:text-2xl m-3 font-bold">Question Feed</h1>
         {/* The questions */}
         {questions.length === 0 ? (
-          <Loader msg="This might take a while..." />
+          <div className="m-3">
+            <Loader msg="This might take a while..." />
+          </div>
         ) : (
           <>
             {questions.map((question) => (

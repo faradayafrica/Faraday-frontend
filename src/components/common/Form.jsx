@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import Joi from 'joi-browser';
-import { Link } from 'react-router-dom';
-import Input from '../styledComponents/input';
-import TextArea from '../styledComponents/TextArea';
-import Select from '../styledComponents/select';
-import '../../animation.scss';
+import React, { Component } from "react";
+import Joi from "joi-browser";
+import { Link } from "react-router-dom";
+import Input from "../styledComponents/input";
+import TextArea from "../styledComponents/TextArea";
+import Select from "../styledComponents/select";
 
 class Form extends Component {
   state = {
@@ -12,8 +11,8 @@ class Form extends Component {
     errors: {},
   };
 
-  selectedFaculty = '';
-  selectedMonth = '';
+  selectedFaculty = "";
+  selectedMonth = "";
 
   validate = () => {
     const options = { abortEarly: false };
@@ -32,7 +31,7 @@ class Form extends Component {
     return error ? error.details[0].message : null;
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
 
     const errors = this.validate();
@@ -42,12 +41,12 @@ class Form extends Component {
     this.doSubmit();
   };
 
-  imageHandler = e => {
+  imageHandler = (e) => {
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
         const data = { ...this.state.data };
-        data['image'] = reader.result;
+        data["image"] = reader.result;
         this.setState({ data });
       }
     };
@@ -76,7 +75,7 @@ class Form extends Component {
     const data = { ...this.state.data };
     data[input.name] = input.value;
 
-    var select = document.getElementById('faculty');
+    var select = document.getElementById("faculty");
     var text = select.options[select.selectedIndex].text;
     this.selectedFaculty = text;
     // console.log(this.selectedFaculty);
@@ -93,7 +92,7 @@ class Form extends Component {
     const data = { ...this.state.data };
     data[input.name] = input.value;
 
-    var select = document.getElementById('month');
+    var select = document.getElementById("month");
     var text = select.options[select.selectedIndex].text;
     this.selectedMonth = text;
     console.log(this.selectedMonth);
@@ -103,8 +102,8 @@ class Form extends Component {
 
   renderButton(label, isFluid) {
     const classes = isFluid
-      ? 'btn btn-green btn-login my-2 bubbly-button'
-      : 'btn btn-bg btn-green my-2';
+      ? "btn btn-green btn-login my-2 bubbly-button"
+      : "btn btn-bg btn-green my-2";
     return (
       <button disabled={this.validate()} className={classes}>
         {label}
@@ -115,20 +114,20 @@ class Form extends Component {
   renderRedirectBtn(label, link, msg) {
     return (
       <div
-        className='mx-auto text-center mt-3 text-md'
-        style={{ maxWidth: '425px', alignText: 'center' }}
+        className="mx-auto text-center mt-3 text-md"
+        style={{ maxWidth: "425px", alignText: "center" }}
       >
         <p>
           {msg}
-          <Link to={`/${link}`} style={{ textDecoration: 'none' }}>
-            {' '}
+          <Link to={`/${link}`} style={{ textDecoration: "none" }}>
+            {" "}
             <span
-              className='icon-container-secondary link-brand bubbly-button'
+              className="icon-container-secondary link-brand bubbly-button"
               style={{}}
             >
               {label} here
             </span>
-          </Link>{' '}
+          </Link>{" "}
         </p>
       </div>
     );
@@ -179,7 +178,7 @@ class Form extends Component {
     );
   }
 
-  renderInput(name, placeholder, type = 'text') {
+  renderInput(name, placeholder, type = "text") {
     const { data, errors } = this.state;
 
     return (
@@ -200,7 +199,7 @@ class Form extends Component {
 
     return (
       <TextArea
-        type='text'
+        type="text"
         name={name}
         rows={rows}
         value={data[name]}
@@ -217,27 +216,27 @@ class Form extends Component {
     const { data } = this.state;
 
     return (
-      <div className='form-group mt-4'>
+      <div className="form-group mt-4">
         <img
-          className='add-profile-btn'
+          className="add-profile-btn"
           src={data.image}
-          id='img'
-          alt=''
-          onClick={event => {
+          id="img"
+          alt=""
+          onClick={(event) => {
             this.fileInputRef.current.click();
           }}
         />
 
         <input
-          type='file'
-          name='image-upload'
+          type="file"
+          name="image-upload"
           id={name}
-          accept='image/*'
+          accept="image/*"
           onChange={this.imageHandler}
           ref={this.fileInputRef}
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
         />
-        <label htmlFor={name} className='sr-only'>
+        <label htmlFor={name} className="sr-only">
           Add Image
         </label>
       </div>

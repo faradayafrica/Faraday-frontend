@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-// import profile1 from "../../images/profile2.png";
 import arrow from "../../images/qfeed/arrow-right.svg";
 import love from "../../images/qfeed/love.svg";
 import redLove from "../../images/qfeed/red-love.svg";
@@ -83,11 +82,14 @@ const Question = (props) => {
 
   return (
     <div className="question-component pl-3 pt-3 sm:pt-4  flex justify-start">
-      <img
-        src={`https://api.faraday.africa${question?.user.profile_pic}`}
-        className="w-12 h-12 rounded-full mr-2"
-        alt=""
-      />
+      <div className="w-14 mr-2">
+        <img
+          src={`https://api.faraday.africa${question?.user.profile_pic}`}
+          className="w-12 h-12 rounded-full "
+          style={{ objectFit: "cover" }}
+          alt=""
+        />
+      </div>
       <section className=" p-0 w-full">
         <div className="pr-2" onClick={() => hideButtonPannel()}>
           {/* Profile details */}
@@ -98,12 +100,18 @@ const Question = (props) => {
             <span className="mr-2">@{question?.user.username}</span>{" "}
             <span>{question?.created}</span>
           </p>
-          {/* Question head */}
-          <h3 className="text-sm sm:text-lg leading-[120%] font-semibold m-0 mb-1">
-            {question?.title}
-          </h3>
-          {/* Question body --optional */}
-          <p className="text-sm sm:text-base m-0 mb-2">{question?.content}</p>
+          <Link
+            to={`/qfeed/${question.id}`}
+            style={{ textDecoration: "none" }}
+            className=" text-faraday-night hover:text-faraday-night"
+          >
+            {/* Question head */}
+            <h3 className="text-sm sm:text-lg leading-[120%] font-semibold m-0 mb-1">
+              {question?.title}
+            </h3>
+            {/* Question body --optional */}
+            <p className="text-sm sm:text-base m-0 mb-2">{question?.content}</p>
+          </Link>
         </div>
 
         {/* QUestion reaction */}
@@ -182,7 +190,7 @@ const Question = (props) => {
             ""
           )}
         </div>
-        <Link to={`/qfeed/${question.id}`}>
+        <Link to={`/qfeed/${question.id}`} style={{ textDecoration: "none" }}>
           <div className="comment text-base sm:text-lg font-semibold text-brand py-[14px] bg-brnd-highlight flex justify-between">
             {question.comments === 0 ? "Leave a comment" : ""}{" "}
             {question.comments === 1 ? `${question.comments} comment` : ""}{" "}

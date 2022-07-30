@@ -7,6 +7,7 @@ import redLove from "../../images/qfeed/red-love.svg";
 import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
+import PrimaryButton from "../styledComponents/PrimaryButton";
 
 const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
@@ -18,6 +19,7 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
   const [question, setQuestion] = useState(thisQuestion);
   const [comments, setComments] = useState([]);
   const [loader, setLoader] = useState(true);
+  const [commentLoader, setCommentLoader] = useState(true);
 
   const handleLike = async (postid) => {
     const oldLikes = question.likes;
@@ -59,24 +61,44 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
     setLoader(true);
     try {
       const { data } = await http.get(apiEndpoint);
-      console.log("a particular ques", data);
       setQuestion(data);
     } catch (err) {
       console.warn(err.message);
       setLoader(false);
+    }
+    try {
+      const { data } = await http.get(commentsApiEndpoint);
+      setComments(data.results);
+    } catch (err) {
+      console.warn(err.message);
+      setCommentLoader(false);
     }
   };
 
-  useEffect(async () => {
-    try {
-      const commentData = await http.get(commentsApiEndpoint);
-      setComments([...commentData.data.results]);
-      const { data } = await http.get(apiEndpoint);
-      setQuestion(data);
-    } catch (err) {
-      console.warn(err.message);
-      setLoader(false);
+  const updateComments = (newComment) => {
+    setComments([newComment, ...comments]);
+  };
+
+  useEffect(() => {
+    async function fetchQuestionData() {
+      try {
+        const { data } = await http.get(apiEndpoint);
+        setQuestion(data);
+      } catch (err) {
+        console.warn(err.message);
+        setLoader(false);
+      }
+      try {
+        const { data } = await http.get(commentsApiEndpoint);
+        setComments(data.results);
+        setCommentLoader(false);
+      } catch (err) {
+        console.warn(err.message);
+        setCommentLoader(false);
+      }
     }
+
+    fetchQuestionData();
   }, []);
 
   let loveClasses =
@@ -97,7 +119,8 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
           <div className="pl-3 pr-2 py-3">
             <img
               src={`https://api.faraday.africa${question?.user.profile_pic}`}
-              className="w-12 h-12 rounded-full mr-3 float-left"
+              className="w-12 h-12 rounded-full mr-2 float-left"
+              style={{ objectFit: "cover" }}
               alt={question?.user.firstname}
             />
             <p className="m-0 text-night-secondary text-sm sm:text-base">
@@ -160,24 +183,27 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
             </div>
 
             {/* Comments here */}
-            <Comments comments={comments} />
+            <Comments
+              questionid={match.params.id}
+              comments={comments}
+              commentLoader={commentLoader}
+              questionOwner={question?.user}
+              updateComments={updateComments}
+            />
           </div>
         ) : (
           <>
             {loader ? (
-              <Loader msg="This might take a while..." />
+              <div className="m-3">
+                <Loader msg="This might take a while..." />
+              </div>
             ) : (
               <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
                 <>
                   <p className="text-sm sm:text-base ">
                     Question currently unavailable
                   </p>
-                  <button
-                    onClick={() => retry()}
-                    className="px-4 py-[9px] rounded-lg font-semibold text-white bg-brand hover:bg-brand-dark"
-                  >
-                    Retry
-                  </button>
+                  <PrimaryButton cta="Retry" action={retry} />
                 </>
               </div>
             )}

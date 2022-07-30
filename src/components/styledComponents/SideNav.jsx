@@ -1,9 +1,9 @@
 import React from "react";
-import faraday from "../images/logo.svg";
-import NavLink from "./styledComponents/NavLink";
+import faraday from "../../images/logo.svg";
+import NavLink from "./NavLink";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { getCurrentUser } from "../services/authService";
+import { getCurrentUser } from "../../services/authService";
 
 function SideNav({ user }) {
   const currentUser = getCurrentUser();
