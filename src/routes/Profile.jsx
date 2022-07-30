@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Loader from "../components/styledComponents/Loader";
 import ProfileData from "../components/profile/ProfileData";
 import ProfileInfo from "../components/profile/ProfileInfo";
-import SponsorAd from "../components/sponsors/SponsorAd";
 import http from "../services/httpService";
 import "../styles/profile.scss";
 
@@ -82,9 +81,6 @@ function Profile({ match }) {
           userSolution={solutions}
         />
         <ProfileInfo />
-      </div>
-      <div className="w-100 profile-trends">
-        <SponsorAd />
       </div>
     </div>
   );

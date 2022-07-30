@@ -4,6 +4,7 @@ const CommentComponent = ({ comment }) => {
       <img
         src={`https://api.faraday.africa${comment?.user.profile_pic}`}
         className="w-12 h-12 rounded-full mr-3 "
+        style={{ objectFit: "cover" }}
         alt=""
       />
       <div className=" w-full text-faraday-night">
@@ -16,7 +17,7 @@ const CommentComponent = ({ comment }) => {
           </span>
           <span className="mr-2 text-night-secondary">2hr</span>
         </p>
-        <p className="text-xs sm:text-sm m-0 mb-2 text-faraday-night">
+        <p className="text-sm sm:text-base m-0 mb-2 text-faraday-night">
           {comment?.content}
         </p>
       </div>
