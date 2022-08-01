@@ -73,20 +73,20 @@ const Comments = ({
           {comments.map((comment) => (
             <CommentComponent key={comment.id} comment={comment} />
           ))}
-          <div className="h-[65px] w-full "></div>
+          <div className="h-32 w-full bg-white "></div>
         </>
       ) : (
         <>
           {commentLoader ? (
             <Loader msg="Fetching comments..." />
           ) : (
-            <div className="p-3  rounded-lg border bg-background  text-center">
-              <>
-                <p className="text-sm sm:text-base m-0">
+            <>
+              <div className="p-3 mt-3 mr-1 rounded-lg border bg-background  text-center">
+                <p className="text-xs sm:text-base m-0 ">
                   No comments yet! Be the first to comment on this question
                 </p>
-              </>
-            </div>
+              </div>
+            </>
           )}
         </>
       )}
