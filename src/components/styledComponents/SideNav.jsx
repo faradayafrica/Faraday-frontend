@@ -152,7 +152,7 @@ function SideNav({ history }) {
       </div>
 
       {!hidePost ? (
-        <div className="w-full lg:w-[1024px] h-screen overlay fixed sm:flex justify-center items-start hidden ">
+        <div className="z-50 w-full lg:w-[1024px] h-screen overlay fixed sm:flex justify-center items-start hidden ">
           <div className="w-[32rem] min-h-96 bg-white rounded-xl border ask-shadow p-2 relative mt-24">
             <button
               className="p-2 right-1 top-1 absolute rounded-lg hover:bg-danger-highlight hover:hot-shadow"

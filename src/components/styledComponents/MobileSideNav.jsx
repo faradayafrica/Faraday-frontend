@@ -60,7 +60,7 @@ function MobileNav() {
         {!isProfile && (
           <div className="w-full fixed top-0 left-0  z-40 p-2">
             {/* fixed top nav for mobile */}
-            <div className="shadow-shadow rounded-xl bg-white flex justify-between">
+            <div className="ask-shadow rounded-xl bg-white flex justify-between">
               <img
                 className="p-3 rounded-xl cursor-pointer  "
                 data-toggle="tooltip"
@@ -87,7 +87,7 @@ function MobileNav() {
         )}
 
         {/* fixed bottom nav for mobile */}
-        <div className="fixed bottom-0 left-0 z-30 w-full bg-white py-2 px-3 flex">
+        <div className="fixed bottom-0 left-0 z-10 w-full bg-white py-2 px-3 flex border">
           <Link
             to="/"
             style={{ textDecoration: "none" }}

@@ -130,13 +130,16 @@ const PostComponent = ({ history, hidePost }) => {
               onClick={() => {
                 setContentInput(false);
               }}
-              className="px-2 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
+              className="px-2 py-[12px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
               style={{ border: "1.4px solid #05b851" }}
             >
               <img src={removeContentImg} alt="hide content input field" />
             </button>
           )}
-          <div className="w-1/2">
+          <div className="w-1/2 hidden sm:block">
+            <PrimaryButton cta="Fly" wide={true} action={postQuestion} />
+          </div>
+          <div className="absolute bottom-0 left-0 p-3 w-full sm:hidden">
             <PrimaryButton cta="Fly" wide={true} action={postQuestion} />
           </div>
         </div>

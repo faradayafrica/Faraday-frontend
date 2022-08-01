@@ -4,9 +4,8 @@ import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
 import NotFound from "./NotFound.jsx";
 import http from "../services/httpService";
-import SideNav from "../components/styledComponents/SideNav.jsx";
 
-const Qfeed = (props) => {
+const Qfeed = () => {
   const [questions, setQuestions] = useState([]);
   const [loader, setLoader] = useState(true);
 
@@ -45,37 +44,36 @@ const Qfeed = (props) => {
   }, []);
 
   return (
-    <>
-      <SideNav {...props} />
-      <div className="w-full qfeed-wrapper">
-        <Switch>
-          <Route
-            path="/qfeed/:id"
-            render={(props) => (
-              <DiscussionPage
-                questions={questions}
-                handleUpdatedQuestions={updateQuestions}
-                {...props}
-              />
-            )}
-          />
-          <Route
-            path="/"
-            render={(props) => (
-              <TimeLine
-                questions={questions}
-                handleUpdatedQuestions={updateQuestions}
-                retry={retry}
-                loader={loader}
-                {...props}
-              />
-            )}
-          />
-          <Route path="/not-found" component={NotFound} />
-          <Redirect push to="/not-found" />
-        </Switch>
-      </div>
-    </>
+    <div className="w-full qfeed-wrapper">
+      <Switch>
+        <Route
+          path="/qfeed/:id"
+          render={(props) => (
+            <DiscussionPage
+              questions={questions}
+              handleUpdatedQuestions={updateQuestions}
+              {...props}
+            />
+          )}
+        />
+
+        <Route
+          path="/"
+          render={(props) => (
+            <TimeLine
+              questions={questions}
+              handleUpdatedQuestions={updateQuestions}
+              retry={retry}
+              loader={loader}
+              {...props}
+            />
+          )}
+        />
+
+        <Route path="/not-found" component={NotFound} />
+        <Redirect push to="/not-found" />
+      </Switch>
+    </div>
   );
 };
 
