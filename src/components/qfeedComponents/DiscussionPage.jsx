@@ -81,7 +81,6 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
   };
 
   useEffect(() => {
-    console.log(question);
     async function fetchQuestionData() {
       try {
         const { data } = await http.get(apiEndpoint);
@@ -113,9 +112,11 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
   }
 
   return (
-    <>
+    <div className="absolute bg-white z-20 top-0 left-0 h-screen w-screen sm:w-auto sm:static">
+      {" "}
+      {/* The new classes above creates more responsive problem for desktop apps */}
       <div className="min-h-[70px] sm:min-h-[0px] "> </div>
-      <div>
+      <div className="z-50">
         <h1 className="text-2xl sm:text-2xl m-3 font-bold">Discussion</h1>
         {question ? (
           <div className="pl-3 pr-2 py-3">
@@ -212,7 +213,7 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
