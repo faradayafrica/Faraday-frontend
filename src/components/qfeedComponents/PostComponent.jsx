@@ -33,10 +33,10 @@ const PostComponent = ({ history, hidePost }) => {
     if (
       title.length > LIMIT.title ||
       content.length > LIMIT.content ||
-      title.length == 0
+      title.length === 0
     ) {
       console.warn(
-        title.length > LIMIT.title || title.length == 0
+        title.length > LIMIT.title || title.length === 0
           ? "Your question is either too long or empty"
           : "The body of your question is too long"
       );
@@ -114,7 +114,7 @@ const PostComponent = ({ history, hidePost }) => {
           ""
         )}
 
-        <div className="flex justify-between items-end">
+        <div className="flex justify-between items-end bg-white">
           {!isContentInput ? (
             <button
               onClick={() => {
@@ -139,10 +139,11 @@ const PostComponent = ({ history, hidePost }) => {
           <div className="w-1/2 hidden sm:block">
             <PrimaryButton cta="Fly" wide={true} action={postQuestion} />
           </div>
-          <div className="absolute bottom-0 left-0 p-3 w-full sm:hidden">
+          <div className="fixed bottom-0 left-0 p-3 w-full sm:hidden">
             <PrimaryButton cta="Fly" wide={true} action={postQuestion} />
           </div>
         </div>
+        <div className="h-20 w-full bg-white "></div>
       </div>
     </>
   );

@@ -7,7 +7,7 @@ import redLove from "../../images/qfeed/red-love.svg";
 import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
-import PrimaryButton from "../styledComponents/PrimaryButton";
+import SecondaryButton from "../styledComponents/SecondaryButton";
 
 const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
@@ -112,9 +112,8 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
   }
 
   return (
-    <div className="absolute bg-white z-20 top-0 left-0 h-screen w-screen sm:w-auto sm:static">
-      {" "}
-      {/* The new classes above creates more responsive problem for desktop apps */}
+    <div className="absolute bg-white z-20 bottom-0 left-0 h-full w-screen sm:w-auto sm:static">
+      {/* <div className="bg-white fixed h-16 w-screen bottom-0"></div> */}
       <div className="min-h-[70px] sm:min-h-[0px] "> </div>
       <div className="z-50">
         <h1 className="text-2xl sm:text-2xl m-3 font-bold">Discussion</h1>
@@ -203,10 +202,10 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
             ) : (
               <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
                 <>
-                  <p className="text-sm sm:text-base ">
+                  <p className="text-xs sm:text-base ">
                     Question currently unavailable
                   </p>
-                  <PrimaryButton cta="Retry" action={retry} />
+                  <SecondaryButton cta="Retry" action={retry} />
                 </>
               </div>
             )}

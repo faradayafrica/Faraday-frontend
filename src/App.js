@@ -34,7 +34,7 @@ const App = () => {
           <Route path='/privacy-policy' component={PrivacyPolicy} />
           <Route path='/login' component={LoginForm} />
           <Route path='/logout' component={Logout} />
-          <Route path='/qfeed' render={props => <Qfeed {...props}/>} />
+          <ProtectedRoute path='/qfeed' render={props => <Qfeed {...props}/>} />
           <ProtectedRoute path='/post' render={props => <PostPage {...props}/>} />
           <ProtectedRoute path='/notification' component={Notification} />
           <ProtectedRoute path='/me/:username' component={Profile} />

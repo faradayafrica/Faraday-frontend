@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ask from "../../images/qfeed/ask.svg";
 import Loader from "../styledComponents/Loader";
 import "../../styles/qfeed.css";
-import PrimaryButton from "../styledComponents/PrimaryButton";
+import SecondaryButton from "../styledComponents/SecondaryButton";
 
 const TimeLine = (props) => {
   const [questions, setQuestions] = useState([]);
@@ -44,7 +44,7 @@ const TimeLine = (props) => {
                   <p className="text-sm sm:text-base ">
                     Make sure you are connected to the internet and try again
                   </p>
-                  <PrimaryButton cta="Retry" action={props.retry} />
+                  <SecondaryButton cta="Retry" action={props.retry} />
                 </>
               </div>
             )}

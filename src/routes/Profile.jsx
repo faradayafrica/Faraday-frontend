@@ -45,7 +45,7 @@ function Profile({ match }) {
     }
 
     getUserQuestions();
-  }, []);
+  });
 
   useEffect(() => {
     async function getUserSolutions() {
@@ -55,7 +55,7 @@ function Profile({ match }) {
     }
 
     getUserSolutions();
-  }, []);
+  });
 
   const refreshPage = async () => {
     try {
