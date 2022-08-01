@@ -13,7 +13,7 @@ const Qfeed = () => {
 
   const updateQuestions = (updatedQuestions) => {
     setQuestions([...updatedQuestions]);
-    console.log("present 4rm Qfeed", updatedQuestions);
+    // console.log("present 4rm Qfeed", updatedQuestions);
   };
 
   const retry = async () => {

@@ -6,7 +6,7 @@ import Notification from './routes/Notification';
 import Profile from './routes/Profile';
 import EditProfile from './components/profile/EditProfile.jsx';
 import SideNav from './components/styledComponents/SideNav.jsx';
-import Post from './components/Post';
+import PostPage from './components/qfeedComponents/PostPage.jsx';
 import NotFound from './routes/NotFound';
 import LoginForm from './routes/LoginForm';
 import SignUpForm from './routes/SignUpForm';
@@ -35,9 +35,10 @@ class App extends React.Component {
             <Route path='/privacy-policy' component={PrivacyPolicy} />
             <Route path='/login' component={LoginForm} />
             <Route path='/logout' component={Logout} />
-            <ProtectedRoute path='/qfeed' render={props => <Qfeed />} />
+            <Route path='/qfeed' render={props => <Qfeed />} />
+            <ProtectedRoute path='/post' render={props => <PostPage {...props}/>} />
             <ProtectedRoute path='/notification' component={Notification} />
-            <ProtectedRoute path='/post' component={Post} />
+            {/* <ProtectedRoute path='/post' component={PostPage} /> */}
             <ProtectedRoute path='/me/:username' component={Profile} />
             <ProtectedRoute
               path='/editprofile/:username'
