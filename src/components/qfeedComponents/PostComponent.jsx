@@ -4,7 +4,7 @@ import addContentImg from "../../images/qfeed/add.svg";
 import removeContentImg from "../../images/qfeed/remove.svg";
 import http from "../../services/httpService";
 
-const PostComponent = ({ history }) => {
+const PostComponent = ({ history, hidePost }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isContentInput, setContentInput] = useState(false);
@@ -30,18 +30,20 @@ const PostComponent = ({ history }) => {
   const postQuestion = () => {
     const apiEndpoint =
       process.env.REACT_APP_API_URL + "/qfeed/que/create_que/";
-    if (title.length > LIMIT.title || content.length > LIMIT.content) {
+    if (
+      title.length > LIMIT.title ||
+      content.length > LIMIT.content ||
+      title.length == 0
+    ) {
       console.warn(
-        title.length > LIMIT.title
-          ? "Your question is too long"
+        title.length > LIMIT.title || title.length == 0
+          ? "Your question is either too long or empty"
           : "The body of your question is too long"
       );
     } else {
       try {
         http.post(apiEndpoint, { title, content });
-        setContent("");
-        setTitle("");
-        history.push("/");
+        hidePost();
       } catch (e) {
         console.log(e.message);
       }
@@ -69,7 +71,7 @@ const PostComponent = ({ history }) => {
           <textarea
             type="text"
             name="comment"
-            rows="2"
+            rows="3"
             id="commentfield"
             className={titleClasses}
             placeholder="Ask your question here"
@@ -112,26 +114,26 @@ const PostComponent = ({ history }) => {
           ""
         )}
 
-        <div className="flex justify-between">
+        <div className="flex justify-between items-end">
           {!isContentInput ? (
             <button
               onClick={() => {
                 setContentInput(true);
               }}
-              className="px-3 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
+              className="px-2 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
               style={{ border: "1.4px solid #05b851" }}
             >
-              <img src={addContentImg} alt="" />
+              <img src={addContentImg} alt="show content input field" />
             </button>
           ) : (
             <button
               onClick={() => {
                 setContentInput(false);
               }}
-              className="px-3 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
+              className="px-2 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
               style={{ border: "1.4px solid #05b851" }}
             >
-              <img src={removeContentImg} alt="" />
+              <img src={removeContentImg} alt="hide content input field" />
             </button>
           )}
           <div className="w-1/2">
