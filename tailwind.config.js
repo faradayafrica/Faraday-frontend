@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {colors: {
       'brand': '#05b851',
-      'brand-dark': '#23933f',
+      'brand-dark': '#2C974B',
       'faraday-night': '#333B47',
       'night-secondary': '#6C757D',
       'outline': '#ECECF0',
@@ -17,6 +17,7 @@ module.exports = {
       'secondary-text': '#a2abb3',
       'records': '#8b3745',
       'text2-black': '#536471',
+      'danger': "F91880",
 
       'brand-highlight': '#F1FBEF',
       'danger-highlight': '#FBEFF5',

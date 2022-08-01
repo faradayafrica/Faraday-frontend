@@ -53,10 +53,9 @@ const Comments = ({
           <textarea
             type="text"
             name="comment"
-            row="4"
-            multiline="true"
+            rows="4"
             id="commentfield"
-            className="mt-1 px-2 py-2 mb-2 placeholder-slate-400 focus:outline-none block w-full text-sm "
+            className="mt-1 px-2 py-2 mb-2 placeholder-secondary-text focus:outline-none block w-full text-sm "
             placeholder="Contribute to this discussion"
             onChange={handleChange}
           />
