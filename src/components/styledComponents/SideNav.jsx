@@ -125,16 +125,7 @@ function SideNav({ history }) {
 
   const unShowPost = () => {
     setHidePost(true);
-
-    // This needs to be revisited
-    if (history.location.pathname == "/qfeed") {
-      history.replace("/");
-    } else {
-      history.replace("/qfeed");
-    }
   };
-
-  console.log("SN", history.location.pathname);
 
   return (
     <>

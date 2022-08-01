@@ -71,7 +71,7 @@ const PostComponent = ({ history, hidePost }) => {
           <textarea
             type="text"
             name="comment"
-            rows="2"
+            rows="3"
             id="commentfield"
             className={titleClasses}
             placeholder="Ask your question here"
@@ -114,13 +114,13 @@ const PostComponent = ({ history, hidePost }) => {
           ""
         )}
 
-        <div className="flex justify-between">
+        <div className="flex justify-between items-end">
           {!isContentInput ? (
             <button
               onClick={() => {
                 setContentInput(true);
               }}
-              className="px-3 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
+              className="px-2 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
               style={{ border: "1.4px solid #05b851" }}
             >
               <img src={addContentImg} alt="show content input field" />
@@ -130,7 +130,7 @@ const PostComponent = ({ history, hidePost }) => {
               onClick={() => {
                 setContentInput(false);
               }}
-              className="px-3 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
+              className="px-2 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
               style={{ border: "1.4px solid #05b851" }}
             >
               <img src={removeContentImg} alt="hide content input field" />
