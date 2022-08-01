@@ -1,12 +1,14 @@
-import React from "react";
 import faraday from "../../images/logo.svg";
 import NavLink from "./NavLink";
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import { getCurrentUser } from "../../services/authService";
+import PrimaryButton from "./PrimaryButton";
+import PostComponent from "../qfeedComponents/PostComponent";
+import closeImg from "../../images/qfeed/close.svg";
 
-function SideNav({ user }) {
+function SideNav({ history }) {
   const currentUser = getCurrentUser();
+  const [hidePost, setHidePost] = useState(true);
   const [links, setLinks] = useState([
     {
       item: "Qfeed",
@@ -35,15 +37,6 @@ function SideNav({ user }) {
     {
       item: "Notification",
       icon: (
-        // <svg
-        //   width="24"
-        //   height="24"
-        //   viewBox="0 0 24 24"
-        //   xmlns="http://www.w3.org/2000/svg"
-        // >
-        //   <path d="M12 22C10.8954 22 10 21.1046 10 20H14C14 21.1046 13.1046 22 12 22ZM20 19H4V17L6 16V10.5C6 7.038 7.421 4.793 10 4.18V2H14V4.18C16.579 4.792 18 7.036 18 10.5V16L20 17V19ZM12 5.75C10.7797 5.6712 9.60278 6.21728 8.875 7.2C8.25255 8.18456 7.94714 9.33638 8 10.5V17H16V10.5C16.0528 9.33639 15.7474 8.18458 15.125 7.2C14.3972 6.21728 13.2203 5.6712 12 5.75Z" />
-        // </svg>
-
         <svg
           width="18"
           height="21"
@@ -109,12 +102,6 @@ function SideNav({ user }) {
     },
   ]);
 
-  // const onMenuClick = () => {
-  //   let sideNav = document.querySelector(".sidenav-container");
-
-  //   sideNav.classList.toggle("active");
-  // };
-
   const handleLink = (item) => {
     // history.replace(`/${item}`);
     const allLinks = links.map((link) => {
@@ -132,10 +119,27 @@ function SideNav({ user }) {
     setLinks(allLinks);
   };
 
+  const handlePost = () => {
+    setHidePost(!hidePost);
+  };
+
+  const unShowPost = () => {
+    setHidePost(true);
+
+    // This needs to be revisited
+    if (history.location.pathname == "/qfeed") {
+      history.replace("/");
+    } else {
+      history.replace("/qfeed");
+    }
+  };
+
+  console.log("SN", history.location.pathname);
+
   return (
     <>
-      <div className="w-80 px-2 bg-white sidenav-container active">
-        <div className="position-fixed  d-flex flex-column justify-content-between h-100">
+      <div className="w-80 px-2 bg-whte sidenav-container active">
+        <div className="position-fixed d-flex flex-column justify-content-between h-100">
           <div>
             <nav className="row my-3 ml-1 menu-nav pb-4">
               <img className=" navlink-brand " src={faraday} alt="faraday" />
@@ -151,26 +155,26 @@ function SideNav({ user }) {
             ))}
 
             {/* Ask question btn */}
-            <Link to="/post" style={{ textDecoration: "none" }}>
-              <button className="navlink btn btn-green nav-post-btn py-2 px-3 mx-2">
-                <span className="nav-tooltip nav-tooltip-brand">Ask</span>
-                {/* <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C21.9939 17.5203 17.5203 21.9939 12 22ZM4 12.172C4.04732 16.5732 7.64111 20.1095 12.0425 20.086C16.444 20.0622 19.9995 16.4875 19.9995 12.086C19.9995 7.68451 16.444 4.10977 12.0425 4.086C7.64111 4.06246 4.04732 7.59876 4 12V12.172ZM13 17H11V13H7V11H11V7H13V11H17V13H13V17Z"
-                    fill="#fff"
-                  />
-                </svg> */}
-                <p className="mx-3 ">Add a question</p>
-              </button>
-            </Link>
+            <PrimaryButton cta="Add a question" action={handlePost} />
           </div>
         </div>
       </div>
+
+      {!hidePost ? (
+        <div className="w-full lg:w-[1024px] h-screen overlay fixed sm:flex justify-center items-start hidden ">
+          <div className="w-[32rem] min-h-96 bg-white rounded-xl border ask-shadow p-2 relative mt-24">
+            <button
+              className="p-2 right-1 top-1 absolute rounded-lg hover:bg-danger-highlight hover:hot-shadow"
+              onClick={handlePost}
+            >
+              <img src={closeImg} alt="close modal" />
+            </button>
+            <PostComponent hidePost={unShowPost} />
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 }

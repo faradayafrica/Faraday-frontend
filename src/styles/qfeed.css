@@ -24,3 +24,15 @@
     filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
       hue-rotate(115deg) brightness(98%) contrast(96%);
 }
+
+.ask-shadow {
+    box-shadow: 2px 3px 39px rgba(108, 117, 125, 0.1), 8px 8px 61px rgba(5, 184, 81, 0.12);
+  }
+
+.hot-shadow {
+    box-shadow: 2px 3px 39px rgba(108, 117, 125, 0.1), 8px 8px 61px rgba(249, 24, 128, 0.2);
+  }
+
+.overlay {
+    background-color: #ffffffee;
+}
