@@ -82,13 +82,13 @@ const Question = (props) => {
   };
 
   return (
-    <div className="question-component pl-3 pt-3 sm:pt-4  flex justify-start">
+    <div className="question-component pl-3 pr-2 pt-3 sm:pt-4  flex justify-start">
       <div className="w-14 mr-2">
         <img
           src={`https://api.faraday.africa${question?.user.profile_pic}`}
           className="w-12 h-12 rounded-full "
           style={{ objectFit: "cover" }}
-          alt=""
+          alt={`${question?.user.firstname} ${question?.user.lastname}`}
         />
       </div>
       <section className=" p-0 w-full">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Comments from "./Comments";
+import Comments from "./commentComponents/Comments";
 import Loader from "../styledComponents/Loader";
 
 import love from "../../images/qfeed/love.svg";

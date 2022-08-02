@@ -1,4 +1,4 @@
-import PrimaryButton from "../styledComponents/PrimaryButton";
+import PrimaryButton from "../../styledComponents/PrimaryButton";
 
 const AddComment = ({
   currentUser,
@@ -33,7 +33,7 @@ const AddComment = ({
         <textarea
           type="text"
           name="comment"
-          rows="4"
+          rows="3"
           id="commentfield"
           className={inputClasses}
           placeholder="Contribute to this discussion"
