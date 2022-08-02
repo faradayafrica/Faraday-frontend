@@ -51,15 +51,19 @@ const Comments = ({
   };
 
   const deleteComment = async () => {
-    console.log("delete", selectedComment.content);
+    const remainingComments = comments.filter((comment) => {
+      return comment.id !== selectedComment.id;
+    });
+    console.log("DC", remainingComments);
 
     const apiEndpoint =
       process.env.REACT_APP_API_URL +
-      `/qfeed/que/comment/delete/${questionid}/${selectedComment.id}`;
+      `/qfeed/que/comments/delete/${questionid}/${selectedComment.id}/`;
 
     try {
       await http.delete(apiEndpoint);
       toggleCommentMenu(!commentMenu);
+      onUpdateComments([...remainingComments]);
     } catch (e) {
       console.log(e.message);
     }
@@ -106,7 +110,9 @@ const Comments = ({
       ) : (
         <>
           {commentLoader ? (
-            <Loader msg="Fetching comments..." />
+            <div className="mr-2">
+              <Loader msg="Fetching comments..." />
+            </div>
           ) : (
             <>
               <div className="p-3 mt-3 mr-1 rounded-lg border bg-background  text-center">

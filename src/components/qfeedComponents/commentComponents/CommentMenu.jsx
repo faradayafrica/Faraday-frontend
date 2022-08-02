@@ -34,12 +34,16 @@ const CommentMenu = ({
               @{selectedComment?.user.username}
             </span>
           </button>
-          <button
-            className="px-4 py-3 text-danger hover:bg-danger-highlight rounded-lg w-full text-left"
-            onClick={() => onDeleteComment()}
-          >
-            Delete comment
-          </button>
+          {selectedComment?.user.username === currentUser.username ? (
+            <button
+              className="px-4 py-3 text-danger hover:bg-danger-highlight rounded-lg w-full text-left"
+              onClick={() => onDeleteComment()}
+            >
+              Delete comment
+            </button>
+          ) : (
+            ""
+          )}
         </div>
       </div>
 
@@ -72,12 +76,16 @@ const CommentMenu = ({
               @{selectedComment?.user.username}
             </span>
           </button>
-          <button
-            className="px-4 py-3 text-danger hover:bg-danger-highlight rounded-lg w-full text-left"
-            onClick={() => onDeleteComment()}
-          >
-            Delete comment
-          </button>
+          {selectedComment?.user.username === currentUser.username ? (
+            <button
+              className="px-4 py-3 text-danger hover:bg-danger-highlight rounded-lg w-full text-left"
+              onClick={() => onDeleteComment()}
+            >
+              Delete comment
+            </button>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       {/* </div> */}

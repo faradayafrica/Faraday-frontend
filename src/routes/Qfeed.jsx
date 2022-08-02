@@ -34,7 +34,6 @@ const Qfeed = (props) => {
       try {
         const { data } = await http.get(apiEndpoint);
         setQuestions(data.results);
-        console.log("all recieved ques", data.results);
       } catch (err) {
         console.warn(err.message);
         setLoader(false);
