@@ -76,8 +76,8 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
     }
   };
 
-  const updateComments = (newComment) => {
-    setComments([newComment, ...comments]);
+  const updateComments = (newComments) => {
+    setComments(newComments);
   };
 
   useEffect(() => {
@@ -93,6 +93,7 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
         const { data } = await http.get(commentsApiEndpoint);
         setComments(data.results);
         setCommentLoader(false);
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       } catch (err) {
         console.warn(err.message);
         setCommentLoader(false);
@@ -189,7 +190,7 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
               comments={comments}
               commentLoader={commentLoader}
               questionOwner={question?.user}
-              updateComments={updateComments}
+              onUpdateComments={updateComments}
             />
           </div>
         ) : (
