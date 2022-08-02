@@ -125,6 +125,8 @@ function SideNav({ history }) {
 
   const unShowPost = () => {
     setHidePost(true);
+    console.log(history);
+    history.replace("/");
   };
 
   return (

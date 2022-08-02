@@ -827,11 +827,7 @@ SIDENAV STYLING
     opacity: 1;
   }
   
-  .side-header {
-    /* border-top-right-radius: 60px; */
-    display: flex;
-    justify-content: space-between;
-  }
+  
 
   .mobile-sidenav .side-close {
     /* float: right; */
