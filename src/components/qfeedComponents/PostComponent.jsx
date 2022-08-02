@@ -57,7 +57,7 @@ const PostComponent = ({ history, hidePost }) => {
         <label className="block w-full m-0 relative">
           {title.length > LIMIT.title ? (
             <>
-              <span className="flex h-3 w-3 float-right absolute top-4 right-3">
+              <span className="flex h-3 w-3 float-right absolute bottom-4 right-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-danger opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-danger"></span>
               </span>
@@ -86,7 +86,7 @@ const PostComponent = ({ history, hidePost }) => {
           <label className="block w-full m-0 mt-3 relative">
             {content.length > LIMIT.content ? (
               <>
-                <span className="flex h-3 w-3 float-right absolute top-4 right-3">
+                <span className="flex h-3 w-3 float-right absolute bottom-4 right-3">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-danger opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-danger"></span>
                 </span>

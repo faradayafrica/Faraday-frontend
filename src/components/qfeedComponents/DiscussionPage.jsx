@@ -113,7 +113,6 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
 
   return (
     <div className="absolute bg-white z-20 bottom-0 left-0 h-full w-screen sm:w-auto sm:static">
-      {/* <div className="bg-white fixed h-16 w-screen bottom-0"></div> */}
       <div className="min-h-[70px] sm:min-h-[0px] "> </div>
       <div className="z-50">
         <h1 className="text-2xl sm:text-2xl m-3 font-bold">Discussion</h1>

@@ -1,6 +1,6 @@
 const CommentComponent = ({ comment }) => {
   return (
-    <div className=" pt-3 pb-1 flex bg-white">
+    <div className=" pt-3 pb-1 flex bg-white pl-2">
       <img
         src={`https://api.faraday.africa${comment?.user.profile_pic}`}
         className="w-12 h-12 rounded-full mr-3 "
@@ -15,7 +15,7 @@ const CommentComponent = ({ comment }) => {
           <span className="mr-2 text-night-secondary">
             @{comment?.user.username}
           </span>
-          <span className="mr-2 text-night-secondary">2hr</span>
+          <span className="mr-2 text-night-secondary">{comment?.created}</span>
         </p>
         <p className="text-sm sm:text-base m-0 mb-2 text-faraday-night">
           {comment?.content}

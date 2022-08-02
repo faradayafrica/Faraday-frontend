@@ -111,8 +111,8 @@ function MobileNav() {
         <div className="side">
           <div className="side-container">
             <div className="side-overlay" onClick={handleMobileMenuClick}></div>
-            <div className="side-header bg-background">
-              <div className="flex justify-start">
+            <div className="side-header bg-background  ">
+              <div className="flex justify-start  ">
                 <div
                   className="p-2 rounded-xl float-left cursor-pointer"
                   data-toggle="tooltip"
