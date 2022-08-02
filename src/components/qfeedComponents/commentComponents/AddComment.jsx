@@ -1,3 +1,4 @@
+import { useState } from "react";
 import PrimaryButton from "../../styledComponents/PrimaryButton";
 
 const AddComment = ({
@@ -19,7 +20,7 @@ const AddComment = ({
       : "";
 
   return (
-    <div className=" pt-3 pb-2 flex justify-start border-background2 border-b-[1px] mb-2 pr-2">
+    <div className=" pt-3 pb-2 flex justify-start border-background2 border-b-[1px] mb-2 pr-2 bg-white">
       <img
         src={`https://api.faraday.africa${currentUser?.profile_pic}`}
         alt={`${currentUser?.first_name} ${currentUser?.last_name}`}
@@ -47,12 +48,16 @@ const AddComment = ({
         ) : (
           ""
         )}
-        <div className="m-0 ml-2 float-right">
-          <PrimaryButton
-            cta="Post"
-            action={() => postComment(questionId, LIMIT)}
-          />
-        </div>
+        {comment.length > 0 ? (
+          <div className="m-0 ml-2 float-right">
+            <PrimaryButton
+              cta="Post"
+              action={() => postComment(questionId, LIMIT)}
+            />
+          </div>
+        ) : (
+          ""
+        )}
       </label>
     </div>
   );

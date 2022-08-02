@@ -1,5 +1,6 @@
 import ellipses from "../../../images/qfeed/ellipses.svg";
-const CommentComponent = ({ comment, toggleCommentMenu }) => {
+import CommentMenu from "./CommentMenu";
+const CommentComponent = ({ comment, onToggleCommentMenu }) => {
   return (
     <div className=" pt-3 pb-1 flex bg-white pr-2 relative">
       <img
@@ -11,7 +12,7 @@ const CommentComponent = ({ comment, toggleCommentMenu }) => {
       <div
         className=" hover:bg-brand-highlight cursor-pointer absolute right-1 top-2 rounded-md"
         onClick={() => {
-          toggleCommentMenu(comment);
+          onToggleCommentMenu(comment);
         }}
       >
         <img

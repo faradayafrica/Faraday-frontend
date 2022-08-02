@@ -87,7 +87,7 @@ function MobileNav() {
         )}
 
         {/* fixed bottom nav for mobile */}
-        <div className="fixed bottom-0 left-0 z-10 w-full bg-white py-2 px-3 flex border">
+        <div className="fixed bottom-0 left-0 z-10 w-full bg-white py-1 px-3 flex border">
           <Link
             to="/"
             style={{ textDecoration: "none" }}
