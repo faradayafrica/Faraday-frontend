@@ -17,7 +17,7 @@ module.exports = {
       'secondary-text': '#a2abb3',
       'records': '#8b3745',
       'text2-black': '#536471',
-      'danger': "F91880",
+      'danger': "#F91880",
 
       'brand-highlight': '#F1FBEF',
       'danger-highlight': '#FBEFF5',

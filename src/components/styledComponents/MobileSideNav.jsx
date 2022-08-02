@@ -18,8 +18,8 @@ function MobileNav() {
   const [isProfile, setIsProfile] = useState(false);
   const currentUser = getCurrentUser();
 
-  // console.log("current Pathname 👉️", window.location.pathname);
   const location = useLocation();
+  console.log("currentUser", currentUser);
 
   useEffect(() => {
     setQfeed(location.pathname === "/");
@@ -150,10 +150,16 @@ function MobileNav() {
                   {/* Number of questions and Soulutions  */}
                   <div className="flex mt-3 text-faraday-night">
                     <p className=" mr-2">
-                      <span className="font-semibold">200 </span> Questions
+                      <span className="font-semibold">
+                        {currentUser?.username}{" "}
+                      </span>{" "}
+                      Questions
                     </p>
                     <p className="">
-                      <span className="font-semibold">10 </span> Solution
+                      <span className="font-semibold">
+                        {currentUser?.username}{" "}
+                      </span>{" "}
+                      Solution
                     </p>
                   </div>
                 </div>
