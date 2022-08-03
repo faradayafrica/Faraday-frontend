@@ -10,6 +10,7 @@ import http from "../../services/httpService";
 import SecondaryButton from "../styledComponents/SecondaryButton";
 
 const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
+  console.log(questions);
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
   const apiEndpoint =
     process.env.REACT_APP_API_URL + `/qfeed/que/fetch/${match.params.id}/`;

@@ -9,8 +9,6 @@ import SecondaryButton from "../styledComponents/SecondaryButton";
 const TimeLine = (props) => {
   const [questions, setQuestions] = useState([]);
 
-  // console.log("Q1", props.questions);
-
   useEffect(() => {
     setQuestions(props.questions);
   }, [props.questions]);
