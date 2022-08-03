@@ -70,16 +70,7 @@ const Comments = ({
   };
 
   return (
-    <>
-      <AddComment
-        onChange={handleChange}
-        currentUser={currentUser}
-        questionOwner={questionOwner}
-        postComment={postComment}
-        questionId={questionid}
-        comment={comment}
-      />
-
+    <div className="bg-white">
       {commentMenu ? (
         <CommentMenu
           questionOwner={questionOwner}
@@ -91,6 +82,15 @@ const Comments = ({
       ) : (
         ""
       )}
+
+      <AddComment
+        onChange={handleChange}
+        currentUser={currentUser}
+        questionOwner={questionOwner}
+        postComment={postComment}
+        questionId={questionid}
+        comment={comment}
+      />
 
       {comments.length ? (
         <>
@@ -124,7 +124,7 @@ const Comments = ({
           )}
         </>
       )}
-    </>
+    </div>
   );
 };
 

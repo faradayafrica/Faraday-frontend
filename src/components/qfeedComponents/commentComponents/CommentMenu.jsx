@@ -35,10 +35,14 @@ const CommentMenu = ({
           ) : (
             ""
           )}
-          <button className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex">
-            <img className="mr-2" src={follow} alt="follow" /> Follow @
-            {selectedComment?.user.username}
-          </button>
+          {selectedComment?.user.username !== currentUser.username ? (
+            <button className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex">
+              <img className="mr-2" src={follow} alt="follow" /> Follow @
+              {selectedComment?.user.username}
+            </button>
+          ) : (
+            ""
+          )}
           {selectedComment?.user.username === currentUser.username ? (
             <>
               {!confirmDelete ? (
@@ -90,10 +94,14 @@ const CommentMenu = ({
           ) : (
             ""
           )}
-          <button className="px-4 py-3 hover:bg-background rounded-lg w-full mb-1 text-left flex">
-            <img className="mr-2" src={follow} alt="follow" />
-            Follow @{selectedComment?.user.username}
-          </button>
+          {selectedComment?.user.username !== currentUser.username ? (
+            <button className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex">
+              <img className="mr-2" src={follow} alt="follow" /> Follow @
+              {selectedComment?.user.username}
+            </button>
+          ) : (
+            ""
+          )}
           {selectedComment?.user.username === currentUser.username ? (
             <>
               {!confirmDelete ? (
