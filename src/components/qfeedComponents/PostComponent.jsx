@@ -3,6 +3,7 @@ import PrimaryButton from "../styledComponents/PrimaryButton";
 import addContentImg from "../../images/qfeed/add.svg";
 import removeContentImg from "../../images/qfeed/remove.svg";
 import http from "../../services/httpService";
+import toast from "react-hot-toast";
 
 const PostComponent = ({ history, hidePost }) => {
   const [title, setTitle] = useState("");
@@ -30,6 +31,7 @@ const PostComponent = ({ history, hidePost }) => {
   const postQuestion = () => {
     const apiEndpoint =
       process.env.REACT_APP_API_URL + "/qfeed/que/create_que/";
+
     if (
       title.length > LIMIT.title ||
       content.length > LIMIT.content ||
@@ -40,9 +42,20 @@ const PostComponent = ({ history, hidePost }) => {
           ? "Your question is either too long or empty"
           : "The body of your question is too long"
       );
+      if (title.length > LIMIT.title || title.length === 0) {
+        toast.error("Your question is either too long or empty");
+      } else {
+        toast.error("The body of your question is too long");
+      }
     } else {
       try {
-        http.post(apiEndpoint, { title, content });
+        const promise = http.post(apiEndpoint, { title, content });
+
+        toast.promise(promise, {
+          loading: "Loading",
+          success: "Question posted successfully",
+          error: "An error occurred while posting your question, Try again",
+        });
         hidePost();
       } catch (e) {
         console.log(e.message);
@@ -52,16 +65,16 @@ const PostComponent = ({ history, hidePost }) => {
 
   return (
     <>
-      <h1 className="text-2xl sm:text-2xl m-3 font-bold">Ask your Question</h1>
-      <div className="p-3 mt-2 bg-brand-higlight">
-        <label className="block w-full m-0 relative">
+      <h1 className='text-2xl sm:text-2xl m-3 font-bold'>Ask your Question</h1>
+      <div className='p-3 mt-2 bg-brand-higlight'>
+        <label className='block w-full m-0 relative'>
           {title.length > LIMIT.title ? (
             <>
-              <span className="flex h-3 w-3 float-right absolute bottom-4 right-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-danger opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-danger"></span>
+              <span className='flex h-3 w-3 float-right absolute bottom-4 right-3'>
+                <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-danger opacity-75'></span>
+                <span className='relative inline-flex rounded-full h-3 w-3 bg-danger'></span>
               </span>
-              <span className="text-danger text-xs ml-2">
+              <span className='text-danger text-xs ml-2'>
                 Title cannot exceed {LIMIT.title} characters
               </span>
             </>
@@ -69,12 +82,12 @@ const PostComponent = ({ history, hidePost }) => {
             ""
           )}
           <textarea
-            type="text"
-            name="comment"
-            rows="3"
-            id="commentfield"
+            type='text'
+            name='comment'
+            rows='3'
+            id='commentfield'
             className={titleClasses}
-            placeholder="Ask your question here"
+            placeholder='Ask your question here'
             onChange={({ currentTarget }) => {
               setTitle(currentTarget.value);
             }}
@@ -83,14 +96,14 @@ const PostComponent = ({ history, hidePost }) => {
         </label>
 
         {isContentInput ? (
-          <label className="block w-full m-0 mt-3 relative">
+          <label className='block w-full m-0 mt-3 relative'>
             {content.length > LIMIT.content ? (
               <>
-                <span className="flex h-3 w-3 float-right absolute bottom-4 right-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-danger opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-danger"></span>
+                <span className='flex h-3 w-3 float-right absolute bottom-4 right-3'>
+                  <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-danger opacity-75'></span>
+                  <span className='relative inline-flex rounded-full h-3 w-3 bg-danger'></span>
                 </span>
-                <span className="text-danger text-xs ml-2">
+                <span className='text-danger text-xs ml-2'>
                   Content cannot exceed {LIMIT.content} characters
                 </span>
               </>
@@ -98,10 +111,10 @@ const PostComponent = ({ history, hidePost }) => {
               ""
             )}
             <textarea
-              type="text"
-              name="comment"
-              rows="4"
-              id="commentfield"
+              type='text'
+              name='comment'
+              rows='4'
+              id='commentfield'
               className={contentClasses}
               placeholder="Give more context here. You can elaborate more, give examples or share what you've tried..."
               onChange={({ currentTarget }) => {
@@ -114,36 +127,36 @@ const PostComponent = ({ history, hidePost }) => {
           ""
         )}
 
-        <div className="flex justify-between items-end bg-white">
+        <div className='flex justify-between items-end bg-white'>
           {!isContentInput ? (
             <button
               onClick={() => {
                 setContentInput(true);
               }}
-              className="px-2 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
+              className='px-2 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight '
               style={{ border: "1.4px solid #05b851" }}
             >
-              <img src={addContentImg} alt="show content input field" />
+              <img src={addContentImg} alt='show content input field' />
             </button>
           ) : (
             <button
               onClick={() => {
                 setContentInput(false);
               }}
-              className="px-2 py-[12px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
+              className='px-2 py-[12px] rounded-lg font-semibold text-brand hover:bg-brand-highlight '
               style={{ border: "1.4px solid #05b851" }}
             >
-              <img src={removeContentImg} alt="hide content input field" />
+              <img src={removeContentImg} alt='hide content input field' />
             </button>
           )}
-          <div className="w-1/2 hidden sm:block">
-            <PrimaryButton cta="Fly" wide={true} action={postQuestion} />
+          <div className='w-1/2 hidden sm:block'>
+            <PrimaryButton cta='Fly' wide={true} action={postQuestion} />
           </div>
-          <div className="fixed bottom-0 left-0 p-3 w-full sm:hidden">
-            <PrimaryButton cta="Fly" wide={true} action={postQuestion} />
+          <div className='fixed bottom-0 left-0 p-3 w-full sm:hidden'>
+            <PrimaryButton cta='Fly' wide={true} action={postQuestion} />
           </div>
         </div>
-        <div className="h-20 w-full bg-white "></div>
+        <div className='h-20 w-full bg-white '></div>
       </div>
     </>
   );
