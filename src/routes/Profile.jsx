@@ -134,7 +134,7 @@ function Profile({ match }, props) {
         </div>
 
         {/* We need a nav here */}
-        <h3 className="text-2xl sm:text-2xl m-3 font-bold">Questions</h3>
+        <h3 className="text-xl m-3 font-bold">Questions</h3>
         <div className="border">
           {questions ? (
             <>
