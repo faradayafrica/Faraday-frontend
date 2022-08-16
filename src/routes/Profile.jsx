@@ -1,88 +1,169 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../components/styledComponents/Loader";
-import ProfileData from "../components/profile/ProfileData";
-import ProfileInfo from "../components/profile/ProfileInfo";
+import SideNav from "../components/styledComponents/SideNav";
 import http from "../services/httpService";
+import { getCurrentUser } from "../services/authService";
+import Question from "../components/qfeedComponents/Question";
 import "../styles/profile.scss";
+import PrimaryButton from "../components/styledComponents/PrimaryButton";
+// import SecondaryButton from "../components/styledComponents/SecondaryButton";
 
-function Profile({ match }) {
-  // const userEndpoint = process.env.REACT_APP_API_URL + `/users/${match.params.username}/`;
-  // const userQuestionEndpoint = process.env.REACT_APP_API_URL + `/users/${match.params.username}/ques/`;
-  // const userSolutionEndpoint =
-  //   process.env.REACT_APP_API_URL + `/users/${match.params.username}/solutions/`;
+function Profile({ match }, props) {
+  const currentUser = getCurrentUser();
 
-  //from Mockoon
-  const userEndpoint = "http://localhost:3002/v1/users/devgenix/";
+  const userEndpoint =
+    process.env.REACT_APP_API_URL + `/users/${match.params.username}/`;
   const userQuestionEndpoint =
     process.env.REACT_APP_API_URL + `/users/${match.params.username}/ques/`;
   const userSolutionEndpoint =
     process.env.REACT_APP_API_URL +
     `/users/${match.params.username}/solutions/`;
 
-  //the profile renders as soon as the user info comes in and the page fetches the questions later
-  const [user, setUser] = useState({});
-  const [questions, setQuestions] = useState([]);
-  const [solutions, setSolutions] = useState([]);
+  const [user, setUser] = useState();
+  const [questions, setQuestions] = useState();
+  const [solutions, setSolutions] = useState();
+
+  console.log("FetchedUser", user);
 
   useEffect(() => {
-    async function getUser() {
-      const result = await http.get(userEndpoint);
-      setUser(result.data);
+    document.title = `${currentUser?.last_name} ${currentUser?.first_name} Profile`;
+
+    async function fetchdata() {
+      try {
+        const { data } = await http.get(userEndpoint);
+        setUser(data);
+        console.log("fetched user details", user);
+      } catch (e) {
+        console.log(e.message);
+      }
     }
 
-    getUser();
+    async function fetchUserQuestions() {
+      try {
+        const { data } = await http.get(userQuestionEndpoint);
+        console.log("QUEs", data.results);
+        setQuestions(data.results);
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+
+    async function fetchUserSolutions() {
+      try {
+        const solutionResult = await http.get(userSolutionEndpoint);
+        // setSolutions(solutionResult.data);
+        // console.log("SOLn", solutions);
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+
+    fetchUserSolutions();
+    fetchdata();
+    fetchUserQuestions();
   }, []);
 
-  useEffect(() => {
-    document.title = user.username ? `@${user.username} Profile` : "Faraday";
-  }, [user]);
-
-  useEffect(() => {
-    async function getUserQuestions() {
-      const questionResult = await http.get(userQuestionEndpoint);
-      setQuestions(questionResult.data);
-      console.log("QUEs", questions);
-    }
-
-    getUserQuestions();
-  });
-
-  useEffect(() => {
-    async function getUserSolutions() {
-      const solutionResult = await http.get(userSolutionEndpoint);
-      setSolutions(solutionResult.data);
-      console.log("SOLn", solutions);
-    }
-
-    getUserSolutions();
-  });
-
-  const refreshPage = async () => {
-    try {
-      const result = await http.get(userEndpoint);
-      setUser(result.data);
-
-      const questionResult = await http.get(userQuestionEndpoint);
-      setQuestions(questionResult.data);
-      // console.log('user-data', result);
-    } catch (ex) {}
+  const updateQuestions = (updatedQuestions) => {
+    setQuestions([...updatedQuestions]);
   };
 
-  return !user.username ? (
-    <Loader onRefresh={refreshPage} />
-  ) : (
-    <div className="w-full">
-      <div>
-        {/* <ProfileNav user={user} /> */}
-        <h1 className=" section-header">Profile</h1>
-        <ProfileData
-          user={user}
-          userQuestions={questions}
-          userSolution={solutions}
-        />
-        <ProfileInfo />
+  return (
+    <>
+      <SideNav {...props} />
+      <div className="w-full route-wrapper text-faraday-night">
+        {user ? (
+          <>
+            <div className="min-h-[70px] sm:min-h-[20px] "> </div>
+
+            <div className="mx-3 mt-2 text-sm sm:text-base">
+              <div className=" flex items-start">
+                {currentUser.username === match.params.username ? (
+                  <img
+                    src={`https://api.faraday.africa${currentUser.profile_pic}`}
+                    alt="profile"
+                    className="h-16 w-16 rounded-full "
+                  />
+                ) : (
+                  <img
+                    src={`https://api.faraday.africa${user?.profile.profile_pic}`}
+                    alt="profile"
+                    className="h-16 w-16 rounded-full "
+                  />
+                )}
+                <div className="ml-3">
+                  <div className="mt-2">
+                    <span className=" m-0 mt-2 font-bold text-sm sm:text-base">
+                      {user?.profile.firstname + " " + user?.profile.lastname}
+                    </span>
+                    <span className="ml-2 text-sm">
+                      @{user?.profile.username}
+                    </span>
+                  </div>
+
+                  <div className="flex ">
+                    <p className="mr-3">
+                      <span className="font-bold">
+                        {user?.profile.questions}
+                      </span>{" "}
+                      Questions
+                    </p>
+                    <p>
+                      <span className="font-bold">
+                        {user?.profile.solutions}
+                      </span>{" "}
+                      Solutions
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-3 mb-1">
+                {currentUser.username !== match.params.username ? (
+                  <PrimaryButton wide cta="follow" />
+                ) : (
+                  ""
+                )}
+              </div>
+              {user?.profile.level ? (
+                <p className="">
+                  {`A ${user?.profile.level}L student of ${user?.profile.school} studying ${user?.profile.department}.`}
+                </p>
+              ) : (
+                ""
+              )}
+            </div>
+
+            {/* We need a nav here */}
+            <h3 className="text-xl m-3 font-bold">Questions</h3>
+            <div className="border-t">
+              {questions ? (
+                <>
+                  {questions.map((question) => (
+                    <Question
+                      question={question}
+                      questions={questions}
+                      handleUpdatedQuestions={updateQuestions}
+                      key={question.id}
+                    />
+                  ))}
+                </>
+              ) : (
+                <div className="m-3">
+                  <Loader
+                    msg={`loading ${
+                      currentUser.first_name + " " + currentUser.last_name
+                    }'s questions`}
+                  />
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="m-3">
+            <Loader msg={`just a moment`} />
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 }
 

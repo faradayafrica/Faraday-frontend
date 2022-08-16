@@ -7,10 +7,9 @@
     border-top: 1px theme('colors.outline') solid;
 }
 
-.qfeed-wrapper {
+.route-wrapper {
     border-right: 1px theme('colors.outline') solid;
     border-left: 1px theme('colors.outline') solid;
-
 }
 
 .icon-brand > img, .icon-brand > svg {

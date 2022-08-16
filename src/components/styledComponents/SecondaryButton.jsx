@@ -1,6 +1,6 @@
 const SecondaryButton = ({ cta, wide, action }) => {
   let classes =
-    "px-4 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight ";
+    "px-4 py-[7px] sm:py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight ";
 
   classes += wide ? " w-full" : "";
   return (

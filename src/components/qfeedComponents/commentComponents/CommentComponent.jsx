@@ -2,7 +2,7 @@ import ellipses from "../../../images/qfeed/ellipses.svg";
 import CommentMenu from "./CommentMenu";
 const CommentComponent = ({ comment, onToggleCommentMenu }) => {
   return (
-    <div className=" pt-3 pb-1 flex bg-white pr-2 relative">
+    <div className=" pt-3 pb-1 flex pr-2 relative">
       <img
         src={`https://api.faraday.africa${comment?.user.profile_pic}`}
         className="w-12 h-12 rounded-full mr-3 "
