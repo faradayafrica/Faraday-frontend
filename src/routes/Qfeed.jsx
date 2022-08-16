@@ -46,7 +46,7 @@ const Qfeed = (props) => {
   return (
     <>
       <SideNav {...props} />
-      <div className="w-full qfeed-wrapper">
+      <div className="w-full route-wrapper">
         <Switch>
           <Route
             path="/qfeed/:id"

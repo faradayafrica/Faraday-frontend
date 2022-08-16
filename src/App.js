@@ -4,8 +4,6 @@ import ProtectedRoute from "./components/common/ProtectedRoute.jsx";
 import Qfeed from "./routes/Qfeed.jsx";
 import Notification from "./routes/Notification";
 import Profile from "./routes/Profile";
-import EditProfile from "./components/profile/EditProfile.jsx";
-import SideNav from "./components/styledComponents/SideNav.jsx";
 import MobileSideNav from "./components/styledComponents/MobileSideNav.jsx";
 import PostPage from "./components/qfeedComponents/PostPage.jsx";
 import NotFound from "./routes/NotFound";
@@ -17,14 +15,13 @@ import PersonalData from "./components/other pages/signup process/personalData";
 import TermsAndCondition from "./components/other pages/termsAndCondition.jsx";
 import PrivacyPolicy from "./components/other pages/privacyPolicy";
 import Logout from "./routes/Logout.jsx";
+import "./styles/App.css";
 import { Toaster } from "react-hot-toast";
-import "./App.css";
 
 const App = () => {
   return (
     <BrowserRouter>
       <div className='text-faraday-night max-w-[1024px] p-0 mx-auto flex'>
-        {/* <SideNav /> */}
         <Toaster position='top-center' reverseOrder={false} />
         <MobileSideNav />
         <Switch>
@@ -45,14 +42,13 @@ const App = () => {
             render={(props) => <PostPage {...props} />}
           />
           <ProtectedRoute path='/notification' component={Notification} />
-          <ProtectedRoute path='/me/:username' component={Profile} />
           <ProtectedRoute
-            path='/editprofile/:username'
-            component={EditProfile}
+            path='/me/:username'
+            render={(props) => <Profile {...props} />}
           />
           <Route path='/not-found' component={NotFound} />
           <ProtectedRoute path='/' exact component={Qfeed} />
-          <Redirect push to='/not-found' />
+          {/* <Redirect push to='/not-found' /> */}
         </Switch>
       </div>
     </BrowserRouter>

@@ -12,14 +12,13 @@ import bell from "../../images/nav/bell.svg";
 import qfeed from "../../images/nav/qfeed.svg";
 import close from "../../images/nav/close_md.svg";
 
-function MobileNav() {
+function MobileSideNav() {
   const [isQfeed, setQfeed] = useState();
   const [isNotification, setNotification] = useState();
   const [isProfile, setIsProfile] = useState(false);
   const currentUser = getCurrentUser();
 
   const location = useLocation();
-  console.log("currentUser", currentUser);
 
   useEffect(() => {
     setQfeed(location.pathname === "/");
@@ -38,12 +37,24 @@ function MobileNav() {
   };
 
   useEffect(() => {
-    const allowedRoutes = "/me";
+    const notAllowedRoutes = [
+      `/me/${currentUser.username}`,
+      "/notification",
+      "/post",
+      "/signup",
+      "/confirm-email",
+      "/update-school-detail",
+      "/update-personal-data",
+      "/terms-and-condition",
+      "/privacy-policy",
+      "/login",
+      "/logout",
+    ];
 
-    if (location.pathname.includes(allowedRoutes)) {
-      setIsProfile(true);
-    } else {
+    if (notAllowedRoutes.includes(location.pathname)) {
       setIsProfile(false);
+    } else {
+      setIsProfile(true);
     }
   }, [location.pathname]);
 
@@ -57,56 +68,56 @@ function MobileNav() {
     <>
       <div className="mobile-sidenav">
         {/* Hamburger */}
-        {!isProfile && (
-          <div className="w-full fixed top-0 left-0  z-40 p-2">
-            {/* fixed top nav for mobile */}
-            <div className="ask-shadow rounded-xl bg-white flex justify-between">
-              <img
-                className="p-3 rounded-xl cursor-pointer  "
-                data-toggle="tooltip"
-                title="mobile-sidenav"
-                onClick={handleMobileMenuClick}
-                src={menu}
-                alt="reveal sidebar"
-              />
+        <div className="w-full fixed top-0 left-0 z-40 p-2">
+          {/* fixed top nav for mobile */}
+          <div className="ask-shadow rounded-xl bg-white flex justify-between">
+            <img
+              className="p-3 rounded-xl cursor-pointer  "
+              data-toggle="tooltip"
+              title="mobile-sidenav"
+              onClick={handleMobileMenuClick}
+              src={menu}
+              alt="reveal sidebar"
+            />
 
-              <Link
-                to={`/me/${currentUser.username}`}
-                style={{ textDecoration: "none" }}
-              >
-                <img
-                  className="p-3 rounded-xl cursor-pointer"
-                  data-toggle="tooltip"
-                  title="view profile"
-                  src={profile}
-                  alt="profile"
-                />
-              </Link>
-            </div>
+            <Link
+              to={`/me/${currentUser.username}`}
+              style={{ textDecoration: "none" }}
+            >
+              <img
+                className="p-3 rounded-xl cursor-pointer"
+                data-toggle="tooltip"
+                title="view profile"
+                src={profile}
+                alt="profile"
+              />
+            </Link>
           </div>
-        )}
+        </div>
 
         {/* fixed bottom nav for mobile */}
-        <div className="fixed bottom-0 left-0 z-10 w-full bg-white py-1 px-3 flex border">
-          <Link
-            to="/"
-            style={{ textDecoration: "none" }}
-            className={renderBottomLink(isQfeed)}
-          >
-            <div>
-              <img src={qfeed} alt="qfeed" />
-            </div>
-          </Link>
-          <Link
-            to="/notification"
-            style={{ textDecoration: "none" }}
-            className={renderBottomLink(isNotification)}
-          >
-            <div className={renderBottomLink(isNotification)}>
-              <img src={bell} alt="qfeed" />
-            </div>
-          </Link>
-        </div>
+        {isProfile && (
+          <div className="fixed bottom-0 left-0 z-10 w-full bg-white py-1 px-3 flex border">
+            <Link
+              to="/"
+              style={{ textDecoration: "none" }}
+              className={renderBottomLink(isQfeed)}
+            >
+              <div>
+                <img src={qfeed} alt="qfeed" />
+              </div>
+            </Link>
+            <Link
+              to="/notification"
+              style={{ textDecoration: "none" }}
+              className={renderBottomLink(isNotification)}
+            >
+              <div className={renderBottomLink(isNotification)}>
+                <img src={bell} alt="qfeed" />
+              </div>
+            </Link>
+          </div>
+        )}
 
         <div className="side">
           <div className="side-container">
@@ -219,4 +230,4 @@ function MobileNav() {
   );
 }
 
-export default MobileNav;
+export default MobileSideNav;
