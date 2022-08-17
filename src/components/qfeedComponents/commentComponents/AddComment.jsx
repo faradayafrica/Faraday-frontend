@@ -1,4 +1,3 @@
-import { useState } from "react";
 import PrimaryButton from "../../styledComponents/PrimaryButton";
 
 const AddComment = ({

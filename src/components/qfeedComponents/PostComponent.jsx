@@ -3,9 +3,9 @@ import PrimaryButton from "../styledComponents/PrimaryButton";
 import addContentImg from "../../images/qfeed/add.svg";
 import removeContentImg from "../../images/qfeed/remove.svg";
 import http from "../../services/httpService";
-import toast from "react-hot-toast";
+import { PromiseToast, ErrorToast } from "../common/CustomToast";
 
-const PostComponent = ({ history, hidePost }) => {
+const PostComponent = ({ hidePost }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isContentInput, setContentInput] = useState(false);
@@ -43,19 +43,20 @@ const PostComponent = ({ history, hidePost }) => {
           : "The body of your question is too long"
       );
       if (title.length > LIMIT.title || title.length === 0) {
-        toast.error("Your question is either too long or empty");
+        ErrorToast("Your question is either too long or empty");
       } else {
-        toast.error("The body of your question is too long");
+        ErrorToast("The body of your question is too long");
       }
     } else {
       try {
         const promise = http.post(apiEndpoint, { title, content });
 
-        toast.promise(promise, {
-          loading: "Loading",
-          success: "Question posted successfully",
-          error: "An error occurred while posting your question, Try again",
-        });
+        PromiseToast(
+          "Question posted successfully",
+          "An error occurred while posting your question, Try again",
+          promise
+        );
+
         hidePost();
       } catch (e) {
         console.log(e.message);

@@ -162,13 +162,13 @@ function MobileSideNav() {
                   <div className="flex mt-3 text-faraday-night">
                     <p className=" mr-2">
                       <span className="font-semibold">
-                        {currentUser?.username}{" "}
+                        {currentUser?.question_count}{" "}
                       </span>{" "}
                       Questions
                     </p>
                     <p className="">
                       <span className="font-semibold">
-                        {currentUser?.username}{" "}
+                        {currentUser?.solution_count}{" "}
                       </span>{" "}
                       Solution
                     </p>

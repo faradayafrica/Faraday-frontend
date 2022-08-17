@@ -23,10 +23,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <div className='text-faraday-night max-w-[1024px] p-0 mx-auto flex'>
-
-        {/* <SideNav /> */}
         <Toaster position='top-center' reverseOrder={false} />
-
         <MobileSideNav />
         <Switch>
           <Route path='/signup' component={SignUpForm} />
@@ -45,7 +42,7 @@ const App = () => {
           <ProtectedRoute path='/me/:username' render={props => <Profile {...props}/>} />
           <Route path='/not-found' component={NotFound} />
           <ProtectedRoute path='/' exact component={Qfeed} />
-          {/* <Redirect push to='/not-found' /> */}
+          <Redirect push to='/not-found' />
         </Switch>
       </div>
     </BrowserRouter>
