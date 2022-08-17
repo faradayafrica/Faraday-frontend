@@ -24,10 +24,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <div className='text-faraday-night max-w-[1024px] p-0 mx-auto flex'>
-
-        {/* <SideNav /> */}
         <Toaster position='top-center' reverseOrder={false} />
-
         <MobileSideNav />
         <Switch>
           <Route path='/signup' component={SignUpForm} />

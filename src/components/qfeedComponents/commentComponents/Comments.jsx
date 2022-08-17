@@ -2,6 +2,8 @@ import { useState } from "react";
 import CommentComponent from "./CommentComponent";
 import Loader from "../../styledComponents/Loader";
 import { getCurrentUser } from "../../../services/authService";
+import toast from "react-hot-toast";
+import { SuccessToast, ErrorToast } from "../../common/CustomToast";
 
 import http from "../../../services/httpService";
 import AddComment from "./AddComment";
@@ -30,6 +32,7 @@ const Comments = ({
     let content = comment;
     if (comment.length > limit || comment.length === 0) {
       console.warn("comment is too long or is empty");
+      ErrorToast("Your comment is either too long");
     } else {
       try {
         const { data } = await http.post(apiEndpoint, {
@@ -39,8 +42,10 @@ const Comments = ({
         onUpdateComments([data, ...comments]);
         setComment("");
         document.getElementById("commentfield").value = "";
+        SuccessToast("Comment posted successfully");
       } catch (e) {
         console.warn(e.message);
+        ErrorToast("An error occurred while posting your comment, Try again");
       }
     }
   };
@@ -51,10 +56,11 @@ const Comments = ({
   };
 
   const deleteComment = async () => {
+    // const dede = [...comments];
+
     const remainingComments = comments.filter((comment) => {
       return comment.id !== selectedComment.id;
     });
-    console.log("DC", remainingComments);
 
     const apiEndpoint =
       process.env.REACT_APP_API_URL +
@@ -63,9 +69,11 @@ const Comments = ({
     try {
       await http.delete(apiEndpoint);
       toggleCommentMenu(!commentMenu);
+      SuccessToast("Comment deleted");
       onUpdateComments([...remainingComments]);
     } catch (e) {
-      console.log(e.message);
+      console.warn("Buttocks", e.message);
+      ErrorToast("Couldn't delete comment");
     }
   };
 

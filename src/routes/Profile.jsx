@@ -10,6 +10,7 @@ import PrimaryButton from "../components/styledComponents/PrimaryButton";
 
 function Profile({ match }, props) {
   const currentUser = getCurrentUser();
+  console.log("currentUser", currentUser);
 
   const userEndpoint =
     process.env.REACT_APP_API_URL + `/users/${match.params.username}/`;
@@ -71,25 +72,17 @@ function Profile({ match }, props) {
     <>
       <SideNav {...props} />
       <div className="w-full route-wrapper text-faraday-night">
+        <div className="min-h-[70px] sm:min-h-[20px] "> </div>
         {user ? (
           <>
-            <div className="min-h-[70px] sm:min-h-[20px] "> </div>
-
             <div className="mx-3 mt-2 text-sm sm:text-base">
               <div className=" flex items-start">
-                {currentUser.username === match.params.username ? (
-                  <img
-                    src={`https://api.faraday.africa${currentUser.profile_pic}`}
-                    alt="profile"
-                    className="h-16 w-16 rounded-full "
-                  />
-                ) : (
-                  <img
-                    src={`https://api.faraday.africa${user?.profile.profile_pic}`}
-                    alt="profile"
-                    className="h-16 w-16 rounded-full "
-                  />
-                )}
+                <img
+                  src={`https://api.faraday.africa${user?.profile.profile_pic}`}
+                  alt="profile"
+                  className="h-16 w-16 rounded-full "
+                />
+
                 <div className="ml-3">
                   <div className="mt-2">
                     <span className=" m-0 mt-2 font-bold text-sm sm:text-base">
