@@ -128,7 +128,7 @@ const PostComponent = ({ hidePost }) => {
           ""
         )}
 
-        <div className="flex justify-between items-end bg-white">
+        <div className="flex justify-between items-end">
           {!isContentInput ? (
             <button
               onClick={() => {
@@ -159,6 +159,7 @@ const PostComponent = ({ hidePost }) => {
         </div>
 
         <div className="h-20 w-full bg-white "></div>
+
       </div>
     </>
   );

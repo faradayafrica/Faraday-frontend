@@ -1,4 +1,3 @@
-
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "./components/common/ProtectedRoute.jsx";
@@ -35,19 +34,15 @@ const App = () => {
           <Route path='/privacy-policy' component={PrivacyPolicy} />
           <Route path='/login' component={LoginForm} />
           <Route path='/logout' component={Logout} />
-          <ProtectedRoute
-            path='/qfeed'
-            render={(props) => <Qfeed {...props} />}
-          />
-          <ProtectedRoute
-            path='/post'
-            render={(props) => <PostPage {...props} />}
-          />
+
+          <ProtectedRoute path='/qfeed' render={props => <Qfeed {...props}/>} />
+          <ProtectedRoute path='/post' render={props => <PostPage {...props}/>} />
+
           <ProtectedRoute path='/notification' component={Notification} />
           <ProtectedRoute path='/me/:username' render={props => <Profile {...props}/>} />
           <Route path='/not-found' component={NotFound} />
           <ProtectedRoute path='/' exact component={Qfeed} />
-          <Redirect push to='/not-found' />
+          {/* <Redirect push to='/not-found' /> */}
         </Switch>
       </div>
     </BrowserRouter>
