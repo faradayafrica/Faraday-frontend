@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import QuestionMenu from "./QuestionMenu";
 import arrow from "../../images/qfeed/arrow-right.svg";
 import love from "../../images/qfeed/love.svg";
 import redLove from "../../images/qfeed/red-love.svg";
@@ -7,10 +8,13 @@ import smiley from "../../images/qfeed/smiley.svg";
 import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
+import ellipses from "../../images/qfeed/ellipses.svg";
 
 const Question = (props) => {
   const [question, setQuestion] = useState(props.question);
   const [isButtonPannel, setButtonPannel] = useState(false);
+
+  const [questionMenu, setQuestionMenu] = useState(false);
   // console.log("question", question);
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
@@ -32,6 +36,10 @@ const Question = (props) => {
   } else {
     loveClasses += " bg-danger-highlight text-danger";
   }
+
+  const toggleQuestionMenu = () => {
+    setQuestionMenu(!setQuestionMenu);
+  };
 
   const handleButtonPannel = () => {
     setButtonPannel(!isButtonPannel);
@@ -81,7 +89,7 @@ const Question = (props) => {
   };
 
   return (
-    <div className="question-component pl-3 pr-2 pt-3 sm:pt-4 bg-white flex justify-start">
+    <div className="question-component pl-3 pr-2 pt-3 sm:pt-4 bg-white flex justify-start relative">
       <Link
         to={`/me/${question?.user.username}`}
         style={{ textDecoration: "none" }}
@@ -104,6 +112,29 @@ const Question = (props) => {
             <span className="mr-2">@{question?.user.username}</span>{" "}
             <span>{question?.created}</span>
           </p>
+
+          <div
+            className=" hover:bg-brand-highlight cursor-pointer absolute right-4 top-2 rounded-md"
+            onClick={() => {
+              setQuestionMenu(!questionMenu);
+            }}
+          >
+            <img
+              src={ellipses}
+              className="w-6 h-6 rounded-full m-1 "
+              style={{ objectFit: "cover" }}
+              alt=""
+            />
+          </div>
+
+          <QuestionMenu
+            questionMenu={questionMenu}
+            question={question}
+            toggleQuestionMenu={toggleQuestionMenu}
+            onFollowUser={props.onFollowUser}
+            onDeleteQuestion={props.onDeleteQuestion}
+          />
+
           <Link
             to={`/qfeed/${question.id}`}
             style={{ textDecoration: "none" }}

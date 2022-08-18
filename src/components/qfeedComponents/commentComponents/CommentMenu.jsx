@@ -12,6 +12,7 @@ const CommentMenu = ({
   selectedComment,
   onToggleCommentMenu,
   onDeleteComment,
+  onFollowUser,
 }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   return (
@@ -36,7 +37,10 @@ const CommentMenu = ({
             ""
           )}
           {selectedComment?.user.username !== currentUser.username ? (
-            <button className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex">
+            <button
+              className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
+              onClick={() => onFollowUser(selectedComment?.user.username)}
+            >
               <img className="mr-2" src={follow} alt="follow" /> Follow @
               {selectedComment?.user.username}
             </button>
@@ -95,7 +99,13 @@ const CommentMenu = ({
             ""
           )}
           {selectedComment?.user.username !== currentUser.username ? (
-            <button className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex">
+            <button
+              className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
+              onClick={() => {
+                onFollowUser(selectedComment?.user.username);
+                onToggleCommentMenu();
+              }}
+            >
               <img className="mr-2" src={follow} alt="follow" /> Follow @
               {selectedComment?.user.username}
             </button>
