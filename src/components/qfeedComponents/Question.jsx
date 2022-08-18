@@ -69,10 +69,9 @@ const Question = (props) => {
       });
 
       if (index !== -1) {
-        clonedQuestions[index] = { ...data };
+        clonedQuestions[index] = { ...data.data };
       }
       props.handleUpdatedQuestions(clonedQuestions);
-      console.log("data", data);
     } catch (err) {
       updatedQuestion.liked = oldLiked;
       updatedQuestion.likes = oldLikes;
