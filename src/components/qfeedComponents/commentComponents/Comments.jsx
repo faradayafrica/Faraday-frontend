@@ -2,7 +2,6 @@ import { useState } from "react";
 import CommentComponent from "./CommentComponent";
 import Loader from "../../styledComponents/Loader";
 import { getCurrentUser } from "../../../services/authService";
-import toast from "react-hot-toast";
 import { SuccessToast, ErrorToast } from "../../common/CustomToast";
 
 import http from "../../../services/httpService";
@@ -15,11 +14,14 @@ const Comments = ({
   questionid,
   onUpdateComments,
   questionOwner,
+  onFollowUser,
 }) => {
   const [comment, setComment] = useState("");
   const [commentMenu, setCommentMenu] = useState(false);
   const [selectedComment, setSelectedComment] = useState();
   const currentUser = getCurrentUser();
+
+  console.log("Comments", comments);
 
   const apiEndpoint =
     process.env.REACT_APP_API_URL + "/qfeed/que/create_comment/";
@@ -56,8 +58,6 @@ const Comments = ({
   };
 
   const deleteComment = async () => {
-    // const dede = [...comments];
-
     const remainingComments = comments.filter((comment) => {
       return comment.id !== selectedComment.id;
     });
@@ -86,6 +86,7 @@ const Comments = ({
           selectedComment={selectedComment}
           onToggleCommentMenu={toggleCommentMenu}
           onDeleteComment={deleteComment}
+          onFollowUser={onFollowUser}
         />
       ) : (
         ""

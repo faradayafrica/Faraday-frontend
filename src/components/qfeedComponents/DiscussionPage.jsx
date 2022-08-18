@@ -9,7 +9,12 @@ import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
 import SecondaryButton from "../styledComponents/SecondaryButton";
 
-const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
+const DiscussionPage = ({
+  match,
+  questions,
+  handleUpdatedQuestions,
+  onFollowUser,
+}) => {
   // console.log(questions);
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
   const apiEndpoint =
@@ -187,12 +192,14 @@ const DiscussionPage = ({ match, questions, handleUpdatedQuestions }) => {
             </div>
 
             {/* Comments here */}
+            {console.log("Comments", comments)}
             <Comments
               questionid={match.params.id}
               comments={comments}
               commentLoader={commentLoader}
               questionOwner={question?.user}
               onUpdateComments={updateComments}
+              onFollowUser={onFollowUser}
             />
           </div>
         ) : (
