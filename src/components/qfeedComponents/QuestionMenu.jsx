@@ -63,29 +63,17 @@ const QuestionMenu = ({
               </>
             ) : (
               <>
-                {question?.user.is_following ? (
-                  <button
-                    className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
-                    onClick={() => {
-                      onFollowUser(question?.user.username);
-                      hideMenu();
-                    }}
-                  >
-                    <img className="mr-2" src={unfollow} alt="follow" />
-                    Unfollow @{question?.user.username}
-                  </button>
-                ) : (
-                  <button
-                    className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
-                    onClick={() => {
-                      onFollowUser(question?.user.username);
-                      hideMenu();
-                    }}
-                  >
-                    <img className="mr-2" src={follow} alt="follow" />
-                    Follow @{question?.user.username}
-                  </button>
-                )}
+                <button
+                  className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
+                  onClick={() => {
+                    onFollowUser(question?.user.username);
+                    hideMenu();
+                  }}
+                >
+                  <img className="mr-2" src={unfollow} alt="follow" />
+                  {question?.user.is_following ? "Unfollow" : "Follow"} @
+                  {question?.user.username}
+                </button>
               </>
             )}
           </div>
@@ -129,29 +117,17 @@ const QuestionMenu = ({
                 </>
               ) : (
                 <>
-                  {question?.user.is_following ? (
-                    <button
-                      className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
-                      onClick={() => {
-                        onFollowUser(question?.user.username);
-                        hideMenu();
-                      }}
-                    >
-                      <img className="mr-2" src={unfollow} alt="follow" />
-                      Unfollow @{question?.user.username}
-                    </button>
-                  ) : (
-                    <button
-                      className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
-                      onClick={() => {
-                        onFollowUser(question?.user.username);
-                        hideMenu();
-                      }}
-                    >
-                      <img className="mr-2" src={follow} alt="follow" />
-                      Follow @{question?.user.username}
-                    </button>
-                  )}
+                  <button
+                    className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
+                    onClick={() => {
+                      onFollowUser(question?.user.username);
+                      hideMenu();
+                    }}
+                  >
+                    <img className="mr-2" src={unfollow} alt="follow" />
+                    {question?.user.is_following ? "Unfollow" : "Follow"} @
+                    {question?.user.username}
+                  </button>
                 </>
               )}
             </div>

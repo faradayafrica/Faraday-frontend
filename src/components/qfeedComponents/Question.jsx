@@ -13,9 +13,7 @@ import ellipses from "../../images/qfeed/ellipses.svg";
 const Question = (props) => {
   const [question, setQuestion] = useState(props.question);
   const [isButtonPannel, setButtonPannel] = useState(false);
-
   const [questionMenu, setQuestionMenu] = useState(false);
-  // console.log("question", question);
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
 
@@ -38,7 +36,7 @@ const Question = (props) => {
   }
 
   const toggleQuestionMenu = () => {
-    setQuestionMenu(!setQuestionMenu);
+    setQuestionMenu(!questionMenu);
   };
 
   const handleButtonPannel = () => {

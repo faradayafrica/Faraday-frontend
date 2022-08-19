@@ -95,6 +95,7 @@ const Qfeed = (props) => {
                 questions={questions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}
+                onDeleteQuestion={deleteQuestion}
                 {...props}
               />
             )}

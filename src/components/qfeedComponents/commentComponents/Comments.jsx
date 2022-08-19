@@ -6,7 +6,6 @@ import { SuccessToast, ErrorToast } from "../../common/CustomToast";
 
 import http from "../../../services/httpService";
 import AddComment from "./AddComment";
-import CommentMenu from "./CommentMenu";
 
 const Comments = ({
   comments,
@@ -17,11 +16,7 @@ const Comments = ({
   onFollowUser,
 }) => {
   const [comment, setComment] = useState("");
-  const [commentMenu, setCommentMenu] = useState(false);
-  const [selectedComment, setSelectedComment] = useState();
   const currentUser = getCurrentUser();
-
-  console.log("Comments", comments);
 
   const apiEndpoint =
     process.env.REACT_APP_API_URL + "/qfeed/que/create_comment/";
@@ -52,12 +47,7 @@ const Comments = ({
     }
   };
 
-  const toggleCommentMenu = (comment) => {
-    setCommentMenu(!commentMenu);
-    setSelectedComment(comment);
-  };
-
-  const deleteComment = async () => {
+  const deleteComment = async (selectedComment) => {
     const remainingComments = comments.filter((comment) => {
       return comment.id !== selectedComment.id;
     });
@@ -68,30 +58,15 @@ const Comments = ({
 
     try {
       await http.delete(apiEndpoint);
-      toggleCommentMenu(!commentMenu);
       SuccessToast("Comment deleted");
       onUpdateComments([...remainingComments]);
     } catch (e) {
-      console.warn("Buttocks", e.message);
       ErrorToast("Couldn't delete comment");
     }
   };
 
   return (
     <div className="bg-white">
-      {commentMenu ? (
-        <CommentMenu
-          questionOwner={questionOwner}
-          currentUser={currentUser}
-          selectedComment={selectedComment}
-          onToggleCommentMenu={toggleCommentMenu}
-          onDeleteComment={deleteComment}
-          onFollowUser={onFollowUser}
-        />
-      ) : (
-        ""
-      )}
-
       <AddComment
         onChange={handleChange}
         currentUser={currentUser}
@@ -109,9 +84,8 @@ const Comments = ({
               comment={comment}
               questionOwner={questionOwner}
               currentUser={currentUser}
-              selectedComment={selectedComment}
-              onToggleCommentMenu={toggleCommentMenu}
               onDeleteComment={deleteComment}
+              onFollowUser={onFollowUser}
             />
           ))}
           <div className="h-32 w-full bg-white "></div>
