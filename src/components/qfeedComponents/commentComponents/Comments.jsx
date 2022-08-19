@@ -8,12 +8,14 @@ import http from "../../../services/httpService";
 import AddComment from "./AddComment";
 
 const Comments = ({
+  match,
   comments,
   commentLoader,
   questionid,
   onUpdateComments,
   questionOwner,
   onFollowUser,
+  onMarkSolution,
 }) => {
   const [comment, setComment] = useState("");
   const currentUser = getCurrentUser();
@@ -67,33 +69,56 @@ const Comments = ({
 
   return (
     <div className="bg-white">
-      <AddComment
-        onChange={handleChange}
-        currentUser={currentUser}
-        questionOwner={questionOwner}
-        postComment={postComment}
-        questionId={questionid}
-        comment={comment}
-      />
+      <div className=" pl-3 pr-2">
+        <AddComment
+          onChange={handleChange}
+          currentUser={currentUser}
+          questionOwner={questionOwner}
+          postComment={postComment}
+          questionId={questionid}
+          comment={comment}
+        />
+      </div>
 
       {comments.length ? (
         <>
-          {comments.map((comment) => (
-            <CommentComponent
-              key={comment.id}
-              comment={comment}
-              questionOwner={questionOwner}
-              currentUser={currentUser}
-              onDeleteComment={deleteComment}
-              onFollowUser={onFollowUser}
-            />
-          ))}
+          {/* Solution here */}
+          {comments
+            .filter((comment) => comment.is_solution === true)
+            .map((comment) => (
+              <CommentComponent
+                key={comment.id}
+                comment={comment}
+                match={match}
+                questionOwner={questionOwner}
+                currentUser={currentUser}
+                onDeleteComment={deleteComment}
+                onFollowUser={onFollowUser}
+                is_solution={true}
+                onMarkSolution={onMarkSolution}
+              />
+            ))}
+          {/* The rest of the comments */}
+          {comments
+            .filter((comment) => comment.is_solution !== true)
+            .map((comment) => (
+              <CommentComponent
+                key={comment.id}
+                match={match}
+                comment={comment}
+                questionOwner={questionOwner}
+                currentUser={currentUser}
+                onDeleteComment={deleteComment}
+                onFollowUser={onFollowUser}
+                onMarkSolution={onMarkSolution}
+              />
+            ))}
           <div className="h-32 w-full bg-white "></div>
         </>
       ) : (
         <>
           {commentLoader ? (
-            <div className="mr-2">
+            <div className="mx-3">
               <Loader msg="Fetching comments..." />
             </div>
           ) : (

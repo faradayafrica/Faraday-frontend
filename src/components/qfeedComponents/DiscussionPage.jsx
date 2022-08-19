@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import SecondaryButton from "../styledComponents/SecondaryButton";
 import Comments from "./commentComponents/Comments";
 import Loader from "../styledComponents/Loader";
+import { Link } from "react-router-dom";
 
 import love from "../../images/qfeed/love.svg";
 import redLove from "../../images/qfeed/red-love.svg";
@@ -10,6 +11,7 @@ import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
 import ellipses from "../../images/qfeed/ellipses.svg";
 import QuestionMenu from "./QuestionMenu";
+import { PromiseToast } from "../common/CustomToast";
 
 const DiscussionPage = ({
   match,
@@ -32,16 +34,49 @@ const DiscussionPage = ({
   const [commentLoader, setCommentLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
 
+  const handleMarkSolution = (postid, commentid) => {
+    const commentsClone = [...comments];
+    var index = commentsClone.findIndex((comment) => comment.id === commentid);
+    console.log(index);
+
+    try {
+      const apiEndpoint =
+        process.env.REACT_APP_API_URL + "/qfeed/que/marksolution/";
+
+      const promise = http.post(apiEndpoint, {
+        postid: postid,
+        commentid: commentid,
+      });
+
+      PromiseToast(
+        "Comment marked as solution",
+        "Something went wrong, Try again later",
+        promise
+      );
+
+      for (let i = 0; i < commentsClone.length; i++) {
+        if (i === index) {
+          commentsClone[i].is_solution = true;
+        } else {
+          commentsClone[i].is_solution = false;
+        }
+      }
+      setComments(commentsClone);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const toggleQuestionMenu = () => {
     setQuestionMenu(!setQuestionMenu);
   };
 
-  const handleDelete = (question) => {
+  const handleQuestionDelete = (question) => {
     onDeleteQuestion(question);
     history.goBack();
   };
 
-  const handleLike = async (postid) => {
+  const handleQuestionLike = async (postid) => {
     const oldLikes = question.likes;
     const oldLiked = question.liked;
     const updatedQuestion = { ...question };
@@ -139,96 +174,103 @@ const DiscussionPage = ({
       <div className="z-50">
         <h1 className="text-2xl sm:text-2xl m-3 font-bold">Discussion</h1>
         {question ? (
-          <div className="pl-3 pr-2 py-3 relative">
-            <img
-              src={`https://api.faraday.africa${question?.user.profile_pic}`}
-              className="w-12 h-12 rounded-full mr-2 float-left"
-              style={{ objectFit: "cover" }}
-              alt={question?.user.firstname}
-            />
-            <p className="m-0 text-night-secondary text-sm sm:text-base">
-              <span className="font-semibold text-faraday-night mr-2">
-                {question?.user.firstname} {question?.user.lastname}
-              </span>{" "}
-              <span className="">@{question?.user.username}</span>
-            </p>
-            <p className="m-0 text-night-secondary text-sm sm:text-base">
-              Published {question?.created}
-            </p>
+          <div className=" py-3 relative">
+            <div className="pl-3 pr-2">
+              <Link
+                to={`/me/${question?.user.username}`}
+                style={{ textDecoration: "none" }}
+                className="w-14 mr-2 cursor-pointer"
+              >
+                <img
+                  src={`https://api.faraday.africa${question?.user.profile_pic}`}
+                  className="w-12 h-12 rounded-full mr-2 float-left"
+                  style={{ objectFit: "cover" }}
+                  alt={question?.user.firstname}
+                />
+              </Link>
+              <p className="m-0 text-night-secondary text-sm sm:text-base">
+                <span className="font-semibold text-faraday-night mr-2">
+                  {question?.user.firstname} {question?.user.lastname}
+                </span>{" "}
+                <span className="">@{question?.user.username}</span>
+              </p>
+              <p className="m-0 text-night-secondary text-sm sm:text-base">
+                Published {question?.created}
+              </p>
 
-            <div
-              className=" hover:bg-brand-highlight cursor-pointer absolute right-4 top-2 rounded-md"
-              onClick={() => {
-                setQuestionMenu(!questionMenu);
-              }}
-            >
-              <img
-                src={ellipses}
-                className="w-6 h-6 rounded-full m-1 "
-                style={{ objectFit: "cover" }}
-                alt=""
+              <div
+                className=" hover:bg-brand-highlight cursor-pointer absolute right-4 top-2 rounded-md"
+                onClick={() => {
+                  setQuestionMenu(!questionMenu);
+                }}
+              >
+                <img
+                  src={ellipses}
+                  className="w-6 h-6 rounded-full m-1 "
+                  style={{ objectFit: "cover" }}
+                  alt=""
+                />
+              </div>
+
+              <QuestionMenu
+                questionMenu={questionMenu}
+                question={question}
+                toggleQuestionMenu={toggleQuestionMenu}
+                onFollowUser={onFollowUser}
+                onDeleteQuestion={handleQuestionDelete}
               />
-            </div>
 
-            <QuestionMenu
-              questionMenu={questionMenu}
-              question={question}
-              toggleQuestionMenu={toggleQuestionMenu}
-              onFollowUser={onFollowUser}
-              onDeleteQuestion={handleDelete}
-            />
+              <h3 className=" mt-3 text-lg sm:text-xl font-semibold m-0 mb-2">
+                {question?.title}
+              </h3>
 
-            <h3 className=" mt-3 text-lg sm:text-xl font-semibold m-0 mb-2">
-              {question?.title}
-            </h3>
+              <p className="text-sm sm:text-base m-0 mb-2 ">
+                {question?.content}
+              </p>
 
-            <p className="text-sm sm:text-base m-0 mb-2 ">
-              {question?.content}
-            </p>
-
-            {/* Engagement buttons  */}
-            <div className="mt-3 py-2 border-background2 border-t-[1px] border-b-[1px]">
-              <div className="flex justify-between pr-12 sm:w-96 items-center ">
-                <button
-                  className={loveClasses}
-                  onClick={() => handleLike(match.params.id)}
-                >
-                  {question?.liked ? (
+              {/* Engagement buttons  */}
+              <div className="mt-3 py-2 border-background2 border-t-[1px] border-b-[1px]">
+                <div className="flex justify-between pr-12 sm:w-96 items-center ">
+                  <button
+                    className={loveClasses}
+                    onClick={() => handleQuestionLike(match.params.id)}
+                  >
+                    {question?.liked ? (
+                      <img
+                        className="h-[18px] w-[18px]"
+                        src={redLove}
+                        alt="take back reaction"
+                      />
+                    ) : (
+                      <img
+                        className="h-[18px] w-[18px]"
+                        src={love}
+                        alt="react to question"
+                      />
+                    )}
+                    <span className="ml-1 font-medium text-base">
+                      {question?.likes ? question?.likes : ""}
+                    </span>
+                  </button>
+                  <button className="icon-brand-hover hover:bg-brand-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background mr-4">
                     <img
                       className="h-[18px] w-[18px]"
-                      src={redLove}
-                      alt="take back reaction"
+                      src={share}
+                      alt="share this question"
                     />
-                  ) : (
+                  </button>
+                  <button className="icon-brand-hover hover:bg-brand-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background">
                     <img
                       className="h-[18px] w-[18px]"
-                      src={love}
-                      alt="react to question"
+                      src={link}
+                      alt="copy question link"
                     />
-                  )}
-                  <span className="ml-1 font-medium text-base">
-                    {question?.likes ? question?.likes : ""}
-                  </span>
-                </button>
-                <button className="icon-brand-hover hover:bg-brand-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background mr-4">
-                  <img
-                    className="h-[18px] w-[18px]"
-                    src={share}
-                    alt="share this question"
-                  />
-                </button>
-                <button className="icon-brand-hover hover:bg-brand-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background">
-                  <img
-                    className="h-[18px] w-[18px]"
-                    src={link}
-                    alt="copy question link"
-                  />
-                </button>
+                  </button>
+                </div>
               </div>
             </div>
 
             {/* Comments here */}
-            {console.log("Comments", comments)}
             <Comments
               questionid={match.params.id}
               comments={comments}
@@ -236,6 +278,8 @@ const DiscussionPage = ({
               questionOwner={question?.user}
               onUpdateComments={updateComments}
               onFollowUser={onFollowUser}
+              onMarkSolution={handleMarkSolution}
+              match={match}
             />
           </div>
         ) : (

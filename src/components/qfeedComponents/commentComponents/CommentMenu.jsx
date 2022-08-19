@@ -1,18 +1,20 @@
-import closeImg from "../../../images/qfeed/close.svg";
 import trash from "../../../images/qfeed/trash.svg";
 import trashDefault from "../../../images/qfeed/trash-default.svg";
 import follow from "../../../images/qfeed/follow.svg";
 import unfollow from "../../../images/qfeed/unfollow.svg";
 import mark from "../../../images/qfeed/mark.svg";
 import { useState } from "react";
+import http from "../../../services/httpService";
 
 const CommentMenu = ({
+  match,
   questionOwner,
   currentUser,
   selectedComment,
   onToggleCommentMenu,
   onDeleteComment,
   onFollowUser,
+  onMarkSolution,
 }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -35,6 +37,10 @@ const CommentMenu = ({
             <button
               className="px-4 py-3 text-brand-dark hover:bg-brand-highlight rounded-lg w-full  text-left flex"
               style={{ borderBottom: "1px #ECECF0 solid" }}
+              onClick={() => {
+                onMarkSolution(match.params.id, selectedComment.id);
+                hideMenu();
+              }}
             >
               <img className="mr-2" src={mark} alt="mark solution" />
               Mark as a solution
@@ -100,6 +106,10 @@ const CommentMenu = ({
           <button
             className="px-4 py-3 text-brand-dark hover:bg-brand-highlight rounded-lg w-full mb-1 text-left flex"
             style={{ borderBottom: "1px #ECECF0 solid" }}
+            onClick={() => {
+              onMarkSolution(match.params.id, selectedComment.id);
+              hideMenu();
+            }}
           >
             <img className="mr-2" src={mark} alt="mark solution" />
             Mark as a solution
