@@ -1,6 +1,20 @@
+import { useState } from "react";
 import ellipses from "../../../images/qfeed/ellipses.svg";
 import CommentMenu from "./CommentMenu";
-const CommentComponent = ({ comment, onToggleCommentMenu }) => {
+
+const CommentComponent = ({
+  comment,
+  questionOwner,
+  currentUser,
+  onDeleteComment,
+  onFollowUser,
+}) => {
+  const [commentMenu, setCommentMenu] = useState(false);
+
+  const toggleCommentMenu = () => {
+    setCommentMenu(!commentMenu);
+  };
+
   return (
     <div className=" pt-3 pb-1 flex pr-2 relative">
       <img
@@ -9,10 +23,11 @@ const CommentComponent = ({ comment, onToggleCommentMenu }) => {
         style={{ objectFit: "cover" }}
         alt={`${comment?.user.firstname} ${comment?.user.lastname}`}
       />
+
       <div
         className=" hover:bg-brand-highlight cursor-pointer absolute right-1 top-2 rounded-md"
         onClick={() => {
-          onToggleCommentMenu(comment);
+          toggleCommentMenu(comment);
         }}
       >
         <img
@@ -22,6 +37,19 @@ const CommentComponent = ({ comment, onToggleCommentMenu }) => {
           alt=""
         />
       </div>
+
+      {commentMenu ? (
+        <CommentMenu
+          questionOwner={questionOwner}
+          currentUser={currentUser}
+          selectedComment={comment}
+          onToggleCommentMenu={toggleCommentMenu}
+          onDeleteComment={onDeleteComment}
+          onFollowUser={onFollowUser}
+        />
+      ) : (
+        ""
+      )}
 
       <div className=" w-full text-faraday-night">
         <p className="m-0  text-xs sm:text-base mr-2">

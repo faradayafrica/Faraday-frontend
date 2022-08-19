@@ -1,6 +1,9 @@
 .question-component {
     /* border-top: 1px theme('colors.outline') solid; */
     border-bottom: 1px theme('colors.outline') solid;
+    overflow-x: hidden;
+    
+    /* max-width: 300px; */
 }
 
 .comment {

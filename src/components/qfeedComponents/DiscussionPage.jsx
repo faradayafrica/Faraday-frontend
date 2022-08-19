@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import SecondaryButton from "../styledComponents/SecondaryButton";
 import Comments from "./commentComponents/Comments";
 import Loader from "../styledComponents/Loader";
 
@@ -7,13 +8,16 @@ import redLove from "../../images/qfeed/red-love.svg";
 import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
-import SecondaryButton from "../styledComponents/SecondaryButton";
+import ellipses from "../../images/qfeed/ellipses.svg";
+import QuestionMenu from "./QuestionMenu";
 
 const DiscussionPage = ({
   match,
+  history,
   questions,
   handleUpdatedQuestions,
   onFollowUser,
+  onDeleteQuestion,
 }) => {
   // console.log(questions);
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
@@ -26,6 +30,16 @@ const DiscussionPage = ({
   const [comments, setComments] = useState([]);
   const [loader, setLoader] = useState(true);
   const [commentLoader, setCommentLoader] = useState(true);
+  const [questionMenu, setQuestionMenu] = useState(false);
+
+  const toggleQuestionMenu = () => {
+    setQuestionMenu(!setQuestionMenu);
+  };
+
+  const handleDelete = (question) => {
+    onDeleteQuestion(question);
+    history.goBack();
+  };
 
   const handleLike = async (postid) => {
     const oldLikes = question.likes;
@@ -125,7 +139,7 @@ const DiscussionPage = ({
       <div className="z-50">
         <h1 className="text-2xl sm:text-2xl m-3 font-bold">Discussion</h1>
         {question ? (
-          <div className="pl-3 pr-2 py-3">
+          <div className="pl-3 pr-2 py-3 relative">
             <img
               src={`https://api.faraday.africa${question?.user.profile_pic}`}
               className="w-12 h-12 rounded-full mr-2 float-left"
@@ -141,6 +155,28 @@ const DiscussionPage = ({
             <p className="m-0 text-night-secondary text-sm sm:text-base">
               Published {question?.created}
             </p>
+
+            <div
+              className=" hover:bg-brand-highlight cursor-pointer absolute right-4 top-2 rounded-md"
+              onClick={() => {
+                setQuestionMenu(!questionMenu);
+              }}
+            >
+              <img
+                src={ellipses}
+                className="w-6 h-6 rounded-full m-1 "
+                style={{ objectFit: "cover" }}
+                alt=""
+              />
+            </div>
+
+            <QuestionMenu
+              questionMenu={questionMenu}
+              question={question}
+              toggleQuestionMenu={toggleQuestionMenu}
+              onFollowUser={onFollowUser}
+              onDeleteQuestion={handleDelete}
+            />
 
             <h3 className=" mt-3 text-lg sm:text-xl font-semibold m-0 mb-2">
               {question?.title}
