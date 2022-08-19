@@ -11,7 +11,7 @@ import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
 import ellipses from "../../images/qfeed/ellipses.svg";
 import QuestionMenu from "./QuestionMenu";
-import { PromiseToast } from "../common/CustomToast";
+import { SuccessToast, ErrorToast } from "../common/CustomToast";
 
 const DiscussionPage = ({
   match,
@@ -21,7 +21,6 @@ const DiscussionPage = ({
   onFollowUser,
   onDeleteQuestion,
 }) => {
-  // console.log(questions);
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
   const apiEndpoint =
     process.env.REACT_APP_API_URL + `/qfeed/que/fetch/${match.params.id}/`;
@@ -34,7 +33,7 @@ const DiscussionPage = ({
   const [commentLoader, setCommentLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
 
-  const handleMarkSolution = (postid, commentid) => {
+  const handleMarkSolution = async (postid, commentid) => {
     const commentsClone = [...comments];
     var index = commentsClone.findIndex((comment) => comment.id === commentid);
     console.log(index);
@@ -43,20 +42,19 @@ const DiscussionPage = ({
       const apiEndpoint =
         process.env.REACT_APP_API_URL + "/qfeed/que/marksolution/";
 
-      const promise = http.post(apiEndpoint, {
+      const { data } = await http.post(apiEndpoint, {
         postid: postid,
         commentid: commentid,
       });
 
-      PromiseToast(
-        "Comment marked as solution",
-        "Something went wrong, Try again later",
-        promise
-      );
+      data.is_solution
+        ? SuccessToast("Comment marked as solution")
+        : SuccessToast("Comment unmarked as solution");
 
       for (let i = 0; i < commentsClone.length; i++) {
         if (i === index) {
-          commentsClone[i].is_solution = true;
+          commentsClone[i].is_solution = data.is_solution;
+          console.log("TADA", data.is_solution);
         } else {
           commentsClone[i].is_solution = false;
         }
@@ -64,6 +62,7 @@ const DiscussionPage = ({
       setComments(commentsClone);
     } catch (e) {
       console.log(e);
+      ErrorToast("Something went wrong, Try again later");
     }
   };
 
