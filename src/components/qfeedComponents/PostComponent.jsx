@@ -3,8 +3,9 @@ import PrimaryButton from "../styledComponents/PrimaryButton";
 import addContentImg from "../../images/qfeed/add.svg";
 import removeContentImg from "../../images/qfeed/remove.svg";
 import http from "../../services/httpService";
+import { PromiseToast, ErrorToast } from "../common/CustomToast";
 
-const PostComponent = ({ history, hidePost }) => {
+const PostComponent = ({ hidePost }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isContentInput, setContentInput] = useState(false);
@@ -30,6 +31,7 @@ const PostComponent = ({ history, hidePost }) => {
   const postQuestion = () => {
     const apiEndpoint =
       process.env.REACT_APP_API_URL + "/qfeed/que/create_que/";
+
     if (
       title.length > LIMIT.title ||
       content.length > LIMIT.content ||
@@ -40,9 +42,21 @@ const PostComponent = ({ history, hidePost }) => {
           ? "Your question is either too long or empty"
           : "The body of your question is too long"
       );
+      if (title.length > LIMIT.title || title.length === 0) {
+        ErrorToast("Your question is either too long or empty");
+      } else {
+        ErrorToast("The body of your question is too long");
+      }
     } else {
       try {
-        http.post(apiEndpoint, { title, content });
+        const promise = http.post(apiEndpoint, { title, content });
+
+        PromiseToast(
+          "Question posted successfully",
+          "An error occurred while posting your question, Try again",
+          promise
+        );
+
         hidePost();
       } catch (e) {
         console.log(e.message);
@@ -143,6 +157,9 @@ const PostComponent = ({ history, hidePost }) => {
             <PrimaryButton cta="Fly" wide={true} action={postQuestion} />
           </div>
         </div>
+
+        <div className="h-20 w-full bg-white "></div>
+
       </div>
     </>
   );
