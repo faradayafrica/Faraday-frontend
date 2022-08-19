@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import PrimaryButton from "../../styledComponents/PrimaryButton";
 
 const AddComment = ({
@@ -19,13 +20,19 @@ const AddComment = ({
       : "";
 
   return (
-    <div className=" pt-3 flex justify-start border-background2 border-b-[1px] mb-2 pr-2 bg-white">
-      <img
-        src={`https://api.faraday.africa${currentUser?.profile_pic}`}
-        alt={`${currentUser?.first_name} ${currentUser?.last_name}`}
-        className="w-12 h-12 rounded-full mr-2 float-left"
-        style={{ objectFit: "cover" }}
-      />
+    <div className=" pt-3 flex justify-start border-background2 border-b-[1px] pr-2 bg-white">
+      <Link
+        to={`/me/${currentUser?.username}`}
+        style={{ textDecoration: "none" }}
+        className="w-14 mr-2 cursor-pointer"
+      >
+        <img
+          src={`https://api.faraday.africa${currentUser?.profile_pic}`}
+          alt={`${currentUser?.first_name} ${currentUser?.last_name}`}
+          className="w-12 h-12 rounded-full mr-2 float-left"
+          style={{ objectFit: "cover" }}
+        />
+      </Link>
       <label className="block w-full m-0 relative bottom-2 ">
         <span className=" ml-2 text-xs text-brand">
           Replying @{questionOwner.username}
