@@ -105,8 +105,6 @@ class ConfirmEmail extends Form {
       return <Redirect to={this.state.redirect} />;
     }
 
-    console.log(auth.getCurrentUser().email, "userEmail");
-
     return (
       <div className='login-page'>
         <div

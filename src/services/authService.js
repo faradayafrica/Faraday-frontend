@@ -36,8 +36,7 @@ export async function refreshJwt() {
 
 export async function confirmEmail({ confirmationCode }) {
   const user = getCurrentUser();
-
-  console.log(user, "user");
+  http.setJwt(getJwt());
 
   const url = process.env.REACT_APP_API_URL + "/users/verifyotp/";
   await http.post(url, {
