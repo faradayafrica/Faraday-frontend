@@ -13,6 +13,8 @@ export async function register(user) {
     password: user.password,
   });
 
-  const jwt = data.access;
+  const jwt = data.data.access;
   localStorage.setItem(auth.tokenKey, jwt);
+
+  return data;
 }
