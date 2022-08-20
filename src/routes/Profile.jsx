@@ -6,10 +6,12 @@ import { getCurrentUser } from "../services/authService";
 import Question from "../components/qfeedComponents/Question";
 import "../styles/profile.scss";
 import PrimaryButton from "../components/styledComponents/PrimaryButton";
+import { SuccessToast, ErrorToast } from "../components/common/CustomToast";
 // import SecondaryButton from "../components/styledComponents/SecondaryButton";
 
 function Profile({ match }, props) {
   const currentUser = getCurrentUser();
+  // console.log("currentUser", currentUser);
 
   const userEndpoint =
     process.env.REACT_APP_API_URL + `/users/${match.params.username}/`;
@@ -23,7 +25,35 @@ function Profile({ match }, props) {
   const [questions, setQuestions] = useState();
   const [solutions, setSolutions] = useState();
 
-  console.log("FetchedUser", user);
+  const deleteQuestion = async (selectedQuestion) => {
+    const remainingQuestions = questions.filter((question) => {
+      return question.id !== selectedQuestion.id;
+    });
+
+    async function fetchdata() {
+      try {
+        const { data } = await http.get(userEndpoint);
+        setUser(data);
+        console.log("Flamingos", user);
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+
+    const apiEndpoint =
+      process.env.REACT_APP_API_URL +
+      `/qfeed/que/delete/${selectedQuestion.id}/`;
+
+    try {
+      await http.delete(apiEndpoint);
+      SuccessToast("Question deleted");
+      setQuestions([...remainingQuestions]);
+      fetchdata();
+    } catch (e) {
+      console.warn("Buttocks", e.message);
+      ErrorToast("Couldn't delete question");
+    }
+  };
 
   useEffect(() => {
     document.title = `${currentUser?.last_name} ${currentUser?.first_name} Profile`;
@@ -32,7 +62,6 @@ function Profile({ match }, props) {
       try {
         const { data } = await http.get(userEndpoint);
         setUser(data);
-        console.log("fetched user details", user);
       } catch (e) {
         console.log(e.message);
       }
@@ -41,7 +70,6 @@ function Profile({ match }, props) {
     async function fetchUserQuestions() {
       try {
         const { data } = await http.get(userQuestionEndpoint);
-        console.log("QUEs", data.results);
         setQuestions(data.results);
       } catch (e) {
         console.log(e.message);
@@ -71,25 +99,17 @@ function Profile({ match }, props) {
     <>
       <SideNav {...props} />
       <div className="w-full route-wrapper text-faraday-night">
+        <div className="min-h-[70px] sm:min-h-[20px] "> </div>
         {user ? (
           <>
-            <div className="min-h-[70px] sm:min-h-[20px] "> </div>
-
             <div className="mx-3 mt-2 text-sm sm:text-base">
               <div className=" flex items-start">
-                {currentUser.username === match.params.username ? (
-                  <img
-                    src={`https://api.faraday.africa${currentUser.profile_pic}`}
-                    alt="profile"
-                    className="h-16 w-16 rounded-full "
-                  />
-                ) : (
-                  <img
-                    src={`https://api.faraday.africa${user?.profile.profile_pic}`}
-                    alt="profile"
-                    className="h-16 w-16 rounded-full "
-                  />
-                )}
+                <img
+                  src={`https://api.faraday.africa${user?.profile.profile_pic}`}
+                  alt="profile"
+                  className="h-16 w-16 rounded-full "
+                />
+
                 <div className="ml-3">
                   <div className="mt-2">
                     <span className=" m-0 mt-2 font-bold text-sm sm:text-base">
@@ -142,6 +162,7 @@ function Profile({ match }, props) {
                       question={question}
                       questions={questions}
                       handleUpdatedQuestions={updateQuestions}
+                      onDeleteQuestion={deleteQuestion}
                       key={question.id}
                     />
                   ))}

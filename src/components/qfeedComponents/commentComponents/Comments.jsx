@@ -2,21 +2,22 @@ import { useState } from "react";
 import CommentComponent from "./CommentComponent";
 import Loader from "../../styledComponents/Loader";
 import { getCurrentUser } from "../../../services/authService";
+import { SuccessToast, ErrorToast } from "../../common/CustomToast";
 
 import http from "../../../services/httpService";
 import AddComment from "./AddComment";
-import CommentMenu from "./CommentMenu";
 
 const Comments = ({
+  match,
   comments,
   commentLoader,
   questionid,
   onUpdateComments,
   questionOwner,
+  onFollowUser,
+  onMarkSolution,
 }) => {
   const [comment, setComment] = useState("");
-  const [commentMenu, setCommentMenu] = useState(false);
-  const [selectedComment, setSelectedComment] = useState();
   const currentUser = getCurrentUser();
 
   const apiEndpoint =
@@ -30,6 +31,7 @@ const Comments = ({
     let content = comment;
     if (comment.length > limit || comment.length === 0) {
       console.warn("comment is too long or is empty");
+      ErrorToast("Your comment is either too long");
     } else {
       try {
         const { data } = await http.post(apiEndpoint, {
@@ -39,22 +41,18 @@ const Comments = ({
         onUpdateComments([data, ...comments]);
         setComment("");
         document.getElementById("commentfield").value = "";
+        SuccessToast("Comment posted successfully");
       } catch (e) {
         console.warn(e.message);
+        ErrorToast("An error occurred while posting your comment, Try again");
       }
     }
   };
 
-  const toggleCommentMenu = (comment) => {
-    setCommentMenu(!commentMenu);
-    setSelectedComment(comment);
-  };
-
-  const deleteComment = async () => {
+  const deleteComment = async (selectedComment) => {
     const remainingComments = comments.filter((comment) => {
       return comment.id !== selectedComment.id;
     });
-    console.log("DC", remainingComments);
 
     const apiEndpoint =
       process.env.REACT_APP_API_URL +
@@ -62,55 +60,65 @@ const Comments = ({
 
     try {
       await http.delete(apiEndpoint);
-      toggleCommentMenu(!commentMenu);
+      SuccessToast("Comment deleted");
       onUpdateComments([...remainingComments]);
     } catch (e) {
-      console.log(e.message);
+      ErrorToast("Couldn't delete comment");
     }
   };
 
   return (
     <div className="bg-white">
-      {commentMenu ? (
-        <CommentMenu
-          questionOwner={questionOwner}
+      <div className=" pl-3 pr-2">
+        <AddComment
+          onChange={handleChange}
           currentUser={currentUser}
-          selectedComment={selectedComment}
-          onToggleCommentMenu={toggleCommentMenu}
-          onDeleteComment={deleteComment}
+          questionOwner={questionOwner}
+          postComment={postComment}
+          questionId={questionid}
+          comment={comment}
         />
-      ) : (
-        ""
-      )}
-
-      <AddComment
-        onChange={handleChange}
-        currentUser={currentUser}
-        questionOwner={questionOwner}
-        postComment={postComment}
-        questionId={questionid}
-        comment={comment}
-      />
+      </div>
 
       {comments.length ? (
         <>
-          {comments.map((comment) => (
-            <CommentComponent
-              key={comment.id}
-              comment={comment}
-              questionOwner={questionOwner}
-              currentUser={currentUser}
-              selectedComment={selectedComment}
-              onToggleCommentMenu={toggleCommentMenu}
-              onDeleteComment={deleteComment}
-            />
-          ))}
+          {/* Solution here */}
+          {comments
+            .filter((comment) => comment.is_solution === true)
+            .map((comment) => (
+              <CommentComponent
+                key={comment.id}
+                comment={comment}
+                match={match}
+                questionOwner={questionOwner}
+                currentUser={currentUser}
+                onDeleteComment={deleteComment}
+                onFollowUser={onFollowUser}
+                is_solution={true}
+                onMarkSolution={onMarkSolution}
+              />
+            ))}
+          {/* The rest of the comments */}
+          {comments
+            .filter((comment) => comment.is_solution !== true)
+            .map((comment) => (
+              <CommentComponent
+                key={comment.id}
+                match={match}
+                comment={comment}
+                questionOwner={questionOwner}
+                currentUser={currentUser}
+                onDeleteComment={deleteComment}
+                onFollowUser={onFollowUser}
+                onMarkSolution={onMarkSolution}
+              />
+            ))}
           <div className="h-32 w-full bg-white "></div>
         </>
       ) : (
         <>
           {commentLoader ? (
-            <div className="mr-2">
+            <div className="mx-3">
               <Loader msg="Fetching comments..." />
             </div>
           ) : (

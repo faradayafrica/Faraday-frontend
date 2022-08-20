@@ -48,7 +48,7 @@ const App = () => {
           />
           <Route path='/not-found' component={NotFound} />
           <ProtectedRoute path='/' exact component={Qfeed} />
-          {/* <Redirect push to='/not-found' /> */}
+          <Redirect push to='/not-found' />
         </Switch>
       </div>
     </BrowserRouter>
