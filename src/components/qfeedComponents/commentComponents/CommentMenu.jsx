@@ -15,6 +15,7 @@ const CommentMenu = ({
   onDeleteComment,
   onFollowUser,
   onMarkSolution,
+  is_solution,
 }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -43,7 +44,7 @@ const CommentMenu = ({
               }}
             >
               <img className="mr-2" src={mark} alt="mark solution" />
-              Mark as a solution
+              {is_solution ? "Unmark" : "Mark"} as a solution
             </button>
           ) : (
             <>
@@ -112,7 +113,7 @@ const CommentMenu = ({
             }}
           >
             <img className="mr-2" src={mark} alt="mark solution" />
-            Mark as a solution
+            {is_solution ? "Unmark" : "Mark"} as a solution
           </button>
         ) : (
           <>
