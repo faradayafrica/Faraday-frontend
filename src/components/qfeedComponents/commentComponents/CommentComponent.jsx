@@ -40,7 +40,7 @@ const CommentComponent = ({
       </Link>
 
       <div
-        className=" hover:bg-brand-highlight cursor-pointer absolute right-1 top-2 rounded-md"
+        className=" hover:bg-brand-highlight cursor-pointer absolute right-3 top-2 rounded-md"
         onClick={() => {
           toggleCommentMenu(comment);
         }}
@@ -55,14 +55,15 @@ const CommentComponent = ({
 
       {commentMenu ? (
         <CommentMenu
+          match={match}
           questionOwner={questionOwner}
           currentUser={currentUser}
           selectedComment={comment}
           onToggleCommentMenu={toggleCommentMenu}
           onDeleteComment={onDeleteComment}
           onFollowUser={onFollowUser}
-          match={match}
           onMarkSolution={onMarkSolution}
+          is_solution={is_solution}
         />
       ) : (
         ""

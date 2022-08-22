@@ -70,7 +70,7 @@ const QuestionMenu = ({
                     hideMenu();
                   }}
                 >
-                  <img className="mr-2" src={unfollow} alt="follow" />
+                  <img className="mr-2" src={follow} alt="follow" />
                   {question?.user.is_following ? "Unfollow" : "Follow"} @
                   {question?.user.username}
                 </button>
@@ -124,7 +124,7 @@ const QuestionMenu = ({
                       hideMenu();
                     }}
                   >
-                    <img className="mr-2" src={unfollow} alt="follow" />
+                    <img className="mr-2" src={follow} alt="follow" />
                     {question?.user.is_following ? "Unfollow" : "Follow"} @
                     {question?.user.username}
                   </button>

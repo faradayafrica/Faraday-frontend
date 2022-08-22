@@ -83,7 +83,10 @@ const Comments = ({
       {comments.length ? (
         <>
           {/* Solution here */}
-          {comments
+          {Array.from(new Set(comments.map((a) => a.id)))
+            .map((id) => {
+              return comments.find((a) => a.id === id);
+            })
             .filter((comment) => comment.is_solution === true)
             .map((comment) => (
               <CommentComponent
@@ -118,12 +121,12 @@ const Comments = ({
       ) : (
         <>
           {commentLoader ? (
-            <div className="mx-3">
+            <div className="m-3">
               <Loader msg="Fetching comments..." />
             </div>
           ) : (
             <>
-              <div className="p-3 mt-3 mr-1 rounded-lg border bg-background  text-center">
+              <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
                 <p className="text-xs sm:text-base m-0 ">
                   No comments yet! Be the first to comment on this question
                 </p>
