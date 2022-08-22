@@ -20,6 +20,12 @@ const Comments = ({
   const [comment, setComment] = useState("");
   const currentUser = getCurrentUser();
 
+  const uniqueComments = Array.from(new Set(comments.map((a) => a.id))).map(
+    (id) => {
+      return comments.find((a) => a.id === id);
+    }
+  );
+
   const apiEndpoint =
     process.env.REACT_APP_API_URL + "/qfeed/que/create_comment/";
 
@@ -83,10 +89,7 @@ const Comments = ({
       {comments.length ? (
         <>
           {/* Solution here */}
-          {Array.from(new Set(comments.map((a) => a.id)))
-            .map((id) => {
-              return comments.find((a) => a.id === id);
-            })
+          {uniqueComments
             .filter((comment) => comment.is_solution === true)
             .map((comment) => (
               <CommentComponent
@@ -102,7 +105,7 @@ const Comments = ({
               />
             ))}
           {/* The rest of the comments */}
-          {comments
+          {uniqueComments
             .filter((comment) => comment.is_solution !== true)
             .map((comment) => (
               <CommentComponent
