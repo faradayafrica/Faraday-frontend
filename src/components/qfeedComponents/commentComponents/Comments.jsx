@@ -128,13 +128,11 @@ const Comments = ({
               <Loader msg="Fetching comments..." />
             </div>
           ) : (
-            <>
-              <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
-                <p className="text-xs sm:text-base m-0 ">
-                  No comments yet! Be the first to comment on this question
-                </p>
-              </div>
-            </>
+            <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
+              <p className="text-xs sm:text-base m-0 ">
+                No comments yet! Be the first to comment on this question
+              </p>
+            </div>
           )}
         </>
       )}
