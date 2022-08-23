@@ -17,7 +17,7 @@ const Qfeed = (props) => {
   const [loader, setLoader] = useState(true);
   const [nextPageLoader, setNextPageLoader] = useState(false);
 
-  let nextPageUrl;
+  let nextPageUrl = "lala";
   console.log("NEW TOTAL", questions.length);
 
   const uniqueQuestions = Array.from(new Set(questions.map((a) => a.id))).map(
