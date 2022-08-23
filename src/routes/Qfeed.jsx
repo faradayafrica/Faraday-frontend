@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
@@ -10,10 +10,21 @@ import {
   SuccessToast,
   ErrorToast,
 } from "../components/common/CustomToast.js";
+import axios from "axios";
 
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
   const [loader, setLoader] = useState(true);
+  const [nextPageLoader, setNextPageLoader] = useState(false);
+
+  let nextPageUrl;
+  console.log("NEW TOTAL", questions.length);
+
+  const uniqueQuestions = Array.from(new Set(questions.map((a) => a.id))).map(
+    (id) => {
+      return questions.find((a) => a.id === id);
+    }
+  );
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
 
@@ -54,7 +65,6 @@ const Qfeed = (props) => {
 
   const updateQuestions = (updatedQuestions) => {
     setQuestions([...updatedQuestions]);
-    // console.log("present 4rm Qfeed", updatedQuestions);
   };
 
   const retry = async () => {
@@ -69,30 +79,57 @@ const Qfeed = (props) => {
     }
   };
 
-  useEffect(() => {
-    async function fetchQuestions() {
-      try {
-        const { data } = await http.get(apiEndpoint);
-        setQuestions(data.results);
-      } catch (err) {
-        console.warn(err.message);
-        setLoader(false);
-      }
+  const fetchQuestions = async (url) => {
+    let source = axios.CancelToken.source();
+
+    try {
+      console.log("Its:", url);
+      const { data } = await http.get(url, {
+        cancelToken: source.token,
+      });
+      setQuestions((prevQuestions) => [...prevQuestions, ...data.results]);
+
+      nextPageUrl = data.next;
+      setNextPageLoader(false);
+    } catch (err) {
+      setLoader(false);
+      throw err;
     }
 
-    fetchQuestions();
+    return () => {
+      // source.cancel();
+      source.current.cancel();
+    };
+  };
+
+  const handleScroll = (e) => {
+    if (nextPageUrl) {
+      if (
+        e.target.documentElement.scrollTop + window.innerHeight + 1 >=
+        e.target.documentElement.scrollHeight
+      ) {
+        fetchQuestions(nextPageUrl);
+        setNextPageLoader(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchQuestions(apiEndpoint);
+    window.addEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <>
       <SideNav {...props} />
+
       <div className="w-full route-wrapper">
         <Switch>
           <Route
             path="/qfeed/:id"
             render={(props) => (
               <DiscussionPage
-                questions={questions}
+                questions={uniqueQuestions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}
                 onDeleteQuestion={deleteQuestion}
@@ -100,22 +137,22 @@ const Qfeed = (props) => {
               />
             )}
           />
-
           <Route
             path="/"
             render={(props) => (
               <TimeLine
-                questions={questions}
+                questions={uniqueQuestions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}
                 onDeleteQuestion={deleteQuestion}
                 retry={retry}
                 loader={loader}
+                nextPageLoader={nextPageLoader}
+                nextPageUrl={nextPageUrl}
                 {...props}
               />
             )}
           />
-
           <Route path="/not-found" component={NotFound} />
           <Redirect push to="/not-found" />
         </Switch>
