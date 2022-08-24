@@ -3,6 +3,7 @@ import Question from "./Question";
 import { Link } from "react-router-dom";
 import ask from "../../images/qfeed/ask.svg";
 import Loader from "../styledComponents/Loader";
+import SecondaryButton from "../styledComponents/SecondaryButton";
 import "../../styles/qfeed.css";
 
 const TimeLine = (props) => {
@@ -40,18 +41,35 @@ const TimeLine = (props) => {
           <img className="ask-shadow rounded-full" src={ask} alt="" />
         </Link>
 
+        {!props.loader && questions.length == 0 ? (
+          <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
+            <>
+              <p className="text-sm sm:text-base ">Something went wrong</p>
+              <SecondaryButton cta="Retry" action={props.retry} />
+            </>
+          </div>
+        ) : (
+          ""
+        )}
+
         {props.loader ? (
           <div className="m-3">
             <Loader msg="fetching questions" />
             <div className="h-[65px] w-full sm:hidden"></div>
           </div>
         ) : (
-          <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
-            <p className="text-xs sm:text-base m-0 ">
-              No more question to fetch
-            </p>
-            <div className="h-[65px] w-full sm:hidden"></div>
-          </div>
+          <>
+            {!questions.length == 0 && (
+              <>
+                <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
+                  <p className="text-xs sm:text-base m-0 ">
+                    No more question to fetch
+                  </p>
+                </div>
+                <div className="h-[65px] w-full sm:hidden"></div>
+              </>
+            )}
+          </>
         )}
       </div>
     </>

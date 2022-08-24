@@ -65,26 +65,16 @@ const Qfeed = (props) => {
 
   const retry = async () => {
     setLoader(true);
-    try {
-      const { data } = await http.get(apiEndpoint);
-      setQuestions(data.results);
-    } catch (err) {
-      console.warn(err.message);
-      setLoader(false);
-    }
+    fetchQuestions(apiEndpoint);
+    window.addEventListener("scroll", handleScroll);
   };
 
   let nextQuestionPageUrl = ""; //This is a placeholder value to keep the value truthy
   console.log("NEW TOTAL", questions.length);
 
   const fetchQuestions = async (url) => {
-    let source = axios.CancelToken.source();
-
     try {
-      // console.log("Its:", url);
-      const { data } = await http.get(url, {
-        cancelToken: source.token,
-      });
+      const { data } = await http.get(url, {});
       setQuestions((prevQuestions) => [...prevQuestions, ...data.results]);
       setLoader(false);
       nextQuestionPageUrl = data.next;
@@ -92,11 +82,6 @@ const Qfeed = (props) => {
       setLoader(false);
       throw err;
     }
-
-    return () => {
-      // source.cancel();
-      source.current.cancel();
-    };
   };
 
   const handleScroll = (e) => {

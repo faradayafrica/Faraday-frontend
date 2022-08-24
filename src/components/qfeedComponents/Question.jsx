@@ -9,6 +9,7 @@ import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
 import ellipses from "../../images/qfeed/ellipses.svg";
+import { SuccessToast } from "../common/CustomToast";
 
 const Question = (props) => {
   const [question, setQuestion] = useState(props.question);
@@ -69,13 +70,26 @@ const Question = (props) => {
     }
 
     try {
-      const { data } = await http.post(apiEndpoint, {
-        postid,
-        value: "upvote",
-      });
+      let likeData;
 
-      if (index !== -1) {
-        clonedQuestions[index] = { ...data.data };
+      if (oldLiked) {
+        const { data } = await http.post(apiEndpoint, {
+          postid,
+          value: "downvote",
+        });
+        SuccessToast("Question unliked");
+        likeData = data.data;
+      } else {
+        const { data } = await http.post(apiEndpoint, {
+          postid,
+          value: "upvote",
+        });
+        SuccessToast("Question liked");
+        likeData = data.data;
+      }
+
+      if (index >= -1) {
+        clonedQuestions[index] = { ...likeData };
       }
       props.handleUpdatedQuestions(clonedQuestions);
     } catch (err) {
