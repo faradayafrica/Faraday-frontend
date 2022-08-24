@@ -14,16 +14,17 @@ export async function SuccessToast(message) {
     },
   });
 }
+
 export async function ErrorToast(message) {
   toast.error(message, {
     style: {
-      border: "1px solid #F91880",
+      border: "1px solid #05b851",
       padding: "16px",
-      color: "#F91880",
-      backgroundColor: "#FBEFF5",
+      color: "#2C974B",
+      backgroundColor: "#F1FBEF",
     },
     iconTheme: {
-      primary: "#F91880",
+      primary: "#05b851",
       secondary: "#FFFAEE",
     },
   });

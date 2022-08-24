@@ -15,10 +15,6 @@ import axios from "axios";
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
   const [loader, setLoader] = useState(true);
-  const [nextPageLoader, setNextPageLoader] = useState(false);
-
-  let nextPageUrl = "lala";
-  console.log("NEW TOTAL", questions.length);
 
   const uniqueQuestions = Array.from(new Set(questions.map((a) => a.id))).map(
     (id) => {
@@ -72,25 +68,26 @@ const Qfeed = (props) => {
     try {
       const { data } = await http.get(apiEndpoint);
       setQuestions(data.results);
-      console.log("all recieved ques", data.results);
     } catch (err) {
       console.warn(err.message);
       setLoader(false);
     }
   };
 
+  let nextQuestionPageUrl = ""; //This is a placeholder value to keep the value truthy
+  console.log("NEW TOTAL", questions.length);
+
   const fetchQuestions = async (url) => {
     let source = axios.CancelToken.source();
 
     try {
-      console.log("Its:", url);
+      // console.log("Its:", url);
       const { data } = await http.get(url, {
         cancelToken: source.token,
       });
       setQuestions((prevQuestions) => [...prevQuestions, ...data.results]);
-
-      nextPageUrl = data.next;
-      setNextPageLoader(false);
+      setLoader(false);
+      nextQuestionPageUrl = data.next;
     } catch (err) {
       setLoader(false);
       throw err;
@@ -103,13 +100,13 @@ const Qfeed = (props) => {
   };
 
   const handleScroll = (e) => {
-    if (nextPageUrl) {
+    if (nextQuestionPageUrl) {
       if (
-        e.target.documentElement.scrollTop + window.innerHeight + 1 >=
+        e.target.documentElement.scrollTop + window.innerHeight + 20 >=
         e.target.documentElement.scrollHeight
       ) {
-        fetchQuestions(nextPageUrl);
-        setNextPageLoader(true);
+        fetchQuestions(nextQuestionPageUrl);
+        setLoader(true);
       }
     }
   };
@@ -121,6 +118,7 @@ const Qfeed = (props) => {
 
   return (
     <>
+      {/* <div className="h-40 bg-[#D8000C] w-full"></div> */}
       <SideNav {...props} />
 
       <div className="w-full route-wrapper">
@@ -147,8 +145,7 @@ const Qfeed = (props) => {
                 onDeleteQuestion={deleteQuestion}
                 retry={retry}
                 loader={loader}
-                nextPageLoader={nextPageLoader}
-                nextPageUrl={nextPageUrl}
+                nextQuestionPageUrl={nextQuestionPageUrl}
                 {...props}
               />
             )}

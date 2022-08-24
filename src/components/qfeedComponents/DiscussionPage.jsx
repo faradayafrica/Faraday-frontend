@@ -134,27 +134,31 @@ const DiscussionPage = ({
     setComments(newComments);
   };
 
-  useEffect(() => {
-    async function fetchQuestionData() {
-      try {
-        const { data } = await http.get(apiEndpoint);
-        setQuestion(data);
-      } catch (err) {
-        console.warn(err.message);
-        setLoader(false);
-      }
-      try {
-        const { data } = await http.get(commentsApiEndpoint);
-        setComments(data.results);
-        setCommentLoader(false);
-        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      } catch (err) {
-        console.warn(err.message);
-        setCommentLoader(false);
-      }
+  const fetchThisQuestion = async () => {
+    try {
+      const { data } = await http.get(apiEndpoint);
+      setQuestion(data);
+    } catch (err) {
+      console.warn(err.message);
+      setLoader(false);
     }
+  };
 
-    fetchQuestionData();
+  const fetchComments = async () => {
+    try {
+      const { data } = await http.get(commentsApiEndpoint);
+      setComments(data.results);
+      setCommentLoader(false);
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    } catch (err) {
+      console.warn(err.message);
+      setCommentLoader(false);
+    }
+  };
+
+  useEffect(() => {
+    // fetchThisQuestion();
+    fetchComments();
   }, []);
 
   let loveClasses =

@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "./components/common/ProtectedRoute.jsx";
 import Qfeed from "./routes/Qfeed.jsx";
@@ -17,7 +16,6 @@ import PrivacyPolicy from "./components/other pages/privacyPolicy";
 import Logout from "./routes/Logout.jsx";
 import { Toaster } from "react-hot-toast";
 import "./styles/App.css"
-
 
 const App = () => {
   return (
