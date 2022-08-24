@@ -95,13 +95,29 @@ const DiscussionPage = ({
     try {
       const apiEndpoint =
         process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
-      const { data } = await http.post(apiEndpoint, {
-        postid,
-        value: "upvote",
-      });
 
-      if (index !== -1) {
-        clonedQuestions[index] = { ...data.data };
+      let likeData;
+
+      if (oldLiked) {
+        const { data } = await http.post(apiEndpoint, {
+          postid,
+          value: "downvote",
+        });
+        SuccessToast("Question unliked");
+        likeData = data.data;
+      } else {
+        const { data } = await http.post(apiEndpoint, {
+          postid,
+          value: "upvote",
+        });
+        SuccessToast("Question liked");
+        likeData = data.data;
+      }
+
+      console.log("Like Data", likeData);
+
+      if (index >= 0) {
+        clonedQuestions[index] = { ...likeData };
       }
       handleUpdatedQuestions(clonedQuestions);
     } catch (err) {
@@ -134,27 +150,32 @@ const DiscussionPage = ({
     setComments(newComments);
   };
 
-  useEffect(() => {
-    async function fetchQuestionData() {
-      try {
-        const { data } = await http.get(apiEndpoint);
-        setQuestion(data);
-      } catch (err) {
-        console.warn(err.message);
-        setLoader(false);
-      }
-      try {
-        const { data } = await http.get(commentsApiEndpoint);
-        setComments(data.results);
-        setCommentLoader(false);
-        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      } catch (err) {
-        console.warn(err.message);
-        setCommentLoader(false);
-      }
+  const fetchThisQuestion = async () => {
+    try {
+      const { data } = await http.get(apiEndpoint);
+      setQuestion(data.data);
+      console.log("DISS", data.data);
+    } catch (err) {
+      console.warn(err.message);
+      setLoader(false);
     }
+  };
 
-    fetchQuestionData();
+  const fetchComments = async () => {
+    try {
+      const { data } = await http.get(commentsApiEndpoint);
+      setComments(data.results);
+      setCommentLoader(false);
+    } catch (err) {
+      console.warn(err.message);
+      setCommentLoader(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchThisQuestion();
+    fetchComments();
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
   let loveClasses =

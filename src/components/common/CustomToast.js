@@ -7,6 +7,9 @@ export async function SuccessToast(message) {
       padding: "16px",
       color: "#2C974B",
       backgroundColor: "#F1FBEF",
+      fontSize: "14px",
+      paddingTop: "8px",
+      paddingBottom: "8px"
     },
     iconTheme: {
       primary: "#05b851",
@@ -14,16 +17,20 @@ export async function SuccessToast(message) {
     },
   });
 }
+
 export async function ErrorToast(message) {
   toast.error(message, {
     style: {
-      border: "1px solid #F91880",
+      border: "1px solid #05b851",
       padding: "16px",
-      color: "#F91880",
-      backgroundColor: "#FBEFF5",
+      color: "#2C974B",
+      backgroundColor: "#F1FBEF",
+      fontSize: "14px",
+      paddingTop: "8px",
+      paddingBottom: "8px"
     },
     iconTheme: {
-      primary: "#F91880",
+      primary: "#05b851",
       secondary: "#FFFAEE",
     },
   });
@@ -40,6 +47,9 @@ export async function PromiseToast(success_msg, error_msg, promise) {
       padding: "16px",
       color: "#2C974B",
       backgroundColor: "#F1FBEF",
+      fontSize: "14px",
+      paddingTop: "8px",
+      paddingBottom: "8px"
     },
     iconTheme: {
       primary: "#05b851",
