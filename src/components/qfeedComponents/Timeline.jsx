@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import ask from "../../images/qfeed/ask.svg";
 import Loader from "../styledComponents/Loader";
 import "../../styles/qfeed.css";
-import SecondaryButton from "../styledComponents/SecondaryButton";
 
 const TimeLine = (props) => {
   const [questions, setQuestions] = useState([]);
@@ -19,37 +18,19 @@ const TimeLine = (props) => {
       <div className="">
         <h1 className="text-2xl sm:text-2xl m-3 font-bold">Question Feed</h1>
         {/* The questions */}
-        {questions.length !== 0 ? (
-          <>
-            {questions.map((question) => (
-              <Question
-                question={question}
-                questions={props.questions}
-                handleUpdatedQuestions={props.handleUpdatedQuestions}
-                onFollowUser={props.onFollowUser}
-                onDeleteQuestion={props.onDeleteQuestion}
-                key={question.id}
-              />
-            ))}
-          </>
-        ) : (
-          <>
-            {props.loader ? (
-              <div className="m-3">
-                <Loader msg="This might take a while..." />
-              </div>
-            ) : (
-              <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
-                <>
-                  <p className="text-sm sm:text-base ">
-                    Make sure you are connected to the internet and try again
-                  </p>
-                  <SecondaryButton cta="Retry" action={props.retry} />
-                </>
-              </div>
-            )}
-          </>
-        )}
+
+        <>
+          {questions.map((question) => (
+            <Question
+              question={question}
+              questions={props.questions}
+              handleUpdatedQuestions={props.handleUpdatedQuestions}
+              onFollowUser={props.onFollowUser}
+              onDeleteQuestion={props.onDeleteQuestion}
+              key={question.id}
+            />
+          ))}
+        </>
 
         <Link
           to="/post"
@@ -58,7 +39,20 @@ const TimeLine = (props) => {
           {" "}
           <img className="ask-shadow rounded-full" src={ask} alt="" />
         </Link>
-        <div className="h-[65px] w-full "></div>
+
+        {props.loader ? (
+          <div className="m-3">
+            <Loader msg="fetching questions" />
+            <div className="h-[65px] w-full sm:hidden"></div>
+          </div>
+        ) : (
+          <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
+            <p className="text-xs sm:text-base m-0 ">
+              No more question to fetch
+            </p>
+            <div className="h-[65px] w-full sm:hidden"></div>
+          </div>
+        )}
       </div>
     </>
   );

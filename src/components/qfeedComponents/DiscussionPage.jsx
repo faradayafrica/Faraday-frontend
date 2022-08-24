@@ -54,7 +54,6 @@ const DiscussionPage = ({
       for (let i = 0; i < commentsClone.length; i++) {
         if (i === index) {
           commentsClone[i].is_solution = data.is_solution;
-          console.log("TADA", data.is_solution);
         } else {
           commentsClone[i].is_solution = false;
         }
@@ -135,27 +134,31 @@ const DiscussionPage = ({
     setComments(newComments);
   };
 
-  useEffect(() => {
-    async function fetchQuestionData() {
-      try {
-        const { data } = await http.get(apiEndpoint);
-        setQuestion(data);
-      } catch (err) {
-        console.warn(err.message);
-        setLoader(false);
-      }
-      try {
-        const { data } = await http.get(commentsApiEndpoint);
-        setComments(data.results);
-        setCommentLoader(false);
-        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      } catch (err) {
-        console.warn(err.message);
-        setCommentLoader(false);
-      }
+  const fetchThisQuestion = async () => {
+    try {
+      const { data } = await http.get(apiEndpoint);
+      setQuestion(data);
+    } catch (err) {
+      console.warn(err.message);
+      setLoader(false);
     }
+  };
 
-    fetchQuestionData();
+  const fetchComments = async () => {
+    try {
+      const { data } = await http.get(commentsApiEndpoint);
+      setComments(data.results);
+      setCommentLoader(false);
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    } catch (err) {
+      console.warn(err.message);
+      setCommentLoader(false);
+    }
+  };
+
+  useEffect(() => {
+    // fetchThisQuestion();
+    fetchComments();
   }, []);
 
   let loveClasses =
@@ -178,11 +181,11 @@ const DiscussionPage = ({
               <Link
                 to={`/me/${question?.user.username}`}
                 style={{ textDecoration: "none" }}
-                className="w-14 mr-2 cursor-pointer"
+                className="w-14 mr-2 cursor-pointer float-left"
               >
                 <img
                   src={`https://api.faraday.africa${question?.user.profile_pic}`}
-                  className="w-12 h-12 rounded-full mr-2 float-left"
+                  className="w-12 h-12 rounded-full mr-2 "
                   style={{ objectFit: "cover" }}
                   alt={question?.user.firstname}
                 />

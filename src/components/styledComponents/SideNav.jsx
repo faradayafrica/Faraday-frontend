@@ -1,13 +1,16 @@
 import faraday from "../../images/logo.svg";
 import NavLink from "./NavLink";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getCurrentUser } from "../../services/authService";
 import PrimaryButton from "./PrimaryButton";
 import PostComponent from "../qfeedComponents/PostComponent";
 import closeImg from "../../images/qfeed/close.svg";
+import { ErrorToast, SuccessToast } from "../common/CustomToast";
 
 function SideNav({ history }) {
   const currentUser = getCurrentUser();
+  const [onlineStatus, setOnlineStatus] = useState(true);
+  const [hideOnlineStatus, setHideOnlineStatus] = useState(false);
   const [hidePost, setHidePost] = useState(true);
   const [links, setLinks] = useState([
     {
@@ -129,8 +132,52 @@ function SideNav({ history }) {
     history.replace("/");
   };
 
+  useEffect(() => {
+    if (!currentUser) {
+      ErrorToast("You need to log back in");
+
+      setTimeout(() => {
+        history.replace("/logout");
+      }, 1500);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("offline", () => {
+      setHideOnlineStatus(true);
+      setOnlineStatus(false);
+    });
+
+    window.addEventListener("online", () => {
+      setHideOnlineStatus(true);
+      setOnlineStatus(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setHideOnlineStatus(false);
+    }, 3000);
+  }, [onlineStatus]);
+
   return (
     <>
+      {hideOnlineStatus ? (
+        <>
+          {onlineStatus && (
+            <div className="w-full fixed bottom-0 left-0 z-50 bg-brand text-white text-xs text-center py-1">
+              You are back online! Let's fly
+            </div>
+          )}
+        </>
+      ) : (
+        ""
+      )}
+      {!onlineStatus && (
+        <div className="w-full fixed bottom-0 left-0 z-50 bg-night-secondary text-white text-xs text-center py-1">
+          Juice Out! You are offline
+        </div>
+      )}
       <div className="w-80 px-2 bg-whte sidenav-container active">
         <div className="position-fixed d-flex flex-column justify-content-between h-100">
           <div>
