@@ -10,17 +10,10 @@ import {
   SuccessToast,
   ErrorToast,
 } from "../components/common/CustomToast.js";
-import axios from "axios";
 
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
   const [loader, setLoader] = useState(true);
-
-  const uniqueQuestions = Array.from(new Set(questions.map((a) => a.id))).map(
-    (id) => {
-      return questions.find((a) => a.id === id);
-    }
-  );
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
 
@@ -69,12 +62,13 @@ const Qfeed = (props) => {
     window.addEventListener("scroll", handleScroll);
   };
 
-  let nextQuestionPageUrl = ""; //This is a placeholder value to keep the value truthy
-  console.log("NEW TOTAL", questions.length);
+  let nextQuestionPageUrl = "";
+  const questionRequestQueue = [];
 
   const fetchQuestions = async (url) => {
+    questionRequestQueue.push(url);
     try {
-      const { data } = await http.get(url, {});
+      const { data } = await http.get(url);
       setQuestions((prevQuestions) => [...prevQuestions, ...data.results]);
       setLoader(false);
       nextQuestionPageUrl = data.next;
@@ -87,11 +81,16 @@ const Qfeed = (props) => {
   const handleScroll = (e) => {
     if (nextQuestionPageUrl) {
       if (
-        e.target.documentElement.scrollTop + window.innerHeight + 20 >=
+        e.target.documentElement.scrollTop + window.innerHeight + 1000 >=
         e.target.documentElement.scrollHeight
       ) {
-        fetchQuestions(nextQuestionPageUrl);
-        setLoader(true);
+        if (!questionRequestQueue.includes(nextQuestionPageUrl)) {
+          console.log(">", questionRequestQueue);
+          fetchQuestions(nextQuestionPageUrl);
+          setLoader(true);
+        } else {
+          console.warn("Duplicate request blocked");
+        }
       }
     }
   };
@@ -103,7 +102,6 @@ const Qfeed = (props) => {
 
   return (
     <>
-      {/* <div className="h-40 bg-[#D8000C] w-full"></div> */}
       <SideNav {...props} />
 
       <div className="w-full route-wrapper">
@@ -112,7 +110,7 @@ const Qfeed = (props) => {
             path="/qfeed/:id"
             render={(props) => (
               <DiscussionPage
-                questions={uniqueQuestions}
+                questions={questions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}
                 onDeleteQuestion={deleteQuestion}
@@ -124,7 +122,7 @@ const Qfeed = (props) => {
             path="/"
             render={(props) => (
               <TimeLine
-                questions={uniqueQuestions}
+                questions={questions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}
                 onDeleteQuestion={deleteQuestion}

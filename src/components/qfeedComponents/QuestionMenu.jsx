@@ -46,7 +46,7 @@ const QuestionMenu = ({
                     }}
                   >
                     <img className="mr-2" src={trashDefault} alt="trash" />
-                    Delete comment
+                    Delete question
                   </button>
                 ) : (
                   <button
@@ -100,7 +100,7 @@ const QuestionMenu = ({
                       }}
                     >
                       <img className="mr-2" src={trashDefault} alt="trash" />
-                      Delete comment
+                      Delete question
                     </button>
                   ) : (
                     <button

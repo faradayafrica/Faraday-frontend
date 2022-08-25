@@ -119,20 +119,37 @@ const Comments = ({
                 onMarkSolution={onMarkSolution}
               />
             ))}
-          <div className="h-32 w-full bg-white "></div>
         </>
       ) : (
         <>
-          {commentLoader ? (
-            <div className="m-3">
-              <Loader msg="Fetching comments..." />
+          {!commentLoader && (
+            <div className="p-3 bg-white">
+              <div className="p-3 rounded-lg border bg-background  text-center">
+                <p className="text-xs sm:text-base m-0 ">
+                  No comments yet! Be the first to comment on this question
+                </p>
+              </div>
             </div>
-          ) : (
-            <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
-              <p className="text-xs sm:text-base m-0 ">
-                No comments yet! Be the first to comment on this question
-              </p>
-            </div>
+          )}
+        </>
+      )}
+
+      {commentLoader ? (
+        <div className="p-3">
+          <Loader msg="fetching comments..." />
+          <div className="h-[65px] w-full sm:hidden"></div>
+        </div>
+      ) : (
+        <>
+          {!comments.length == 0 && (
+            <>
+              <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
+                <p className="text-xs sm:text-base m-0 ">
+                  No more comment to fetch
+                </p>
+              </div>
+              <div className="h-[65px] w-full sm:hidden"></div>
+            </>
           )}
         </>
       )}
