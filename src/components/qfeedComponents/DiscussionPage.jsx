@@ -163,8 +163,6 @@ const DiscussionPage = ({
   let nextCommentPageUrl = "";
   const commentRequestQueue = [];
 
-  console.log("NEW TOTAL COMMENTS", comments.length);
-
   const fetchComments = async (url) => {
     commentRequestQueue.push(url);
     try {
@@ -185,7 +183,6 @@ const DiscussionPage = ({
         e.target.documentElement.scrollHeight
       ) {
         if (!commentRequestQueue.includes(nextCommentPageUrl)) {
-          console.log(">", commentRequestQueue);
           fetchComments(nextCommentPageUrl);
           setCommentLoader(true);
         } else {

@@ -65,8 +65,6 @@ const Qfeed = (props) => {
   let nextQuestionPageUrl = "";
   const questionRequestQueue = [];
 
-  console.log("NEW TOTAL", questions.length);
-
   const fetchQuestions = async (url) => {
     questionRequestQueue.push(url);
     try {
@@ -104,7 +102,6 @@ const Qfeed = (props) => {
 
   return (
     <>
-      {/* <div className="h-40 bg-[#D8000C] w-full"></div> */}
       <SideNav {...props} />
 
       <div className="w-full route-wrapper">
