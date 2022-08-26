@@ -63,9 +63,7 @@ export async function editUserProfile(user) {
 export async function updatePersonalDetail(data) {
   const url = process.env.REACT_APP_API_URL + "/users/bio_update/";
 
-  await axios.patch(url, {
-    ...data,
-  });
+  await axios.patch(url, data);
 }
 
 export async function resendEmailConfirmation() {

@@ -11,6 +11,7 @@ import { Redirect } from "react-router-dom";
 class PersonalData extends Form {
   state = {
     data: {
+      imageFile: null,
       image: addImage,
       bio: "",
       day: "",
@@ -129,6 +130,7 @@ class PersonalData extends Form {
   };
 
   schema = {
+    imageFile: Joi.required().label("imageFile"),
     image: Joi.required().label("image"),
     bio: Joi.string().max(160).label("Bio"),
     gender: Joi.string().label("Gender"),
@@ -212,7 +214,8 @@ class PersonalData extends Form {
 
   skipValidation = () => {
     console.log("form skipped");
-    window.location = "/qfeed";
+    // window.location = "/qfeed";
+    this.setState({ ...this.state, redirect: "/qfeed" });
   };
 
   listDays = () => {
@@ -258,20 +261,29 @@ class PersonalData extends Form {
 
     const date = `${this.state.data.day}/${this.state.data.month}/${this.state.data.year}`;
     const newData = {
-      profile_pic: this.state.data.image,
+      profile_pic: this.state.data.imageFile,
       dob: date,
       gender: this.state.data.gender,
       bio: this.state.data.bio,
     };
     console.log(newData);
+    const formData = new FormData();
+    formData.append("profile_pic", this.state.data.imageFile);
+    formData.append("dob", date);
+    formData.append("gender", this.state.data.gender);
+    formData.append("bio", this.state.data.bio);
+
+    console.log(formData, "formData");
 
     try {
       // await auth.refreshJwt();
-      await auth.updatePersonalDetail(newData);
-      progress.classList.add("progress-100");
-      this.setState({ ...this.state, redirect: "/" });
-      // window.location = "/";
-      spinner.classList.add("vanish");
+      if (this.state.data.imageFile) {
+        await auth.updatePersonalDetail(formData);
+        progress.classList.add("progress-100");
+        this.setState({ ...this.state, redirect: "/" });
+        // window.location = "/";
+        spinner.classList.add("vanish");
+      }
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         const errors = { ...this.state.errors };

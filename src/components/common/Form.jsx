@@ -42,16 +42,22 @@ class Form extends Component {
   };
 
   imageHandler = (e) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        const data = { ...this.state.data };
-        data["image"] = reader.result;
-        this.setState({ data });
-      }
-    };
+    // const reader = new FileReader();
+    // reader.onload = () => {
+    //   if (reader.readyState === 2) {
+    //     const data = { ...this.state.data };
+    //     data["image"] = reader.result;
+    //     this.setState({ data });
+    //   }
+    // };
 
-    reader.readAsDataURL(e.target.files[0]);
+    // reader.readAsDataURL(e.target.files[0]);
+
+    var url = URL.createObjectURL(e.target.files[0]);
+    const data = { ...this.state.data };
+    data["image"] = url;
+    data["imageFile"] = e.target.files[0];
+    this.setState({ data });
   };
 
   handleChange = ({ currentTarget: input }) => {
