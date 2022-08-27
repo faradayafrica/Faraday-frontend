@@ -17,14 +17,27 @@ const Qfeed = (props) => {
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
 
-  const handleFollow = (username) => {
+  const handleFollow = (user) => {
     const apiEndpoint =
-      process.env.REACT_APP_API_URL + `/users/${username}/follow/`;
+      process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
+
+    const clonedQuestions = [...questions];
+    const userQuestions = clonedQuestions.filter((q) => q.user.id === user.id);
+    console.log("FILTERED", userQuestions);
 
     try {
-      const promise = http.post(apiEndpoint);
+      const promise = http.post(apiEndpoint).then((resp) => {
+        console.log("Bazzi");
+        userQuestions.map(
+          (question) =>
+            (question.user.is_following = !question.user.is_following)
+        );
+        return true;
+      });
+      const msg = user.is_following ? `Unfollowed` : "followed";
+
       PromiseToast(
-        `${username} followed`,
+        `${msg} ${user.username}`,
         "An error occurred, Try again",
         promise
       );
