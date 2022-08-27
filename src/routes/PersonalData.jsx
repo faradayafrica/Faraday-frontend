@@ -259,30 +259,34 @@ class PersonalData extends Form {
     progress.classList.remove("vanish");
     // call the backend
 
-    const date = `${this.state.data.day}/${this.state.data.month}/${this.state.data.year}`;
-    const newData = {
-      profile_pic: this.state.data.imageFile,
-      dob: date,
-      gender: this.state.data.gender,
-      bio: this.state.data.bio,
-    };
-    console.log(newData);
+    // 12-month-2022 : we care only about the month
+    const monthIndex = new Date(`12-${this.state.data.month}-2022`).getMonth();
+
+    const date = `${this.state.data.year}-${
+      monthIndex > 10 ? `0${monthIndex}` : monthIndex
+    }-${this.state.data.day}`;
+
     const formData = new FormData();
     formData.append("profile_pic", this.state.data.imageFile);
     formData.append("dob", date);
     formData.append("gender", this.state.data.gender);
     formData.append("bio", this.state.data.bio);
 
-    console.log(formData, "formData");
-
     try {
       // await auth.refreshJwt();
       if (this.state.data.imageFile) {
         await auth.updatePersonalDetail(formData);
+        await auth.refreshJwt();
         progress.classList.add("progress-100");
-        this.setState({ ...this.state, redirect: "/" });
-        // window.location = "/";
+
+        // const user = await auth.getCurrentUser();
+        // console.log(user);
+
         spinner.classList.add("vanish");
+
+        // return;
+        this.setState({ ...this.state, redirect: "/qfeed" });
+        // window.location = "/";
       }
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {

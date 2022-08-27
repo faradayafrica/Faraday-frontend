@@ -15,6 +15,7 @@ export async function register(user) {
 
   const jwt = data.data.access;
   localStorage.setItem(auth.tokenKey, jwt);
+  localStorage.setItem("refresh", data.data.refresh);
 
   return data;
 }

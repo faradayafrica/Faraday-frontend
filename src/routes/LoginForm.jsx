@@ -4,10 +4,12 @@ import Myspinner from "../components/styledComponents/Spinner";
 import Form from "../components/common/Form";
 import faraday from "../images/logo.svg";
 import auth from "../services/authService";
+import { Redirect } from "react-router-dom";
 
 class LoginForm extends Form {
   state = {
     data: { username: "", password: "" },
+    redirect: null,
     errors: {},
   };
 
@@ -17,17 +19,21 @@ class LoginForm extends Form {
   };
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />;
+    }
+
     return (
-      <div className="login-page">
+      <div className='login-page'>
         {/* the spinner */}
-        <div id="spinnerContainer" className="spinner-container vanish">
+        <div id='spinnerContainer' className='spinner-container vanish'>
           <Myspinner />
         </div>
-        <div className="form-container">
-          <div className="logo-container">
-            <img className="logo" src={faraday} alt="faraday" />
+        <div className='form-container'>
+          <div className='logo-container'>
+            <img className='logo' src={faraday} alt='faraday' />
           </div>
-          <h3 className="form-title">Welcome back</h3>
+          <h3 className='form-title'>Welcome back</h3>
 
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
@@ -59,7 +65,8 @@ class LoginForm extends Form {
       } else {
         auth.resendEmailConfirmation();
         //redirect to "/confirm-email without doing a full page reload"
-        this.props.history.push("/confirm-email");
+        // this.props.history.push("/confirm-email");
+        this.setState({ ...this.state, redirect: "/confirm-email" });
       }
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {

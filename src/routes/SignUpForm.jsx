@@ -54,8 +54,8 @@ class SignUpForm extends Form {
       await userService
         .register(data)
         .then((res) => {
-          this.setState({ ...this.state, redirect: "/confirm-email" });
           setUser(res.data);
+          this.setState({ ...this.state, redirect: "/confirm-email" });
         })
         .catch((err) => {
           alert(Object.stringify(err.response.data));

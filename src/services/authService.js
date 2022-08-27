@@ -24,7 +24,7 @@ export async function login({ username, password }) {
 export async function refreshJwt() {
   const refresh_token = getRefresh();
   const response = await http.post(
-    `${process.env.REACT_APP_API_URL + "/users/refresh/"}`,
+    `${process.env.REACT_APP_API_URL + "/users/refresh_token/"}`,
     {
       refresh: refresh_token,
     }
