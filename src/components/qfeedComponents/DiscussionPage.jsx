@@ -36,13 +36,20 @@ const DiscussionPage = ({
     const apiEndpoint =
       process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
 
+    const clonedQuestions = [...comments];
+    const userComments = clonedQuestions.filter(
+      (comment) => comment.user.id === user.id
+    );
+
     try {
       const promise = http.post(apiEndpoint).then((resp) => {
-        console.log("Bazzi");
         fetchThisQuestion();
-        return true;
+        userComments.map(
+          (question) =>
+            (question.user.is_following = !question.user.is_following)
+        );
       });
-      const msg = user.is_following ? `Unfollowed` : "followed";
+      const msg = user.is_following ? `Unfollowed` : "Followed";
 
       PromiseToast(
         `${msg} ${user.username}`,
@@ -343,6 +350,7 @@ const DiscussionPage = ({
                 questionOwner={question?.user}
                 onUpdateComments={updateComments}
                 onMarkSolution={handleMarkSolution}
+                fetchThisQuestion={fetchThisQuestion}
                 match={match}
               />
             </div>
