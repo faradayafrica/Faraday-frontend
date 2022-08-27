@@ -66,7 +66,7 @@ const QuestionMenu = ({
                 <button
                   className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                   onClick={() => {
-                    onFollowUser(question?.user.username);
+                    onFollowUser(question?.user);
                     hideMenu();
                   }}
                 >
@@ -120,7 +120,7 @@ const QuestionMenu = ({
                   <button
                     className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                     onClick={() => {
-                      onFollowUser(question?.user.username);
+                      onFollowUser(question?.user);
                       hideMenu();
                     }}
                   >

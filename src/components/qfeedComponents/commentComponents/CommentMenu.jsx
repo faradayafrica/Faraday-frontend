@@ -52,7 +52,7 @@ const CommentMenu = ({
                 <button
                   className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                   onClick={() => {
-                    onFollowUser(selectedComment?.user.username);
+                    onFollowUser(selectedComment?.user);
                     hideMenu();
                   }}
                 >
@@ -121,7 +121,7 @@ const CommentMenu = ({
               <button
                 className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                 onClick={() => {
-                  onFollowUser(selectedComment?.user.username);
+                  onFollowUser(selectedComment?.user);
                   hideMenu();
                 }}
               >

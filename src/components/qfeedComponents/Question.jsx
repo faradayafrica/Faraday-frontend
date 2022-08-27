@@ -55,7 +55,7 @@ const Question = (props) => {
     const updatedQuestion = { ...question };
 
     const clonedQuestions = [...props.questions];
-    var index = clonedQuestions.findIndex((q) => q.id === question.id);
+    const index = clonedQuestions.findIndex((q) => q.id === question.id);
 
     hideButtonPannel();
 

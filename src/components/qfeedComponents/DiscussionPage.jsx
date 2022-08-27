@@ -11,14 +11,13 @@ import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
 import ellipses from "../../images/qfeed/ellipses.svg";
 import QuestionMenu from "./QuestionMenu";
-import { SuccessToast, ErrorToast } from "../common/CustomToast";
+import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
 
 const DiscussionPage = ({
   match,
   history,
   questions,
   handleUpdatedQuestions,
-  onFollowUser,
   onDeleteQuestion,
 }) => {
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
@@ -32,6 +31,28 @@ const DiscussionPage = ({
   const [loader, setLoader] = useState(true);
   const [commentLoader, setCommentLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
+
+  const handleFollow = (user) => {
+    const apiEndpoint =
+      process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
+
+    try {
+      const promise = http.post(apiEndpoint).then((resp) => {
+        console.log("Bazzi");
+        fetchThisQuestion();
+        return true;
+      });
+      const msg = user.is_following ? `Unfollowed` : "followed";
+
+      PromiseToast(
+        `${msg} ${user.username}`,
+        "An error occurred, Try again",
+        promise
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const handleMarkSolution = async (postid, commentid) => {
     const commentsClone = [...comments];
@@ -193,8 +214,8 @@ const DiscussionPage = ({
   };
 
   useEffect(() => {
-    fetchThisQuestion();
     fetchComments(commentsApiEndpoint);
+    fetchThisQuestion();
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
@@ -260,7 +281,7 @@ const DiscussionPage = ({
                   questionMenu={questionMenu}
                   question={question}
                   toggleQuestionMenu={toggleQuestionMenu}
-                  onFollowUser={onFollowUser}
+                  onFollowUser={handleFollow}
                   onDeleteQuestion={handleQuestionDelete}
                 />
 
@@ -321,7 +342,6 @@ const DiscussionPage = ({
                 commentLoader={commentLoader}
                 questionOwner={question?.user}
                 onUpdateComments={updateComments}
-                onFollowUser={onFollowUser}
                 onMarkSolution={handleMarkSolution}
                 match={match}
               />
