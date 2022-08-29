@@ -8,6 +8,7 @@ import { Redirect } from "react-router";
 import UserContext from "../context/userContext";
 
 import * as userService from "../services/userService";
+import { ErrorToast } from "../components/common/CustomToast";
 
 class SignUpForm extends Form {
   static contextType = UserContext;
@@ -22,6 +23,7 @@ class SignUpForm extends Form {
       confirmPassword: "",
     },
     errors: { email: "" },
+    errorMessage: null,
     redirect: null,
   };
 
@@ -58,8 +60,12 @@ class SignUpForm extends Form {
           this.setState({ ...this.state, redirect: "/confirm-email" });
         })
         .catch((err) => {
-          alert(Object.stringify(err.response.data));
-          console.log(err.response.data);
+          // alert(JSON.stringify(err.response.data));
+          console.log(err.response.data.message);
+          this.setState({
+            ...this.state,
+            errorMessage: err.response.data.message,
+          });
         })
         .finally(() => {
           spinner.classList.add("vanish");
@@ -72,6 +78,7 @@ class SignUpForm extends Form {
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
+        console.log(ex.response.data, "hello");
 
         if (ex.response.data.detail[0].indexOf("username") !== -1) {
           errors.username = ex.response.data.detail[0];
@@ -89,6 +96,8 @@ class SignUpForm extends Form {
         const errors = { ...this.state.errors };
         errors.email = "Check your internet connection and try again";
         spinner.classList.add("vanish");
+
+        console.log(ex.response.data, "hello");
         this.setState({ errors });
       }
     }
@@ -97,6 +106,16 @@ class SignUpForm extends Form {
   render() {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
+    }
+
+    if (this.state.errorMessage) {
+      ErrorToast(
+        <div className='flex flex-col'>
+          {this.state.errorMessage.map((err) => (
+            <p key={err}>{err}</p>
+          ))}
+        </div>
+      );
     }
 
     return (
