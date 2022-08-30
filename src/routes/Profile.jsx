@@ -105,7 +105,7 @@ function Profile({ match }, props) {
             <div className="mx-3 mt-2 text-sm sm:text-base">
               <div className=" flex items-start">
                 <img
-                  src={`https://api.faraday.africa${user?.profile.profile_pic}`}
+                  src={user?.profile.profile_pic}
                   alt="profile"
                   className="h-16 w-16 rounded-full "
                 />

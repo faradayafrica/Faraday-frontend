@@ -108,7 +108,7 @@ const Question = (props) => {
         className="w-14 mr-2 cursor-pointer"
       >
         <img
-          src={`https://api.faraday.africa${question?.user.profile_pic}`}
+          src={question?.user.profile_pic}
           className="w-12 h-12 rounded-full "
           style={{ objectFit: "cover" }}
           alt={`${question?.user.firstname} ${question?.user.lastname}`}
