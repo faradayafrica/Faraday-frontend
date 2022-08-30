@@ -10,28 +10,31 @@ import {
   SuccessToast,
   ErrorToast,
 } from "../components/common/CustomToast.js";
-import axios from "axios";
 
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
   const [loader, setLoader] = useState(true);
 
-  const uniqueQuestions = Array.from(new Set(questions.map((a) => a.id))).map(
-    (id) => {
-      return questions.find((a) => a.id === id);
-    }
-  );
-
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
 
-  const handleFollow = (username) => {
+  const handleFollow = (user) => {
     const apiEndpoint =
-      process.env.REACT_APP_API_URL + `/users/${username}/follow/`;
+      process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
+
+    const clonedQuestions = [...questions];
+    const userQuestions = clonedQuestions.filter((q) => q.user.id === user.id);
 
     try {
-      const promise = http.post(apiEndpoint);
+      const promise = http.post(apiEndpoint).then((resp) => {
+        userQuestions.map(
+          (question) =>
+            (question.user.is_following = !question.user.is_following)
+        );
+      });
+      const msg = user.is_following ? `Unfollowed` : "Followed";
+
       PromiseToast(
-        `${username} followed`,
+        `${msg} ${user.username}`,
         "An error occurred, Try again",
         promise
       );
@@ -65,26 +68,17 @@ const Qfeed = (props) => {
 
   const retry = async () => {
     setLoader(true);
-    try {
-      const { data } = await http.get(apiEndpoint);
-      setQuestions(data.results);
-    } catch (err) {
-      console.warn(err.message);
-      setLoader(false);
-    }
+    fetchQuestions(apiEndpoint);
+    window.addEventListener("scroll", handleScroll);
   };
 
-  let nextQuestionPageUrl = ""; //This is a placeholder value to keep the value truthy
-  console.log("NEW TOTAL", questions.length);
+  let nextQuestionPageUrl = "";
+  const questionRequestQueue = [];
 
   const fetchQuestions = async (url) => {
-    let source = axios.CancelToken.source();
-
+    questionRequestQueue.push(url);
     try {
-      // console.log("Its:", url);
-      const { data } = await http.get(url, {
-        cancelToken: source.token,
-      });
+      const { data } = await http.get(url);
       setQuestions((prevQuestions) => [...prevQuestions, ...data.results]);
       setLoader(false);
       nextQuestionPageUrl = data.next;
@@ -92,21 +86,21 @@ const Qfeed = (props) => {
       setLoader(false);
       throw err;
     }
-
-    return () => {
-      // source.cancel();
-      source.current.cancel();
-    };
   };
 
   const handleScroll = (e) => {
     if (nextQuestionPageUrl) {
       if (
-        e.target.documentElement.scrollTop + window.innerHeight + 20 >=
+        e.target.documentElement.scrollTop + window.innerHeight + 500 >=
         e.target.documentElement.scrollHeight
       ) {
-        fetchQuestions(nextQuestionPageUrl);
-        setLoader(true);
+        if (!questionRequestQueue.includes(nextQuestionPageUrl)) {
+          console.log(">", questionRequestQueue);
+          fetchQuestions(nextQuestionPageUrl);
+          setLoader(true);
+        } else {
+          console.warn("Duplicate request blocked");
+        }
       }
     }
   };
@@ -118,7 +112,6 @@ const Qfeed = (props) => {
 
   return (
     <>
-      {/* <div className="h-40 bg-[#D8000C] w-full"></div> */}
       <SideNav {...props} />
 
       <div className="w-full route-wrapper">
@@ -127,7 +120,7 @@ const Qfeed = (props) => {
             path="/qfeed/:id"
             render={(props) => (
               <DiscussionPage
-                questions={uniqueQuestions}
+                questions={questions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}
                 onDeleteQuestion={deleteQuestion}
@@ -139,7 +132,7 @@ const Qfeed = (props) => {
             path="/"
             render={(props) => (
               <TimeLine
-                questions={uniqueQuestions}
+                questions={questions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}
                 onDeleteQuestion={deleteQuestion}

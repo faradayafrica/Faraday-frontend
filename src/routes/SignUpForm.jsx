@@ -4,10 +4,14 @@ import Myspinner from "../components/styledComponents/Spinner";
 import faraday from "../images/logo.svg";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
+import { Redirect } from "react-router";
+import UserContext from "../context/userContext";
 
 import * as userService from "../services/userService";
 
 class SignUpForm extends Form {
+  static contextType = UserContext;
+
   state = {
     data: {
       fname: "",
@@ -18,6 +22,7 @@ class SignUpForm extends Form {
       confirmPassword: "",
     },
     errors: { email: "" },
+    redirect: null,
   };
 
   schema = {
@@ -35,76 +40,34 @@ class SignUpForm extends Form {
       }),
   };
 
-  render() {
-    return (
-      <div className="login-page">
-        {/* the spinner */}
-        <div id="spinnerContainer" className="spinner-container vanish">
-          <Myspinner />
-        </div>
-
-        <div className="progress-container mx-auto mt-3">
-          <div id="progressBar" className="progress vanish"></div>
-        </div>
-
-        <div className="form-container">
-          <div className="logo-container">
-            <img className="logo" src={faraday} alt="faraday" />
-          </div>
-          <h3 className="form-title">Create your account</h3>
-
-          <form onSubmit={this.handleSubmit}>
-            <div className="horinzontal-align label-group">
-              {this.renderInput("fname", "First name")}
-              {this.renderInput("lname", "Last name")}
-            </div>
-
-            {this.renderInput("username", "Username")}
-            {this.renderInput("email", "Email")}
-
-            {/* <div className='horinzontal-align label-group mb-3'> */}
-            {this.renderInput("password", "Password", "password")}
-            {this.renderInput("confirmPassword", "Confirm", "password")}
-            {/* </div> */}
-
-            {this.renderButton("Sign up")}
-          </form>
-
-          <p className="faraday-terms mt-2 text-sm">
-            By clicking the sign up button, you agree to our
-            <Link
-              to="/terms-and-condition"
-              className="link-grey icon-container-secondary "
-            >
-              Terms and Condition
-            </Link>
-            and
-            <Link
-              to="/privacy-policy"
-              className="link-grey icon-container-secondary "
-            >
-              Privacy Policy
-            </Link>
-          </p>
-        </div>
-        {this.renderRedirectBtn("Login", "login", "Already have an account?")}
-      </div>
-    );
-  }
-
   doSubmit = async () => {
     //Activate spinner
     const spinner = document.getElementById("spinnerContainer");
     const progress = document.getElementById("progressBar");
     spinner.classList.remove("vanish");
 
+    const { setUser } = this.context;
+
     // call the backend
     try {
       const { data } = this.state;
-      await userService.register(data);
+      await userService
+        .register(data)
+        .then((res) => {
+          this.setState({ ...this.state, redirect: "/confirm-email" });
+          setUser(res.data);
+        })
+        .catch((err) => {
+          alert(Object.stringify(err.response.data));
+          console.log(err.response.data);
+        })
+        .finally(() => {
+          spinner.classList.add("vanish");
+        });
+
       progress.classList.remove("vanish");
       progress.classList.add("progress-25");
-      window.location = "/confirm-email";
+
       spinner.classList.add("vanish");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
@@ -130,6 +93,67 @@ class SignUpForm extends Form {
       }
     }
   };
+
+  render() {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />;
+    }
+
+    return (
+      <div className='login-page'>
+        {/* the spinner */}
+        <div id='spinnerContainer' className='spinner-container vanish'>
+          <Myspinner />
+        </div>
+
+        <div className='progress-container mx-auto mt-3'>
+          <div id='progressBar' className='progress vanish'></div>
+        </div>
+
+        <div className='form-container'>
+          <div className='logo-container'>
+            <img className='logo' src={faraday} alt='faraday' />
+          </div>
+          <h3 className='form-title'>Create your account</h3>
+
+          <form onSubmit={this.handleSubmit}>
+            <div className='horinzontal-align label-group'>
+              {this.renderInput("fname", "First name")}
+              {this.renderInput("lname", "Last name")}
+            </div>
+
+            {this.renderInput("username", "Username")}
+            {this.renderInput("email", "Email")}
+
+            {/* <div className='horinzontal-align label-group mb-3'> */}
+            {this.renderInput("password", "Password", "password")}
+            {this.renderInput("confirmPassword", "Confirm", "password")}
+            {/* </div> */}
+
+            {this.renderButton("Sign up")}
+          </form>
+
+          <p className='faraday-terms mt-2 text-sm'>
+            By clicking the sign up button, you agree to our
+            <Link
+              to='/terms-and-condition'
+              className='link-grey icon-container-secondary '
+            >
+              Terms and Condition
+            </Link>
+            and
+            <Link
+              to='/privacy-policy'
+              className='link-grey icon-container-secondary '
+            >
+              Privacy Policy
+            </Link>
+          </p>
+        </div>
+        {this.renderRedirectBtn("Login", "login", "Already have an account?")}
+      </div>
+    );
+  }
 }
 
 export default SignUpForm;

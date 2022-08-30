@@ -105,6 +105,8 @@ function SideNav({ history }) {
     },
   ]);
 
+  // console.log(currentUser);
+
   const handleLink = (item) => {
     // history.replace(`/${item}`);
     const allLinks = links.map((link) => {

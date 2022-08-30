@@ -7,6 +7,9 @@ export async function SuccessToast(message) {
       padding: "16px",
       color: "#2C974B",
       backgroundColor: "#F1FBEF",
+      fontSize: "14px",
+      paddingTop: "8px",
+      paddingBottom: "8px"
     },
     iconTheme: {
       primary: "#05b851",
@@ -22,6 +25,9 @@ export async function ErrorToast(message) {
       padding: "16px",
       color: "#2C974B",
       backgroundColor: "#F1FBEF",
+      fontSize: "14px",
+      paddingTop: "8px",
+      paddingBottom: "8px"
     },
     iconTheme: {
       primary: "#05b851",
@@ -41,6 +47,9 @@ export async function PromiseToast(success_msg, error_msg, promise) {
       padding: "16px",
       color: "#2C974B",
       backgroundColor: "#F1FBEF",
+      fontSize: "14px",
+      paddingTop: "8px",
+      paddingBottom: "8px"
     },
     iconTheme: {
       primary: "#05b851",

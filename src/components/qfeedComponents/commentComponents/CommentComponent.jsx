@@ -22,7 +22,7 @@ const CommentComponent = ({
 
   let commentClasses = "pt-3 pb-1 flex relative pl-3 pr-2";
 
-  commentClasses += is_solution ? " bg-[#F1FBEF77] " : "";
+  commentClasses += is_solution ? " bg-[#F1FBEF66] is_solution  mb-4 " : "";
 
   return (
     <div className={commentClasses}>

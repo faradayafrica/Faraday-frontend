@@ -2,7 +2,11 @@ import { useState } from "react";
 import CommentComponent from "./CommentComponent";
 import Loader from "../../styledComponents/Loader";
 import { getCurrentUser } from "../../../services/authService";
-import { SuccessToast, ErrorToast } from "../../common/CustomToast";
+import {
+  SuccessToast,
+  ErrorToast,
+  PromiseToast,
+} from "../../common/CustomToast";
 
 import http from "../../../services/httpService";
 import AddComment from "./AddComment";
@@ -14,7 +18,7 @@ const Comments = ({
   questionid,
   onUpdateComments,
   questionOwner,
-  onFollowUser,
+  fetchThisQuestion,
   onMarkSolution,
 }) => {
   const [comment, setComment] = useState("");
@@ -25,6 +29,35 @@ const Comments = ({
       return comments.find((a) => a.id === id);
     }
   );
+
+  const handleFollow = (user) => {
+    const apiEndpoint =
+      process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
+
+    const clonedQuestions = [...uniqueComments];
+    const userComments = clonedQuestions.filter(
+      (comment) => comment.user.id === user.id
+    );
+
+    try {
+      const promise = http.post(apiEndpoint).then((resp) => {
+        fetchThisQuestion();
+        userComments.map(
+          (question) =>
+            (question.user.is_following = !question.user.is_following)
+        );
+      });
+      const msg = user.is_following ? `Unfollowed` : "Followed";
+
+      PromiseToast(
+        `${msg} ${user.username}`,
+        "An error occurred, Try again",
+        promise
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const apiEndpoint =
     process.env.REACT_APP_API_URL + "/qfeed/que/create_comment/";
@@ -99,7 +132,7 @@ const Comments = ({
                 questionOwner={questionOwner}
                 currentUser={currentUser}
                 onDeleteComment={deleteComment}
-                onFollowUser={onFollowUser}
+                onFollowUser={handleFollow}
                 is_solution={true}
                 onMarkSolution={onMarkSolution}
               />
@@ -115,24 +148,41 @@ const Comments = ({
                 questionOwner={questionOwner}
                 currentUser={currentUser}
                 onDeleteComment={deleteComment}
-                onFollowUser={onFollowUser}
+                onFollowUser={handleFollow}
                 onMarkSolution={onMarkSolution}
               />
             ))}
-          <div className="h-32 w-full bg-white "></div>
         </>
       ) : (
         <>
-          {commentLoader ? (
-            <div className="m-3">
-              <Loader msg="Fetching comments..." />
+          {!commentLoader && (
+            <div className="p-3 bg-white">
+              <div className="p-3 rounded-lg border bg-background  text-center">
+                <p className="text-xs sm:text-base m-0 ">
+                  No comments yet! Be the first to comment on this question
+                </p>
+              </div>
             </div>
-          ) : (
-            <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
-              <p className="text-xs sm:text-base m-0 ">
-                No comments yet! Be the first to comment on this question
-              </p>
-            </div>
+          )}
+        </>
+      )}
+
+      {commentLoader ? (
+        <div className="p-3">
+          <Loader msg="fetching comments..." />
+          <div className="h-[65px] w-full sm:hidden"></div>
+        </div>
+      ) : (
+        <>
+          {!comments.length == 0 && (
+            <>
+              <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
+                <p className="text-xs sm:text-base m-0 ">
+                  No more comment to fetch
+                </p>
+              </div>
+              <div className="h-[65px] w-full sm:hidden"></div>
+            </>
           )}
         </>
       )}
