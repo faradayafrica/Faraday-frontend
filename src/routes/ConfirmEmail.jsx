@@ -6,6 +6,7 @@ import faraday from "../images/logo.svg";
 import auth from "../services/authService";
 import UserContext from "../context/userContext";
 import { Redirect } from "react-router-dom";
+import { PromiseToast } from "../components/common/CustomToast";
 
 class ConfirmEmail extends Form {
   static contextType = UserContext;
@@ -14,6 +15,7 @@ class ConfirmEmail extends Form {
     data: { confirmationCode: "" },
     errors: {},
     redirect: null,
+    resend: false,
   };
 
   schema = {
@@ -35,16 +37,17 @@ class ConfirmEmail extends Form {
     cannotSend.classList.add("vanish");
   };
 
-  doResend = async () => {
+  doResend = () => {
     const spinner = document.getElementById("spinnerContainer");
     spinner.classList.remove("vanish");
 
-    const popup = document.getElementById("popupContainer");
-
     try {
-      await auth.resendEmailConfirmation();
+      let resend = this.state.resend;
+      const promise = auth.resendEmailConfirmation();
       spinner.classList.add("vanish");
-      popup.classList.remove("vanish");
+      PromiseToast("Code resent", "Can't resend at the moment", promise);
+      resend = true;
+      this.setState({ resend });
     } catch (ex) {
       if (ex.response && ex.response.status >= 400) {
         const errors = { ...this.state.errors };
@@ -106,51 +109,42 @@ class ConfirmEmail extends Form {
     }
 
     return (
-      <div className='login-page'>
-        <div
-          id='popupContainer'
-          onClick={this.hidePopup}
-          className='popup vanish'
-        >
-          <div className='alert alert-success my-1 mx-auto  text-center'>
-            <p className='m-4 alert-body'>Code Sent!</p>{" "}
-          </div>
-        </div>
-        <div id='cannotSend' onClick={this.hidePopup} className='popup vanish'>
-          <div className='alert alert-warning my-1 mx-auto  text-center'>
-            <p className='m-4 alert-body'>Can't send code at the moment!</p>
+      <div className="login-page">
+        <div id="cannotSend" onClick={this.hidePopup} className="popup vanish">
+          <div className="alert alert-warning my-1 mx-auto  text-center">
+            <p className="m-4 alert-body">Can't send code at the moment!</p>
           </div>
         </div>
         {/* the spinner */}
-        <div id='spinnerContainer' className='spinner-container vanish'>
+        <div id="spinnerContainer" className="spinner-container vanish">
           <Myspinner />
         </div>
-        <div className='progress-container mx-auto mt-3'>
-          <div id='progressBar' className='progress progress-25'></div>
+        <div className="progress-container mx-auto mt-3">
+          <div id="progressBar" className="progress progress-25"></div>
         </div>
-        <div className='form-container'>
-          <div className='logo-container'>
-            <img className='logo' src={faraday} alt='faraday' />
+        <div className="form-container">
+          <div className="logo-container">
+            <img className="logo" src={faraday} alt="faraday" />
           </div>
-          <h3 className='form-title'>We sent you a code</h3>
-          <p className='mx-3 extra-info text-md'>
+          <h3 className="form-title">We sent you a code</h3>
+          <p className="mx-3 extra-info text-md">
             enter it below to confirm your email.
           </p>
 
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
-            <div className='form-group log' style={{ marginTop: "1.5rem" }}>
-              <div className='form-group log'>
-                <label className='sr-only' htmlFor='email'>
+            <div className="form-group log" style={{ marginTop: "1.5rem" }}>
+              <div className="form-group log">
+                <label className="sr-only" htmlFor="email">
                   email
                 </label>
                 <input
                   // autoFocus
                   readOnly
                   value={auth.getCurrentUser().email || user.email}
-                  name='email'
-                  id='email'
-                  className='form-control static-input'
+                  name="email"
+                  id="email"
+                  className="form-control static-input"
                 />
               </div>
             </div>
@@ -158,31 +152,24 @@ class ConfirmEmail extends Form {
             {this.renderButton("Confirm my email")}
           </form>
         </div>
-        <p className='mx-auto text-center mt-3 text-md'>
-          Didn't get a code,
-          <span
-            onClick={this.doResend}
-            className='icon-container-secondary link-brand bubbly-button'
-          >
-            resend code.
-          </span>
-        </p>
+        {!this.state.resend && (
+          <p className="mx-auto text-center mt-3 text-md">
+            Didn't get a code,
+            <span
+              onClick={this.doResend}
+              className="icon-container-secondary link-brand bubbly-button"
+            >
+              resend code.
+            </span>
+          </p>
+        )}
 
         {/* Replaces the resend button for 5secs after it has been clicked */}
-        <p className='mx-auto text-center mt-3 text-md vanish'>
-          Didn't get a code,
-          <span
-            id='test'
-            onClick={() => {
-              const popup = document.getElementById("cannotSend");
-              popup.classList.remove("vanish");
-            }}
-            className='icon-container-secondary link-brand bubbly-button'
-          >
-            {console.log(new Date())}
-            Hello
-          </span>
-        </p>
+        {this.state.resend && (
+          <p className="mx-auto text-center mt-3 text-md">
+            We have resent the confirmation code!
+          </p>
+        )}
       </div>
     );
   }

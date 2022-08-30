@@ -58,21 +58,20 @@ class SignUpForm extends Form {
         .then((res) => {
           setUser(res.data);
           this.setState({ ...this.state, redirect: "/confirm-email" });
+          progress.classList.remove("vanish");
+          progress.classList.add("progress-25");
         })
         .catch((err) => {
-          // alert(JSON.stringify(err.response.data));
-          console.log(err.response.data.message);
+          console.warn(err.response.data.message);
           this.setState({
             ...this.state,
             errorMessage: err.response.data.message,
           });
+          ErrorToast(`Sorry! ${err.response.data.message[0]}`);
         })
         .finally(() => {
           spinner.classList.add("vanish");
         });
-
-      progress.classList.remove("vanish");
-      progress.classList.add("progress-25");
 
       spinner.classList.add("vanish");
     } catch (ex) {
@@ -108,35 +107,25 @@ class SignUpForm extends Form {
       return <Redirect to={this.state.redirect} />;
     }
 
-    if (this.state.errorMessage) {
-      ErrorToast(
-        <div className='flex flex-col'>
-          {this.state.errorMessage.map((err) => (
-            <p key={err}>{err}</p>
-          ))}
-        </div>
-      );
-    }
-
     return (
-      <div className='login-page'>
+      <div className="login-page">
         {/* the spinner */}
-        <div id='spinnerContainer' className='spinner-container vanish'>
+        <div id="spinnerContainer" className="spinner-container vanish">
           <Myspinner />
         </div>
 
-        <div className='progress-container mx-auto mt-3'>
-          <div id='progressBar' className='progress vanish'></div>
+        <div className="progress-container mx-auto mt-3">
+          <div id="progressBar" className="progress vanish"></div>
         </div>
 
-        <div className='form-container'>
-          <div className='logo-container'>
-            <img className='logo' src={faraday} alt='faraday' />
+        <div className="form-container">
+          <div className="logo-container">
+            <img className="logo" src={faraday} alt="faraday" />
           </div>
-          <h3 className='form-title'>Create your account</h3>
+          <h3 className="form-title">Create your account</h3>
 
           <form onSubmit={this.handleSubmit}>
-            <div className='horinzontal-align label-group'>
+            <div className="horinzontal-align label-group">
               {this.renderInput("fname", "First name")}
               {this.renderInput("lname", "Last name")}
             </div>
@@ -152,18 +141,18 @@ class SignUpForm extends Form {
             {this.renderButton("Sign up")}
           </form>
 
-          <p className='faraday-terms mt-2 text-sm'>
+          <p className="faraday-terms mt-2 text-sm">
             By clicking the sign up button, you agree to our
             <Link
-              to='/terms-and-condition'
-              className='link-grey icon-container-secondary '
+              to="/terms-and-condition"
+              className="link-grey icon-container-secondary "
             >
               Terms and Condition
             </Link>
             and
             <Link
-              to='/privacy-policy'
-              className='link-grey icon-container-secondary '
+              to="/privacy-policy"
+              className="link-grey icon-container-secondary "
             >
               Privacy Policy
             </Link>
