@@ -32,7 +32,7 @@ const CommentComponent = ({
         className="w-14 mr-2 cursor-pointer"
       >
         <img
-          src={`https://api.faraday.africa${comment?.user.profile_pic}`}
+          src={comment?.user.profile_pic}
           className="w-12 h-12 rounded-full mr-3 "
           style={{ objectFit: "cover" }}
           alt={`${comment?.user.firstname} ${comment?.user.lastname}`}
