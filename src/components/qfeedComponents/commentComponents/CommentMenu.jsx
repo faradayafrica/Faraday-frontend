@@ -56,9 +56,17 @@ const CommentMenu = ({
                     hideMenu();
                   }}
                 >
-                  <img className="mr-2" src={follow} alt="follow" />{" "}
-                  {selectedComment?.user.is_following ? "Unfollow" : "Follow"} @
-                  {selectedComment?.user.username}
+                  {selectedComment?.user.is_following ? (
+                    <>
+                      <img className="mr-2" src={unfollow} alt="unfollow" />{" "}
+                      Unfollow
+                    </>
+                  ) : (
+                    <>
+                      <img className="mr-2" src={follow} alt="follow" /> Follow
+                    </>
+                  )}{" "}
+                  @{selectedComment?.user.username}
                 </button>
               ) : (
                 ""
@@ -125,9 +133,17 @@ const CommentMenu = ({
                   hideMenu();
                 }}
               >
-                <img className="mr-2" src={follow} alt="follow" />{" "}
-                {selectedComment?.user.is_following ? "Unfollow" : "Follow"} @
-                {selectedComment?.user.username}
+                {selectedComment?.user.is_following ? (
+                  <>
+                    <img className="mr-2" src={unfollow} alt="unfollow" />{" "}
+                    Unfollow
+                  </>
+                ) : (
+                  <>
+                    <img className="mr-2" src={follow} alt="follow" /> Follow
+                  </>
+                )}{" "}
+                @{selectedComment?.user.username}
               </button>
             ) : (
               ""

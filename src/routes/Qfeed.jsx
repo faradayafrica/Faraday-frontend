@@ -23,18 +23,15 @@ const Qfeed = (props) => {
 
     const clonedQuestions = [...questions];
     const userQuestions = clonedQuestions.filter((q) => q.user.id === user.id);
-    console.log("FILTERED", userQuestions);
 
     try {
       const promise = http.post(apiEndpoint).then((resp) => {
-        console.log("Bazzi");
         userQuestions.map(
           (question) =>
             (question.user.is_following = !question.user.is_following)
         );
-        return true;
       });
-      const msg = user.is_following ? `Unfollowed` : "followed";
+      const msg = user.is_following ? `Unfollowed` : "Followed";
 
       PromiseToast(
         `${msg} ${user.username}`,
@@ -94,7 +91,7 @@ const Qfeed = (props) => {
   const handleScroll = (e) => {
     if (nextQuestionPageUrl) {
       if (
-        e.target.documentElement.scrollTop + window.innerHeight + 1000 >=
+        e.target.documentElement.scrollTop + window.innerHeight + 500 >=
         e.target.documentElement.scrollHeight
       ) {
         if (!questionRequestQueue.includes(nextQuestionPageUrl)) {

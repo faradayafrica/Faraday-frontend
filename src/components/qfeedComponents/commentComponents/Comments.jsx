@@ -18,6 +18,7 @@ const Comments = ({
   questionid,
   onUpdateComments,
   questionOwner,
+  fetchThisQuestion,
   onMarkSolution,
 }) => {
   const [comment, setComment] = useState("");
@@ -37,18 +38,16 @@ const Comments = ({
     const userComments = clonedQuestions.filter(
       (comment) => comment.user.id === user.id
     );
-    console.log("FILTERED", userComments);
 
     try {
       const promise = http.post(apiEndpoint).then((resp) => {
-        console.log("Bazzi");
+        fetchThisQuestion();
         userComments.map(
           (question) =>
             (question.user.is_following = !question.user.is_following)
         );
-        return true;
       });
-      const msg = user.is_following ? `Unfollowed` : "followed";
+      const msg = user.is_following ? `Unfollowed` : "Followed";
 
       PromiseToast(
         `${msg} ${user.username}`,
