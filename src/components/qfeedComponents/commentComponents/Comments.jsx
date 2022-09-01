@@ -2,7 +2,11 @@ import { useState } from "react";
 import CommentComponent from "./CommentComponent";
 import Loader from "../../styledComponents/Loader";
 import { getCurrentUser } from "../../../services/authService";
-import { SuccessToast, ErrorToast } from "../../common/CustomToast";
+import {
+  SuccessToast,
+  ErrorToast,
+  PromiseToast,
+} from "../../common/CustomToast";
 
 import http from "../../../services/httpService";
 import AddComment from "./AddComment";
@@ -14,7 +18,7 @@ const Comments = ({
   questionid,
   onUpdateComments,
   questionOwner,
-  onFollowUser,
+  fetchThisQuestion,
   onMarkSolution,
 }) => {
   const [comment, setComment] = useState("");
@@ -25,6 +29,35 @@ const Comments = ({
       return comments.find((a) => a.id === id);
     }
   );
+
+  const handleFollow = (user) => {
+    const apiEndpoint =
+      process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
+
+    const clonedQuestions = [...uniqueComments];
+    const userComments = clonedQuestions.filter(
+      (comment) => comment.user.id === user.id
+    );
+
+    try {
+      const promise = http.post(apiEndpoint).then((resp) => {
+        fetchThisQuestion();
+        userComments.map(
+          (question) =>
+            (question.user.is_following = !question.user.is_following)
+        );
+      });
+      const msg = user.is_following ? `Unfollowed` : "Followed";
+
+      PromiseToast(
+        `${msg} ${user.username}`,
+        "An error occurred, Try again",
+        promise
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const apiEndpoint =
     process.env.REACT_APP_API_URL + "/qfeed/que/create_comment/";
@@ -99,7 +132,7 @@ const Comments = ({
                 questionOwner={questionOwner}
                 currentUser={currentUser}
                 onDeleteComment={deleteComment}
-                onFollowUser={onFollowUser}
+                onFollowUser={handleFollow}
                 is_solution={true}
                 onMarkSolution={onMarkSolution}
               />
@@ -115,7 +148,7 @@ const Comments = ({
                 questionOwner={questionOwner}
                 currentUser={currentUser}
                 onDeleteComment={deleteComment}
-                onFollowUser={onFollowUser}
+                onFollowUser={handleFollow}
                 onMarkSolution={onMarkSolution}
               />
             ))}

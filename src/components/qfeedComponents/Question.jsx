@@ -55,7 +55,7 @@ const Question = (props) => {
     const updatedQuestion = { ...question };
 
     const clonedQuestions = [...props.questions];
-    var index = clonedQuestions.findIndex((q) => q.id === question.id);
+    const index = clonedQuestions.findIndex((q) => q.id === question.id);
 
     hideButtonPannel();
 
@@ -108,7 +108,7 @@ const Question = (props) => {
         className="w-14 mr-2 cursor-pointer"
       >
         <img
-          src={`https://api.faraday.africa${question?.user.profile_pic}`}
+          src={question?.user.profile_pic}
           className="w-12 h-12 rounded-full "
           style={{ objectFit: "cover" }}
           alt={`${question?.user.firstname} ${question?.user.lastname}`}
@@ -161,12 +161,28 @@ const Question = (props) => {
           </Link>
         </div>
 
-        {/* QUestion reaction */}
         <div className=" flex items-center h-12">
-          {question.likes !== 0 ? (
+          {/* Temporary Fix */}
+          <button
+            className={loveClasses}
+            onClick={() => handleLike(question.id)}
+          >
+            {question.liked ? (
+              <img className="h-4 w-4" src={redLove} alt="take back reaction" />
+            ) : (
+              <img className="h-4 w-4" src={love} alt="react to question" />
+            )}
+            <span className="ml-1 font-medium text-sm">
+              {question.liked ? `${question.likes}` : ""}
+            </span>
+          </button>
+
+          {/* >=1 to become active again */}
+          {question.likes == -1 ? (
             <button
               className={loveClasses}
               onClick={() => handleLike(question.id)}
+              disabled
             >
               {question.liked ? (
                 <img
@@ -184,12 +200,16 @@ const Question = (props) => {
           )}
 
           <button
-            onClick={() => handleButtonPannel()}
+            // onClick={() => handleButtonPannel()}
             className={smileyClasses}
           >
-            <img className="h-4 w-4" src={smiley} alt="engage with question" />
+            <img
+              className="h-4 w-4 opacity-40"
+              src={smiley}
+              alt="engage with question"
+            />
           </button>
-          {/* Hidden engagement buttons can be found here */}
+
           {isButtonPannel ? (
             <span
               onClick={() => hideButtonPannel()}
@@ -237,6 +257,7 @@ const Question = (props) => {
             ""
           )}
         </div>
+
         <Link to={`/qfeed/${question.id}`} style={{ textDecoration: "none" }}>
           <div className="comment text-base sm:text-lg font-semibold text-brand py-[14px] bg-brnd-highlight flex justify-between">
             {question.comments === 0 ? "Leave a comment" : ""}{" "}

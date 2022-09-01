@@ -11,14 +11,13 @@ import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
 import ellipses from "../../images/qfeed/ellipses.svg";
 import QuestionMenu from "./QuestionMenu";
-import { SuccessToast, ErrorToast } from "../common/CustomToast";
+import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
 
 const DiscussionPage = ({
   match,
   history,
   questions,
   handleUpdatedQuestions,
-  onFollowUser,
   onDeleteQuestion,
 }) => {
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
@@ -32,6 +31,35 @@ const DiscussionPage = ({
   const [loader, setLoader] = useState(true);
   const [commentLoader, setCommentLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
+
+  const handleFollow = (user) => {
+    const apiEndpoint =
+      process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
+
+    const clonedQuestions = [...comments];
+    const userComments = clonedQuestions.filter(
+      (comment) => comment.user.id === user.id
+    );
+
+    try {
+      const promise = http.post(apiEndpoint).then((resp) => {
+        fetchThisQuestion();
+        userComments.map(
+          (question) =>
+            (question.user.is_following = !question.user.is_following)
+        );
+      });
+      const msg = user.is_following ? `Unfollowed` : "Followed";
+
+      PromiseToast(
+        `${msg} ${user.username}`,
+        "An error occurred, Try again",
+        promise
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const handleMarkSolution = async (postid, commentid) => {
     const commentsClone = [...comments];
@@ -193,8 +221,8 @@ const DiscussionPage = ({
   };
 
   useEffect(() => {
-    fetchThisQuestion();
     fetchComments(commentsApiEndpoint);
+    fetchThisQuestion();
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
@@ -226,7 +254,7 @@ const DiscussionPage = ({
                   className="w-14 mr-2 cursor-pointer float-left"
                 >
                   <img
-                    src={`https://api.faraday.africa${question?.user.profile_pic}`}
+                    src={question?.user.profile_pic}
                     className="w-12 h-12 rounded-full mr-2 "
                     style={{ objectFit: "cover" }}
                     alt={question?.user.firstname}
@@ -260,7 +288,7 @@ const DiscussionPage = ({
                   questionMenu={questionMenu}
                   question={question}
                   toggleQuestionMenu={toggleQuestionMenu}
-                  onFollowUser={onFollowUser}
+                  onFollowUser={handleFollow}
                   onDeleteQuestion={handleQuestionDelete}
                 />
 
@@ -321,8 +349,8 @@ const DiscussionPage = ({
                 commentLoader={commentLoader}
                 questionOwner={question?.user}
                 onUpdateComments={updateComments}
-                onFollowUser={onFollowUser}
                 onMarkSolution={handleMarkSolution}
+                fetchThisQuestion={fetchThisQuestion}
                 match={match}
               />
             </div>

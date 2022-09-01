@@ -66,13 +66,21 @@ const QuestionMenu = ({
                 <button
                   className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                   onClick={() => {
-                    onFollowUser(question?.user.username);
+                    onFollowUser(question?.user);
                     hideMenu();
                   }}
                 >
-                  <img className="mr-2" src={follow} alt="follow" />
-                  {question?.user.is_following ? "Unfollow" : "Follow"} @
-                  {question?.user.username}
+                  {question?.user.is_following ? (
+                    <>
+                      <img className="mr-2" src={unfollow} alt="unfollow" />{" "}
+                      Unfollow
+                    </>
+                  ) : (
+                    <>
+                      <img className="mr-2" src={follow} alt="follow" /> Follow
+                    </>
+                  )}{" "}
+                  @{question?.user.username}
                 </button>
               </>
             )}
@@ -120,13 +128,22 @@ const QuestionMenu = ({
                   <button
                     className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                     onClick={() => {
-                      onFollowUser(question?.user.username);
+                      onFollowUser(question?.user);
                       hideMenu();
                     }}
                   >
-                    <img className="mr-2" src={follow} alt="follow" />
-                    {question?.user.is_following ? "Unfollow" : "Follow"} @
-                    {question?.user.username}
+                    {question?.user.is_following ? (
+                      <>
+                        <img className="mr-2" src={unfollow} alt="unfollow" />{" "}
+                        Unfollow
+                      </>
+                    ) : (
+                      <>
+                        <img className="mr-2" src={follow} alt="follow" />{" "}
+                        Follow
+                      </>
+                    )}{" "}
+                    @{question?.user.username}
                   </button>
                 </>
               )}
