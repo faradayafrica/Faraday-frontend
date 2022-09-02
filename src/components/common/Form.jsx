@@ -108,14 +108,14 @@ class Form extends Component {
   };
 
   renderButton(label, isFluid) {
-    console.log(this.validate);
+    console.log(this.validate());
     return <PrimaryButton cta={label} disabled={this.validate()} wide />;
   }
 
   renderRedirectBtn(label, link, msg) {
     return (
       <div
-        className="mx-auto text-center mt-3 text-md"
+        className='mx-auto text-center mt-3 text-md'
         style={{ maxWidth: "425px", alignText: "center" }}
       >
         <p>
@@ -123,7 +123,7 @@ class Form extends Component {
           <Link to={`/${link}`} style={{ textDecoration: "none" }}>
             {" "}
             <span
-              className="icon-container-secondary link-brand bubbly-button"
+              className='icon-container-secondary link-brand bubbly-button'
               style={{}}
             >
               {label} here
@@ -200,7 +200,7 @@ class Form extends Component {
 
     return (
       <TextArea
-        type="text"
+        type='text'
         name={name}
         rows={rows}
         value={data[name]}
@@ -217,27 +217,27 @@ class Form extends Component {
     const { data } = this.state;
 
     return (
-      <div className="form-group mt-4 ">
+      <div className='form-group mt-4 '>
         <img
-          className="add-profile-btn"
+          className='add-profile-btn'
           src={data.image}
-          id="img"
-          alt=""
+          id='img'
+          alt=''
           onClick={(event) => {
             this.fileInputRef.current.click();
           }}
         />
 
         <input
-          type="file"
-          name="image-upload"
+          type='file'
+          name='image-upload'
           id={name}
-          accept="image/*"
+          accept='image/*'
           onChange={this.imageHandler}
           ref={this.fileInputRef}
           style={{ display: "none" }}
         />
-        <label htmlFor={name} className="sr-only">
+        <label htmlFor={name} className='sr-only'>
           Add Image
         </label>
       </div>

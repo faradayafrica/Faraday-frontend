@@ -77,7 +77,7 @@ class SignUpForm extends Form {
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
-        console.log(ex.response.data, "hello");
+        // console.log(ex.response.data, "hello");
 
         if (ex.response.data.detail[0].indexOf("username") !== -1) {
           errors.username = ex.response.data.detail[0];
@@ -96,7 +96,7 @@ class SignUpForm extends Form {
         errors.email = "Check your internet connection and try again";
         spinner.classList.add("vanish");
 
-        console.log(ex.response.data, "hello");
+        // console.log(ex.response.data, "hello");
         this.setState({ errors });
       }
     }
@@ -108,24 +108,24 @@ class SignUpForm extends Form {
     }
 
     return (
-      <div className="login-page">
+      <div className='login-page'>
         {/* the spinner */}
-        <div id="spinnerContainer" className="spinner-container vanish">
+        <div id='spinnerContainer' className='spinner-container vanish'>
           <Myspinner />
         </div>
 
-        <div className="progress-container mx-auto mt-3">
-          <div id="progressBar" className="progress vanish"></div>
+        <div className='progress-container mx-auto mt-3'>
+          <div id='progressBar' className='progress vanish'></div>
         </div>
 
-        <div className="form-container">
-          <div className="logo-container">
-            <img className="logo" src={faraday} alt="faraday" />
+        <div className='form-container'>
+          <div className='logo-container'>
+            <img className='logo' src={faraday} alt='faraday' />
           </div>
-          <h3 className="form-title">Create your account</h3>
+          <h3 className='form-title'>Create your account</h3>
 
           <form onSubmit={this.handleSubmit}>
-            <div className="horinzontal-align label-group">
+            <div className='horinzontal-align label-group'>
               {this.renderInput("fname", "First name")}
               {this.renderInput("lname", "Last name")}
             </div>
@@ -141,18 +141,18 @@ class SignUpForm extends Form {
             {this.renderButton("Sign up")}
           </form>
 
-          <p className="faraday-terms mt-2 text-sm">
+          <p className='faraday-terms mt-2 text-sm'>
             By clicking the sign up button, you agree to our
             <Link
-              to="/terms-and-condition"
-              className="link-grey icon-container-secondary "
+              to='/terms-and-condition'
+              className='link-grey icon-container-secondary '
             >
               Terms and Condition
             </Link>
             and
             <Link
-              to="/privacy-policy"
-              className="link-grey icon-container-secondary "
+              to='/privacy-policy'
+              className='link-grey icon-container-secondary '
             >
               Privacy Policy
             </Link>

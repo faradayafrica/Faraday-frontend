@@ -289,6 +289,7 @@ class PersonalData extends Form {
         // window.location = "/";
       }
     } catch (ex) {
+      // console.log(ex);
       if (ex.response && ex.response.status === 500) {
         const errors = { ...this.state.errors };
         errors.bio = "Something went wrong";
