@@ -1,7 +1,9 @@
 const schools = [
+  { name: 'Anambra State University' },
   { name: 'Nnamdi Azikwe University' },
-  { name: 'FUTO' },
+  { name: 'University of Lagos' },
   { name: 'University of Ibadon' },
+  { name: 'Others' },
 ];
 
 const faculties = [
