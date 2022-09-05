@@ -1,20 +1,17 @@
 import React from "react";
 import Joi from "joi-browser";
-import Myspinner from "../../styledComponents/Spinner";
-import Form from "../../common/Form";
-import faraday from "../../../images/logo.svg";
-import auth from "../../../services/authService";
-import {
-  getSchools,
-  getFaculties,
-  getLevel,
-} from "../../../services/schoolService";
+import Myspinner from "../components/styledComponents/Spinner";
+import Form from "../components/common/Form";
+import faraday from "../images/logo.svg";
+import auth from "../services/authService";
+import { getSchools, getFaculties, getLevel } from "../services/schoolService";
+import { Redirect } from "react-router-dom";
 
 class AddSchoolDetail extends Form {
   state = {
     data: {},
     errors: {},
-
+    redirect: null,
     schools: [],
     faculties: [],
     departments: {
@@ -151,21 +148,25 @@ class AddSchoolDetail extends Form {
   };
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />;
+    }
+
     return (
-      <div className="login-page">
+      <div className='login-page'>
         {/* the spinner */}
-        <div id="spinnerContainer" className="spinner-container vanish">
+        <div id='spinnerContainer' className='spinner-container vanish'>
           <Myspinner />
         </div>
-        <div className="progress-container mx-auto mt-3">
-          <div className="progress progress-50"></div>
+        <div className='progress-container mx-auto mt-3'>
+          <div className='progress progress-50'></div>
         </div>
-        <div className="form-container">
-          <div className="logo-container">
-            <img className="logo" src={faraday} alt="faraday" />
+        <div className='form-container'>
+          <div className='logo-container'>
+            <img className='logo' src={faraday} alt='faraday' />
           </div>
-          <h3 className="form-title ">We’re almost done</h3>
-          <p className="mx-3 extra-info text-md">
+          <h3 className='form-title '>We’re almost done</h3>
+          <p className='mx-3 extra-info text-md'>
             We just need your academic information.
           </p>
 
@@ -229,13 +230,13 @@ class AddSchoolDetail extends Form {
 
     // call the backend
     const { data } = this.state;
-    console.log(data);
 
     try {
       await auth.updateSchoolDetail(data);
-      window.location = "/update-personal-data";
-      progress.classList.add("progress-75");
-      spinner.classList.add("vanish");
+      // window.location = "/update-personal-data";
+      progress?.classList.add("progress-75");
+      spinner?.classList.add("vanish");
+      this.setState({ ...this.state, redirect: "/update-personal-data" });
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         const errors = { ...this.state.errors };

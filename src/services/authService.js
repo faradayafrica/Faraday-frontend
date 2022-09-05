@@ -24,7 +24,7 @@ export async function login({ username, password }) {
 export async function refreshJwt() {
   const refresh_token = getRefresh();
   const response = await http.post(
-    `${process.env.REACT_APP_API_URL + "/users/refresh/"}`,
+    `${process.env.REACT_APP_API_URL + "/users/refresh_token/"}`,
     {
       refresh: refresh_token,
     }
@@ -36,6 +36,7 @@ export async function refreshJwt() {
 
 export async function confirmEmail({ confirmationCode }) {
   const user = getCurrentUser();
+  http.setJwt(getJwt());
 
   const url = process.env.REACT_APP_API_URL + "/users/verifyotp/";
   await http.post(url, {
@@ -62,9 +63,7 @@ export async function editUserProfile(user) {
 export async function updatePersonalDetail(data) {
   const url = process.env.REACT_APP_API_URL + "/users/bio_update/";
 
-  await axios.patch(url, {
-    ...data,
-  });
+  await axios.patch(url, data);
 }
 
 export async function resendEmailConfirmation() {
@@ -90,11 +89,7 @@ export function getCurrentUser() {
 }
 
 export function getJwt() {
-  try {
-    return localStorage.getItem(tokenKey);
-  } catch (ex) {
-    return null;
-  }
+  return localStorage.getItem(tokenKey);
 }
 export function getRefresh() {
   try {
