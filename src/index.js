@@ -25,6 +25,7 @@ const main = async () => {
   
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js');
+  }
 
     const registration = await navigator.serviceWorker.ready;
     // Check if periodicSync is supported
@@ -52,7 +53,7 @@ const main = async () => {
     }
   }
 
-};
+
 
 // main();
 
