@@ -108,10 +108,11 @@ const Question = (props) => {
         className="w-14 mr-2 cursor-pointer"
       >
         <img
+
           src={question?.user.profile_pic}
           className="w-12 h-12 rounded-full "
           style={{ objectFit: "cover" }}
-          alt={`${question?.user.firstname} ${question?.user.lastname}`}
+          alt=""
         />
       </Link>
       <section className=" p-0 w-full">
@@ -153,7 +154,7 @@ const Question = (props) => {
             className=" text-faraday-night hover:text-faraday-night"
           >
             {/* Question head */}
-            <h3 className="text-sm sm:text-lg leading-[120%] font-semibold m-0 mb-1">
+            <h3 className="text-base sm:text-lg font-semibold m-0 mb-1">
               {question?.title}
             </h3>
             {/* Question body --optional */}
@@ -259,7 +260,7 @@ const Question = (props) => {
         </div>
 
         <Link to={`/qfeed/${question.id}`} style={{ textDecoration: "none" }}>
-          <div className="comment text-base sm:text-lg font-semibold text-brand py-[14px] bg-brnd-highlight flex justify-between">
+          <div className="comment text-base sm:text-lg font-semibold  py-[14px] px-2 text-faraday-night flex justify-between">
             {question.comments === 0 ? "Leave a comment" : ""}{" "}
             {question.comments === 1 ? `${question.comments} comment` : ""}{" "}
             {question.comments > 1 ? `${question.comments} comments` : ""}{" "}
