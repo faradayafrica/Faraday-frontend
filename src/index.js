@@ -25,7 +25,7 @@ const main = async () => {
   
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js');
-    
+
     const registration = await navigator.serviceWorker.ready;
     // Check if periodicSync is supported
     if ('periodicSync' in registration) {
@@ -54,7 +54,7 @@ const main = async () => {
 
 };
 
-main();
+// main();
 
 ReactDOM.render(
   <React.StrictMode>
