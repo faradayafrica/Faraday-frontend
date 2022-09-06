@@ -70,9 +70,9 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
-// self.addEventListener('periodicsync', (event) => {
-//   if (event.tag === 'news') {
-//     console.log('Fetching news in the background!');
-//     event.waitUntil(fetchAndCacheNews());
-//   }
-// });
+self.addEventListener('periodicsync', (event) => {
+  if (event.tag === 'news') {
+    console.log('Fetching news in the background!');
+    event.waitUntil(fetchAndCacheNews());
+  }
+});

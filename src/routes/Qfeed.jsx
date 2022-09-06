@@ -17,6 +17,34 @@ const Qfeed = (props) => {
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
 
+  const main = async () => {
+    // Check if service workers are supported
+    if ("serviceWorker" in navigator) {
+      const registration = await navigator.serviceWorker.ready;
+      // Check if periodicSync is supported
+      if ("periodicSync" in registration) {
+        // Request permission
+        const status = await navigator.permissions.query({
+          name: "periodic-background-sync",
+        });
+        if (status.state === "granted") {
+          try {
+            // Register new sync every 24 hours
+            await registration.periodicSync.register("news", {
+              minInterval: 24 * 60 * 60 * 1000,
+              // 1 day
+            });
+            console.log("Periodic background sync registered!");
+          } catch (e) {
+            console.error(`Periodic background sync failed:\n${e}`);
+          }
+        }
+      }
+    }
+  };
+
+  main();
+
   const handleFollow = (user) => {
     const apiEndpoint =
       process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
