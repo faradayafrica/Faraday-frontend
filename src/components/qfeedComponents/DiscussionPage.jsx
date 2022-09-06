@@ -254,7 +254,7 @@ const DiscussionPage = ({
                   className="w-14 mr-2 cursor-pointer float-left"
                 >
                   <img
-                    src={`https://api.faraday.africa${question?.user.profile_pic}`}
+                    src={question?.user.profile_pic}
                     className="w-12 h-12 rounded-full mr-2 "
                     style={{ objectFit: "cover" }}
                     alt={question?.user.firstname}

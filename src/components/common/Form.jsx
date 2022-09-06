@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Input from "../styledComponents/input";
 import TextArea from "../styledComponents/TextArea";
 import Select from "../styledComponents/select";
+import PrimaryButton from "../styledComponents/PrimaryButton";
 
 class Form extends Component {
   state = {
@@ -42,16 +43,22 @@ class Form extends Component {
   };
 
   imageHandler = (e) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        const data = { ...this.state.data };
-        data["image"] = reader.result;
-        this.setState({ data });
-      }
-    };
+    // const reader = new FileReader();
+    // reader.onload = () => {
+    //   if (reader.readyState === 2) {
+    //     const data = { ...this.state.data };
+    //     data["image"] = reader.result;
+    //     this.setState({ data });
+    //   }
+    // };
 
-    reader.readAsDataURL(e.target.files[0]);
+    // reader.readAsDataURL(e.target.files[0]);
+
+    var url = URL.createObjectURL(e.target.files[0]);
+    const data = { ...this.state.data };
+    data["image"] = url;
+    data["imageFile"] = e.target.files[0];
+    this.setState({ data });
   };
 
   handleChange = ({ currentTarget: input }) => {
@@ -101,14 +108,8 @@ class Form extends Component {
   };
 
   renderButton(label, isFluid) {
-    const classes = isFluid
-      ? "btn btn-green btn-login my-2 bubbly-button"
-      : "btn btn-bg btn-green my-2";
-    return (
-      <button disabled={this.validate()} className={classes}>
-        {label}
-      </button>
-    );
+    // console.log(this.validate());
+    return <PrimaryButton cta={label} disabled={this.validate()} wide />;
   }
 
   renderRedirectBtn(label, link, msg) {
@@ -216,7 +217,7 @@ class Form extends Component {
     const { data } = this.state;
 
     return (
-      <div className='form-group mt-4'>
+      <div className='form-group mt-4 '>
         <img
           className='add-profile-btn'
           src={data.image}

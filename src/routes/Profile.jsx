@@ -8,6 +8,7 @@ import "../styles/profile.scss";
 import PrimaryButton from "../components/styledComponents/PrimaryButton";
 import { SuccessToast, ErrorToast } from "../components/common/CustomToast";
 // import SecondaryButton from "../components/styledComponents/SecondaryButton";
+import { Tab } from "@headlessui/react";
 
 function Profile({ match }, props) {
   const currentUser = getCurrentUser();
@@ -98,37 +99,37 @@ function Profile({ match }, props) {
   return (
     <>
       <SideNav {...props} />
-      <div className="w-full route-wrapper text-faraday-night">
-        <div className="min-h-[70px] sm:min-h-[20px] "> </div>
+      <div className='w-full route-wrapper text-faraday-night'>
+        <div className='min-h-[70px] sm:min-h-[20px] '> </div>
         {user ? (
           <>
-            <div className="mx-3 mt-2 text-sm sm:text-base">
-              <div className=" flex items-start">
+            <div className='mx-3 mt-2 text-sm sm:text-base'>
+              <div className=' flex items-start'>
                 <img
-                  src={`https://api.faraday.africa${user?.profile.profile_pic}`}
-                  alt="profile"
-                  className="h-16 w-16 rounded-full "
+                  src={user?.profile.profile_pic}
+                  alt='profile'
+                  className='h-16 w-16 rounded-full '
                 />
 
-                <div className="ml-3">
-                  <div className="mt-2">
-                    <span className=" m-0 mt-2 font-bold text-sm sm:text-base">
+                <div className='ml-3'>
+                  <div className='mt-2'>
+                    <span className=' m-0 mt-2 font-bold text-sm sm:text-base'>
                       {user?.profile.firstname + " " + user?.profile.lastname}
                     </span>
-                    <span className="ml-2 text-sm">
+                    <span className='ml-2 text-sm'>
                       @{user?.profile.username}
                     </span>
                   </div>
 
-                  <div className="flex ">
-                    <p className="mr-3">
-                      <span className="font-bold">
+                  <div className='flex '>
+                    <p className='mr-3'>
+                      <span className='font-bold'>
                         {user?.profile.questions}
                       </span>{" "}
                       Questions
                     </p>
                     <p>
-                      <span className="font-bold">
+                      <span className='font-bold'>
                         {user?.profile.solutions}
                       </span>{" "}
                       Solutions
@@ -136,15 +137,15 @@ function Profile({ match }, props) {
                   </div>
                 </div>
               </div>
-              <div className="mt-3 mb-1">
+              <div className='mt-3 mb-1'>
                 {currentUser.username !== match.params.username ? (
-                  <PrimaryButton wide cta="follow" />
+                  <PrimaryButton wide cta='follow' />
                 ) : (
                   ""
                 )}
               </div>
               {user?.profile.level ? (
-                <p className="">
+                <p className=''>
                   {`A ${user?.profile.level}L student of ${user?.profile.school} studying ${user?.profile.department}.`}
                 </p>
               ) : (
@@ -153,33 +154,55 @@ function Profile({ match }, props) {
             </div>
 
             {/* We need a nav here */}
-            <h3 className="text-xl m-3 font-bold">Questions</h3>
-            <div className="border-t">
-              {questions ? (
-                <>
-                  {questions.map((question) => (
-                    <Question
-                      question={question}
-                      questions={questions}
-                      handleUpdatedQuestions={updateQuestions}
-                      onDeleteQuestion={deleteQuestion}
-                      key={question.id}
-                    />
-                  ))}
-                </>
-              ) : (
-                <div className="m-3">
-                  <Loader
-                    msg={`loading ${
-                      currentUser.first_name + " " + currentUser.last_name
-                    }'s questions`}
-                  />
-                </div>
-              )}
-            </div>
+            <Tab.Group>
+              <Tab.List className='border-b'>
+                {["Questions", "Solutions"].map((tab, index) => (
+                  <Tab
+                    key={index}
+                    className={({ selected }) =>
+                      `text-xl m-3 font-bold outline-none ${
+                        selected
+                          ? "border-b-4 border-b-brand "
+                          : "text-gray-500"
+                      }`
+                    }
+                  >
+                    {tab}
+                  </Tab>
+                ))}
+              </Tab.List>
+              <Tab.Panels>
+                <Tab.Panel>
+                  <div>
+                    {questions ? (
+                      <>
+                        {questions.map((question) => (
+                          <Question
+                            question={question}
+                            questions={questions}
+                            handleUpdatedQuestions={updateQuestions}
+                            onDeleteQuestion={deleteQuestion}
+                            key={question.id}
+                          />
+                        ))}
+                      </>
+                    ) : (
+                      <div className='m-3'>
+                        <Loader
+                          msg={`loading ${
+                            currentUser.first_name + " " + currentUser.last_name
+                          }'s questions`}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </Tab.Panel>
+                <Tab.Panel>Content 2</Tab.Panel>
+              </Tab.Panels>
+            </Tab.Group>
           </>
         ) : (
-          <div className="m-3">
+          <div className='m-3'>
             <Loader msg={`just a moment`} />
           </div>
         )}
