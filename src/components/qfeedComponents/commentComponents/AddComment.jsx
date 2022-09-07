@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import PrimaryButton from "../../styledComponents/PrimaryButton";
 
 const AddComment = ({
+  online,
   currentUser,
   questionOwner,
   onChange,
@@ -28,8 +29,8 @@ const AddComment = ({
       >
         <img
           src={`https://api.faraday.africa${currentUser?.profile_pic}`}
-          alt={`${currentUser?.first_name} ${currentUser?.last_name}`}
-          className="w-12 h-12 rounded-full mr-2 float-left"
+          alt=""
+          className="w-12 h-12 rounded-full mr-2 bg-background2 float-left"
           style={{ objectFit: "cover" }}
         />
       </Link>
@@ -56,10 +57,18 @@ const AddComment = ({
         )}
         {comment.length > 0 ? (
           <div className="m-0 ml-2 pb-2 float-right">
-            <PrimaryButton
-              cta="Post"
-              action={() => postComment(questionId, LIMIT)}
-            />
+            {online ? (
+              <PrimaryButton
+                cta="Post"
+                action={() => postComment(questionId, LIMIT)}
+              />
+            ) : (
+              <PrimaryButton
+                cta="Post"
+                action={() => postComment(questionId, LIMIT)}
+                disabled
+              />
+            )}
           </div>
         ) : (
           ""

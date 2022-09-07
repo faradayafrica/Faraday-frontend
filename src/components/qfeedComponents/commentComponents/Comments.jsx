@@ -13,6 +13,7 @@ import AddComment from "./AddComment";
 
 const Comments = ({
   match,
+  online,
   comments,
   commentLoader,
   questionid,
@@ -110,6 +111,7 @@ const Comments = ({
     <div className="bg-white">
       <div className=" pl-3 pr-2">
         <AddComment
+          online={online}
           onChange={handleChange}
           currentUser={currentUser}
           questionOwner={questionOwner}

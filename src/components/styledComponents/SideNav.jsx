@@ -7,7 +7,7 @@ import PostComponent from "../qfeedComponents/PostComponent";
 import closeImg from "../../images/qfeed/close.svg";
 import { ErrorToast, SuccessToast } from "../common/CustomToast";
 
-function SideNav({ history, onlineStatus, hideOnlineStatus }) {
+function SideNav({ history, online, hideOnlineStatus }) {
   const currentUser = getCurrentUser();
   const [hidePost, setHidePost] = useState(true);
   const [links, setLinks] = useState([
@@ -146,7 +146,7 @@ function SideNav({ history, onlineStatus, hideOnlineStatus }) {
     <>
       {hideOnlineStatus ? (
         <>
-          {onlineStatus && (
+          {online && (
             <div className="w-full fixed top-0 left-0 z-50 bg-brand text-white text-[12px] text-center py-1">
               You are back online! Let's fly
             </div>
@@ -155,7 +155,7 @@ function SideNav({ history, onlineStatus, hideOnlineStatus }) {
       ) : (
         ""
       )}
-      {!onlineStatus && (
+      {!online && (
         <div className="w-full fixed top-0 left-0 z-50 bg-faraday-night text-white text-[12px] text-center py-1">
           Juice Out! You are offline
         </div>

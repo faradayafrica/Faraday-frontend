@@ -21,18 +21,17 @@ import { UserProvider } from "./context/userContext";
 import SideNav from "./components/styledComponents/SideNav.jsx";
 
 const App = () => {
-  const [onlineStatus, setOnlineStatus] = useState(true);
+  const [online, setOnline] = useState(true);
   const [hideOnlineStatus, setHideOnlineStatus] = useState(false);
 
   useEffect(() => {
     window.addEventListener("offline", () => {
       setHideOnlineStatus(true);
-      setOnlineStatus(false);
+      setOnline(false);
     });
 
     window.addEventListener("online", () => {
-      setHideOnlineStatus(true);
-      setOnlineStatus(true);
+      setOnline(true);
     });
   }, []);
 
@@ -40,7 +39,7 @@ const App = () => {
     setTimeout(() => {
       setHideOnlineStatus(false);
     }, 3000);
-  }, [onlineStatus]);
+  }, [online]);
 
   return (
     <BrowserRouter>
@@ -48,10 +47,7 @@ const App = () => {
         <Toaster position="top-center" reverseOrder={false} />
         <div className="text-faraday-night max-w-[1024px] p-0 mx-auto flex">
           <MobileSideNav />
-          <SideNav
-            onlineStatus={onlineStatus}
-            hideOnlineStatus={hideOnlineStatus}
-          />
+          <SideNav online={online} hideOnlineStatus={hideOnlineStatus} />
           <Switch>
             <Route path="/signup" component={SignUpForm} />
             <Route path="/confirm-email" component={ConfirmEmail} />
@@ -63,7 +59,7 @@ const App = () => {
             <Route path="/logout" component={Logout} />
             <ProtectedRoute
               path="/qfeed"
-              render={(props) => <Qfeed {...props} />}
+              render={(props) => <Qfeed online={online} {...props} />}
             />
             <ProtectedRoute
               path="/post"

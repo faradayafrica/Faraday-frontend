@@ -14,6 +14,8 @@ const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
   const [loader, setLoader] = useState(true);
 
+  const { online } = props;
+
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
 
   const handleFollow = (user) => {
@@ -117,6 +119,7 @@ const Qfeed = (props) => {
             path="/qfeed/:id"
             render={(props) => (
               <DiscussionPage
+                online={online}
                 questions={questions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}

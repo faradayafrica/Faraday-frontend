@@ -40,7 +40,7 @@ export async function PromiseToast(success_msg, error_msg, promise) {
   toast.promise(promise, {
     loading: "Loading",
     success: success_msg,
-    error: error_msg,
+    error: "An error occurred, try again later",
   }, {
     style: {
       border: "1px solid #05b851",
