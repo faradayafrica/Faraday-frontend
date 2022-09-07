@@ -35,7 +35,7 @@ const TimeLine = (props) => {
         </>
 
         <Link
-          to="/post"
+          to="/qfeed/post"
           className="sm:hidden fixed right-6 bottom-20 h-16 w-16"
         >
           {" "}

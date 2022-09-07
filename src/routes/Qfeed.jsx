@@ -1,7 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
+import PostPage from "../components/qfeedComponents/PostPage";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
+
 import NotFound from "./NotFound.jsx";
 import http from "../services/httpService";
 import {
@@ -78,6 +80,7 @@ const Qfeed = (props) => {
 
   const fetchQuestions = async (url) => {
     questionRequestQueue.push(url);
+
     try {
       const { data } = await http.get(url);
       setQuestions((prevQuestions) => [...prevQuestions, ...data.results]);
@@ -114,7 +117,20 @@ const Qfeed = (props) => {
   return (
     <>
       <div className="w-full route-wrapper">
+        {/* {console.log(questions, "ALL QUESTIONS!!!")} */}
         <Switch>
+          <Route
+            path="/qfeed/post"
+            render={(props) => (
+              <PostPage
+                online={online}
+                questions={questions}
+                handleUpdatedQuestions={updateQuestions}
+                {...props}
+              />
+            )}
+          />
+
           <Route
             path="/qfeed/:id"
             render={(props) => (

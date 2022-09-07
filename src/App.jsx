@@ -5,7 +5,6 @@ import Qfeed from "./routes/Qfeed.jsx";
 import Notification from "./routes/Notification";
 import Profile from "./routes/Profile";
 import MobileSideNav from "./components/styledComponents/MobileSideNav.jsx";
-import PostPage from "./components/qfeedComponents/PostPage.jsx";
 import NotFound from "./routes/NotFound";
 import LoginForm from "./routes/LoginForm";
 import SignUpForm from "./routes/SignUpForm";
@@ -34,18 +33,45 @@ const App = () => {
     var storedComments = JSON.parse(localStorage.getItem("pendingComments"));
 
     window.localStorage.setItem("pendingComments", JSON.stringify([]));
-    console.log("!>", storedComments, "<!");
 
-    storedComments.forEach(async (item) => {
+    storedComments.forEach(async (item, index, array) => {
       const { content, postid } = item;
 
       try {
-        const { data } = await http.post(apiEndpoint, {
+        await http.post(apiEndpoint, {
           postid,
           content,
         });
 
-        SuccessToast("Offline comment synced");
+        if (index === array.length - 1) {
+          SuccessToast("Offline comments synced");
+        }
+      } catch (e) {
+        console.warn(e.message);
+      }
+    });
+  };
+
+  const syncPendingQuestions = async () => {
+    const apiEndpoint =
+      process.env.REACT_APP_API_URL + "/qfeed/que/create_que/";
+
+    var storedComments = JSON.parse(localStorage.getItem("pendingQuestions"));
+
+    window.localStorage.setItem("pendingQuestions", JSON.stringify([]));
+
+    storedComments.forEach(async (item, index, array) => {
+      const { title, content } = item;
+
+      try {
+        await http.post(apiEndpoint, {
+          title,
+          content,
+        });
+
+        if (index === array.length - 1) {
+          SuccessToast("Offline questions synced");
+        }
       } catch (e) {
         console.warn(e.message);
       }
@@ -69,6 +95,7 @@ const App = () => {
         setHideOnlineStatus(false);
       }, 3000);
       syncPendingComments();
+      syncPendingQuestions();
     }
   }, [online]);
 
@@ -92,10 +119,7 @@ const App = () => {
               path="/qfeed"
               render={(props) => <Qfeed online={online} {...props} />}
             />
-            <ProtectedRoute
-              path="/post"
-              render={(props) => <PostPage {...props} />}
-            />
+
             <ProtectedRoute path="/notification" component={Notification} />
             <ProtectedRoute
               path="/me/:username"

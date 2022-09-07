@@ -4,7 +4,6 @@ import follow from "../../../images/qfeed/follow.svg";
 import unfollow from "../../../images/qfeed/unfollow.svg";
 import mark from "../../../images/qfeed/mark.svg";
 import { useState } from "react";
-import http from "../../../services/httpService";
 
 const CommentMenu = ({
   match,
