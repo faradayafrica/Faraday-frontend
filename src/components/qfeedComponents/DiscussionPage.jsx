@@ -321,7 +321,7 @@ const DiscussionPage = ({
                         />
                       )}
                       <span className="ml-1 font-medium text-base">
-                        {question?.likes ? question?.likes : ""}
+                        {question?.likes}
                       </span>
                     </button>
                     <button className="icon-brand-hover hover:bg-brand-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background mr-4">

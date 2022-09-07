@@ -7,10 +7,8 @@ import PostComponent from "../qfeedComponents/PostComponent";
 import closeImg from "../../images/qfeed/close.svg";
 import { ErrorToast, SuccessToast } from "../common/CustomToast";
 
-function SideNav({ history }) {
+function SideNav({ history, onlineStatus, hideOnlineStatus }) {
   const currentUser = getCurrentUser();
-  const [onlineStatus, setOnlineStatus] = useState(true);
-  const [hideOnlineStatus, setHideOnlineStatus] = useState(false);
   const [hidePost, setHidePost] = useState(true);
   const [links, setLinks] = useState([
     {
@@ -144,30 +142,12 @@ function SideNav({ history }) {
     }
   }, []);
 
-  useEffect(() => {
-    window.addEventListener("offline", () => {
-      setHideOnlineStatus(true);
-      setOnlineStatus(false);
-    });
-
-    window.addEventListener("online", () => {
-      setHideOnlineStatus(true);
-      setOnlineStatus(true);
-    });
-  }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setHideOnlineStatus(false);
-    }, 3000);
-  }, [onlineStatus]);
-
   return (
     <>
       {hideOnlineStatus ? (
         <>
           {onlineStatus && (
-            <div className="w-full fixed bottom-0 left-0 z-50 bg-brand text-white text-xs text-center py-1">
+            <div className="w-full fixed top-0 left-0 z-50 bg-brand text-white text-[12px] text-center py-1">
               You are back online! Let's fly
             </div>
           )}
@@ -176,7 +156,7 @@ function SideNav({ history }) {
         ""
       )}
       {!onlineStatus && (
-        <div className="w-full fixed bottom-0 left-0 z-50 bg-night-secondary text-white text-xs text-center py-1">
+        <div className="w-full fixed top-0 left-0 z-50 bg-faraday-night text-white text-[12px] text-center py-1">
           Juice Out! You are offline
         </div>
       )}

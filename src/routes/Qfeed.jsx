@@ -4,7 +4,6 @@ import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
 import NotFound from "./NotFound.jsx";
 import http from "../services/httpService";
-import SideNav from "../components/styledComponents/SideNav.jsx";
 import {
   PromiseToast,
   SuccessToast,
@@ -16,34 +15,6 @@ const Qfeed = (props) => {
   const [loader, setLoader] = useState(true);
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
-
-  const main = async () => {
-    // Check if service workers are supported
-    if ("serviceWorker" in navigator) {
-      const registration = await navigator.serviceWorker.ready;
-      // Check if periodicSync is supported
-      if ("periodicSync" in registration) {
-        // Request permission
-        const status = await navigator.permissions.query({
-          name: "periodic-background-sync",
-        });
-        if (status.state === "granted") {
-          try {
-            // Register new sync every 24 hours
-            await registration.periodicSync.register("news", {
-              minInterval: 24 * 60 * 60 * 1000,
-              // 1 day
-            });
-            console.log("Periodic background sync registered!");
-          } catch (e) {
-            console.error(`Periodic background sync failed:\n${e}`);
-          }
-        }
-      }
-    }
-  };
-
-  main();
 
   const handleFollow = (user) => {
     const apiEndpoint =
@@ -140,8 +111,6 @@ const Qfeed = (props) => {
 
   return (
     <>
-      <SideNav {...props} />
-
       <div className="w-full route-wrapper">
         <Switch>
           <Route

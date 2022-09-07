@@ -108,9 +108,8 @@ const Question = (props) => {
         className="w-14 mr-2 cursor-pointer"
       >
         <img
-
           src={question?.user.profile_pic}
-          className="w-12 h-12 rounded-full "
+          className="w-12 h-12 rounded-full bg-background2"
           style={{ objectFit: "cover" }}
           alt=""
         />
@@ -174,7 +173,7 @@ const Question = (props) => {
               <img className="h-4 w-4" src={love} alt="react to question" />
             )}
             <span className="ml-1 font-medium text-sm">
-              {question.liked ? `${question.likes}` : ""}
+              {question.likes ? question.likes : ""}
             </span>
           </button>
 
