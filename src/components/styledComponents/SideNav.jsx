@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import faraday from "../../images/logo.svg";
 import NavLink from "./NavLink";
 import { useState, useEffect } from "react";
@@ -147,7 +148,7 @@ function SideNav({ history, online, hideOnlineStatus }) {
       {hideOnlineStatus ? (
         <>
           {online && (
-            <div className="w-full fixed top-0 left-0 z-50 bg-brand text-white text-[12px] text-center py-1">
+            <div className="w-full fixed bottom-0 left-0 z-50 bg-brand text-white text-[12px] text-center py-1">
               You are back online! Let's fly
             </div>
           )}
@@ -156,7 +157,7 @@ function SideNav({ history, online, hideOnlineStatus }) {
         ""
       )}
       {!online && (
-        <div className="w-full fixed top-0 left-0 z-50 bg-faraday-night text-white text-[12px] text-center py-1">
+        <div className="w-full fixed bottom-0 left-0 z-50 bg-faraday-night text-white text-[12px] text-center py-1">
           Juice Out! You are offline
         </div>
       )}
@@ -177,7 +178,11 @@ function SideNav({ history, online, hideOnlineStatus }) {
             ))}
 
             {/* Ask question btn */}
-            <PrimaryButton cta="Add a question" action={handlePost} />
+            <Link to="/qfeed/post" className=" ">
+              {" "}
+              <PrimaryButton cta="Add a question" />
+            </Link>
+            {/* <PrimaryButton cta="Add a question" action={handlePost} /> */}
           </div>
         </div>
       </div>

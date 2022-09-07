@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CommentComponent from "./CommentComponent";
 import Loader from "../../styledComponents/Loader";
 import { getCurrentUser } from "../../../services/authService";
@@ -26,13 +26,13 @@ const Comments = ({
   const [pendingComments, setPendingComments] = useState([]);
   const currentUser = getCurrentUser();
 
+  console.log("USER", currentUser);
+
   const uniqueComments = Array.from(new Set(comments.map((a) => a.id))).map(
     (id) => {
       return comments.find((a) => a.id === id);
     }
   );
-
-  // var storedComments = JSON.parse(localStorage.getItem("pendingComments"));
 
   const pendingContents = pendingComments.map((item) => {
     return {
@@ -41,16 +41,16 @@ const Comments = ({
       id: `f90e060f-d689-4bbf-97e3-${item.content}-pending`,
       is_solution: false,
       user: {
-        firstname: "User",
+        firstname: currentUser.first_name,
         followers: [2],
         followers_count: 1,
         following: 1,
-        gender: "male",
-        id: "8522889d-2805-46d2-bb94-38aea3ac2a85",
+        gender: "pending",
+        id: currentUser.user_id,
         is_following: false,
-        lastname: "1",
-        profile_pic: "iStock-476085198.jpg",
-        username: "user1",
+        lastname: currentUser.last_name,
+        profile_pic: currentUser.profile_pic,
+        username: currentUser.username,
       },
     };
   });
@@ -156,40 +156,6 @@ const Comments = ({
     }
   };
 
-  // const syncPendingComments = async () => {
-  //   var storedComments = JSON.parse(localStorage.getItem("pendingComments"));
-
-  //   window.localStorage.setItem("pendingComments", JSON.stringify([]));
-  //   console.log("!>", storedComments, "<!");
-
-  //   storedComments.forEach(async (item) => {
-  //     const { content, postid } = item;
-
-  //     try {
-  //       const { data } = await http.post(apiEndpoint, {
-  //         postid,
-  //         content,
-  //       });
-
-  //       console.log("newly synced comment", data);
-
-  //       //Current problem, It shows all newly synced comment on the opened question.
-  //       //How to fix, there should be a reference to the question where the comment is being created on the {data} response
-  //       onUpdateComments((prev) => [data, ...prev]);
-
-  //       SuccessToast("Offline comment synced");
-  //     } catch (e) {
-  //       console.warn(e.message);
-  //     }
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   if (online) {
-  //     syncPendingComments();
-  //   }
-  // }, [online]);
-
   return (
     <div className="bg-white">
       <div className=" pl-3 pr-2">
@@ -259,7 +225,7 @@ const Comments = ({
         </div>
       ) : (
         <>
-          {!comments.length == 0 && (
+          {!comments.length === 0 && (
             <>
               <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
                 <p className="text-xs sm:text-base m-0 ">

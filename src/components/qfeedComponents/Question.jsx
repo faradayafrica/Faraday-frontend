@@ -147,18 +147,32 @@ const Question = (props) => {
             onDeleteQuestion={props.onDeleteQuestion}
           />
 
-          <Link
-            to={`/qfeed/${question.id}`}
-            style={{ textDecoration: "none" }}
-            className=" text-faraday-night hover:text-faraday-night"
-          >
-            {/* Question head */}
-            <h3 className="text-base sm:text-lg font-semibold m-0 mb-1">
-              {question?.title}
-            </h3>
-            {/* Question body --optional */}
-            <p className="text-sm sm:text-base m-0 mb-2">{question?.content}</p>
-          </Link>
+          {question?.created !== "Just now" ? (
+            <Link
+              to={`/qfeed/${question.id}`}
+              style={{ textDecoration: "none" }}
+              className=" text-faraday-night hover:text-faraday-night"
+            >
+              {/* Question head */}
+              <h3 className="text-base sm:text-lg font-semibold m-0 mb-1">
+                {question?.title}
+              </h3>
+              {/* Question body --optional */}
+              <p className="text-sm sm:text-base m-0 mb-2">
+                {question?.content}
+              </p>
+            </Link>
+          ) : (
+            <>
+              <h3 className="text-base sm:text-lg font-semibold m-0 mb-1">
+                {question?.title}
+              </h3>
+              {/* Question body --optional */}
+              <p className="text-sm sm:text-base m-0 mb-2">
+                {question?.content}
+              </p>
+            </>
+          )}
         </div>
 
         <div className=" flex items-center h-12">
@@ -166,6 +180,7 @@ const Question = (props) => {
           <button
             className={loveClasses}
             onClick={() => handleLike(question.id)}
+            disabled={false || question?.created === "Just now"}
           >
             {question.liked ? (
               <img className="h-4 w-4" src={redLove} alt="take back reaction" />
@@ -178,7 +193,7 @@ const Question = (props) => {
           </button>
 
           {/* >=1 to become active again */}
-          {question.likes == -1 ? (
+          {question.likes === -1 ? (
             <button
               className={loveClasses}
               onClick={() => handleLike(question.id)}
@@ -258,14 +273,23 @@ const Question = (props) => {
           )}
         </div>
 
-        <Link to={`/qfeed/${question.id}`} style={{ textDecoration: "none" }}>
+        {question?.created !== "Just now" ? (
+          <Link to={`/qfeed/${question.id}`} style={{ textDecoration: "none" }}>
+            <div className="comment text-base sm:text-lg font-semibold  py-[14px] px-2 text-faraday-night flex justify-between">
+              {question.comments === 0 ? "Leave a comment" : ""}{" "}
+              {question.comments === 1 ? `${question.comments} comment` : ""}{" "}
+              {question.comments > 1 ? `${question.comments} comments` : ""}{" "}
+              <img className="mr-2" src={arrow} alt="" />
+            </div>
+          </Link>
+        ) : (
           <div className="comment text-base sm:text-lg font-semibold  py-[14px] px-2 text-faraday-night flex justify-between">
             {question.comments === 0 ? "Leave a comment" : ""}{" "}
             {question.comments === 1 ? `${question.comments} comment` : ""}{" "}
             {question.comments > 1 ? `${question.comments} comments` : ""}{" "}
             <img className="mr-2" src={arrow} alt="" />
           </div>
-        </Link>
+        )}
       </section>
     </div>
   );

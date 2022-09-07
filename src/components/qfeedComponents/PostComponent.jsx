@@ -2,15 +2,11 @@ import { useState } from "react";
 import PrimaryButton from "../styledComponents/PrimaryButton";
 import addContentImg from "../../images/qfeed/add.svg";
 import removeContentImg from "../../images/qfeed/remove.svg";
-import http from "../../services/httpService";
-import { PromiseToast, ErrorToast } from "../common/CustomToast";
 
-const PostComponent = ({ hidePost }) => {
+const PostComponent = ({ LIMIT, postQuestion }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isContentInput, setContentInput] = useState(false);
-
-  const LIMIT = { title: 130, content: 256 };
 
   let titleClasses =
     "focus:bg-gradient-to-t from-background to-white mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-outline border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-base sm:text-lg font-semibold ";
@@ -28,46 +24,10 @@ const PostComponent = ({ hidePost }) => {
       ? " focus:bg-gradient-to-t from-danger-highlight to-white focus:border-danger border-danger"
       : "";
 
-  const postQuestion = () => {
-    const apiEndpoint =
-      process.env.REACT_APP_API_URL + "/qfeed/que/create_que/";
-
-    if (
-      title.length > LIMIT.title ||
-      content.length > LIMIT.content ||
-      title.length === 0
-    ) {
-      console.warn(
-        title.length > LIMIT.title || title.length === 0
-          ? "Your question is either too long or empty"
-          : "The body of your question is too long"
-      );
-      if (title.length > LIMIT.title || title.length === 0) {
-        ErrorToast("Your question is either too long or empty");
-      } else {
-        ErrorToast("The body of your question is too long");
-      }
-    } else {
-      try {
-        const promise = http.post(apiEndpoint, { title, content });
-
-        PromiseToast(
-          "Question posted successfully",
-          "An error occurred while posting your question, Try again",
-          promise
-        );
-
-        hidePost();
-      } catch (e) {
-        console.log(e.message);
-      }
-    }
-  };
-
   return (
     <>
       <h1 className="text-2xl sm:text-2xl m-3 font-bold">Ask your Question</h1>
-      <div className="p-3 mt-2 bg-brand-higlight">
+      <div className="p-3 mt-2 bg-brand-higlight relative">
         <label className="block w-full m-0 relative">
           {title.length > LIMIT.title ? (
             <>
@@ -150,14 +110,16 @@ const PostComponent = ({ hidePost }) => {
               <img src={removeContentImg} alt="hide content input field" />
             </button>
           )}
-          <div className="w-1/2 hidden sm:block">
-            <PrimaryButton cta="Fly" wide={true} action={postQuestion} />
-          </div>
-          <div className="fixed bottom-0 left-0 p-3 w-full sm:hidden">
-            <PrimaryButton cta="Fly" wide={true} action={postQuestion} />
+
+          <div className="fixed sm:absolute bottom-0 left-0 p-3 w-full z-50 bg-white">
+            <PrimaryButton
+              cta="Fly"
+              wide={true}
+              action={() => postQuestion(title, content)}
+            />
           </div>
         </div>
-        <div className="h-20 w-full bg-white "></div>
+        <div className="h-20 w-full "></div>
       </div>
     </>
   );
