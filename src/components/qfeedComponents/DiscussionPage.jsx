@@ -16,6 +16,7 @@ import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
 const DiscussionPage = ({
   match,
   history,
+  online,
   questions,
   handleUpdatedQuestions,
   onDeleteQuestion,
@@ -142,8 +143,6 @@ const DiscussionPage = ({
         likeData = data.data;
       }
 
-      console.log("Like Data", likeData);
-
       if (index >= 0) {
         clonedQuestions[index] = { ...likeData };
       }
@@ -255,9 +254,9 @@ const DiscussionPage = ({
                 >
                   <img
                     src={question?.user.profile_pic}
-                    className="w-12 h-12 rounded-full mr-2 "
+                    className="w-12 h-12 rounded-full mr-2 bg-background2"
                     style={{ objectFit: "cover" }}
-                    alt={question?.user.firstname}
+                    alt=""
                   />
                 </Link>
                 <p className="m-0 text-night-secondary text-sm sm:text-base">
@@ -324,16 +323,23 @@ const DiscussionPage = ({
                         {question?.likes ? question?.likes : ""}
                       </span>
                     </button>
-                    <button className="icon-brand-hover hover:bg-brand-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background mr-4">
+                    {/* The share buttons are currently disabled */}
+                    <button
+                      disabled
+                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background mr-4"
+                    >
                       <img
-                        className="h-[18px] w-[18px]"
+                        className="h-[18px] w-[18px] opacity-50"
                         src={share}
                         alt="share this question"
                       />
                     </button>
-                    <button className="icon-brand-hover hover:bg-brand-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background">
+                    <button
+                      disabled
+                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background"
+                    >
                       <img
-                        className="h-[18px] w-[18px]"
+                        className="h-[18px] w-[18px] opacity-50"
                         src={link}
                         alt="copy question link"
                       />
@@ -344,6 +350,7 @@ const DiscussionPage = ({
 
               {/* Comments here */}
               <Comments
+                online={online}
                 questionid={match.params.id}
                 comments={comments}
                 commentLoader={commentLoader}

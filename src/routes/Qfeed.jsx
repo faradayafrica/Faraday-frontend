@@ -4,7 +4,6 @@ import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
 import NotFound from "./NotFound.jsx";
 import http from "../services/httpService";
-import SideNav from "../components/styledComponents/SideNav.jsx";
 import {
   PromiseToast,
   SuccessToast,
@@ -14,6 +13,8 @@ import {
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
   const [loader, setLoader] = useState(true);
+
+  const { online } = props;
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
 
@@ -112,14 +113,13 @@ const Qfeed = (props) => {
 
   return (
     <>
-      <SideNav {...props} />
-
       <div className="w-full route-wrapper">
         <Switch>
           <Route
             path="/qfeed/:id"
             render={(props) => (
               <DiscussionPage
+                online={online}
                 questions={questions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}
@@ -132,6 +132,7 @@ const Qfeed = (props) => {
             path="/"
             render={(props) => (
               <TimeLine
+                online={online}
                 questions={questions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}

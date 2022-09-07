@@ -23,6 +23,7 @@ const TimeLine = (props) => {
         <>
           {questions.map((question) => (
             <Question
+              online={props.online}
               question={question}
               questions={props.questions}
               handleUpdatedQuestions={props.handleUpdatedQuestions}
