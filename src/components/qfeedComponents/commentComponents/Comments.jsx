@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CommentComponent from "./CommentComponent";
 import Loader from "../../styledComponents/Loader";
 import { getCurrentUser } from "../../../services/authService";
@@ -23,6 +23,7 @@ const Comments = ({
   onMarkSolution,
 }) => {
   const [comment, setComment] = useState("");
+  const [pendingComments, setPendingComments] = useState([]);
   const currentUser = getCurrentUser();
 
   const uniqueComments = Array.from(new Set(comments.map((a) => a.id))).map(
@@ -30,6 +31,31 @@ const Comments = ({
       return comments.find((a) => a.id === id);
     }
   );
+
+  // var storedComments = JSON.parse(localStorage.getItem("pendingComments"));
+
+  const pendingContents = pendingComments.map((item) => {
+    return {
+      content: item.content,
+      created: "just now",
+      id: `f90e060f-d689-4bbf-97e3-${item.content}-pending`,
+      is_solution: false,
+      user: {
+        firstname: "User",
+        followers: [2],
+        followers_count: 1,
+        following: 1,
+        gender: "male",
+        id: "8522889d-2805-46d2-bb94-38aea3ac2a85",
+        is_following: false,
+        lastname: "1",
+        profile_pic: "iStock-476085198.jpg",
+        username: "user1",
+      },
+    };
+  });
+
+  const allComments = [...pendingContents, ...uniqueComments];
 
   const handleFollow = (user) => {
     const apiEndpoint =
@@ -69,27 +95,48 @@ const Comments = ({
 
   const postComment = async (postid, limit) => {
     let content = comment;
+
     if (comment.length > limit || comment.length === 0) {
       console.warn("comment is too long or is empty");
-      ErrorToast("Your comment is either too long");
+      ErrorToast("Your comment is too long");
     } else {
+      setComment("");
+      document.getElementById("commentfield").value = "";
+
       try {
         const { data } = await http.post(apiEndpoint, {
           postid,
           content,
         });
         onUpdateComments([data, ...comments]);
-        setComment("");
-        document.getElementById("commentfield").value = "";
         SuccessToast("Comment posted successfully");
       } catch (e) {
         console.warn(e.message);
-        ErrorToast("An error occurred while posting your comment, Try again");
+        if (!online) {
+          setPendingComments((prev) => [{ content, postid }, ...prev]);
+          SuccessToast("Comment will be sent when connection is restored");
+
+          var storedComments = JSON.parse(
+            localStorage.getItem("pendingComments")
+          );
+
+          window.localStorage.setItem(
+            "pendingComments",
+            JSON.stringify([...storedComments, { content, postid }])
+          );
+
+          setComment("");
+          document.getElementById("commentfield").value = "";
+        } else {
+          setComment(content);
+          document.getElementById("commentfield").value = content;
+        }
       }
     }
   };
 
   const deleteComment = async (selectedComment) => {
+    const oldComments = [...comments];
     const remainingComments = comments.filter((comment) => {
       return comment.id !== selectedComment.id;
     });
@@ -98,14 +145,50 @@ const Comments = ({
       process.env.REACT_APP_API_URL +
       `/qfeed/que/comments/delete/${questionid}/${selectedComment.id}/`;
 
+    onUpdateComments([...remainingComments]);
+
     try {
       await http.delete(apiEndpoint);
       SuccessToast("Comment deleted");
-      onUpdateComments([...remainingComments]);
     } catch (e) {
       ErrorToast("Couldn't delete comment");
+      onUpdateComments([...oldComments]);
     }
   };
+
+  // const syncPendingComments = async () => {
+  //   var storedComments = JSON.parse(localStorage.getItem("pendingComments"));
+
+  //   window.localStorage.setItem("pendingComments", JSON.stringify([]));
+  //   console.log("!>", storedComments, "<!");
+
+  //   storedComments.forEach(async (item) => {
+  //     const { content, postid } = item;
+
+  //     try {
+  //       const { data } = await http.post(apiEndpoint, {
+  //         postid,
+  //         content,
+  //       });
+
+  //       console.log("newly synced comment", data);
+
+  //       //Current problem, It shows all newly synced comment on the opened question.
+  //       //How to fix, there should be a reference to the question where the comment is being created on the {data} response
+  //       onUpdateComments((prev) => [data, ...prev]);
+
+  //       SuccessToast("Offline comment synced");
+  //     } catch (e) {
+  //       console.warn(e.message);
+  //     }
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   if (online) {
+  //     syncPendingComments();
+  //   }
+  // }, [online]);
 
   return (
     <div className="bg-white">
@@ -140,7 +223,7 @@ const Comments = ({
               />
             ))}
           {/* The rest of the comments */}
-          {uniqueComments
+          {allComments
             .filter((comment) => comment.is_solution !== true)
             .map((comment) => (
               <CommentComponent

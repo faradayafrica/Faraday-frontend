@@ -132,6 +132,7 @@ const Qfeed = (props) => {
             path="/"
             render={(props) => (
               <TimeLine
+                online={online}
                 questions={questions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}

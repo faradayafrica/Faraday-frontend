@@ -320,7 +320,7 @@ const DiscussionPage = ({
                         />
                       )}
                       <span className="ml-1 font-medium text-base">
-                        {question?.likes}
+                        {question?.likes ? question?.likes : ""}
                       </span>
                     </button>
                     {/* The share buttons are currently disabled */}

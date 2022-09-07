@@ -20,9 +20,37 @@ import { Toaster } from "react-hot-toast";
 import { UserProvider } from "./context/userContext";
 import SideNav from "./components/styledComponents/SideNav.jsx";
 
+import http from "./services/httpService";
+import { SuccessToast } from "./components/common/CustomToast.js";
+
 const App = () => {
   const [online, setOnline] = useState(true);
   const [hideOnlineStatus, setHideOnlineStatus] = useState(false);
+
+  const syncPendingComments = async () => {
+    const apiEndpoint =
+      process.env.REACT_APP_API_URL + "/qfeed/que/create_comment/";
+
+    var storedComments = JSON.parse(localStorage.getItem("pendingComments"));
+
+    window.localStorage.setItem("pendingComments", JSON.stringify([]));
+    console.log("!>", storedComments, "<!");
+
+    storedComments.forEach(async (item) => {
+      const { content, postid } = item;
+
+      try {
+        const { data } = await http.post(apiEndpoint, {
+          postid,
+          content,
+        });
+
+        SuccessToast("Offline comment synced");
+      } catch (e) {
+        console.warn(e.message);
+      }
+    });
+  };
 
   useEffect(() => {
     window.addEventListener("offline", () => {
@@ -36,9 +64,12 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-      setHideOnlineStatus(false);
-    }, 3000);
+    if (online) {
+      setTimeout(() => {
+        setHideOnlineStatus(false);
+      }, 3000);
+      syncPendingComments();
+    }
   }, [online]);
 
   return (

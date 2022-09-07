@@ -57,18 +57,10 @@ const AddComment = ({
         )}
         {comment.length > 0 ? (
           <div className="m-0 ml-2 pb-2 float-right">
-            {online ? (
-              <PrimaryButton
-                cta="Post"
-                action={() => postComment(questionId, LIMIT)}
-              />
-            ) : (
-              <PrimaryButton
-                cta="Post"
-                action={() => postComment(questionId, LIMIT)}
-                disabled
-              />
-            )}
+            <PrimaryButton
+              cta="Post"
+              action={() => postComment(questionId, LIMIT)}
+            />
           </div>
         ) : (
           ""
