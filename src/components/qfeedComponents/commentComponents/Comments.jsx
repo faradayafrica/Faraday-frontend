@@ -26,8 +26,6 @@ const Comments = ({
   const [pendingComments, setPendingComments] = useState([]);
   const currentUser = getCurrentUser();
 
-  console.log("USER", currentUser);
-
   const uniqueComments = Array.from(new Set(comments.map((a) => a.id))).map(
     (id) => {
       return comments.find((a) => a.id === id);

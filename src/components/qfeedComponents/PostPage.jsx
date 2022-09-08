@@ -46,7 +46,6 @@ const PostPage = (props) => {
       ErrorToast("Can't send until you resolve the concerns ");
     } else {
       try {
-        console.log(props.history);
         props.history.goBack();
         const { data } = await http.post(apiEndpoint, { title, content });
         props.handleUpdatedQuestions([data.data, ...props.questions]);
