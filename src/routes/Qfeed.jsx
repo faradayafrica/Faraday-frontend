@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import PostPage from "../components/qfeedComponents/PostPage";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
-
 import NotFound from "./NotFound.jsx";
 import http from "../services/httpService";
+
 import {
   PromiseToast,
   SuccessToast,
@@ -15,6 +15,8 @@ import {
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
   const [loader, setLoader] = useState(true);
+
+  const location = useLocation();
 
   const { online } = props;
 
@@ -95,8 +97,8 @@ const Qfeed = (props) => {
   const handleScroll = (e) => {
     if (nextQuestionPageUrl) {
       if (
-        e.target.documentElement.scrollTop + window.innerHeight + 500 >=
-        e.target.documentElement.scrollHeight
+        e.currentTarget.scrollTop + e.currentTarget.offsetHeight + 600 >=
+        e.currentTarget.scrollHeight
       ) {
         if (!questionRequestQueue.includes(nextQuestionPageUrl)) {
           console.log(">", questionRequestQueue);
@@ -111,7 +113,10 @@ const Qfeed = (props) => {
 
   useEffect(() => {
     fetchQuestions(apiEndpoint);
-    window.addEventListener("scroll", handleScroll);
+    // window.addEventListener("scroll", handleScroll);
+    document
+      .getElementById("timeline")
+      .addEventListener("scroll", handleScroll);
   }, []);
 
   return (

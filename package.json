@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.27.2",
     "bootstrap": "^4.6.0",
+    "gsap": "^3.10.4",
     "joi-browser": "^13.4.0",
     "jwt-decode": "^2.2.0",
     "react": "^17.0.2",

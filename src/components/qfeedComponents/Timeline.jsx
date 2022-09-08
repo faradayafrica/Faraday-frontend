@@ -14,9 +14,13 @@ const TimeLine = (props) => {
   }, [props.questions]);
 
   return (
-    <>
+    <div className="relative">
       <div className="min-h-[70px] sm:min-h-[0px] "> </div>
-      <div className="">
+      <div
+        className="bg-white h-screen absolute w-full"
+        style={{ overflow: "scroll" }}
+        id="timeline"
+      >
         <h1 className="text-2xl sm:text-2xl m-3 font-bold">Question Feed</h1>
         {/* The questions */}
 
@@ -73,7 +77,7 @@ const TimeLine = (props) => {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -182,7 +182,6 @@ function SideNav({ history, online, hideOnlineStatus }) {
               {" "}
               <PrimaryButton cta="Add a question" />
             </Link>
-            {/* <PrimaryButton cta="Add a question" action={handlePost} /> */}
           </div>
         </div>
       </div>

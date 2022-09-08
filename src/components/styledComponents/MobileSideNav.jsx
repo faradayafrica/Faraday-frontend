@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "../../styles/mobileSideNav.scss";
 import { useLocation } from "react-router-dom";
 import { getCurrentUser } from "../../services/authService";
 
@@ -12,12 +11,16 @@ import bell from "../../images/nav/bell.svg";
 import qfeed from "../../images/nav/qfeed.svg";
 import close from "../../images/nav/close_md.svg";
 
+//styles import
+import "../../styles/mobileSideNav.scss";
+import "../../styles/topnav.scss";
+
 function MobileSideNav() {
   const [isQfeed, setQfeed] = useState();
   const [isNotification, setNotification] = useState();
   const [isProfile, setIsProfile] = useState(false);
-  const currentUser = getCurrentUser();
 
+  const currentUser = getCurrentUser();
   const location = useLocation();
 
   useEffect(() => {
