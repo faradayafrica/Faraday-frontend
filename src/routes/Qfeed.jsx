@@ -103,15 +103,14 @@ const Qfeed = (props) => {
   };
 
   const handleScroll = (e) => {
-    if (nextQuestionPageUrl) {
+    if (nextQuestionPageUrl && document.getElementById("timeline") !== null) {
       if (
-        e.currentTarget.scrollTop + e.currentTarget.offsetHeight + 600 >=
-        e.currentTarget.scrollHeight
+        e.target.documentElement.scrollTop + window.innerHeight + 1000 >=
+        e.target.documentElement.scrollHeight
       ) {
         if (!questionRequestQueue.includes(nextQuestionPageUrl)) {
           console.log(">", questionRequestQueue);
           fetchQuestions(nextQuestionPageUrl);
-          console.log("Scroll did this!");
           setLoader(true);
         } else {
           console.warn("Duplicate request blocked");
@@ -122,21 +121,17 @@ const Qfeed = (props) => {
 
   useEffect(() => {
     fetchQuestions(apiEndpoint);
-    if (document.getElementById("timeline") !== null) {
-      document
-        .getElementById("timeline")
-        .addEventListener("scroll", handleScroll);
-    }
+    window.addEventListener("scroll", handleScroll);
   }, []);
 
   let lastScrollTop = 0;
 
   useEffect(() => {
     if (document.getElementById("timeline") !== null) {
-      document.getElementById("timeline").addEventListener(
+      window.addEventListener(
         "scroll",
         (e) => {
-          let st = e.currentTarget.scrollTop;
+          let st = e.target.documentElement.scrollTop;
           if (st > lastScrollTop) {
             // downscroll code
             document.getElementById("topnav").classList.add("hide-up");
@@ -156,7 +151,6 @@ const Qfeed = (props) => {
   return (
     <div className="relative w-full route-wrapper ">
       <div className="w-full bg-white ">
-        {/* {console.log(questions, "ALL QUESTIONS!!!")} */}
         <Switch>
           <Route
             path="/qfeed/post"

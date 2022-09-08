@@ -204,7 +204,7 @@ const DiscussionPage = ({
   };
 
   const handleScroll = (e) => {
-    if (nextCommentPageUrl) {
+    if (nextCommentPageUrl && document.getElementById("discussion") !== null) {
       if (
         e.target.documentElement.scrollTop + window.innerHeight + 1000 >=
         e.target.documentElement.scrollHeight
@@ -223,9 +223,6 @@ const DiscussionPage = ({
     fetchComments(commentsApiEndpoint);
     fetchThisQuestion();
     // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, []);
-
-  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
   }, []);
 
@@ -272,7 +269,7 @@ const DiscussionPage = ({
     <>
       <div className=" bg-white z-30 bottom-0 left-0 h-screen w-screen sm:w-auto sm:static">
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
-        <div className="z-50">
+        <div className="z-50" id="discussion">
           <h1 className="text-2xl sm:text-2xl m-3 font-bold ">Discussion</h1>
           {question ? (
             <div className=" py-3 relative">
@@ -300,7 +297,7 @@ const DiscussionPage = ({
                 </p>
 
                 <div
-                  className=" hover:bg-brand-highlight cursor-pointer absolute right-4 top-2 rounded-md"
+                  className=" hover:bg-brand-highlight cursor-pointer absolute right-2 top-2 rounded-md"
                   onClick={() => {
                     setQuestionMenu(!questionMenu);
                   }}

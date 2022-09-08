@@ -126,7 +126,7 @@ const Question = (props) => {
           </p>
 
           <div
-            className=" hover:bg-brand-highlight cursor-pointer absolute right-4 top-2 rounded-md"
+            className=" hover:bg-brand-highlight cursor-pointer absolute right-2 top-2 rounded-md"
             onClick={() => {
               setQuestionMenu(!questionMenu);
             }}
