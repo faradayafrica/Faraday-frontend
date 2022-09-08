@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Switch, Route, Redirect, useLocation } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import PostPage from "../components/qfeedComponents/PostPage";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
@@ -15,8 +15,6 @@ import {
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
   const [loader, setLoader] = useState(true);
-
-  const location = useLocation();
 
   const { online } = props;
 
@@ -113,11 +111,30 @@ const Qfeed = (props) => {
 
   useEffect(() => {
     fetchQuestions(apiEndpoint);
-    // window.addEventListener("scroll", handleScroll);
     document
       .getElementById("timeline")
       .addEventListener("scroll", handleScroll);
   }, []);
+
+  let lastScrollTop = 0;
+
+  useEffect(() => {
+    document.getElementById("timeline").addEventListener(
+      "scroll",
+      (e) => {
+        let st = e.currentTarget.scrollTop;
+        if (st > lastScrollTop) {
+          // downscroll code
+          document.getElementById("topnav").classList.add("disappear");
+        } else {
+          // upscroll code
+          document.getElementById("topnav").classList.remove("disappear");
+        }
+        lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+      },
+      false
+    );
+  });
 
   return (
     <>

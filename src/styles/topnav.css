@@ -1,0 +1,9 @@
+.topnav  {
+    transition: all ease .3s !important;
+  
+}
+
+.disappear {
+    opacity: 0 !important;
+    transform: translateY(-100px) !important;
+}

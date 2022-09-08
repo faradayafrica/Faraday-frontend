@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { gsap } from "gsap";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { getCurrentUser } from "../../services/authService";
@@ -13,7 +14,7 @@ import close from "../../images/nav/close_md.svg";
 
 //styles import
 import "../../styles/mobileSideNav.scss";
-import "../../styles/topnav.scss";
+import "../../styles/topnav.css";
 
 function MobileSideNav() {
   const [isQfeed, setQfeed] = useState();
@@ -67,13 +68,32 @@ function MobileSideNav() {
     mobileSidenav.classList.toggle("side-active");
   };
 
+  const app = useRef();
+  const nav = useRef();
+  const t1 = useRef();
+
+  useEffect(() => {
+    t1.current = gsap
+      .timeline()
+      .from(nav.current, { y: 200, delay: 0.5, ease: "power2.inOut" })
+      .fromTo(
+        app.current,
+        { y: -200, opacity: 0 },
+        { y: 0, opacity: 1, ease: "power2.inOut" }
+      );
+  });
+
   return (
     <>
       <div className="mobile-sidenav">
         {/* Hamburger */}
         <div className="w-full fixed top-0 left-0 z-40 p-2">
           {/* fixed top nav for mobile */}
-          <div className="ask-shadow rounded-xl bg-white flex justify-between">
+          <div
+            ref={app}
+            id="topnav"
+            className="ask-shadow topnav rounded-xl bg-white flex justify-between"
+          >
             <img
               className="p-3 rounded-xl cursor-pointer  "
               data-toggle="tooltip"
@@ -100,7 +120,10 @@ function MobileSideNav() {
 
         {/* fixed bottom nav for mobile */}
         {isProfile && (
-          <div className="fixed bottom-0 left-0 z-10 w-full bg-white py-1 px-3 flex border">
+          <div
+            ref={nav}
+            className=" fixed bottom-0 left-0 z-10 w-full bg-white py-1 px-3 flex border"
+          >
             <Link
               to="/"
               style={{ textDecoration: "none" }}

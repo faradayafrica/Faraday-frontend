@@ -9,7 +9,7 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.27.2",
     "bootstrap": "^4.6.0",
-    "gsap": "^3.10.4",
+    "gsap": "^3.11.1",
     "joi-browser": "^13.4.0",
     "jwt-decode": "^2.2.0",
     "react": "^17.0.2",
@@ -46,5 +46,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/gsap": "^3.0.0"
   }
 }
