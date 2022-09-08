@@ -222,7 +222,7 @@ const DiscussionPage = ({
   useEffect(() => {
     fetchComments(commentsApiEndpoint);
     fetchThisQuestion();
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
   useEffect(() => {
@@ -232,6 +232,14 @@ const DiscussionPage = ({
   let lastScrollTop = 0;
 
   useEffect(() => {
+    if (
+      document.getElementById("topnav") !== null &&
+      document.getElementById("bottomnav") !== null
+    ) {
+      document.getElementById("topnav").classList.remove("hide-up");
+      document.getElementById("bottomnav").classList.remove("hide-down");
+    }
+
     window.addEventListener(
       "scroll",
       (e) => {
@@ -262,7 +270,7 @@ const DiscussionPage = ({
 
   return (
     <>
-      <div className="absolute bg-brand z-20 bottom-0 left-0 h-full w-screen sm:w-auto sm:static">
+      <div className=" bg-white z-30 bottom-0 left-0 h-screen w-screen sm:w-auto sm:static">
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
         <div className="z-50">
           <h1 className="text-2xl sm:text-2xl m-3 font-bold ">Discussion</h1>

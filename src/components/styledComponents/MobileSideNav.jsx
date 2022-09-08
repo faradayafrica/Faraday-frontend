@@ -127,7 +127,7 @@ function MobileSideNav() {
         {isProfile && (
           <div
             ref={nav}
-            className="nav-container fixed bottom-0 left-0 z-30 w-full bg-white py-1 px-3 flex border"
+            className="nav-container fixed bottom-0 left-0 z-10 w-full bg-white py-1 px-3 flex border"
             id="bottomnav"
           >
             <Link

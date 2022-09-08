@@ -235,6 +235,8 @@ const Comments = ({
           )}
         </>
       )}
+
+      <div className="h-24 bg-white w-full"></div>
     </div>
   );
 };
