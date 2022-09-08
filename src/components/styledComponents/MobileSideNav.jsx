@@ -43,6 +43,7 @@ function MobileSideNav() {
   useEffect(() => {
     const notAllowedRoutes = [
       `/me/${currentUser.username}`,
+      "/qfeed/:id",
       "/notification",
       "/post",
       "/signup",
@@ -75,10 +76,14 @@ function MobileSideNav() {
   useEffect(() => {
     t1.current = gsap
       .timeline()
-      .from(nav.current, { y: 200, delay: 0.5, ease: "power2.inOut" })
       .fromTo(
         app.current,
         { y: -200, opacity: 0 },
+        { y: 0, opacity: 1, ease: "power2.inOut" }
+      )
+      .fromTo(
+        nav.current,
+        { y: 200, opacity: 0 },
         { y: 0, opacity: 1, ease: "power2.inOut" }
       );
   });
@@ -92,7 +97,7 @@ function MobileSideNav() {
           <div
             ref={app}
             id="topnav"
-            className="ask-shadow topnav rounded-xl bg-white flex justify-between"
+            className="ask-shadow nav-container rounded-xl bg-white flex justify-between"
           >
             <img
               className="p-3 rounded-xl cursor-pointer  "
@@ -122,7 +127,8 @@ function MobileSideNav() {
         {isProfile && (
           <div
             ref={nav}
-            className=" fixed bottom-0 left-0 z-10 w-full bg-white py-1 px-3 flex border"
+            className="nav-container fixed bottom-0 left-0 z-30 w-full bg-white py-1 px-3 flex border"
+            id="bottomnav"
           >
             <Link
               to="/"

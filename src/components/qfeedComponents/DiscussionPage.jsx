@@ -229,6 +229,28 @@ const DiscussionPage = ({
     window.addEventListener("scroll", handleScroll);
   }, []);
 
+  let lastScrollTop = 0;
+
+  useEffect(() => {
+    window.addEventListener(
+      "scroll",
+      (e) => {
+        let st = e.target.documentElement.scrollTop;
+        if (st > lastScrollTop) {
+          // downscroll code
+          document.getElementById("topnav").classList.add("hide-up");
+          document.getElementById("bottomnav").classList.add("hide-down");
+        } else {
+          // upscroll code
+          document.getElementById("topnav").classList.remove("hide-up");
+          document.getElementById("bottomnav").classList.remove("hide-down");
+        }
+        lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+      },
+      false
+    );
+  });
+
   let loveClasses =
     "hover:bg-danger-highlight h-[40px] px-3 flex justify-around items-center rounded-lg mr-4";
 
@@ -240,7 +262,7 @@ const DiscussionPage = ({
 
   return (
     <>
-      <div className="absolute bg-white z-20 bottom-0 left-0 h-full w-screen sm:w-auto sm:static">
+      <div className="absolute bg-brand z-20 bottom-0 left-0 h-full w-screen sm:w-auto sm:static">
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
         <div className="z-50">
           <h1 className="text-2xl sm:text-2xl m-3 font-bold ">Discussion</h1>

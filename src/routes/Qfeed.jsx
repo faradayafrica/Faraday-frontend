@@ -16,6 +16,16 @@ const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
   const [loader, setLoader] = useState(true);
 
+  const removeDuplicate = (arr) => {
+    const arrWithUniqueItems = Array.from(new Set(arr.map((a) => a.id))).map(
+      (id) => {
+        return arr.find((a) => a.id === id);
+      }
+    );
+
+    return arrWithUniqueItems;
+  };
+
   const { online } = props;
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
@@ -101,6 +111,7 @@ const Qfeed = (props) => {
         if (!questionRequestQueue.includes(nextQuestionPageUrl)) {
           console.log(">", questionRequestQueue);
           fetchQuestions(nextQuestionPageUrl);
+          console.log("Scroll did this!");
           setLoader(true);
         } else {
           console.warn("Duplicate request blocked");
@@ -111,34 +122,40 @@ const Qfeed = (props) => {
 
   useEffect(() => {
     fetchQuestions(apiEndpoint);
-    document
-      .getElementById("timeline")
-      .addEventListener("scroll", handleScroll);
+    if (document.getElementById("timeline") !== null) {
+      document
+        .getElementById("timeline")
+        .addEventListener("scroll", handleScroll);
+    }
   }, []);
 
   let lastScrollTop = 0;
 
   useEffect(() => {
-    document.getElementById("timeline").addEventListener(
-      "scroll",
-      (e) => {
-        let st = e.currentTarget.scrollTop;
-        if (st > lastScrollTop) {
-          // downscroll code
-          document.getElementById("topnav").classList.add("disappear");
-        } else {
-          // upscroll code
-          document.getElementById("topnav").classList.remove("disappear");
-        }
-        lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-      },
-      false
-    );
+    if (document.getElementById("timeline") !== null) {
+      document.getElementById("timeline").addEventListener(
+        "scroll",
+        (e) => {
+          let st = e.currentTarget.scrollTop;
+          if (st > lastScrollTop) {
+            // downscroll code
+            document.getElementById("topnav").classList.add("hide-up");
+            document.getElementById("bottomnav").classList.add("hide-down");
+          } else {
+            // upscroll code
+            document.getElementById("topnav").classList.remove("hide-up");
+            document.getElementById("bottomnav").classList.remove("hide-down");
+          }
+          lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+        },
+        false
+      );
+    }
   });
 
   return (
-    <>
-      <div className="w-full route-wrapper">
+    <div className="relative w-full route-wrapper ">
+      <div className="w-full bg-white ">
         {/* {console.log(questions, "ALL QUESTIONS!!!")} */}
         <Switch>
           <Route
@@ -171,7 +188,7 @@ const Qfeed = (props) => {
             render={(props) => (
               <TimeLine
                 online={online}
-                questions={questions}
+                questions={removeDuplicate(questions)}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}
                 onDeleteQuestion={deleteQuestion}
@@ -186,7 +203,7 @@ const Qfeed = (props) => {
           <Redirect push to="/not-found" />
         </Switch>
       </div>
-    </>
+    </div>
   );
 };
 
