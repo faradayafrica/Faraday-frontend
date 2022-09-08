@@ -1,9 +1,14 @@
-.topnav  {
-    transition: all ease .3s !important;
+.nav-container  {
+    transition: all ease .4s !important;
   
 }
 
-.disappear {
+.hide-up {
     opacity: 0 !important;
-    transform: translateY(-100px) !important;
+    transform: translateY(-200px) !important;
+}
+
+.hide-down {
+    opacity: 0 !important;
+    transform: translateY(200px) !important;
 }
