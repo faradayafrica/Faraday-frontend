@@ -79,7 +79,7 @@ function Profile({ match }, props) {
       try {
         const { data } = await http.get(userSolutionEndpoint);
         setSolutions(data.results);
-        console.log("SOLn", data);
+        // console.log("SOLn", data);
       } catch (e) {
         console.log(e.message);
       }

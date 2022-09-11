@@ -138,10 +138,6 @@ const Qfeed = (props) => {
     // console.log(storedQuestions);
 
     if (storedQuestions) {
-      SuccessToast(
-        `We saved ${storedQuestions.questions.length} questions for offline mode`
-      );
-
       setQuestions([...storedQuestions.questions]);
       nextQuestionPageUrl = storedQuestions.next
         ? storedQuestions.next
@@ -163,11 +159,11 @@ const Qfeed = (props) => {
           if (st > lastScrollTop) {
             // downscroll code
             document.getElementById("topnav").classList.add("hide-up");
-            document.getElementById("bottomnav").classList.add("hide-down");
+            // document.getElementById("bottomnav").classList.add("hide-down");
           } else {
             // upscroll code
             document.getElementById("topnav").classList.remove("hide-up");
-            document.getElementById("bottomnav").classList.remove("hide-down");
+            // document.getElementById("bottomnav").classList.remove("hide-down");
           }
           lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
         },
