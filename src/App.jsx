@@ -79,13 +79,13 @@ const App = () => {
   };
 
   useEffect(() => {
+    window.addEventListener("online", () => {
+      setOnline(true);
+    });
+
     window.addEventListener("offline", () => {
       setHideOnlineStatus(true);
       setOnline(false);
-    });
-
-    window.addEventListener("online", () => {
-      setOnline(true);
     });
   }, []);
 

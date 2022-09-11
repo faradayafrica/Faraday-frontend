@@ -41,22 +41,9 @@ function MobileSideNav() {
   };
 
   useEffect(() => {
-    const notAllowedRoutes = [
-      `/me/${currentUser.username}`,
-      "/qfeed/:id",
-      "/notification",
-      "/post",
-      "/signup",
-      "/confirm-email",
-      "/update-school-detail",
-      "/update-personal-data",
-      "/terms-and-condition",
-      "/privacy-policy",
-      "/login",
-      "/logout",
-    ];
+    const allowedRoutes = ["/qfeed", "/"];
 
-    if (notAllowedRoutes.includes(location.pathname)) {
+    if (!allowedRoutes.includes(location.pathname)) {
       setIsProfile(false);
     } else {
       setIsProfile(true);
@@ -145,7 +132,7 @@ function MobileSideNav() {
               className={renderBottomLink(isNotification)}
             >
               <div className={renderBottomLink(isNotification)}>
-                <img src={bell} alt="qfeed" />
+                <img src={bell} alt="notification" />
               </div>
             </Link>
           </div>
