@@ -11,6 +11,7 @@ import {
   SuccessToast,
   ErrorToast,
 } from "../components/common/CustomToast.js";
+import { concat } from "joi-browser";
 
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
@@ -92,10 +93,25 @@ const Qfeed = (props) => {
     questionRequestQueue.push(url);
 
     try {
+      // console.log("ques", questions);
       const { data } = await http.get(url);
       setQuestions((prevQuestions) => [...prevQuestions, ...data.results]);
+
       setLoader(false);
       nextQuestionPageUrl = data.next;
+
+      // Save state to Local Storage
+      window.localStorage.setItem(
+        "questions",
+        JSON.stringify({
+          next: data.next,
+          questions: questions.concat(...data.results),
+        })
+      );
+
+      // const allQ = [...questions];
+
+      console.log("ALL_Q", questions.length);
     } catch (err) {
       setLoader(false);
       throw err;
@@ -109,7 +125,7 @@ const Qfeed = (props) => {
         e.target.documentElement.scrollHeight
       ) {
         if (!questionRequestQueue.includes(nextQuestionPageUrl)) {
-          console.log(">", questionRequestQueue);
+          console.log("Request Q>", questionRequestQueue);
           fetchQuestions(nextQuestionPageUrl);
           setLoader(true);
         } else {
@@ -119,8 +135,24 @@ const Qfeed = (props) => {
     }
   };
 
+  // Checks Local Storage and populates the Qfeed
   useEffect(() => {
-    fetchQuestions(apiEndpoint);
+    let storedQuestions;
+
+    storedQuestions = JSON.parse(localStorage.getItem("questions"));
+
+    console.log("Recovered>>>", storedQuestions);
+    if (storedQuestions) {
+      SuccessToast(
+        `We saved ${storedQuestions.questions.length} for offline mode`
+      );
+      setQuestions([...storedQuestions.questions]);
+      nextQuestionPageUrl = storedQuestions.next
+        ? storedQuestions.next
+        : apiEndpoint;
+    } else {
+      fetchQuestions(apiEndpoint);
+    }
     window.addEventListener("scroll", handleScroll);
   }, []);
 

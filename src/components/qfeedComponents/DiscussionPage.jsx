@@ -222,7 +222,7 @@ const DiscussionPage = ({
   useEffect(() => {
     fetchComments(commentsApiEndpoint);
     fetchThisQuestion();
-    // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     window.addEventListener("scroll", handleScroll);
   }, []);
 
@@ -244,11 +244,9 @@ const DiscussionPage = ({
         if (st > lastScrollTop) {
           // downscroll code
           document.getElementById("topnav").classList.add("hide-up");
-          document.getElementById("bottomnav").classList.add("hide-down");
         } else {
           // upscroll code
           document.getElementById("topnav").classList.remove("hide-up");
-          document.getElementById("bottomnav").classList.remove("hide-down");
         }
         lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
       },
