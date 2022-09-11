@@ -120,7 +120,7 @@ const Qfeed = (props) => {
         e.target.documentElement.scrollHeight
       ) {
         if (!questionRequestQueue.includes(nextQuestionPageUrl)) {
-          console.log("Request Q>", questionRequestQueue);
+          // console.log("Request Q>", questionRequestQueue);
           fetchQuestions(nextQuestionPageUrl);
           setLoader(true);
         } else {
@@ -135,7 +135,7 @@ const Qfeed = (props) => {
     let storedQuestions;
 
     storedQuestions = JSON.parse(localStorage.getItem("questions"));
-    console.log(storedQuestions);
+    // console.log(storedQuestions);
 
     if (storedQuestions) {
       SuccessToast(
@@ -167,7 +167,7 @@ const Qfeed = (props) => {
           } else {
             // upscroll code
             document.getElementById("topnav").classList.remove("hide-up");
-            // document.getElementById("bottomnav").classList.remove("hide-down");
+            document.getElementById("bottomnav").classList.remove("hide-down");
           }
           lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
         },

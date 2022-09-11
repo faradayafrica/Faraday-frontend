@@ -19,7 +19,7 @@ const TimeLine = (props) => {
     setQuestions(props.questions);
   }, [props.questions]);
 
-  // Preserve Scroll from Stack Overflow
+  // Preserve Scroll position
   useEffect(() => {
     if (getState("QFeed")) {
       let { scrollY } = getState("QFeed");

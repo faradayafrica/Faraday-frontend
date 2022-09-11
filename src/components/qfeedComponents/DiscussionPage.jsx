@@ -27,7 +27,7 @@ const DiscussionPage = ({
   const commentsApiEndpoint =
     process.env.REACT_APP_API_URL + `/qfeed/que/comments/${match.params.id}/`;
 
-  const [question, setQuestion] = useState(thisQuestion);
+  const [question, setQuestion] = useState(thisQuestion ? thisQuestion : {});
   const [comments, setComments] = useState([]);
   const [loader, setLoader] = useState(true);
   const [commentLoader, setCommentLoader] = useState(true);
@@ -219,6 +219,8 @@ const DiscussionPage = ({
     }
   };
 
+  useEffect(() => {});
+
   useEffect(() => {
     if (question.comments > 0) {
       fetchComments(commentsApiEndpoint);
@@ -274,7 +276,7 @@ const DiscussionPage = ({
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
         <div className="z-50" id="discussion">
           <h1 className="text-2xl sm:text-2xl m-3 font-bold ">Discussion</h1>
-          {question ? (
+          {question.user ? (
             <div className=" py-3 relative">
               <div className="pl-3 pr-2">
                 <Link

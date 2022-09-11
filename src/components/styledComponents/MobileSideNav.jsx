@@ -61,18 +61,20 @@ function MobileSideNav() {
   const t1 = useRef();
 
   useEffect(() => {
-    t1.current = gsap
-      .timeline()
-      .fromTo(
-        app.current,
-        { y: -200, opacity: 0 },
-        { y: 0, opacity: 1, ease: "power2.inOut" }
-      )
-      .fromTo(
-        nav.current,
-        { y: 200, opacity: 0 },
-        { y: 0, opacity: 1, ease: "power2.inOut" }
-      );
+    setTimeout(() => {
+      t1.current = gsap
+        .timeline()
+        .fromTo(
+          app.current,
+          { y: -200, opacity: 0 },
+          { y: 0, opacity: 1, ease: "power2.inOut" }
+        )
+        .fromTo(
+          nav.current,
+          { y: 200, opacity: 0 },
+          { y: 0, opacity: 1, ease: "power2.inOut" }
+        );
+    }, 50);
   });
 
   return (
