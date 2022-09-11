@@ -108,10 +108,6 @@ const Qfeed = (props) => {
           questions: questions.concat(...data.results),
         })
       );
-
-      // const allQ = [...questions];
-
-      console.log("ALL_Q", questions.length);
     } catch (err) {
       setLoader(false);
       throw err;
@@ -141,7 +137,6 @@ const Qfeed = (props) => {
 
     storedQuestions = JSON.parse(localStorage.getItem("questions"));
 
-    console.log("Recovered>>>", storedQuestions);
     if (storedQuestions) {
       SuccessToast(
         `We saved ${storedQuestions.questions.length} for offline mode`

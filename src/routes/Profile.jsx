@@ -34,7 +34,6 @@ function Profile({ match }, props) {
       try {
         const { data } = await http.get(userEndpoint);
         setUser(data);
-        console.log("Flamingos", user);
       } catch (e) {
         console.log(e.message);
       }
@@ -78,9 +77,9 @@ function Profile({ match }, props) {
 
     async function fetchUserSolutions() {
       try {
-        const solutionResult = await http.get(userSolutionEndpoint);
-        // setSolutions(solutionResult.data);
-        // console.log("SOLn", solutions);
+        const { data } = await http.get(userSolutionEndpoint);
+        setSolutions(data.results);
+        console.log("SOLn", data);
       } catch (e) {
         console.log(e.message);
       }
@@ -187,15 +186,29 @@ function Profile({ match }, props) {
                     ) : (
                       <div className="m-3">
                         <Loader
-                          msg={`loading ${
-                            currentUser.first_name + " " + currentUser.last_name
-                          }'s questions`}
+                          msg={`loading ${currentUser.first_name}'s questions`}
                         />
                       </div>
                     )}
                   </div>
                 </Tab.Panel>
-                <Tab.Panel>Content 2</Tab.Panel>
+                <Tab.Panel>
+                  {solutions ? (
+                    <>
+                      {solutions.map((question) => (
+                        <Question
+                          question={question}
+                          questions={questions}
+                          handleUpdatedQuestions={updateQuestions}
+                          onDeleteQuestion={deleteQuestion}
+                          key={question.id}
+                        />
+                      ))}
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>
           </>
