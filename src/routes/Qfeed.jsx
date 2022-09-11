@@ -11,7 +11,6 @@ import {
   SuccessToast,
   ErrorToast,
 } from "../components/common/CustomToast.js";
-import { concat } from "joi-browser";
 
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
@@ -108,10 +107,6 @@ const Qfeed = (props) => {
           questions: questions.concat(...data.results),
         })
       );
-
-      // const allQ = [...questions];
-
-      console.log("ALL_Q", questions.length);
     } catch (err) {
       setLoader(false);
       throw err;
@@ -140,12 +135,13 @@ const Qfeed = (props) => {
     let storedQuestions;
 
     storedQuestions = JSON.parse(localStorage.getItem("questions"));
+    console.log(storedQuestions);
 
-    console.log("Recovered>>>", storedQuestions);
     if (storedQuestions) {
       SuccessToast(
-        `We saved ${storedQuestions.questions.length} for offline mode`
+        `We saved ${storedQuestions.questions.length} questions for offline mode`
       );
+
       setQuestions([...storedQuestions.questions]);
       nextQuestionPageUrl = storedQuestions.next
         ? storedQuestions.next
@@ -171,7 +167,7 @@ const Qfeed = (props) => {
           } else {
             // upscroll code
             document.getElementById("topnav").classList.remove("hide-up");
-            document.getElementById("bottomnav").classList.remove("hide-down");
+            // document.getElementById("bottomnav").classList.remove("hide-down");
           }
           lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
         },

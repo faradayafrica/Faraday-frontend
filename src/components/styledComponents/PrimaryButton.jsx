@@ -6,7 +6,7 @@ const PrimaryButton = ({ cta, wide, action, disabled }) => {
 
   return (
     <button
-      onClick={() => action}
+      onClick={() => action()}
       className={classes}
       disabled={false || disabled}
     >

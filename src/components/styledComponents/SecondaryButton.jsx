@@ -5,7 +5,7 @@ const SecondaryButton = ({ cta, wide, action }) => {
   classes += wide ? " w-full" : "";
   return (
     <button
-      onClick={() => action}
+      onClick={() => action()}
       className={classes}
       style={{ border: "1.4px solid #05b851" }}
     >

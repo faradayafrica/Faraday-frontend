@@ -220,7 +220,12 @@ const DiscussionPage = ({
   };
 
   useEffect(() => {
-    fetchComments(commentsApiEndpoint);
+    if (question.comments > 0) {
+      fetchComments(commentsApiEndpoint);
+    } else {
+      setComments([]);
+      setCommentLoader(false);
+    }
     fetchThisQuestion();
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     window.addEventListener("scroll", handleScroll);
@@ -376,6 +381,7 @@ const DiscussionPage = ({
               {/* Comments here */}
               <Comments
                 online={online}
+                thisQuestion={question}
                 questionid={match.params.id}
                 comments={comments}
                 commentLoader={commentLoader}
@@ -384,6 +390,8 @@ const DiscussionPage = ({
                 onMarkSolution={handleMarkSolution}
                 fetchThisQuestion={fetchThisQuestion}
                 match={match}
+                questions={questions}
+                handleUpdatedQuestions={handleUpdatedQuestions}
               />
             </div>
           ) : (
