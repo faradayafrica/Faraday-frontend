@@ -178,7 +178,6 @@ const Comments = ({
 
   return (
     <div className="bg-white">
-      <h1 className="text-danger">{thisQuestion.comments}</h1>
       <div className=" pl-3 pr-2">
         <AddComment
           online={online}
