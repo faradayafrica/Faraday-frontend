@@ -33,7 +33,7 @@ const DiscussionPage = ({
   const [commentLoader, setCommentLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
 
-  console.log("Question?!!!!!!!!!!!!!!!!!!!!!!!!!!!", questions);
+  // console.log("Question?!!!!!!!!!!!!!!!!!!!!!!!!!!!", questions);
 
   const handleFollow = (user) => {
     const apiEndpoint =
@@ -134,14 +134,14 @@ const DiscussionPage = ({
           postid,
           value: "downvote",
         });
-        SuccessToast("Question unliked");
+        // SuccessToast("Question unliked");
         likeData = data.data;
       } else {
         const { data } = await http.post(apiEndpoint, {
           postid,
           value: "upvote",
         });
-        SuccessToast("Question liked");
+        // SuccessToast("Question liked");
         likeData = data.data;
       }
 
