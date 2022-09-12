@@ -1,6 +1,6 @@
 import PostComponent from "./PostComponent";
 import http from "../../services/httpService";
-import { SuccessToast, ErrorToast } from "../common/CustomToast";
+import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
 import { getCurrentUser } from "../../services/authService";
 
 const PostPage = (props) => {
@@ -34,7 +34,7 @@ const PostPage = (props) => {
     };
   };
 
-  const postQuestion = async (title, content) => {
+  const postQuestion = (title, content) => {
     const apiEndpoint =
       process.env.REACT_APP_API_URL + "/qfeed/que/create_que/";
 
@@ -47,9 +47,14 @@ const PostPage = (props) => {
     } else {
       try {
         props.history.goBack();
-        const { data } = await http.post(apiEndpoint, { title, content });
-        props.handleUpdatedQuestions([data.data, ...props.questions]);
-        SuccessToast("Question sent");
+        const promise = http
+          .post(apiEndpoint, { title, content })
+          .then((resp) => {
+            props.handleUpdatedQuestions([resp.data.data, ...props.questions]);
+            console.log(resp.data.data, "resp");
+          });
+
+        PromiseToast("Question sent", "Question not sent", promise);
       } catch (e) {
         console.warn(e.message);
         if (!props.online) {
