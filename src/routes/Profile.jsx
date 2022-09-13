@@ -79,7 +79,7 @@ function Profile({ match }, props) {
       try {
         const { data } = await http.get(userSolutionEndpoint);
         setSolutions(data.results);
-        console.log("SOLn", data);
+        // console.log("SOLn", data);
       } catch (e) {
         console.log(e.message);
       }
@@ -186,7 +186,7 @@ function Profile({ match }, props) {
                     ) : (
                       <div className="m-3">
                         <Loader
-                          msg={`loading ${currentUser.first_name}'s questions`}
+                          msg={`Loading ${currentUser.first_name}'s questions`}
                         />
                       </div>
                     )}
@@ -214,7 +214,7 @@ function Profile({ match }, props) {
           </>
         ) : (
           <div className="m-3">
-            <Loader msg={`just a moment`} />
+            <Loader msg={`Just a moment`} />
           </div>
         )}
       </div>

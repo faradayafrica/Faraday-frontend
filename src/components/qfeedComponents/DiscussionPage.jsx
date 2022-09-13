@@ -33,6 +33,8 @@ const DiscussionPage = ({
   const [commentLoader, setCommentLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
 
+  // console.log("Question?!!!!!!!!!!!!!!!!!!!!!!!!!!!", questions);
+
   const handleFollow = (user) => {
     const apiEndpoint =
       process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
@@ -132,14 +134,14 @@ const DiscussionPage = ({
           postid,
           value: "downvote",
         });
-        SuccessToast("Question unliked");
+        // SuccessToast("Question unliked");
         likeData = data.data;
       } else {
         const { data } = await http.post(apiEndpoint, {
           postid,
           value: "upvote",
         });
-        SuccessToast("Question liked");
+        // SuccessToast("Question liked");
         likeData = data.data;
       }
 
@@ -222,11 +224,15 @@ const DiscussionPage = ({
   useEffect(() => {});
 
   useEffect(() => {
-    if (question.comments > 0) {
-      fetchComments(commentsApiEndpoint);
+    if (thisQuestion) {
+      if (question.comments > 0) {
+        fetchComments(commentsApiEndpoint);
+      } else {
+        setComments([]);
+        setCommentLoader(false);
+      }
     } else {
-      setComments([]);
-      setCommentLoader(false);
+      fetchComments(commentsApiEndpoint);
     }
     fetchThisQuestion();
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });

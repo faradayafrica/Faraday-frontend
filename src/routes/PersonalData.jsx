@@ -164,20 +164,20 @@ class PersonalData extends Form {
     }
 
     return (
-      <div className='login-page'>
+      <div className="login-page">
         {/* the spinner */}
-        <div id='spinnerContainer' className='spinner-container vanish'>
+        <div id="spinnerContainer" className="spinner-container vanish">
           <Myspinner />
         </div>
-        <div className='progress-container mx-auto mt-3'>
-          <div id='progressBar' className='progress progress-75'></div>
+        <div className="progress-container mx-auto mt-3">
+          <div id="progressBar" className="progress progress-75"></div>
         </div>
-        <div className='form-container'>
-          <div className='logo-container'>
-            <img className='logo' src={faraday} alt='faraday' />
+        <div className="form-container">
+          <div className="logo-container">
+            <img className="logo" src={faraday} alt="faraday" />
           </div>
-          <h3 className='form-title '>Let’s finish up</h3>
-          <p className='mx-3 extra-info text-md'>
+          <h3 className="form-title ">Let’s finish up</h3>
+          <p className="mx-3 extra-info text-md">
             Let’s get to know you a little beter. What makes you special?
           </p>
 
@@ -187,25 +187,25 @@ class PersonalData extends Form {
             {this.renderTextArea("bio", "Your bio")}
             {this.renderGenderSelect("gender", "Gender", this.state.gender)}
 
-            <div className='horinzontal-align label-group'>
-              <div className=' col-4'>
+            <div className="horinzontal-align label-group">
+              <div className=" col-4">
                 {this.renderDateSelect("year", "Year", this.state.year)}
               </div>
-              <div className='col-4 mr-3'>
+              <div className="col-4 mr-3">
                 {this.renderDateSelect("month", "Month", this.state.month)}
               </div>
-              <div className='col'>
+              <div className="col">
                 {this.renderDateSelect("day", "Day", this.listDays())}
               </div>
             </div>
 
             {this.renderButton("Next")}
-            {/* <button
-              className='btn btn-green-outline btn-login my-2 bubbly-button'
+            <button
+              className="btn btn-green-outline btn-login my-2 bubbly-button font-medium"
               onClick={this.skipValidation}
             >
               Skip
-            </button> */}
+            </button>
           </form>
         </div>
       </div>
@@ -213,9 +213,14 @@ class PersonalData extends Form {
   }
 
   skipValidation = () => {
-    console.log("form skipped");
     // window.location = "/qfeed";
-    this.setState({ ...this.state, redirect: "/qfeed" });
+    try {
+      auth.refreshJwt();
+      console.log("form skipped");
+      this.setState({ ...this.state, redirect: "/qfeed" });
+    } catch (e) {
+      console.throw(e);
+    }
   };
 
   listDays = () => {

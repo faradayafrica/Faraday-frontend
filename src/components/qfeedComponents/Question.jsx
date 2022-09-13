@@ -77,14 +77,14 @@ const Question = (props) => {
           postid,
           value: "downvote",
         });
-        SuccessToast("Question unliked");
+        // SuccessToast("Question unliked");
         likeData = data.data;
       } else {
         const { data } = await http.post(apiEndpoint, {
           postid,
           value: "upvote",
         });
-        SuccessToast("Question liked");
+        // SuccessToast("Question liked");
         likeData = data.data;
       }
 

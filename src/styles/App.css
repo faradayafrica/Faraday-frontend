@@ -511,13 +511,15 @@ SIDENAV STYLING
   opacity: 1;
 }
 .btn-green-outline {
-  color: var(--text2-black) !important;
+  color: var(--brand) !important;
   opacity: 1;
   transition: all 0.3s ease-in !important;
-  border: 0.5px solid transparent !important;
+  border: 0.5px solid var(--outline) !important;
+  font-weight: 600 !important;
 }
 .btn-green-outline:hover {
-  border: 0.5px solid var(--secondary-text) !important;
+  border: 0.5px solid transparent !important;
+  background-color: var(--brand-highlight);
   opacity: 1;
 }
 

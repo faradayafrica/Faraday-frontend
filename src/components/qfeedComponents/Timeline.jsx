@@ -81,7 +81,7 @@ const TimeLine = (props) => {
 
         {props.loader ? (
           <div className="m-3">
-            <Loader msg="fetching questions" />
+            <Loader msg="Fetching questions" />
             <div className="h-[65px] w-full sm:hidden"></div>
           </div>
         ) : (
