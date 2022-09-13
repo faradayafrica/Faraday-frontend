@@ -213,10 +213,14 @@ class PersonalData extends Form {
   }
 
   skipValidation = () => {
-    console.log("form skipped");
     // window.location = "/qfeed";
-    auth.refreshJwt();
-    this.setState({ ...this.state, redirect: "/qfeed" });
+    try {
+      auth.refreshJwt();
+      console.log("form skipped");
+      this.setState({ ...this.state, redirect: "/qfeed" });
+    } catch (e) {
+      console.throw(e);
+    }
   };
 
   listDays = () => {
