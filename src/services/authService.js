@@ -70,9 +70,14 @@ export async function resendEmailConfirmation() {
   const user = getCurrentUser();
 
   const url = process.env.REACT_APP_API_URL + "/users/resendotp/";
-  await http.post(url, {
-    email: user.email,
-  });
+  try {
+
+    await http.post(url, {
+      email: user.email,
+    });
+  } catch(e) {
+    console.throw(e)
+  }
 }
 
 export function logout() {
