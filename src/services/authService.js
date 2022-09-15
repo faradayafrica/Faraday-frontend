@@ -16,7 +16,7 @@ export async function login({ username, password }) {
   });
   const jwt = data.access;
   const refresh = data.refresh;
-
+  
   localStorage.setItem(tokenKey, jwt);
   localStorage.setItem(refreshKey, refresh);
 }
@@ -28,12 +28,20 @@ export async function refreshJwt() {
     {
       refresh: refresh_token,
     }
-  );
-
+    );
+    
   const jwt = response.data.access;
   localStorage.setItem(tokenKey, jwt);
 }
 
+export function getCurrentUser() {
+  try {
+    const jwt = localStorage.getItem(tokenKey);
+    return jwtDecode(jwt);
+  } catch (ex) {
+    return { email_verified: null };
+  }
+}
 export async function confirmEmail({ confirmationCode }) {
   const user = getCurrentUser();
   http.setJwt(getJwt());
@@ -68,30 +76,22 @@ export async function updatePersonalDetail(data) {
 
 export async function resendEmailConfirmation() {
   const user = getCurrentUser();
+ const {email} = user
+
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
+};
 
   const url = process.env.REACT_APP_API_URL + "/users/resendotp/";
-  try {
 
-    await http.post(url, {
-      email: user.email,
-    });
-  } catch(e) {
-    console.throw(e)
-  }
+  await http.post(url, {email}, config);
+
 }
 
 export function logout() {
   localStorage.removeItem(tokenKey);
 }
 
-export function getCurrentUser() {
-  try {
-    const jwt = localStorage.getItem(tokenKey);
-    return jwtDecode(jwt);
-  } catch (ex) {
-    return { email_verified: null };
-  }
-}
 
 export function getJwt() {
   return localStorage.getItem(tokenKey);

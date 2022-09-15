@@ -23,8 +23,13 @@ class ConfirmEmail extends Form {
     confirmationCode: Joi.string().max(6).required().label("Code"),
   };
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.resend) this.timeDown();
+  }
+
+  timeDown() {
     let resend = false;
+
     setTimeout(() => {
       let time = this.state.time - 1;
 
@@ -43,15 +48,16 @@ class ConfirmEmail extends Form {
 
     try {
       let resend = this.state.resend;
-      const promise = auth.resendEmailConfirmation();
+      const promise = auth.resendEmailConfirmation().then(() => {
+        resend = true;
+        this.setState({ resend });
+      });
       spinner.classList.add("vanish");
       PromiseToast(
         "Code resent",
         "Can't resend at the moment, try again later ",
         promise
       );
-      resend = true;
-      this.setState({ resend });
     } catch (ex) {
       if (ex.response && ex.response.status >= 400) {
         const errors = { ...this.state.errors };
