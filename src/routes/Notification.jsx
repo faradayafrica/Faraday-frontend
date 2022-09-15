@@ -14,10 +14,10 @@ const Notification = () => {
   useEffect(() => {
     try {
       const promise = http.get(apiEndpoint).then((resp) => {
-        console.log(resp);
+        console.log(resp.data);
       });
 
-      PromiseToast("did it", "couldn't do it", promise);
+      PromiseToast("Did it", "Couldn't do it", promise);
     } catch (e) {
       console.throw(e);
     }

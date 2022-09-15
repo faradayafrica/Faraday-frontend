@@ -51,7 +51,7 @@ const PostPage = (props) => {
           .post(apiEndpoint, { title, content })
           .then((resp) => {
             props.handleUpdatedQuestions([resp.data.data, ...props.questions]);
-            console.log(resp.data.data, "resp");
+            // console.log(resp.data.data, "resp");
           });
 
         PromiseToast("Question sent", "Question not sent", promise);
