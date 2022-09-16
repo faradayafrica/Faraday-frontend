@@ -173,11 +173,11 @@ const Qfeed = (props) => {
   });
 
   return (
-    <div className="relative w-full route-wrapper ">
-      <div className="w-full bg-white ">
+    <div className='relative w-full route-wrapper '>
+      <div className='w-full bg-white '>
         <Switch>
           <Route
-            path="/qfeed/post"
+            path='/qfeed/post'
             render={(props) => (
               <PostPage
                 online={online}
@@ -189,7 +189,7 @@ const Qfeed = (props) => {
           />
 
           <Route
-            path="/qfeed/:id"
+            path='/qfeed/:id'
             render={(props) => (
               <DiscussionPage
                 online={online}
@@ -202,7 +202,7 @@ const Qfeed = (props) => {
             )}
           />
           <Route
-            path="/"
+            path='/'
             render={(props) => (
               <TimeLine
                 online={online}
@@ -217,8 +217,8 @@ const Qfeed = (props) => {
               />
             )}
           />
-          <Route path="/not-found" component={NotFound} />
-          <Redirect push to="/not-found" />
+          <Route path='/not-found' component={NotFound} />
+          <Redirect push to='/not-found' />
         </Switch>
       </div>
     </div>
