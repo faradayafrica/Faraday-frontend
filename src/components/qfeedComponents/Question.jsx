@@ -77,14 +77,14 @@ const Question = (props) => {
           postid,
           value: "downvote",
         });
-        SuccessToast("Question unliked");
+        // SuccessToast("Question unliked");
         likeData = data.data;
       } else {
         const { data } = await http.post(apiEndpoint, {
           postid,
           value: "upvote",
         });
-        SuccessToast("Question liked");
+        // SuccessToast("Question liked");
         likeData = data.data;
       }
 
@@ -109,9 +109,9 @@ const Question = (props) => {
       >
         <img
           src={question?.user.profile_pic}
-          className="w-12 h-12 rounded-full "
+          className="w-12 h-12 rounded-full bg-background2"
           style={{ objectFit: "cover" }}
-          alt={`${question?.user.firstname} ${question?.user.lastname}`}
+          alt=""
         />
       </Link>
       <section className=" p-0 w-full">
@@ -126,7 +126,7 @@ const Question = (props) => {
           </p>
 
           <div
-            className=" hover:bg-brand-highlight cursor-pointer absolute right-4 top-2 rounded-md"
+            className=" hover:bg-brand-highlight cursor-pointer absolute right-2 top-2 rounded-md"
             onClick={() => {
               setQuestionMenu(!questionMenu);
             }}
@@ -147,18 +147,32 @@ const Question = (props) => {
             onDeleteQuestion={props.onDeleteQuestion}
           />
 
-          <Link
-            to={`/qfeed/${question.id}`}
-            style={{ textDecoration: "none" }}
-            className=" text-faraday-night hover:text-faraday-night"
-          >
-            {/* Question head */}
-            <h3 className="text-sm sm:text-lg leading-[120%] font-semibold m-0 mb-1">
-              {question?.title}
-            </h3>
-            {/* Question body --optional */}
-            <p className="text-sm sm:text-base m-0 mb-2">{question?.content}</p>
-          </Link>
+          {question?.created !== "Just now" ? (
+            <Link
+              to={`/qfeed/${question.id}`}
+              style={{ textDecoration: "none" }}
+              className=" text-faraday-night hover:text-faraday-night"
+            >
+              {/* Question head */}
+              <h3 className="text-base sm:text-lg font-semibold m-0 mb-1">
+                {question?.title}
+              </h3>
+              {/* Question body --optional */}
+              <p className="text-sm sm:text-base m-0 mb-2">
+                {question?.content}
+              </p>
+            </Link>
+          ) : (
+            <>
+              <h3 className="text-base sm:text-lg font-semibold m-0 mb-1">
+                {question?.title}
+              </h3>
+              {/* Question body --optional */}
+              <p className="text-sm sm:text-base m-0 mb-2">
+                {question?.content}
+              </p>
+            </>
+          )}
         </div>
 
         <div className=" flex items-center h-12">
@@ -166,6 +180,7 @@ const Question = (props) => {
           <button
             className={loveClasses}
             onClick={() => handleLike(question.id)}
+            disabled={false || question?.created === "Just now"}
           >
             {question.liked ? (
               <img className="h-4 w-4" src={redLove} alt="take back reaction" />
@@ -173,12 +188,12 @@ const Question = (props) => {
               <img className="h-4 w-4" src={love} alt="react to question" />
             )}
             <span className="ml-1 font-medium text-sm">
-              {question.liked ? `${question.likes}` : ""}
+              {question.likes ? question.likes : ""}
             </span>
           </button>
 
           {/* >=1 to become active again */}
-          {question.likes == -1 ? (
+          {question.likes === -1 ? (
             <button
               className={loveClasses}
               onClick={() => handleLike(question.id)}
@@ -258,14 +273,23 @@ const Question = (props) => {
           )}
         </div>
 
-        <Link to={`/qfeed/${question.id}`} style={{ textDecoration: "none" }}>
-          <div className="comment text-base sm:text-lg font-semibold text-brand py-[14px] bg-brnd-highlight flex justify-between">
+        {question?.created !== "Just now" ? (
+          <Link to={`/qfeed/${question.id}`} style={{ textDecoration: "none" }}>
+            <div className="comment text-base sm:text-lg font-semibold  py-[14px] px-2 text-faraday-night flex justify-between">
+              {question.comments === 0 ? "Leave a comment" : ""}{" "}
+              {question.comments === 1 ? `${question.comments} comment` : ""}{" "}
+              {question.comments > 1 ? `${question.comments} comments` : ""}{" "}
+              <img className="mr-2" src={arrow} alt="" />
+            </div>
+          </Link>
+        ) : (
+          <div className="comment text-base sm:text-lg font-semibold  py-[14px] px-2 text-faraday-night flex justify-between">
             {question.comments === 0 ? "Leave a comment" : ""}{" "}
             {question.comments === 1 ? `${question.comments} comment` : ""}{" "}
             {question.comments > 1 ? `${question.comments} comments` : ""}{" "}
             <img className="mr-2" src={arrow} alt="" />
           </div>
-        </Link>
+        )}
       </section>
     </div>
   );

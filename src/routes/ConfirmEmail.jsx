@@ -16,26 +16,31 @@ class ConfirmEmail extends Form {
     errors: {},
     redirect: null,
     resend: false,
+    time: 30,
   };
 
   schema = {
     confirmationCode: Joi.string().max(6).required().label("Code"),
   };
 
-  // componentDidMount() {
-  //   const { user } = this.context;
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.resend) this.timeDown();
+  }
 
-  //   console.log(auth.getCurrentUser().email);
+  timeDown() {
+    let resend = false;
 
-  //   console.log(user, "user");
-  // }
+    setTimeout(() => {
+      let time = this.state.time - 1;
 
-  hidePopup = () => {
-    const popup = document.getElementById("popupContainer");
-    popup.classList.add("vanish");
-    const cannotSend = document.getElementById("cannotSend");
-    cannotSend.classList.add("vanish");
-  };
+      if (time === 0) {
+        this.setState({ resend });
+        this.setState({ time: 30 });
+      } else {
+        this.setState({ time });
+      }
+    }, 1000);
+  }
 
   doResend = () => {
     const spinner = document.getElementById("spinnerContainer");
@@ -43,22 +48,27 @@ class ConfirmEmail extends Form {
 
     try {
       let resend = this.state.resend;
-      const promise = auth.resendEmailConfirmation();
+      const promise = auth.resendEmailConfirmation().then(() => {
+        resend = true;
+        this.setState({ resend });
+      });
       spinner.classList.add("vanish");
-      PromiseToast("Code resent", "Can't resend at the moment", promise);
-      resend = true;
-      this.setState({ resend });
+      PromiseToast(
+        "Code resent",
+        "Can't resend at the moment, try again later ",
+        promise
+      );
     } catch (ex) {
       if (ex.response && ex.response.status >= 400) {
         const errors = { ...this.state.errors };
         errors.confirmationCode = `Code not sent, ${ex.response.data.detail}`;
-        spinner.classList.add("vanish");
+        // spinner.classList.add("vanish");
         this.setState({ errors });
       } else {
         const errors = { ...this.state.errors };
         errors.confirmationCode =
           "Check your internet connection and try again";
-        spinner.classList.add("vanish");
+        // spinner.classList.add("vanish");
         this.setState({ errors });
       }
     }
@@ -110,11 +120,6 @@ class ConfirmEmail extends Form {
 
     return (
       <div className="login-page">
-        <div id="cannotSend" onClick={this.hidePopup} className="popup vanish">
-          <div className="alert alert-warning my-1 mx-auto  text-center">
-            <p className="m-4 alert-body">Can't send code at the moment!</p>
-          </div>
-        </div>
         {/* the spinner */}
         <div id="spinnerContainer" className="spinner-container vanish">
           <Myspinner />
@@ -126,16 +131,16 @@ class ConfirmEmail extends Form {
           <div className="logo-container">
             <img className="logo" src={faraday} alt="faraday" />
           </div>
-          <h3 className="form-title">We sent you a code</h3>
+          <h3 className="form-title">We sent a code to your Email</h3>
           <p className="mx-3 extra-info text-md">
-            enter it below to confirm your email.
+            Enter it below to confirm your email.
           </p>
 
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             <div className="form-group log" style={{ marginTop: "1.5rem" }}>
               <div className="form-group log">
-                <label className="sr-only" htmlFor="email">
+                <label className="sr-only " htmlFor="email">
                   email
                 </label>
                 <input
@@ -144,7 +149,7 @@ class ConfirmEmail extends Form {
                   value={auth.getCurrentUser().email || user.email}
                   name="email"
                   id="email"
-                  className="form-control static-input"
+                  className="form-control static-input rounded-lg"
                 />
               </div>
             </div>
@@ -154,20 +159,21 @@ class ConfirmEmail extends Form {
         </div>
         {!this.state.resend && (
           <p className="mx-auto text-center mt-3 text-md">
-            Didn't get a code,
+            Didn't get a code?
             <span
               onClick={this.doResend}
               className="icon-container-secondary link-brand bubbly-button"
             >
-              resend code.
+              Resend code.
             </span>
           </p>
         )}
 
         {/* Replaces the resend button for 5secs after it has been clicked */}
         {this.state.resend && (
-          <p className="mx-auto text-center mt-3 text-md">
-            We have resent the confirmation code!
+          <p className="mx-auto text-center mt-3 text-md max-w-xs">
+            We have resent the confirmation code! You can try again in{" "}
+            <span className="text-brand">{this.state.time + " "} </span> seconds
           </p>
         )}
       </div>

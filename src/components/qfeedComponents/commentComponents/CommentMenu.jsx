@@ -4,7 +4,6 @@ import follow from "../../../images/qfeed/follow.svg";
 import unfollow from "../../../images/qfeed/unfollow.svg";
 import mark from "../../../images/qfeed/mark.svg";
 import { useState } from "react";
-import http from "../../../services/httpService";
 
 const CommentMenu = ({
   match,
@@ -89,7 +88,10 @@ const CommentMenu = ({
               ) : (
                 <button
                   className="px-4 py-3 text-danger hover:bg-danger-highlight rounded-lg w-full text-left flex"
-                  onClick={() => onDeleteComment(selectedComment)}
+                  onClick={() => {
+                    onDeleteComment(selectedComment);
+                    onToggleCommentMenu();
+                  }}
                 >
                   <img className="mr-2" src={trash} alt="trash" /> Confirm
                   delete
@@ -166,7 +168,10 @@ const CommentMenu = ({
             ) : (
               <button
                 className="px-4 py-3 text-danger hover:bg-danger-highlight rounded-lg w-full text-left flex"
-                onClick={() => onDeleteComment(selectedComment)}
+                onClick={() => {
+                  onDeleteComment(selectedComment);
+                  onToggleCommentMenu();
+                }}
               >
                 <img className="mr-2" src={trash} alt="trash" /> Confirm delete
               </button>

@@ -16,6 +16,7 @@ import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
 const DiscussionPage = ({
   match,
   history,
+  online,
   questions,
   handleUpdatedQuestions,
   onDeleteQuestion,
@@ -26,11 +27,13 @@ const DiscussionPage = ({
   const commentsApiEndpoint =
     process.env.REACT_APP_API_URL + `/qfeed/que/comments/${match.params.id}/`;
 
-  const [question, setQuestion] = useState(thisQuestion);
+  const [question, setQuestion] = useState(thisQuestion ? thisQuestion : {});
   const [comments, setComments] = useState([]);
   const [loader, setLoader] = useState(true);
   const [commentLoader, setCommentLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
+
+  // console.log("Question?!!!!!!!!!!!!!!!!!!!!!!!!!!!", questions);
 
   const handleFollow = (user) => {
     const apiEndpoint =
@@ -131,18 +134,16 @@ const DiscussionPage = ({
           postid,
           value: "downvote",
         });
-        SuccessToast("Question unliked");
+        // SuccessToast("Question unliked");
         likeData = data.data;
       } else {
         const { data } = await http.post(apiEndpoint, {
           postid,
           value: "upvote",
         });
-        SuccessToast("Question liked");
+        // SuccessToast("Question liked");
         likeData = data.data;
       }
-
-      console.log("Like Data", likeData);
 
       if (index >= 0) {
         clonedQuestions[index] = { ...likeData };
@@ -205,7 +206,7 @@ const DiscussionPage = ({
   };
 
   const handleScroll = (e) => {
-    if (nextCommentPageUrl) {
+    if (nextCommentPageUrl && document.getElementById("discussion") !== null) {
       if (
         e.target.documentElement.scrollTop + window.innerHeight + 1000 >=
         e.target.documentElement.scrollHeight
@@ -220,15 +221,51 @@ const DiscussionPage = ({
     }
   };
 
-  useEffect(() => {
-    fetchComments(commentsApiEndpoint);
-    fetchThisQuestion();
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, []);
+  useEffect(() => {});
 
   useEffect(() => {
+    if (thisQuestion) {
+      if (question.comments > 0) {
+        fetchComments(commentsApiEndpoint);
+      } else {
+        setComments([]);
+        setCommentLoader(false);
+      }
+    } else {
+      fetchComments(commentsApiEndpoint);
+    }
+    fetchThisQuestion();
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     window.addEventListener("scroll", handleScroll);
   }, []);
+
+  let lastScrollTop = 0;
+
+  useEffect(() => {
+    if (
+      document.getElementById("topnav") !== null &&
+      document.getElementById("bottomnav") !== null
+    ) {
+      document.getElementById("topnav").classList.remove("hide-up");
+      document.getElementById("bottomnav").classList.remove("hide-down");
+    }
+
+    window.addEventListener(
+      "scroll",
+      (e) => {
+        let st = e.target.documentElement.scrollTop;
+        if (st > lastScrollTop) {
+          // downscroll code
+          document.getElementById("topnav").classList.add("hide-up");
+        } else {
+          // upscroll code
+          document.getElementById("topnav").classList.remove("hide-up");
+        }
+        lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+      },
+      false
+    );
+  });
 
   let loveClasses =
     "hover:bg-danger-highlight h-[40px] px-3 flex justify-around items-center rounded-lg mr-4";
@@ -241,11 +278,11 @@ const DiscussionPage = ({
 
   return (
     <>
-      <div className="absolute bg-white z-20 bottom-0 left-0 h-full w-screen sm:w-auto sm:static">
+      <div className=" bg-white z-30 bottom-0 left-0 h-screen w-screen sm:w-auto sm:static">
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
-        <div className="z-50">
+        <div className="z-50" id="discussion">
           <h1 className="text-2xl sm:text-2xl m-3 font-bold ">Discussion</h1>
-          {question ? (
+          {question.user ? (
             <div className=" py-3 relative">
               <div className="pl-3 pr-2">
                 <Link
@@ -255,9 +292,9 @@ const DiscussionPage = ({
                 >
                   <img
                     src={question?.user.profile_pic}
-                    className="w-12 h-12 rounded-full mr-2 "
+                    className="w-12 h-12 rounded-full mr-2 bg-background2"
                     style={{ objectFit: "cover" }}
-                    alt={question?.user.firstname}
+                    alt=""
                   />
                 </Link>
                 <p className="m-0 text-night-secondary text-sm sm:text-base">
@@ -271,7 +308,7 @@ const DiscussionPage = ({
                 </p>
 
                 <div
-                  className=" hover:bg-brand-highlight cursor-pointer absolute right-4 top-2 rounded-md"
+                  className=" hover:bg-brand-highlight cursor-pointer absolute right-2 top-2 rounded-md"
                   onClick={() => {
                     setQuestionMenu(!questionMenu);
                   }}
@@ -324,16 +361,23 @@ const DiscussionPage = ({
                         {question?.likes ? question?.likes : ""}
                       </span>
                     </button>
-                    <button className="icon-brand-hover hover:bg-brand-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background mr-4">
+                    {/* The share buttons are currently disabled */}
+                    <button
+                      disabled
+                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background mr-4"
+                    >
                       <img
-                        className="h-[18px] w-[18px]"
+                        className="h-[18px] w-[18px] opacity-50"
                         src={share}
                         alt="share this question"
                       />
                     </button>
-                    <button className="icon-brand-hover hover:bg-brand-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background">
+                    <button
+                      disabled
+                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background"
+                    >
                       <img
-                        className="h-[18px] w-[18px]"
+                        className="h-[18px] w-[18px] opacity-50"
                         src={link}
                         alt="copy question link"
                       />
@@ -344,6 +388,8 @@ const DiscussionPage = ({
 
               {/* Comments here */}
               <Comments
+                online={online}
+                thisQuestion={question}
                 questionid={match.params.id}
                 comments={comments}
                 commentLoader={commentLoader}
@@ -352,6 +398,8 @@ const DiscussionPage = ({
                 onMarkSolution={handleMarkSolution}
                 fetchThisQuestion={fetchThisQuestion}
                 match={match}
+                questions={questions}
+                handleUpdatedQuestions={handleUpdatedQuestions}
               />
             </div>
           ) : (

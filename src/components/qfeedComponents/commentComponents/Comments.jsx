@@ -13,22 +13,53 @@ import AddComment from "./AddComment";
 
 const Comments = ({
   match,
+  online,
   comments,
   commentLoader,
-  questionid,
+  thisQuestion,
   onUpdateComments,
   questionOwner,
   fetchThisQuestion,
   onMarkSolution,
+  questions,
+  handleUpdatedQuestions,
 }) => {
   const [comment, setComment] = useState("");
+  const [pendingComments, setPendingComments] = useState([]);
   const currentUser = getCurrentUser();
+
+  console.log("COMMENTS!!!1!", comments);
 
   const uniqueComments = Array.from(new Set(comments.map((a) => a.id))).map(
     (id) => {
       return comments.find((a) => a.id === id);
     }
   );
+
+  // console.log(questions);
+
+  const pendingContents = pendingComments.map((item) => {
+    return {
+      content: item.content,
+      created: "just now",
+      id: `f90e060f-d689-4bbf-97e3-${item.content}-pending`,
+      is_solution: false,
+      user: {
+        firstname: currentUser.first_name,
+        followers: [2],
+        followers_count: 1,
+        following: 1,
+        gender: "pending",
+        id: currentUser.user_id,
+        is_following: false,
+        lastname: currentUser.last_name,
+        profile_pic: currentUser.profile_pic,
+        username: currentUser.username,
+      },
+    };
+  });
+
+  const allComments = [...pendingContents, ...uniqueComments];
 
   const handleFollow = (user) => {
     const apiEndpoint =
@@ -66,55 +97,97 @@ const Comments = ({
     setComment(currentTarget.value);
   };
 
+  //Sync all action to the Qfeed to eliminate the need to reload the Qfeed
+  const syncToQfeed = (questions, modifiedQ) => {
+    const targetIndex = questions.findIndex((q) => q.id === thisQuestion.id);
+
+    let clonedQuestions = [...questions];
+    clonedQuestions[targetIndex] = { ...modifiedQ };
+    handleUpdatedQuestions([...clonedQuestions]);
+  };
+
   const postComment = async (postid, limit) => {
+    const myQuestion = { ...thisQuestion };
+
     let content = comment;
+
     if (comment.length > limit || comment.length === 0) {
-      console.warn("comment is too long or is empty");
-      ErrorToast("Your comment is either too long");
+      ErrorToast("Your comment is too long");
     } else {
+      setComment("");
+      document.getElementById("commentfield").value = "";
+
       try {
         const { data } = await http.post(apiEndpoint, {
           postid,
           content,
         });
-        onUpdateComments([data, ...comments]);
-        setComment("");
-        document.getElementById("commentfield").value = "";
-        SuccessToast("Comment posted successfully");
+        onUpdateComments((prevComments) => [data, ...prevComments]);
+        myQuestion.comments += 1;
+        SuccessToast("Comment sent");
       } catch (e) {
         console.warn(e.message);
-        ErrorToast("An error occurred while posting your comment, Try again");
+        if (!online) {
+          setPendingComments((prev) => [{ content, postid }, ...prev]);
+          myQuestion.comments += 1;
+          SuccessToast("Comment will be sent when connection is restored");
+
+          var storedComments = JSON.parse(
+            localStorage.getItem("pendingComments")
+          );
+
+          window.localStorage.setItem(
+            "pendingComments",
+            JSON.stringify([...storedComments, { content, postid }])
+          );
+
+          setComment("");
+          document.getElementById("commentfield").value = "";
+        } else {
+          setComment(content);
+          document.getElementById("commentfield").value = content;
+        }
       }
     }
+
+    syncToQfeed(questions, myQuestion);
   };
 
   const deleteComment = async (selectedComment) => {
+    const myQuestion = { ...thisQuestion };
+
+    const oldComments = [...comments];
     const remainingComments = comments.filter((comment) => {
       return comment.id !== selectedComment.id;
     });
 
     const apiEndpoint =
       process.env.REACT_APP_API_URL +
-      `/qfeed/que/comments/delete/${questionid}/${selectedComment.id}/`;
+      `/qfeed/que/comments/delete/${thisQuestion.id}/${selectedComment.id}/`;
+
+    onUpdateComments([...remainingComments]);
 
     try {
       await http.delete(apiEndpoint);
       SuccessToast("Comment deleted");
-      onUpdateComments([...remainingComments]);
+      myQuestion.comments -= 1;
     } catch (e) {
       ErrorToast("Couldn't delete comment");
+      onUpdateComments([...oldComments]);
     }
+    syncToQfeed(questions, myQuestion);
   };
 
   return (
     <div className="bg-white">
       <div className=" pl-3 pr-2">
         <AddComment
+          online={online}
           onChange={handleChange}
           currentUser={currentUser}
           questionOwner={questionOwner}
           postComment={postComment}
-          questionId={questionid}
+          questionId={thisQuestion.id}
           comment={comment}
         />
       </div>
@@ -138,7 +211,7 @@ const Comments = ({
               />
             ))}
           {/* The rest of the comments */}
-          {uniqueComments
+          {allComments
             .filter((comment) => comment.is_solution !== true)
             .map((comment) => (
               <CommentComponent
@@ -174,7 +247,7 @@ const Comments = ({
         </div>
       ) : (
         <>
-          {!comments.length == 0 && (
+          {!comments.length === 0 && (
             <>
               <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
                 <p className="text-xs sm:text-base m-0 ">
@@ -186,6 +259,8 @@ const Comments = ({
           )}
         </>
       )}
+
+      <div className="h-24 bg-white w-full  "></div>
     </div>
   );
 };
