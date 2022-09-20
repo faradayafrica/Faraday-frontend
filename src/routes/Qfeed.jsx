@@ -11,10 +11,20 @@ import {
   SuccessToast,
   ErrorToast,
 } from "../components/common/CustomToast.js";
+import { useQuery } from "@tanstack/react-query";
+
+const fetcher = () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve("data"), 2000);
+  });
 
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
   const [loader, setLoader] = useState(true);
+
+  // For demo purpose
+  const { data: DemoData } = useQuery(["demo"], () => fetcher());
+  // console.log(DemoData, "DemoData");
 
   const removeDuplicate = (arr) => {
     const arrWithUniqueItems = Array.from(new Set(arr.map((a) => a.id))).map(
