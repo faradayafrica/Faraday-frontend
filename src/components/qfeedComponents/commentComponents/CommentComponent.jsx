@@ -33,9 +33,9 @@ const CommentComponent = ({
       >
         <img
           src={comment?.user.profile_pic}
-          className="w-12 h-12 rounded-full mr-3 "
+          className="w-12 h-12 rounded-full mr-3 bg-background2"
           style={{ objectFit: "cover" }}
-          alt={`${comment?.user.firstname} ${comment?.user.lastname}`}
+          alt=""
         />
       </Link>
 

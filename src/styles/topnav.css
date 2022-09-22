@@ -1,0 +1,14 @@
+.nav-container  {
+    transition: all ease .4s !important;
+  
+}
+
+.hide-up {
+    opacity: 0 !important;
+    transform: translateY(-200px) !important;
+}
+
+.hide-down {
+    opacity: 0 !important;
+    transform: translateY(200px) !important;
+}

@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { getCurrentUser } from "../../services/authService";
-import http from "../../services/httpService";
-import closeImg from "../../images/qfeed/close.svg";
 import trash from "../../images/qfeed/trash.svg";
 import trashDefault from "../../images/qfeed/trash-default.svg";
 import follow from "../../images/qfeed/follow.svg";
 import unfollow from "../../images/qfeed/unfollow.svg";
-import mark from "../../images/qfeed/mark.svg";
 
 const QuestionMenu = ({
   question,

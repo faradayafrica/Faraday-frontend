@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import faraday from "../../images/logo.svg";
 import NavLink from "./NavLink";
 import { useState, useEffect } from "react";
@@ -7,10 +8,8 @@ import PostComponent from "../qfeedComponents/PostComponent";
 import closeImg from "../../images/qfeed/close.svg";
 import { ErrorToast, SuccessToast } from "../common/CustomToast";
 
-function SideNav({ history }) {
+function SideNav({ history, online, hideOnlineStatus }) {
   const currentUser = getCurrentUser();
-  const [onlineStatus, setOnlineStatus] = useState(true);
-  const [hideOnlineStatus, setHideOnlineStatus] = useState(false);
   const [hidePost, setHidePost] = useState(true);
   const [links, setLinks] = useState([
     {
@@ -144,30 +143,12 @@ function SideNav({ history }) {
     }
   }, []);
 
-  useEffect(() => {
-    window.addEventListener("offline", () => {
-      setHideOnlineStatus(true);
-      setOnlineStatus(false);
-    });
-
-    window.addEventListener("online", () => {
-      setHideOnlineStatus(true);
-      setOnlineStatus(true);
-    });
-  }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setHideOnlineStatus(false);
-    }, 3000);
-  }, [onlineStatus]);
-
   return (
     <>
       {hideOnlineStatus ? (
         <>
-          {onlineStatus && (
-            <div className="w-full fixed bottom-0 left-0 z-50 bg-brand text-white text-xs text-center py-1">
+          {online && (
+            <div className="w-full fixed bottom-0 left-0 z-50 bg-brand text-white text-[12px] text-center py-1">
               You are back online! Let's fly
             </div>
           )}
@@ -175,8 +156,8 @@ function SideNav({ history }) {
       ) : (
         ""
       )}
-      {!onlineStatus && (
-        <div className="w-full fixed bottom-0 left-0 z-50 bg-night-secondary text-white text-xs text-center py-1">
+      {!online && (
+        <div className="w-full fixed bottom-0 left-0 z-50 bg-faraday-night text-white text-[12px] text-center py-1">
           Juice Out! You are offline
         </div>
       )}
@@ -197,7 +178,10 @@ function SideNav({ history }) {
             ))}
 
             {/* Ask question btn */}
-            <PrimaryButton cta="Add a question" action={handlePost} />
+            <Link to="/qfeed/post" className=" ">
+              {" "}
+              <PrimaryButton cta="Add a question" />
+            </Link>
           </div>
         </div>
       </div>

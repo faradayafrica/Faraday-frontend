@@ -1,28 +1,55 @@
 import { useState, useEffect } from "react";
-import Question from "./Question";
 import { Link } from "react-router-dom";
-import ask from "../../images/qfeed/ask.svg";
-import Loader from "../styledComponents/Loader";
+import { saveState, getState } from "../common/StateSaver";
+import Question from "./Question";
 import SecondaryButton from "../styledComponents/SecondaryButton";
+import Loader from "../styledComponents/Loader";
+
+//icon import
+import ask from "../../images/qfeed/ask.svg";
+
+//style import
 import "../../styles/qfeed.css";
 
 const TimeLine = (props) => {
   const [questions, setQuestions] = useState([]);
+  const [scrollPosition, setScrollPosition] = useState([]);
 
   useEffect(() => {
     setQuestions(props.questions);
   }, [props.questions]);
 
+  // Preserve Scroll position
+  useEffect(() => {
+    if (getState("QFeed")) {
+      let { scrollY } = getState("QFeed");
+      setTimeout(() => {
+        window.scrollTo(0, scrollY);
+      }, 50);
+    }
+  }, []);
+
+  useEffect(() => {
+    const save = () => {
+      setScrollPosition(window.pageYOffset);
+      saveState("QFeed", { scrollY: scrollPosition });
+    };
+    save();
+    document.addEventListener("scroll", save);
+    return () => document.removeEventListener("scroll", save);
+  }, [window.pageYOffset]);
+
   return (
-    <>
-      <div className="min-h-[70px] sm:min-h-[0px] "> </div>
-      <div className="">
+    <div className="relative">
+      <div className="bg-white " id="timeline">
+        <div className="min-h-[70px] sm:min-h-[0px] bg-transparent"> </div>
         <h1 className="text-2xl sm:text-2xl m-3 font-bold">Question Feed</h1>
         {/* The questions */}
 
         <>
           {questions.map((question) => (
             <Question
+              online={props.online}
               question={question}
               questions={props.questions}
               handleUpdatedQuestions={props.handleUpdatedQuestions}
@@ -34,7 +61,7 @@ const TimeLine = (props) => {
         </>
 
         <Link
-          to="/post"
+          to="/qfeed/post"
           className="sm:hidden fixed right-6 bottom-20 h-16 w-16"
         >
           {" "}
@@ -54,7 +81,7 @@ const TimeLine = (props) => {
 
         {props.loader ? (
           <div className="m-3">
-            <Loader msg="fetching questions" />
+            <Loader msg="Fetching questions" />
             <div className="h-[65px] w-full sm:hidden"></div>
           </div>
         ) : (
@@ -72,7 +99,7 @@ const TimeLine = (props) => {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
