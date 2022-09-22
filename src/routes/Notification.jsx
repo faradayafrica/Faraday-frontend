@@ -22,6 +22,7 @@ const Notification = () => {
       console.throw(e);
     }
   });
+  
   return (
     <div className="relative w-full route-wrapper ">
       <div className="min-h-[70px] sm:min-h-[0px] bg-transparent"> </div>
