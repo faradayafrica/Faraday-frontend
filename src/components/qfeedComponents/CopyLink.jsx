@@ -15,7 +15,6 @@ const CopyLink = ({
     // copyText.select();
     // copyText.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(copyText.value);
-    alert("Copied the text: " + copyText.value);
 
     handleIsCopied(true);
   };
@@ -53,17 +52,17 @@ const CopyLink = ({
                         className="bg-transparent"
                         readOnly
                       />
-                      <button className="p-2 rounded-lg hover:bg-background2">
-                        {isCopied ? (
-                          "Copied!"
-                        ) : (
+                      {isCopied ? (
+                        <span className="p-2 rounded-lg">Copied!</span>
+                      ) : (
+                        <button className="p-2 rounded-lg hover:bg-background2">
                           <img
                             src={copy}
                             onClick={() => copyQuestionLink()}
                             alt="copy"
                           />
-                        )}
-                      </button>
+                        </button>
+                      )}
                     </div>
                   </>
                 ) : (

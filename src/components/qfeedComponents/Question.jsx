@@ -22,7 +22,7 @@ const Question = (props) => {
 
   const [isCopyLinkModal, setCopyLinkModal] = useState(false);
   const [isCopied, setCopied] = useState(false);
-  const [shortLink, setShortLink] = useState("");
+  const [shortLink, setShortLink] = useState(props.question.short_link);
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
 
@@ -63,18 +63,31 @@ const Question = (props) => {
 
   const getShortLink = (id) => {
     const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
-    console.log("FUll link", original_url);
+    const questionsClone = [...props.questions];
+    const question_index = props.questions.findIndex(
+      (question) => question.id === id
+    );
 
-    try {
-      const promise = http
-        .post("https://frda.me/api/shorten/", {
-          original_url,
-        })
-        .then((resp) => {
-          setShortLink(resp.data.short_url);
-        });
-    } catch (e) {
-      console.log(e);
+    if (shortLink === "" || shortLink === null) {
+      try {
+        http
+          .post("https://frda.me/api/shorten/", {
+            original_url,
+          })
+          .then((resp) => {
+            setShortLink(resp.data.short_url);
+            questionsClone[question_index].short_link = resp.data.short_url;
+            props.handleUpdatedQuestions([...questionsClone]);
+            // sync with B.E
+            http.post(process.env.REACT_APP_API_URL + "qfeed/que/shorten/", {
+              postid: id,
+              link: resp.data.short_url,
+            });
+            // console.log(props.questions[question_index]);
+          });
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
