@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import SecondaryButton from "../styledComponents/SecondaryButton";
 import Comments from "./commentComponents/Comments";
 import Loader from "../styledComponents/Loader";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import love from "../../images/qfeed/love.svg";
 import redLove from "../../images/qfeed/red-love.svg";
@@ -182,6 +182,7 @@ const DiscussionPage = ({
   const fetchThisQuestion = async () => {
     try {
       const { data } = await http.get(apiEndpoint);
+
       setQuestion(data.data);
     } catch (err) {
       console.warn(err.message);
@@ -275,6 +276,10 @@ const DiscussionPage = ({
   } else {
     loveClasses += " bg-danger-highlight text-danger";
   }
+
+  // if (!question) {
+  //   return <Redirect to={"/not-found"} />;
+  // }
 
   return (
     <>
