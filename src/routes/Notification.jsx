@@ -23,7 +23,7 @@ const Notification = () => {
         setLoading(false);
       });
     } catch (e) {
-      console.throw(e);
+      console.log(e);
     }
   };
 

@@ -95,7 +95,6 @@ const Qfeed = (props) => {
       // console.log("ques", questions);
       const { data } = await http.get(url);
       setQuestions((prevQuestions) => [...prevQuestions, ...data.results]);
-
       setLoader(false);
       nextQuestionPageUrl = data.next;
 
@@ -132,6 +131,7 @@ const Qfeed = (props) => {
 
   // Checks Local Storage and populates the Qfeed
   useEffect(() => {
+    console.log("All of EM Ques", questions);
     let storedQuestions;
 
     storedQuestions = JSON.parse(localStorage.getItem("questions"));
