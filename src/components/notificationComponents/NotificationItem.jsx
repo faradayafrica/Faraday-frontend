@@ -47,8 +47,8 @@ const NotificationItem = ({
 
           <div className="">
             <img
-              src={follow.profile_pic}
-              className="w-8 h-8 rounded-full"
+              src={follow_by.profile_pic}
+              className="w-8 h-8 rounded-full bg-background2"
               style={{ objectFit: "cover" }}
               alt=""
             />
@@ -80,8 +80,8 @@ const NotificationItem = ({
 
           <div className="">
             <img
-              src={follow.profile_pic}
-              className="w-8 h-8 rounded-full"
+              src={que.user.profile_pic}
+              className="w-8 h-8 rounded-full  bg-background2"
               style={{ objectFit: "cover" }}
               alt=""
             />
