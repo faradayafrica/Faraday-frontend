@@ -27,10 +27,6 @@ const Notification = () => {
     }
   };
 
-  const updateNotification = (updated) => {
-    setNotifications(updated);
-  };
-
   const markAsRead = async (notificationId) => {
     const notificationsClone = [...notifications];
     const target_index = notifications.findIndex(
@@ -59,10 +55,10 @@ const Notification = () => {
           is_read={item.is_read}
           notification_type={item.notification_type}
           message={item.content}
+          markAsRead={markAsRead}
+          // notification type content
           que={item.que}
           follow_by={item.followed_by}
-          markAsRead={markAsRead}
-          updateNotification={updateNotification}
         />
       ))}
     </div>
