@@ -1,3 +1,7 @@
 .notification-item {
     cursor: pointer
 }
+
+.notification-loader {
+    opacity: 0;
+}

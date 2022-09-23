@@ -72,7 +72,7 @@ function MobileSideNav() {
         .fromTo(
           nav.current,
           { y: 200, opacity: 0 },
-          { y: 0, opacity: 1, ease: "power2.inOut" }
+          { y: 0, opacity: 1, ease: "power2.inOut", stagger: 0.3 }
         );
     }, 50);
   });

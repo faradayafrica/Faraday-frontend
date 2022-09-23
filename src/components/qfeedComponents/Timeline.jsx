@@ -56,6 +56,7 @@ const TimeLine = (props) => {
               onFollowUser={props.onFollowUser}
               onDeleteQuestion={props.onDeleteQuestion}
               key={question.id}
+              {...props}
             />
           ))}
         </>
