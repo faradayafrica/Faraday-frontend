@@ -1,88 +1,70 @@
-import { useEffect } from "react";
-import http from "../services/httpService";
+import { useEffect, useState } from "react";
 import { PromiseToast } from "../components/common/CustomToast";
+import http from "../services/httpService";
+import NotificationItem from "../components/notificationComponents/NotificationItem";
 
-// icons import
-import liked from "../images/qfeed/red-love.svg";
-import comment from "../images/notification/comment.svg";
-import mark from "../images/qfeed/mark.svg";
-import profile from "../images/profile2.png";
+import "../styles/notification.css";
 
 const Notification = () => {
   const apiEndpoint = process.env.REACT_APP_API_URL + `/notifications/`;
 
+  const [notifications, setNotifications] = useState([]);
+
   useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  const fetchNotifications = () => {
     try {
       const promise = http.get(apiEndpoint).then((resp) => {
-        console.log(resp.data);
+        console.log(resp.data.data);
+        setNotifications(resp.data.data);
       });
 
       PromiseToast("Did it", "Couldn't do it", promise);
     } catch (e) {
       console.throw(e);
     }
-  });
+  };
+
+  const updateNotification = (updated) => {
+    setNotifications(updated);
+  };
+
+  const markAsRead = async (notificationId) => {
+    const notificationsClone = [...notifications];
+    const target_index = notifications.findIndex(
+      (item) => item.id === notificationId
+    );
+    try {
+      notificationsClone[target_index].is_read = true;
+      console.log("Seeker", notificationsClone[target_index].created);
+
+      await http.put(apiEndpoint + `${notificationId}/read/`);
+    } catch (e) {
+      notificationsClone[target_index].is_read = false;
+      throw e;
+    }
+    setNotifications(notificationsClone);
+  };
+
   return (
     <div className="relative w-full route-wrapper ">
       <div className="min-h-[70px] sm:min-h-[0px] bg-transparent"> </div>
       <h1 className="text-2xl sm:text-2xl m-3 font-bold">Notification</h1>
-
-      <div className="bg-brand-highlight w-full p-3 flex">
-        <img
-          src={liked}
-          className="w-7 h-7 rounded-full mr-2"
-          style={{ objectFit: "fill" }}
-          alt=""
+      {notifications.map((item) => (
+        <NotificationItem
+          key={item.id}
+          id={item.id}
+          is_read={item.is_read}
+          notification_type={item.notification_type}
+          message={item.content}
+          que={item.que}
+          follow_by={item.followed_by}
+          markAsRead={markAsRead}
+          updateNotification={updateNotification}
         />
-
-        <div className="">
-          <img
-            src={profile}
-            className="w-8 h-8 rounded-full"
-            style={{ objectFit: "cover" }}
-            alt=""
-          />
-          Jome Favorite and 5 others reacted on your question
-        </div>
-      </div>
-
-      <div className="bg-brand-highlight w-full p-3 flex">
-        <img
-          src={comment}
-          className="w-7 h-7  mr-2"
-          style={{ objectFit: "fill" }}
-          alt=""
-        />
-
-        <div className="">
-          <img
-            src={profile}
-            className="w-8 h-8 rounded-full"
-            style={{ objectFit: "cover" }}
-            alt=""
-          />
-          Jome Favorite and 5 others reacted on your question
-        </div>
-      </div>
-
-      <div className="bg-brand-highlight w-full p-3 flex">
-        <img
-          src={mark}
-          className="w-7 h-7  mr-2"
-          style={{ objectFit: "fill" }}
-          alt=""
-        />
-
-        <div className="">
-          <img
-            src={profile}
-            className="w-8 h-8 rounded-full"
-            style={{ objectFit: "cover" }}
-            alt=""
-          />
-          Jome Favorite and 5 others reacted on your question
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
