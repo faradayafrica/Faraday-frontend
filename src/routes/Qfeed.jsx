@@ -11,10 +11,20 @@ import {
   SuccessToast,
   ErrorToast,
 } from "../components/common/CustomToast.js";
+import { useQuery } from "@tanstack/react-query";
+
+const fetcher = () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve("data"), 2000);
+  });
 
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
   const [loader, setLoader] = useState(true);
+
+  // For demo purpose
+  const { data: DemoData } = useQuery(["demo"], () => fetcher());
+  // console.log(DemoData, "DemoData");
 
   const removeDuplicate = (arr) => {
     const arrWithUniqueItems = Array.from(new Set(arr.map((a) => a.id))).map(
@@ -173,11 +183,11 @@ const Qfeed = (props) => {
   });
 
   return (
-    <div className="relative w-full route-wrapper ">
-      <div className="w-full bg-white ">
+    <div className='relative w-full route-wrapper '>
+      <div className='w-full bg-white '>
         <Switch>
           <Route
-            path="/qfeed/post"
+            path='/qfeed/post'
             render={(props) => (
               <PostPage
                 online={online}
@@ -189,7 +199,7 @@ const Qfeed = (props) => {
           />
 
           <Route
-            path="/qfeed/:id"
+            path='/qfeed/:id'
             render={(props) => (
               <DiscussionPage
                 online={online}
@@ -202,7 +212,7 @@ const Qfeed = (props) => {
             )}
           />
           <Route
-            path="/"
+            path='/'
             render={(props) => (
               <TimeLine
                 online={online}
@@ -217,8 +227,8 @@ const Qfeed = (props) => {
               />
             )}
           />
-          <Route path="/not-found" component={NotFound} />
-          <Redirect push to="/not-found" />
+          <Route path='/not-found' component={NotFound} />
+          <Redirect push to='/not-found' />
         </Switch>
       </div>
     </div>

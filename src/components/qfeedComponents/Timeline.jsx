@@ -15,6 +15,8 @@ const TimeLine = (props) => {
   const [questions, setQuestions] = useState([]);
   const [scrollPosition, setScrollPosition] = useState([]);
 
+  // console.log(props.loader, "loader");
+
   useEffect(() => {
     setQuestions(props.questions);
   }, [props.questions]);
@@ -40,10 +42,10 @@ const TimeLine = (props) => {
   }, [window.pageYOffset]);
 
   return (
-    <div className="relative">
-      <div className="bg-white " id="timeline">
-        <div className="min-h-[70px] sm:min-h-[0px] bg-transparent"> </div>
-        <h1 className="text-2xl sm:text-2xl m-3 font-bold">Question Feed</h1>
+    <div className='relative'>
+      <div className='bg-white ' id='timeline'>
+        <div className='min-h-[70px] sm:min-h-[0px] bg-transparent'> </div>
+        <h1 className='text-2xl sm:text-2xl m-3 font-bold'>Question Feed</h1>
         {/* The questions */}
 
         <>
@@ -62,18 +64,18 @@ const TimeLine = (props) => {
         </>
 
         <Link
-          to="/qfeed/post"
-          className="sm:hidden fixed right-6 bottom-20 h-16 w-16"
+          to='/qfeed/post'
+          className='sm:hidden fixed right-6 bottom-20 h-16 w-16'
         >
           {" "}
-          <img className="ask-shadow rounded-full" src={ask} alt="" />
+          <img className='ask-shadow rounded-full' src={ask} alt='' />
         </Link>
 
         {!props.loader && questions.length == 0 ? (
-          <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
+          <div className='p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center'>
             <>
-              <p className="text-sm sm:text-base ">Something went wrong</p>
-              <SecondaryButton cta="Retry" action={props.retry} />
+              <p className='text-sm sm:text-base '>Something went wrong</p>
+              <SecondaryButton cta='Retry' action={props.retry} />
             </>
           </div>
         ) : (
@@ -81,20 +83,20 @@ const TimeLine = (props) => {
         )}
 
         {props.loader ? (
-          <div className="m-3">
-            <Loader msg="Fetching questions" />
-            <div className="h-[65px] w-full sm:hidden"></div>
+          <div className='m-3'>
+            <Loader msg='Fetching questions' />
+            <div className='h-[65px] w-full sm:hidden'></div>
           </div>
         ) : (
           <>
             {!questions.length == 0 && (
               <>
-                <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
-                  <p className="text-xs sm:text-base m-0 ">
+                <div className='p-3 m-3 mr-1 rounded-lg border bg-background  text-center'>
+                  <p className='text-xs sm:text-base m-0 '>
                     No more question to fetch
                   </p>
                 </div>
-                <div className="h-[65px] w-full sm:hidden"></div>
+                <div className='h-[65px] w-full sm:hidden'></div>
               </>
             )}
           </>
