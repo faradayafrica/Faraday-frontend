@@ -2,6 +2,7 @@ import Loader from "../styledComponents/Loader";
 import closeImg from "../../images/qfeed/close.svg";
 import copy from "../../images/qfeed/copy.svg";
 import { useState } from "react";
+import { SuccessToast } from "../common/CustomToast";
 
 const CopyLink = ({
   isCopyLinkModal,
@@ -12,11 +13,10 @@ const CopyLink = ({
 }) => {
   const copyQuestionLink = () => {
     const copyText = document.getElementById("link");
-    // copyText.select();
-    // copyText.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(copyText.value);
 
     handleIsCopied(true);
+    SuccessToast("Link copied");
   };
   return (
     <>
@@ -26,9 +26,9 @@ const CopyLink = ({
             className=" absolute top-0 h-screen w-full  bg-[#00000022]"
             onClick={() => toggleCopyLinkModal()}
           ></div>
-          <div className="z-10 lg:w-[1024px] mx-auto h-screen flex justify-center items-end sm:items-start">
+          <div className="z-10 lg:w-[1024px] mx-auto h-screen flex justify-center items-start sm:items-start">
             <div className="w-[28rem] bg-white rounded-xl border ask-shadow p-2 relative my-24 mx-8 sm:mx-4  ">
-              <button className="p-2 right-1 top-1 absolute rounded-lg hover:bg-danger-highlight hover:hot-shadow">
+              <button className="p-2 right-1 top-1 absolute rounded-lg hover:bg-danger-highlight hover:hot-shadow hidden sm:block">
                 <img
                   src={closeImg}
                   onClick={() => toggleCopyLinkModal()}
@@ -46,18 +46,21 @@ const CopyLink = ({
                     </p>
                     <div className="p-2 bg-background rounded-lg flex items-center justify-between">
                       {/* <span id="link">{`https://frda.me/${shortLink}`}</span> */}
+
                       <input
                         id="link"
                         value={`https://frda.me/${shortLink}`}
                         className="bg-transparent"
                         readOnly
                       />
+
                       {isCopied ? (
                         <span className="p-2 rounded-lg">Copied!</span>
                       ) : (
-                        <button className="p-2 rounded-lg hover:bg-background2">
+                        <button className="w-10 h-10 p-2 rounded-lg hover:bg-background2">
                           <img
                             src={copy}
+                            className=""
                             onClick={() => copyQuestionLink()}
                             alt="copy"
                           />

@@ -83,7 +83,6 @@ const Question = (props) => {
               postid: id,
               link: resp.data.short_url,
             });
-            // console.log(props.questions[question_index]);
           });
       } catch (e) {
         console.log(e);
