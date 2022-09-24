@@ -28,12 +28,11 @@ const CopyLink = ({
           ></div>
           <div className="z-10 lg:w-[1024px] mx-auto h-screen flex justify-center items-start sm:items-start">
             <div className="w-[28rem] bg-white rounded-xl border ask-shadow p-2 relative my-24 mx-8 sm:mx-4  ">
-              <button className="p-2 right-1 top-1 absolute rounded-lg hover:bg-danger-highlight hover:hot-shadow hidden sm:block">
-                <img
-                  src={closeImg}
-                  onClick={() => toggleCopyLinkModal()}
-                  alt="close modal"
-                />
+              <button
+                onClick={() => toggleCopyLinkModal()}
+                className="p-2 right-1 top-1 absolute rounded-lg hover:bg-danger-highlight hover:hot-shadow hidden sm:block"
+              >
+                <img src={closeImg} alt="close modal" />
               </button>
 
               <div className="px-2 py-3">

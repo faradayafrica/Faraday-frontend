@@ -232,6 +232,7 @@ const DiscussionPage = ({
       const { data } = await http.get(apiEndpoint);
 
       setQuestion(data.data);
+      setShortLink(data.data.short_link);
     } catch (err) {
       console.warn(err.message);
       setLoader(false);
