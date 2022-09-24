@@ -70,7 +70,7 @@ const DiscussionPage = ({
             questionsClone[question_index].short_link = resp.data.short_url;
             handleUpdatedQuestions([...questionsClone]);
             // sync with B.E
-            http.post(process.env.REACT_APP_API_URL + "qfeed/que/shorten/", {
+            http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {
               postid: id,
               link: resp.data.short_url,
             });
