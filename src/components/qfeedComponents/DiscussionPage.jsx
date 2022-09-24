@@ -2,16 +2,18 @@ import { useState, useEffect } from "react";
 import SecondaryButton from "../styledComponents/SecondaryButton";
 import Comments from "./commentComponents/Comments";
 import Loader from "../styledComponents/Loader";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+import QuestionMenu from "./QuestionMenu";
+import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
+import CopyLink from "./CopyLink";
 
+// icon import
 import love from "../../images/qfeed/love.svg";
 import redLove from "../../images/qfeed/red-love.svg";
 import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
 import ellipses from "../../images/qfeed/ellipses.svg";
-import QuestionMenu from "./QuestionMenu";
-import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
 
 const DiscussionPage = ({
   match,
@@ -32,6 +34,52 @@ const DiscussionPage = ({
   const [loader, setLoader] = useState(true);
   const [commentLoader, setCommentLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
+
+  const [isCopyLinkModal, setCopyLinkModal] = useState(false);
+  const [isCopied, setCopied] = useState(false);
+  const [shortLink, setShortLink] = useState(
+    thisQuestion ? thisQuestion.short_link : ""
+  );
+
+  // Copy Link associated variables and function are recreated for the timeline on the Question tap
+  //We could use contextAPI to help them share same state and functions in the future
+
+  const handleIsCopied = (value) => {
+    setCopied(value);
+  };
+
+  const handleCopyLinkModal = () => {
+    setCopyLinkModal(!isCopyLinkModal);
+    setCopied(false);
+  };
+  const getShortLink = (id) => {
+    const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
+    const questionsClone = [...questions];
+    const question_index = questions.findIndex(
+      (question) => question.id === id
+    );
+
+    if (shortLink === "" || shortLink === null) {
+      try {
+        http
+          .post("https://frda.me/api/shorten/", {
+            original_url,
+          })
+          .then((resp) => {
+            setShortLink(resp.data.short_url);
+            questionsClone[question_index].short_link = resp.data.short_url;
+            handleUpdatedQuestions([...questionsClone]);
+            // sync with B.E
+            http.post(process.env.REACT_APP_API_URL + "qfeed/que/shorten/", {
+              postid: id,
+              link: resp.data.short_url,
+            });
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
 
   // console.log("Question?!!!!!!!!!!!!!!!!!!!!!!!!!!!", questions);
 
@@ -222,8 +270,6 @@ const DiscussionPage = ({
     }
   };
 
-  useEffect(() => {});
-
   useEffect(() => {
     if (thisQuestion) {
       if (question.comments > 0) {
@@ -276,10 +322,6 @@ const DiscussionPage = ({
   } else {
     loveClasses += " bg-danger-highlight text-danger";
   }
-
-  // if (!question) {
-  //   return <Redirect to={"/not-found"} />;
-  // }
 
   return (
     <>
@@ -366,7 +408,22 @@ const DiscussionPage = ({
                         {question?.likes ? question?.likes : ""}
                       </span>
                     </button>
-                    {/* The share buttons are currently disabled */}
+
+                    <button
+                      onClick={() => {
+                        handleCopyLinkModal();
+                        getShortLink(question.id);
+                      }}
+                      className="icon-brand-hover hover:bg-brand-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background"
+                    >
+                      <img
+                        className="h-[18px] w-[18px]"
+                        src={link}
+                        alt="copy question link"
+                      />
+                    </button>
+
+                    {/* The share button is currently disabled */}
                     <button
                       disabled
                       className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background mr-4"
@@ -375,16 +432,6 @@ const DiscussionPage = ({
                         className="h-[18px] w-[18px] opacity-50"
                         src={share}
                         alt="share this question"
-                      />
-                    </button>
-                    <button
-                      disabled
-                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background"
-                    >
-                      <img
-                        className="h-[18px] w-[18px] opacity-50"
-                        src={link}
-                        alt="copy question link"
                       />
                     </button>
                   </div>
@@ -427,6 +474,14 @@ const DiscussionPage = ({
           )}
         </div>
       </div>
+
+      <CopyLink
+        isCopyLinkModal={isCopyLinkModal}
+        isCopied={isCopied}
+        shortLink={shortLink}
+        toggleCopyLinkModal={setCopyLinkModal}
+        handleIsCopied={handleIsCopied}
+      />
     </>
   );
 };
