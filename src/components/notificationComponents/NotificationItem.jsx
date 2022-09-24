@@ -12,17 +12,19 @@ import commentUnread from "../../images/notification/add_comment_unread.svg";
 // read variants
 import follow from "../../images/notification/follow.svg";
 import mark from "../../images/notification/mark.svg";
-import que from "../../images/notification/add_que.svg";
-import comment from "../../images/notification/add_comment.svg";
+import queIcon from "../../images/notification/add_que.svg";
+import commentIcon from "../../images/notification/add_comment.svg";
 
 const NotificationItem = ({
   id,
   is_read,
   notification_type,
   message,
+  created,
   markAsRead,
   que,
   follow_by,
+  comment,
 }) => {
   return (
     <>
@@ -72,7 +74,7 @@ const NotificationItem = ({
           onClick={() => markAsRead(id)}
         >
           <img
-            src={is_read ? que : queUnread}
+            src={is_read ? queIcon : queUnread}
             className="w-6 h-6  mr-2"
             style={{ objectFit: "fill" }}
             alt=""
@@ -81,6 +83,72 @@ const NotificationItem = ({
           <div className="">
             <img
               src={que.user.profile_pic}
+              className="w-8 h-8 rounded-full  bg-background2"
+              style={{ objectFit: "cover" }}
+              alt=""
+            />
+            {message}
+          </div>
+        </Link>
+      ) : (
+        ""
+      )}
+
+      {/* solution type */}
+      {notification_type === "solution" ? (
+        <Link
+          to={`/qfeed/${que.id}`}
+          style={{ textDecoration: "none", color: "var(--faraday-night)" }}
+          className={
+            is_read
+              ? "w-full p-3 flex notification-item"
+              : "bg-brand-highlight w-full p-3 flex notification-item"
+          }
+          onClick={() => markAsRead(id)}
+        >
+          <img
+            src={is_read ? mark : markUnread}
+            className="w-6 h-6  mr-2"
+            style={{ objectFit: "fill" }}
+            alt=""
+          />
+
+          <div className="">
+            <img
+              src={que.user.profile_pic}
+              className="w-8 h-8 rounded-full  bg-background2"
+              style={{ objectFit: "cover" }}
+              alt=""
+            />
+            {message}
+          </div>
+        </Link>
+      ) : (
+        ""
+      )}
+
+      {/* comment type */}
+      {notification_type === "comment" ? (
+        <Link
+          to={`/qfeed/${comment.id}`}
+          style={{ textDecoration: "none", color: "var(--faraday-night)" }}
+          className={
+            is_read
+              ? "w-full p-3 flex notification-item"
+              : "bg-brand-highlight w-full p-3 flex notification-item"
+          }
+          onClick={() => markAsRead(id)}
+        >
+          <img
+            src={is_read ? commentIcon : commentUnread}
+            className="w-6 h-6  mr-2"
+            style={{ objectFit: "fill" }}
+            alt=""
+          />
+
+          <div className="">
+            <img
+              src={comment.user.profile_pic}
               className="w-8 h-8 rounded-full  bg-background2"
               style={{ objectFit: "cover" }}
               alt=""
