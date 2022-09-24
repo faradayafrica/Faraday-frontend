@@ -56,10 +56,12 @@ const Notification = () => {
             is_read={item.is_read}
             notification_type={item.notification_type}
             message={item.content}
+            created={item.created}
             markAsRead={markAsRead}
             // notification type content
             que={item.que}
             follow_by={item.followed_by}
+            comment={item.comment}
           />
         ))
       )}

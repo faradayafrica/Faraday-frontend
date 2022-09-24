@@ -20,9 +20,11 @@ const NotificationItem = ({
   is_read,
   notification_type,
   message,
+  created,
   markAsRead,
   que,
   follow_by,
+  comment,
 }) => {
   return (
     <>
@@ -114,6 +116,39 @@ const NotificationItem = ({
           <div className="">
             <img
               src={que.user.profile_pic}
+              className="w-8 h-8 rounded-full  bg-background2"
+              style={{ objectFit: "cover" }}
+              alt=""
+            />
+            {message}
+          </div>
+        </Link>
+      ) : (
+        ""
+      )}
+
+      {/* comment type */}
+      {notification_type === "comment" ? (
+        <Link
+          to={`/qfeed/${comment.id}`}
+          style={{ textDecoration: "none", color: "var(--faraday-night)" }}
+          className={
+            is_read
+              ? "w-full p-3 flex notification-item"
+              : "bg-brand-highlight w-full p-3 flex notification-item"
+          }
+          onClick={() => markAsRead(id)}
+        >
+          <img
+            src={is_read ? mark : markUnread}
+            className="w-6 h-6  mr-2"
+            style={{ objectFit: "fill" }}
+            alt=""
+          />
+
+          <div className="">
+            <img
+              src={comment.user.profile_pic}
               className="w-8 h-8 rounded-full  bg-background2"
               style={{ objectFit: "cover" }}
               alt=""
