@@ -13,7 +13,7 @@ import commentUnread from "../../images/notification/add_comment_unread.svg";
 import follow from "../../images/notification/follow.svg";
 import mark from "../../images/notification/mark.svg";
 import queIcon from "../../images/notification/add_que.svg";
-import comment from "../../images/notification/add_comment.svg";
+import commentIcon from "../../images/notification/add_comment.svg";
 
 const NotificationItem = ({
   id,
@@ -140,7 +140,7 @@ const NotificationItem = ({
           onClick={() => markAsRead(id)}
         >
           <img
-            src={is_read ? mark : markUnread}
+            src={is_read ? commentIcon : commentUnread}
             className="w-6 h-6  mr-2"
             style={{ objectFit: "fill" }}
             alt=""
