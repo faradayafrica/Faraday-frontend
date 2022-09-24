@@ -164,7 +164,7 @@ function MobileSideNav() {
                 <div className="mt-4 bg-white rounded-xl p-3">
                   <div className="flex items-center">
                     <img
-                      src={`https://api.faraday.africa${currentUser?.profile_pic}`}
+                      src={currentUser?.profile_pic}
                       alt={`${currentUser?.first_name} ${currentUser?.last_name}`}
                       className="rounded-full mr-2 h-11 w-11"
                       width="40px"

@@ -21,7 +21,7 @@ const CopyLink = ({
   return (
     <>
       {isCopyLinkModal ? (
-        <div className="fixed top-0 left-0  w-full bg-transparent z-10">
+        <div className="fixed top-0 left-0  w-full bg-transparent z-50">
           <div
             className=" absolute top-0 h-screen w-full  bg-[#00000022]"
             onClick={() => toggleCopyLinkModal()}
