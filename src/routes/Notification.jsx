@@ -32,8 +32,8 @@ const Notification = () => {
   const fetchNotifications = async () => {
     try {
       await http.get(apiEndpoint).then((resp) => {
-        console.log(resp.data.data);
-        setNotifications(resp.data.data);
+        console.log("NOTI", resp.data.results.data);
+        setNotifications(resp.data.results.data);
         setLoading(false);
       });
     } catch (e) {
@@ -76,7 +76,7 @@ const Notification = () => {
               // notification type content
               que={item.que}
               follow_by={item.followed_by}
-              comment={item.comment}
+              commentQue={item.que_with_comment}
             />
           ))}
         </div>
