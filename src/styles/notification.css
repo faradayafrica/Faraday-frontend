@@ -1,5 +1,6 @@
 .notification-item {
     cursor: pointer;
+    opacity: .2;
 }
 
 .notification-loader {

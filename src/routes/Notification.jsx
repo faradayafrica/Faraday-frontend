@@ -17,16 +17,23 @@ const Notification = () => {
     fetchNotifications();
   }, []);
 
-  const activities = useRef();
+  const el = useRef();
+  const q = gsap.utils.selector(el);
 
   useEffect(() => {
-    gsap.from(activities.current, {
-      y: +200,
-      opacity: 0,
-      stagger: 0.1,
-      ease: "power2.inOut",
-      delay: 0.6,
-    });
+    gsap.fromTo(
+      q(".notification-item"),
+      {
+        y: +200,
+        ease: "power2.inOut",
+        opacity: 0,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        stagger: 0.1,
+      }
+    );
   });
 
   const fetchNotifications = async () => {
@@ -63,7 +70,7 @@ const Notification = () => {
       {loading ? (
         <NotificationLoader />
       ) : (
-        <div ref={activities}>
+        <div ref={el}>
           {notifications.map((item) => (
             <NotificationItem
               key={item.id}
