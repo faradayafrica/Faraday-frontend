@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import http from "../services/httpService";
+import { useEffect, useState, useRef } from "react";
 import NotificationItem from "../components/notificationComponents/NotificationItem";
+import NotificationLoader from "../components/notificationComponents/NotificationLoader";
+import http from "../services/httpService";
+import gsap from "gsap";
 
 import "../styles/notification.css";
-import NotificationLoader from "../components/notificationComponents/NotificationLoader";
 
 const Notification = () => {
   const apiEndpoint = process.env.REACT_APP_API_URL + `/notifications/`;
@@ -12,8 +13,21 @@ const Notification = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     fetchNotifications();
   }, []);
+
+  const activities = useRef();
+
+  useEffect(() => {
+    gsap.from(activities.current, {
+      y: +200,
+      opacity: 0,
+      stagger: 0.1,
+      ease: "power2.inOut",
+      delay: 0.6,
+    });
+  });
 
   const fetchNotifications = async () => {
     try {
@@ -49,21 +63,23 @@ const Notification = () => {
       {loading ? (
         <NotificationLoader />
       ) : (
-        notifications.map((item) => (
-          <NotificationItem
-            key={item.id}
-            id={item.id}
-            is_read={item.is_read}
-            notification_type={item.notification_type}
-            message={item.content}
-            created={item.created}
-            markAsRead={markAsRead}
-            // notification type content
-            que={item.que}
-            follow_by={item.followed_by}
-            comment={item.comment}
-          />
-        ))
+        <div ref={activities}>
+          {notifications.map((item) => (
+            <NotificationItem
+              key={item.id}
+              id={item.id}
+              is_read={item.is_read}
+              notification_type={item.notification_type}
+              message={item.content}
+              created={item.created}
+              markAsRead={markAsRead}
+              // notification type content
+              que={item.que}
+              follow_by={item.followed_by}
+              comment={item.comment}
+            />
+          ))}
+        </div>
       )}
     </div>
   );

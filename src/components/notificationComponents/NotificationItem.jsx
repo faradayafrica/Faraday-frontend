@@ -35,8 +35,8 @@ const NotificationItem = ({
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
-              ? "w-full p-3 flex notification-item"
-              : "bg-brand-highlight w-full p-3 flex notification-item"
+              ? "w-full p-3 flex notification-item relative"
+              : "bg-brand-highlight w-full p-3 flex notification-item relative"
           }
           onClick={() => markAsRead(id)}
         >
@@ -55,6 +55,7 @@ const NotificationItem = ({
               alt=""
             />
             {message}
+            <span className="absolute text-xs top-3 right-3">{created}</span>
           </div>
         </Link>
       ) : (
@@ -68,8 +69,8 @@ const NotificationItem = ({
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
-              ? "w-full p-3 flex notification-item"
-              : "bg-brand-highlight w-full p-3 flex notification-item"
+              ? "w-full p-3 flex notification-item relative"
+              : "bg-brand-highlight w-full p-3 flex notification-item relative"
           }
           onClick={() => markAsRead(id)}
         >
@@ -88,6 +89,7 @@ const NotificationItem = ({
               alt=""
             />
             {message}
+            <span className="absolute text-xs top-3 right-3">{created}</span>
           </div>
         </Link>
       ) : (
@@ -101,8 +103,8 @@ const NotificationItem = ({
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
-              ? "w-full p-3 flex notification-item"
-              : "bg-brand-highlight w-full p-3 flex notification-item"
+              ? "w-full p-3 flex notification-item relative"
+              : "bg-brand-highlight w-full p-3 flex notification-item relative"
           }
           onClick={() => markAsRead(id)}
         >
@@ -121,6 +123,7 @@ const NotificationItem = ({
               alt=""
             />
             {message}
+            <span className="absolute text-xs top-3 right-3">{created}</span>
           </div>
         </Link>
       ) : (
@@ -134,8 +137,8 @@ const NotificationItem = ({
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
-              ? "w-full p-3 flex notification-item"
-              : "bg-brand-highlight w-full p-3 flex notification-item"
+              ? "w-full p-3 flex notification-item relative"
+              : "bg-brand-highlight w-full p-3 flex notification-item relative"
           }
           onClick={() => markAsRead(id)}
         >
@@ -154,6 +157,7 @@ const NotificationItem = ({
               alt=""
             />
             {message}
+            <span className="absolute text-xs top-3 right-3">{created}</span>
           </div>
         </Link>
       ) : (
