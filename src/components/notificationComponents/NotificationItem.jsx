@@ -27,14 +27,14 @@ const NotificationItem = ({
   follow_by,
   commentQue,
 }) => {
-  const [limit, setLimit] = useState(32);
+  const [limit, setLimit] = useState(180);
 
   return (
     <>
       {/* follow type */}
       {notification_type === "follow" ? (
         <Link
-          to={`/me/${follow_by.username}`}
+          to={`/me/${follow_by?.username}`}
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
@@ -68,7 +68,7 @@ const NotificationItem = ({
       {/* question type */}
       {notification_type === "que" ? (
         <Link
-          to={`/qfeed/${que.id}`}
+          to={`/qfeed/${que?.id}`}
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
@@ -102,7 +102,7 @@ const NotificationItem = ({
       {/* solution type */}
       {notification_type === "solution" ? (
         <Link
-          to={`/qfeed/${que.id}`}
+          to={`/qfeed/${que?.id}`}
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
@@ -120,13 +120,19 @@ const NotificationItem = ({
 
           <div className="">
             <img
-              src={que.user.profile_pic}
+              src={que?.user.profile_pic}
               className="w-8 h-8 rounded-full  bg-background2"
               style={{ objectFit: "cover" }}
               alt=""
             />
             {message}
             <span className="absolute text-xs top-3 right-3">{created}</span>
+
+            <div className="border p-2 bg-white text-sm mt-2 rounded-lg text-secondary">
+              {que.solution.content.length >= limit
+                ? que?.solution.content.substring(0, limit) + "..."
+                : que?.solution.content}
+            </div>
           </div>
         </Link>
       ) : (
@@ -154,7 +160,7 @@ const NotificationItem = ({
 
           <div className="">
             <img
-              src={commentQue.comment.user.profile_pic}
+              src={commentQue?.comment.user.profile_pic}
               className="w-8 h-8 rounded-full  bg-background2"
               style={{ objectFit: "cover" }}
               alt=""
@@ -162,10 +168,10 @@ const NotificationItem = ({
             {message}
             <span className="absolute text-xs top-3 right-3">{created}</span>
 
-            <div className="border bg-white text-sm p-2 mt-2 rounded-lg">
-              {commentQue.comment.content.length >= limit
-                ? commentQue.comment.content.substring(0, limit) + "..."
-                : commentQue.comment.content}
+            <div className=" text-sm mt-2 rounded-lg text-secondary">
+              {commentQue?.comment.content.length >= limit
+                ? commentQue?.comment.content.substring(0, limit) + "..."
+                : commentQue?.comment.content}
             </div>
           </div>
         </Link>
