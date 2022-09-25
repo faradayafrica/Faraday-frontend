@@ -14,6 +14,7 @@ import follow from "../../images/notification/follow.svg";
 import mark from "../../images/notification/mark.svg";
 import queIcon from "../../images/notification/add_que.svg";
 import commentIcon from "../../images/notification/add_comment.svg";
+import { useState } from "react";
 
 const NotificationItem = ({
   id,
@@ -24,8 +25,10 @@ const NotificationItem = ({
   markAsRead,
   que,
   follow_by,
-  comment,
+  commentQue,
 }) => {
+  const [limit, setLimit] = useState(32);
+
   return (
     <>
       {/* follow type */}
@@ -35,8 +38,8 @@ const NotificationItem = ({
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
-              ? "w-full p-3 flex notification-item"
-              : "bg-brand-highlight w-full p-3 flex notification-item"
+              ? "w-full p-3 flex notification-item relative"
+              : "bg-brand-highlight w-full p-3 flex notification-item relative"
           }
           onClick={() => markAsRead(id)}
         >
@@ -55,6 +58,7 @@ const NotificationItem = ({
               alt=""
             />
             {message}
+            <span className="absolute text-xs top-3 right-3">{created}</span>
           </div>
         </Link>
       ) : (
@@ -68,8 +72,8 @@ const NotificationItem = ({
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
-              ? "w-full p-3 flex notification-item"
-              : "bg-brand-highlight w-full p-3 flex notification-item"
+              ? "w-full p-3 flex notification-item relative"
+              : "bg-brand-highlight w-full p-3 flex notification-item relative"
           }
           onClick={() => markAsRead(id)}
         >
@@ -88,6 +92,7 @@ const NotificationItem = ({
               alt=""
             />
             {message}
+            <span className="absolute text-xs top-3 right-3">{created}</span>
           </div>
         </Link>
       ) : (
@@ -101,8 +106,8 @@ const NotificationItem = ({
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
-              ? "w-full p-3 flex notification-item"
-              : "bg-brand-highlight w-full p-3 flex notification-item"
+              ? "w-full p-3 flex notification-item relative"
+              : "bg-brand-highlight w-full p-3 flex notification-item relative"
           }
           onClick={() => markAsRead(id)}
         >
@@ -121,6 +126,7 @@ const NotificationItem = ({
               alt=""
             />
             {message}
+            <span className="absolute text-xs top-3 right-3">{created}</span>
           </div>
         </Link>
       ) : (
@@ -130,12 +136,12 @@ const NotificationItem = ({
       {/* comment type */}
       {notification_type === "comment" ? (
         <Link
-          to={`/qfeed/${comment.id}`}
+          to={`/qfeed/${commentQue.id}`}
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
-              ? "w-full p-3 flex notification-item"
-              : "bg-brand-highlight w-full p-3 flex notification-item"
+              ? "w-full p-3 flex notification-item relative"
+              : "bg-brand-highlight w-full p-3 flex notification-item relative"
           }
           onClick={() => markAsRead(id)}
         >
@@ -148,12 +154,19 @@ const NotificationItem = ({
 
           <div className="">
             <img
-              src={comment.user.profile_pic}
+              src={commentQue.comment.user.profile_pic}
               className="w-8 h-8 rounded-full  bg-background2"
               style={{ objectFit: "cover" }}
               alt=""
             />
             {message}
+            <span className="absolute text-xs top-3 right-3">{created}</span>
+
+            <div className="border bg-white text-sm p-2 mt-2 rounded-lg">
+              {commentQue.comment.content.length >= limit
+                ? commentQue.comment.content.substring(0, limit) + "..."
+                : commentQue.comment.content}
+            </div>
           </div>
         </Link>
       ) : (
