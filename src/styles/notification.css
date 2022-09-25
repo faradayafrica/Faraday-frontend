@@ -6,3 +6,13 @@
 .notification-loader {
     opacity: 0;
 }
+
+
+
+.filter-dropdown > p {
+    cursor: pointer;
+}
+
+.filter-dropdown > p:hover {
+    background-color: theme('colors.background');
+}

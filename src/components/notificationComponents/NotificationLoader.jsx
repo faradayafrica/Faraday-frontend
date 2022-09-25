@@ -19,6 +19,7 @@ const NotificationLoader = () => {
         stagger: 0.1,
         repeat: -2,
         repeatDelay: 1,
+        yoyo: true,
       }
     );
   });
@@ -93,18 +94,6 @@ const NotificationLoader = () => {
             <div className="w-8 h-8 rounded-full  bg-background2"></div>
             <div className=" h-3 rounded-xl  bg-background2 mt-2"></div>
             <div className="w-[80px] h-3 rounded-xl  bg-background2 mt-2"></div>
-          </div>
-        </div>
-      </div>
-
-      <div className="animate-pulse border-b notification-loader-item">
-        <div className="w-full p-3 flex  bg-white">
-          <div className="w-6 h-6 mr-2 bg-background2"></div>
-
-          <div className="w-full">
-            <div className="w-8 h-8 rounded-full  bg-background2"></div>
-            <div className=" h-3 rounded-xl  bg-background2 mt-2"></div>
-            <div className="w-[40px] h-3 rounded-xl  bg-background2 mt-2"></div>
           </div>
         </div>
       </div>
