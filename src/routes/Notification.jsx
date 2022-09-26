@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import NotificationItem from "../components/notificationComponents/NotificationItem";
 import NotificationLoader from "../components/notificationComponents/NotificationLoader";
 import http from "../services/httpService";
+import auth from "../services/authService";
 import gsap from "gsap";
 
 import "../styles/notification.css";
@@ -12,6 +13,7 @@ const Notification = () => {
 
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const [filter, setFilter] = useState("");
   const [showFilter, setShowFilter] = useState(false);
@@ -90,22 +92,27 @@ const Notification = () => {
   };
 
   const filterNotification = async (type) => {
+    setError("");
+    setLoading(true);
+    toggleFilterDropDown();
+
     if (type === "read") {
       try {
         await http.get(apiEndpoint + "?is_read=True").then((resp) => {
           setNotifications(resp.data.results.data);
           setFilter("Read");
-          toggleFilterDropDown();
           setLoading(false);
         });
       } catch (e) {
-        console.log(e);
+        if (e.response.status === 401) {
+          auth.refreshJwt();
+        }
+        setError("Something went wrong. Please try again later");
       }
     } else if (type === "unread") {
       try {
         await http.get(apiEndpoint + "?is_read=False").then((resp) => {
           setNotifications(resp.data.results.data);
-          toggleFilterDropDown();
           setFilter("Unread");
           setLoading(false);
         });
@@ -116,12 +123,12 @@ const Notification = () => {
       try {
         await http.get(apiEndpoint).then((resp) => {
           setNotifications(resp.data.results.data);
-          toggleFilterDropDown();
           setFilter("All");
           setLoading(false);
         });
       } catch (e) {
         console.log(e);
+        setError("Something went wrong. Please try again later");
       }
     }
   };
@@ -178,7 +185,11 @@ const Notification = () => {
         </div>
       </div>
       {loading ? (
-        <NotificationLoader />
+        !error ? (
+          <NotificationLoader />
+        ) : (
+          error
+        )
       ) : (
         <div ref={el}>
           {notifications.map((item) => (

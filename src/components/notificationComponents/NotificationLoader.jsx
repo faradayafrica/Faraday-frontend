@@ -10,7 +10,6 @@ const NotificationLoader = () => {
       q(".notification-loader-item"),
       {
         y: +200,
-        ease: "power2.inOut",
         opacity: 0,
       },
       {
@@ -19,7 +18,7 @@ const NotificationLoader = () => {
         stagger: 0.1,
         repeat: -2,
         repeatDelay: 1,
-        yoyo: true,
+        ease: "power2.inOut",
       }
     );
   });

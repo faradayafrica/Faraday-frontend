@@ -93,6 +93,11 @@ const NotificationItem = ({
             />
             {message}
             <span className="absolute text-xs top-3 right-3">{created}</span>
+            <div className="border p-2 bg-white text-sm mt-2 rounded-lg text-secondary text-semibold">
+              {que?.content.length >= limit
+                ? que?.content.substring(0, limit) + "..."
+                : que?.content}
+            </div>
           </div>
         </Link>
       ) : (
@@ -168,7 +173,7 @@ const NotificationItem = ({
             {message}
             <span className="absolute text-xs top-3 right-3">{created}</span>
 
-            <div className=" text-sm mt-2 rounded-lg text-secondary">
+            <div className="border p-2 bg-white text-sm mt-2 rounded-lg text-secondary">
               {commentQue?.comment.content.length >= limit
                 ? commentQue?.comment.content.substring(0, limit) + "..."
                 : commentQue?.comment.content}
