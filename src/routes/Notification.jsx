@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import NotificationItem from "../components/notificationComponents/NotificationItem";
 import NotificationLoader from "../components/notificationComponents/NotificationLoader";
+import SecondaryButton from "../components/styledComponents/SecondaryButton";
 import http from "../services/httpService";
 import auth from "../services/authService";
 import gsap from "gsap";
@@ -44,6 +45,7 @@ const Notification = () => {
   }, [loading, notifications]);
 
   const fetchNotifications = async () => {
+    setLoading(true);
     try {
       await http.get(apiEndpoint).then((resp) => {
         setNotifications(resp.data.results.data);
@@ -51,6 +53,7 @@ const Notification = () => {
       });
     } catch (e) {
       console.log(e);
+      setError("Can't fetch notification at this time. Try again later");
     }
   };
 
@@ -118,6 +121,7 @@ const Notification = () => {
         });
       } catch (e) {
         console.log(e);
+        setError("Something went wrong. Please try again later");
       }
     } else {
       try {
@@ -188,7 +192,12 @@ const Notification = () => {
         !error ? (
           <NotificationLoader />
         ) : (
-          error
+          <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
+            <>
+              <p className="text-xs sm:text-base ">{error}</p>
+              <SecondaryButton cta="Retry" action={fetchNotifications} />
+            </>
+          </div>
         )
       ) : (
         <div ref={el}>
