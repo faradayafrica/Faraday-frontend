@@ -34,6 +34,7 @@ const DiscussionPage = ({
   const [loader, setLoader] = useState(true);
   const [commentLoader, setCommentLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
+  const [error, setError] = useState("");
 
   const [isCopyLinkModal, setCopyLinkModal] = useState(false);
   const [isCopied, setCopied] = useState(false);
@@ -236,6 +237,7 @@ const DiscussionPage = ({
     } catch (err) {
       console.warn(err.message);
       setLoader(false);
+      setError("Couldn't fetch this question");
     }
   };
 
@@ -252,6 +254,7 @@ const DiscussionPage = ({
     } catch (err) {
       console.warn(err.message);
       setCommentLoader(false);
+      setError("Couldn't fetch the comments at this time");
     }
   };
 
@@ -453,6 +456,7 @@ const DiscussionPage = ({
                 match={match}
                 questions={questions}
                 handleUpdatedQuestions={handleUpdatedQuestions}
+                error={error}
               />
             </div>
           ) : (
@@ -464,9 +468,7 @@ const DiscussionPage = ({
               ) : (
                 <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
                   <>
-                    <p className="text-xs sm:text-base ">
-                      Question currently unavailable
-                    </p>
+                    <p className="text-xs sm:text-base ">{error}</p>
                     <SecondaryButton cta="Retry" action={retry} />
                   </>
                 </div>

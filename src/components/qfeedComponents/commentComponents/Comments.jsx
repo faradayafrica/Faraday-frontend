@@ -23,6 +23,7 @@ const Comments = ({
   onMarkSolution,
   questions,
   handleUpdatedQuestions,
+  error,
 }) => {
   const [comment, setComment] = useState("");
   const [pendingComments, setPendingComments] = useState([]);
@@ -232,7 +233,9 @@ const Comments = ({
             <div className="p-3 bg-white">
               <div className="p-3 rounded-lg border bg-background  text-center">
                 <p className="text-xs sm:text-base m-0 ">
-                  No comments yet! Be the first to comment on this question
+                  {error
+                    ? error
+                    : "No comments yet! Be the first to comment on this question"}
                 </p>
               </div>
             </div>
@@ -242,7 +245,7 @@ const Comments = ({
 
       {commentLoader ? (
         <div className="p-3">
-          <Loader msg="fetching comments..." />
+          <Loader msg="Fetching comments..." />
           <div className="h-[65px] w-full sm:hidden"></div>
         </div>
       ) : (
