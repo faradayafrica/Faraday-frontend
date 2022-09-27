@@ -38,8 +38,8 @@ const NotificationItem = ({
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
-              ? "w-full p-3 flex notification-item relative"
-              : "bg-brand-highlight w-full p-3 flex notification-item relative"
+              ? "w-full p-3 flex notification-item relative border-b"
+              : "bg-brand-highlight w-full p-3 flex notification-item relative border-b"
           }
           onClick={() => markAsRead(id)}
         >
@@ -72,8 +72,8 @@ const NotificationItem = ({
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
-              ? "w-full p-3 flex notification-item relative"
-              : "bg-brand-highlight w-full p-3 flex notification-item relative"
+              ? "w-full p-3 flex notification-item relative border-b"
+              : "bg-brand-highlight w-full p-3 flex notification-item relative border-b"
           }
           onClick={() => markAsRead(id)}
         >
@@ -93,6 +93,15 @@ const NotificationItem = ({
             />
             {message}
             <span className="absolute text-xs top-3 right-3">{created}</span>
+
+            <div className="border p-2 bg-white mt-2 rounded-lg text-secondary font-semibold ">
+              {que?.title}?{" "}
+              <span className="text-xs font-normal">
+                {que?.content.length >= limit
+                  ? que?.content.substring(0, limit) + "..."
+                  : que?.content}
+              </span>
+            </div>
           </div>
         </Link>
       ) : (
@@ -106,8 +115,8 @@ const NotificationItem = ({
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
-              ? "w-full p-3 flex notification-item relative"
-              : "bg-brand-highlight w-full p-3 flex notification-item relative"
+              ? "w-full p-3 flex notification-item relative border-b"
+              : "bg-brand-highlight w-full p-3 flex notification-item relative border-b"
           }
           onClick={() => markAsRead(id)}
         >
@@ -128,11 +137,15 @@ const NotificationItem = ({
             {message}
             <span className="absolute text-xs top-3 right-3">{created}</span>
 
-            <div className="border p-2 bg-white text-sm mt-2 rounded-lg text-secondary">
-              {que.solution.content.length >= limit
-                ? que?.solution.content.substring(0, limit) + "..."
-                : que?.solution.content}
-            </div>
+            {que.solution ? (
+              <div className="border p-2 bg-white text-sm mt-2 rounded-lg text-secondary">
+                {que.solution.content.length >= limit
+                  ? que?.solution.content.substring(0, limit) + "..."
+                  : que?.solution.content}
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </Link>
       ) : (
@@ -146,8 +159,8 @@ const NotificationItem = ({
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
-              ? "w-full p-3 flex notification-item relative"
-              : "bg-brand-highlight w-full p-3 flex notification-item relative"
+              ? "w-full p-3 flex notification-item relative border-b"
+              : "bg-brand-highlight w-full p-3 flex notification-item relative border-b"
           }
           onClick={() => markAsRead(id)}
         >
@@ -168,7 +181,7 @@ const NotificationItem = ({
             {message}
             <span className="absolute text-xs top-3 right-3">{created}</span>
 
-            <div className=" text-sm mt-2 rounded-lg text-secondary">
+            <div className="border p-2 bg-white text-sm mt-2 rounded-lg text-secondary">
               {commentQue?.comment.content.length >= limit
                 ? commentQue?.comment.content.substring(0, limit) + "..."
                 : commentQue?.comment.content}
