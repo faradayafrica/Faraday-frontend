@@ -289,8 +289,6 @@ const Notification = () => {
         </>
       ) : null}
 
-      {isError ? <p>{error.message}</p> : ""}
-
       {!hasNextPage && data?.pages.length && (
         <>
           <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
