@@ -205,7 +205,10 @@ const Notification = () => {
               <p className="text-xs sm:text-base ">{error}</p>
               <SecondaryButton
                 cta="Retry"
-                action={fetchNotifications(apiEndpoint)}
+                action={() => {
+                  fetchNotifications(apiEndpoint);
+                  setError("");
+                }}
               />
             </>
           </div>
