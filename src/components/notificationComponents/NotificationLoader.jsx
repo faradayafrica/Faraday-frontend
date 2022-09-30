@@ -16,8 +16,6 @@ const NotificationLoader = () => {
         y: 0,
         opacity: 1,
         stagger: 0.1,
-        repeat: -2,
-        repeatDelay: 1,
         ease: "power2.inOut",
       }
     );

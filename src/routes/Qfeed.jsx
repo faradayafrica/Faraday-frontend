@@ -4,6 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import PostPage from "../components/qfeedComponents/PostPage";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
+import QuestionsLoader from "../components/qfeedComponents/QuestionsLoader.jsx";
 import NotFound from "./NotFound.jsx";
 import http from "../services/httpService";
 
@@ -125,20 +126,18 @@ const Qfeed = (props) => {
     }
   }, []);
 
-  let lastScrollTop = 0;
-
   useEffect(() => {
+    let lastScrollTop = 0;
+
     if (document.getElementById("timeline") !== null) {
       window.addEventListener(
         "scroll",
         (e) => {
           let st = e.target.documentElement.scrollTop;
           if (st > lastScrollTop) {
-            // downscroll code
-            document.getElementById("topnav").classList.add("hide-up");
+            document.getElementById("topnav").classList.add("hide-up"); // downscroll code
           } else {
-            // upscroll code
-            document.getElementById("topnav").classList.remove("hide-up");
+            document.getElementById("topnav").classList.remove("hide-up"); // upscroll code
           }
           lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
         },
@@ -156,12 +155,12 @@ const Qfeed = (props) => {
         page.data.results.map((item) => newQuestions.push(item))
       );
     setQuestions((prev) => prev.concat(newQuestions));
-
-    console.log(data?.pages);
+    console.log(newQuestions.length, "QQQFFFDDD");
   }, [data]);
 
   return (
     <div className="relative w-full route-wrapper ">
+      {/* <QuestionsLoader type="qfeed" /> */}
       <div className="w-full bg-white ">
         <Switch>
           <Route

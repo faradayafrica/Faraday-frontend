@@ -93,19 +93,6 @@ const Notification = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    gsap.fromTo(
-      q(".notification-item"),
-      {
-        y: +200,
-        ease: "power2.inOut",
-        opacity: 0,
-      },
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.04,
-      }
-    );
   }, [isSuccess]);
 
   useEffect(() => {

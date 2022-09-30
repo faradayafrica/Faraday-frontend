@@ -16,8 +16,6 @@ const CommentsLoader = ({ short }) => {
         y: 0,
         opacity: 1,
         stagger: 0.1,
-        repeatDelay: 4,
-        repeat: -2,
         ease: "power2.inOut",
       }
     );

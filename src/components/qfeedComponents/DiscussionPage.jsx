@@ -12,6 +12,7 @@ import http from "../../services/httpService";
 import ellipses from "../../images/qfeed/ellipses.svg";
 import QuestionMenu from "./QuestionMenu";
 import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
+import QuestionsLoader from "./QuestionsLoader";
 
 const DiscussionPage = ({
   match,
@@ -182,7 +183,6 @@ const DiscussionPage = ({
   const fetchThisQuestion = async () => {
     try {
       const { data } = await http.get(apiEndpoint);
-
       setQuestion(data.data);
     } catch (err) {
       console.warn(err.message);
@@ -222,9 +222,9 @@ const DiscussionPage = ({
     }
   };
 
-  useEffect(() => {});
+  useEffect(async () => {
+    await fetchThisQuestion();
 
-  useEffect(() => {
     if (thisQuestion) {
       if (question.comments > 0) {
         fetchComments(commentsApiEndpoint);
@@ -235,41 +235,12 @@ const DiscussionPage = ({
     } else {
       fetchComments(commentsApiEndpoint);
     }
-    fetchThisQuestion();
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     window.addEventListener("scroll", handleScroll);
   }, []);
 
-  let lastScrollTop = 0;
-
-  useEffect(() => {
-    if (
-      document.getElementById("topnav") !== null &&
-      document.getElementById("bottomnav") !== null
-    ) {
-      document.getElementById("topnav").classList.remove("hide-up");
-      document.getElementById("bottomnav").classList.remove("hide-down");
-    }
-
-    window.addEventListener(
-      "scroll",
-      (e) => {
-        let st = e.target.documentElement.scrollTop;
-        if (st > lastScrollTop) {
-          // downscroll code
-          document.getElementById("topnav").classList.add("hide-up");
-        } else {
-          // upscroll code
-          document.getElementById("topnav").classList.remove("hide-up");
-        }
-        lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-      },
-      false
-    );
-  });
-
   let loveClasses =
-    "hover:bg-danger-highlight h-[40px] px-3 flex justify-around items-center rounded-lg mr-4";
+    "hover:bg-danger-highlight h-[40px] px-3 flex justify-around items-center rounded-lg";
 
   if (!question?.liked) {
     loveClasses += " bg-background ";
@@ -340,7 +311,7 @@ const DiscussionPage = ({
 
                 {/* Engagement buttons  */}
                 <div className="mt-3 py-2 border-background2 border-t-[1px] border-b-[1px]">
-                  <div className="flex justify-between pr-12 sm:w-96 items-center ">
+                  <div className="flex justify-between pr-12 sm:w-96 items-center mr-4">
                     <button
                       className={loveClasses}
                       onClick={() => handleQuestionLike(match.params.id)}
@@ -365,7 +336,7 @@ const DiscussionPage = ({
                     {/* The share buttons are currently disabled */}
                     <button
                       disabled
-                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background mr-4"
+                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background"
                     >
                       <img
                         className="h-[18px] w-[18px] opacity-50"
@@ -375,7 +346,7 @@ const DiscussionPage = ({
                     </button>
                     <button
                       disabled
-                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background"
+                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background "
                     >
                       <img
                         className="h-[18px] w-[18px] opacity-50"
@@ -406,9 +377,7 @@ const DiscussionPage = ({
           ) : (
             <>
               {loader ? (
-                <div className="m-3">
-                  <Loader msg="This might take a while..." />
-                </div>
+                <QuestionsLoader type="discussion" />
               ) : (
                 <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
                   <>

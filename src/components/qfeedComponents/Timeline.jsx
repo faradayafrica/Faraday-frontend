@@ -11,6 +11,7 @@ import ask from "../../images/qfeed/ask.svg";
 //style import
 import "../../styles/qfeed.css";
 import CommentsLoader from "./commentComponents/CommentsLoader";
+import QuestionsLoader from "./QuestionsLoader";
 
 const TimeLine = (props) => {
   const [questions, setQuestions] = useState([]);
@@ -83,14 +84,7 @@ const TimeLine = (props) => {
           ""
         )}
 
-        {props.loader ? (
-          <div className="m-3">
-            <Loader msg="Fetching questions" />
-            <div className="h-[65px] w-full sm:hidden"></div>
-          </div>
-        ) : (
-          ""
-        )}
+        {props.loader ? <QuestionsLoader /> : ""}
 
         {props.isFetchingNextPage && props.hasNextPage ? (
           <>
