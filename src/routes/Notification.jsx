@@ -1,19 +1,16 @@
 import { useEffect, useState, useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import NotificationItem from "../components/notificationComponents/NotificationItem";
 import NotificationLoader from "../components/notificationComponents/NotificationLoader";
 import SecondaryButton from "../components/styledComponents/SecondaryButton";
 import http from "../services/httpService";
-import auth from "../services/authService";
 import gsap from "gsap";
-import { useInfiniteQuery } from "@tanstack/react-query";
 
 import "../styles/notification.css";
 import caretIcon from "../images/caret.svg";
 
 const Notification = () => {
   const apiEndpoint = process.env.REACT_APP_API_URL + `/notifications/`;
-
-  const [notifications, setNotifications] = useState([]);
 
   const [filter, setFilter] = useState("");
   const [showFilter, setShowFilter] = useState(false);
@@ -23,18 +20,12 @@ const Notification = () => {
   const q = gsap.utils.selector(el);
 
   const markAsRead = async (notificationId) => {
-    const notificationsClone = [...notifications];
-    const target_index = notifications.findIndex(
-      (item) => item.id === notificationId
-    );
+    console.log("Mark me as read");
     try {
-      notificationsClone[target_index].is_read = true;
       await http.put(apiEndpoint + `${notificationId}/read/`);
     } catch (e) {
-      notificationsClone[target_index].is_read = false;
       throw e;
     }
-    setNotifications(notificationsClone);
   };
 
   const toggleFilterDropDown = () => {
@@ -60,7 +51,6 @@ const Notification = () => {
   };
 
   const filterNotification = async (type) => {
-    // setError("");
     toggleFilterDropDown();
 
     if (type === "read") {
@@ -99,10 +89,10 @@ const Notification = () => {
   );
 
   // Check for the kind of error
-  console.log(error?.response.status, "Error");
+  // console.log(error?.response.status, "Error");
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0 });
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     gsap.fromTo(
       q(".notification-item"),
       {
