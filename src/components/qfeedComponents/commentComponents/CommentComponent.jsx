@@ -19,10 +19,10 @@ const CommentComponent = ({
     setCommentMenu(!commentMenu);
   };
 
-  let commentClasses = "pt-3 pb-1 flex relative pl-3 pr-2";
+  let commentClasses = "pt-3 pb-1 flex relative pl-3 pr-2 comment-item";
 
   commentClasses += comment.is_solution
-    ? " bg-[#F1FBEF66] is_solution  mb-4 "
+    ? " bg-[#F1FBEF66] is_solution  mb-4"
     : "";
 
   return (
@@ -30,7 +30,7 @@ const CommentComponent = ({
       <Link
         to={`/me/${comment?.user?.username}`}
         style={{ textDecoration: "none" }}
-        className="w-14 mr-2 cursor-pointer"
+        className="w-14 mr-2 cursor-pointer "
       >
         <img
           src={comment?.user?.profile_pic}
@@ -70,7 +70,7 @@ const CommentComponent = ({
         ""
       )}
 
-      <div className=" w-full text-faraday-night">
+      <div className=" w-full text-faraday-night ">
         <p className="m-0  text-xs sm:text-base mr-2">
           <span className="mr-2 font-semibold">
             {comment?.user?.firstname} {comment?.user?.lastname}

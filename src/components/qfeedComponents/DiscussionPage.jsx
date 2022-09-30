@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SecondaryButton from "../styledComponents/SecondaryButton";
 import Comments from "./commentComponents/Comments";
 import Loader from "../styledComponents/Loader";
@@ -276,10 +276,6 @@ const DiscussionPage = ({
   } else {
     loveClasses += " bg-danger-highlight text-danger";
   }
-
-  // if (!question) {
-  //   return <Redirect to={"/not-found"} />;
-  // }
 
   return (
     <>

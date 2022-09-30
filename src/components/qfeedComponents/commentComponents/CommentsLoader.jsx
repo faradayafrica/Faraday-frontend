@@ -16,7 +16,8 @@ const CommentsLoader = ({ short }) => {
         y: 0,
         opacity: 1,
         stagger: 0.1,
-        repeatDelay: 1,
+        repeatDelay: 4,
+        repeat: -2,
         ease: "power2.inOut",
       }
     );
@@ -25,7 +26,7 @@ const CommentsLoader = ({ short }) => {
   return (
     <div ref={el}>
       {!short ? (
-        <div className="animate-pulse comment-loader-item">
+        <div className="animate-pulse comment-loader-item mt-2">
           <div className="w-full px-3 py-1 flex  animate-pulse">
             <div>
               <div className="w-12 h-12 mr-2 bg-background2 rounded-full float-left"></div>
@@ -34,7 +35,8 @@ const CommentsLoader = ({ short }) => {
             <div className="w-full">
               <div className=" h-24 rounded-xl  bg-background2 mt-2"></div>
             </div>
-          </div>{" "}
+          </div>
+
           <div className="w-full px-3 py-1 flex  animate-pulse">
             <div>
               <div className="w-12 h-12 mr-2 bg-background2 rounded-full float-left"></div>
@@ -43,7 +45,8 @@ const CommentsLoader = ({ short }) => {
             <div className="w-full">
               <div className=" h-24 rounded-xl  bg-background2 mt-2"></div>
             </div>
-          </div>{" "}
+          </div>
+
           <div className="w-full px-3 py-1 flex  animate-pulse">
             <div>
               <div className="w-12 h-12 mr-2 bg-background2 rounded-full float-left"></div>
@@ -52,7 +55,18 @@ const CommentsLoader = ({ short }) => {
             <div className="w-full">
               <div className=" h-24 rounded-xl  bg-background2 mt-2"></div>
             </div>
-          </div>{" "}
+          </div>
+
+          <div className="w-full px-3 py-1 flex  animate-pulse">
+            <div>
+              <div className="w-12 h-12 mr-2 bg-background2 rounded-full float-left"></div>
+            </div>
+
+            <div className="w-full">
+              <div className=" h-24 rounded-xl  bg-background2 mt-2"></div>
+            </div>
+          </div>
+
           <div className="w-full px-3 py-1 flex  animate-pulse">
             <div>
               <div className="w-12 h-12 mr-2 bg-background2 rounded-full float-left"></div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import PostPage from "../components/qfeedComponents/PostPage";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
@@ -11,34 +12,57 @@ import {
   SuccessToast,
   ErrorToast,
 } from "../components/common/CustomToast.js";
-import { useQuery } from "@tanstack/react-query";
-
-const fetcher = () =>
-  new Promise((resolve, reject) => {
-    setTimeout(() => resolve("data"), 2000);
-  });
 
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
-  const [loader, setLoader] = useState(true);
-
-  // For demo purpose
-  const { data: DemoData } = useQuery(["demo"], () => fetcher());
-  // console.log(DemoData, "DemoData");
-
-  const removeDuplicate = (arr) => {
-    const arrWithUniqueItems = Array.from(new Set(arr.map((a) => a.id))).map(
-      (id) => {
-        return arr.find((a) => a.id === id);
-      }
-    );
-
-    return arrWithUniqueItems;
-  };
-
   const { online } = props;
 
-  const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
+  const fetchQuestions = async (pageParam) => {
+    const resp = await http.get(
+      process.env.REACT_APP_API_URL + `/qfeed/que/fetch/?page=${pageParam}`
+    );
+    return resp;
+  };
+
+  const {
+    data,
+    isSuccess,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useInfiniteQuery(
+    ["questions"],
+    ({ pageParam = 1 }) => fetchQuestions(pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages?.length + 1;
+        return lastPage?.data?.next ? nextPage : undefined;
+      },
+    }
+  );
+
+  useEffect(() => {
+    let fetching = false;
+    const handleScroll = async (e) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasNextPage) {
+          await fetchNextPage();
+        }
+        fetching = false;
+      }
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, [fetchNextPage, hasNextPage]);
 
   const handleFollow = (user) => {
     const apiEndpoint =
@@ -89,73 +113,16 @@ const Qfeed = (props) => {
     setQuestions([...updatedQuestions]);
   };
 
-  const retry = async () => {
-    setLoader(true);
-    fetchQuestions(apiEndpoint);
-    window.addEventListener("scroll", handleScroll);
-  };
-
-  let nextQuestionPageUrl = "";
-  const questionRequestQueue = [];
-
-  const fetchQuestions = async (url) => {
-    questionRequestQueue.push(url);
-
-    try {
-      // console.log("ques", questions);
-      const { data } = await http.get(url);
-      setQuestions((prevQuestions) => [...prevQuestions, ...data.results]);
-      setLoader(false);
-      nextQuestionPageUrl = data.next;
-
-      // Save state to Local Storage
-      window.localStorage.setItem(
-        "questions",
-        JSON.stringify({
-          next: data.next,
-          questions: questions.concat(...data.results),
-        })
-      );
-    } catch (err) {
-      setLoader(false);
-      throw err;
-    }
-  };
-
-  const handleScroll = (e) => {
-    if (nextQuestionPageUrl && document.getElementById("timeline") !== null) {
-      if (
-        e.target.documentElement.scrollTop + window.innerHeight + 1000 >=
-        e.target.documentElement.scrollHeight
-      ) {
-        if (!questionRequestQueue.includes(nextQuestionPageUrl)) {
-          // console.log("Request Q>", questionRequestQueue);
-          fetchQuestions(nextQuestionPageUrl);
-          setLoader(true);
-        } else {
-          console.warn("Duplicate request blocked");
-        }
-      }
-    }
-  };
-
   // Checks Local Storage and populates the Qfeed
   useEffect(() => {
     console.log("All of EM Ques", questions);
     let storedQuestions;
 
     storedQuestions = JSON.parse(localStorage.getItem("questions"));
-    // console.log(storedQuestions);
 
     if (storedQuestions) {
-      setQuestions([...storedQuestions.questions]);
-      nextQuestionPageUrl = storedQuestions.next
-        ? storedQuestions.next
-        : apiEndpoint;
-    } else {
-      fetchQuestions(apiEndpoint);
+      // setQuestions([...storedQuestions.questions]);
     }
-    window.addEventListener("scroll", handleScroll);
   }, []);
 
   let lastScrollTop = 0;
@@ -169,11 +136,9 @@ const Qfeed = (props) => {
           if (st > lastScrollTop) {
             // downscroll code
             document.getElementById("topnav").classList.add("hide-up");
-            // document.getElementById("bottomnav").classList.add("hide-down");
           } else {
             // upscroll code
             document.getElementById("topnav").classList.remove("hide-up");
-            // document.getElementById("bottomnav").classList.remove("hide-down");
           }
           lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
         },
@@ -182,12 +147,25 @@ const Qfeed = (props) => {
     }
   });
 
+  // Update state with the data data from React Query
+  useEffect(() => {
+    const newQuestions = [];
+
+    isSuccess &&
+      data?.pages.map((page) =>
+        page.data.results.map((item) => newQuestions.push(item))
+      );
+    setQuestions((prev) => prev.concat(newQuestions));
+
+    console.log(data?.pages);
+  }, [data]);
+
   return (
-    <div className='relative w-full route-wrapper '>
-      <div className='w-full bg-white '>
+    <div className="relative w-full route-wrapper ">
+      <div className="w-full bg-white ">
         <Switch>
           <Route
-            path='/qfeed/post'
+            path="/qfeed/post"
             render={(props) => (
               <PostPage
                 online={online}
@@ -199,7 +177,7 @@ const Qfeed = (props) => {
           />
 
           <Route
-            path='/qfeed/:id'
+            path="/qfeed/:id"
             render={(props) => (
               <DiscussionPage
                 online={online}
@@ -212,23 +190,25 @@ const Qfeed = (props) => {
             )}
           />
           <Route
-            path='/'
+            path="/"
             render={(props) => (
               <TimeLine
                 online={online}
-                questions={removeDuplicate(questions)}
+                questions={questions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}
                 onDeleteQuestion={deleteQuestion}
-                retry={retry}
-                loader={loader}
-                nextQuestionPageUrl={nextQuestionPageUrl}
+                retry={refetch}
+                loader={isLoading}
+                data={data}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
                 {...props}
               />
             )}
           />
-          <Route path='/not-found' component={NotFound} />
-          <Redirect push to='/not-found' />
+          <Route path="/not-found" component={NotFound} />
+          <Redirect push to="/not-found" />
         </Switch>
       </div>
     </div>

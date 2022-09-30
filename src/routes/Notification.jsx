@@ -283,7 +283,7 @@ const Notification = () => {
         <>
           <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
             <p className="text-xs sm:text-base m-0 ">
-              No more notification to fetch
+              No more notifications to fetch
             </p>
           </div>
           <div className="h-[65px] w-full sm:hidden"></div>
