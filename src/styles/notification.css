@@ -1,12 +1,8 @@
-#notification-wrapper {
-  
-}
+
 
 .border-light {
     border: 1px solid theme("colors.background");
-
 }
-
 
 .notification-item {
     cursor: pointer;

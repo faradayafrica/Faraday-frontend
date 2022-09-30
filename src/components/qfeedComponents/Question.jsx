@@ -233,7 +233,7 @@ const Question = (props) => {
             ) : (
               <img className="h-4 w-4" src={love} alt="react to question" />
             )}
-            <span className="ml-1 font-medium text-sm">
+            <span className="ml-1 font-medium text-xs">
               {question.likes ? question.likes : ""}
             </span>
           </button>
