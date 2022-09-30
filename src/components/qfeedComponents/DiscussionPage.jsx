@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import SecondaryButton from "../styledComponents/SecondaryButton";
 import Comments from "./commentComponents/Comments";
-import Loader from "../styledComponents/Loader";
 import { Link } from "react-router-dom";
 
 import love from "../../images/qfeed/love.svg";
@@ -25,23 +25,18 @@ const DiscussionPage = ({
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
   const apiEndpoint =
     process.env.REACT_APP_API_URL + `/qfeed/que/fetch/${match.params.id}/`;
-  const commentsApiEndpoint =
-    process.env.REACT_APP_API_URL + `/qfeed/que/comments/${match.params.id}/`;
 
   const [question, setQuestion] = useState(thisQuestion ? thisQuestion : {});
   const [comments, setComments] = useState([]);
   const [loader, setLoader] = useState(true);
-  const [commentLoader, setCommentLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
-
-  // console.log("Question?!!!!!!!!!!!!!!!!!!!!!!!!!!!", questions);
 
   const handleFollow = (user) => {
     const apiEndpoint =
       process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
 
-    const clonedQuestions = [...comments];
-    const userComments = clonedQuestions.filter(
+    const clonedComments = [...comments];
+    const userComments = clonedComments.filter(
       (comment) => comment.user.id === user.id
     );
 
@@ -135,14 +130,12 @@ const DiscussionPage = ({
           postid,
           value: "downvote",
         });
-        // SuccessToast("Question unliked");
         likeData = data.data;
       } else {
         const { data } = await http.post(apiEndpoint, {
           postid,
           value: "upvote",
         });
-        // SuccessToast("Question liked");
         likeData = data.data;
       }
 
@@ -164,16 +157,10 @@ const DiscussionPage = ({
       const { data } = await http.get(apiEndpoint);
       setQuestion(data);
     } catch (err) {
-      console.warn(err.message);
       setLoader(false);
     }
-    try {
-      const { data } = await http.get(commentsApiEndpoint);
-      setComments(data.results);
-    } catch (err) {
-      console.warn(err.message);
-      setCommentLoader(false);
-    }
+
+    refetch();
   };
 
   const updateComments = (newComments) => {
@@ -190,54 +177,70 @@ const DiscussionPage = ({
     }
   };
 
-  let nextCommentPageUrl = "";
-  const commentRequestQueue = [];
-
-  const fetchComments = async (url) => {
-    commentRequestQueue.push(url);
-    try {
-      const { data } = await http.get(url);
-      setComments((prevComment) => [...prevComment, ...data.results]);
-      setCommentLoader(false);
-      nextCommentPageUrl = data.next;
-    } catch (err) {
-      console.warn(err.message);
-      setCommentLoader(false);
-    }
-  };
-
-  const handleScroll = (e) => {
-    if (nextCommentPageUrl && document.getElementById("discussion") !== null) {
-      if (
-        e.target.documentElement.scrollTop + window.innerHeight + 1000 >=
-        e.target.documentElement.scrollHeight
-      ) {
-        if (!commentRequestQueue.includes(nextCommentPageUrl)) {
-          fetchComments(nextCommentPageUrl);
-          setCommentLoader(true);
-        } else {
-          console.warn("Duplicate C request blocked");
-        }
-      }
-    }
-  };
-
   useEffect(async () => {
     await fetchThisQuestion();
-
-    if (thisQuestion) {
-      if (question.comments > 0) {
-        fetchComments(commentsApiEndpoint);
-      } else {
-        setComments([]);
-        setCommentLoader(false);
-      }
-    } else {
-      fetchComments(commentsApiEndpoint);
-    }
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    window.addEventListener("scroll", handleScroll);
   }, []);
+
+  const fetchComments = async (pageParam) => {
+    const resp = await http.get(
+      process.env.REACT_APP_API_URL +
+        `/qfeed/que/comments/${match.params.id}/?page=${pageParam}`
+    );
+    return resp;
+  };
+
+  const {
+    data,
+    isSuccess,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useInfiniteQuery(
+    ["comments"],
+    ({ pageParam = 1 }) => fetchComments(pageParam),
+    {
+      cacheTime: 0,
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages?.length + 1;
+        return lastPage?.data?.next ? nextPage : undefined;
+      },
+    }
+  );
+
+  useEffect(() => {
+    let fetching = false;
+    const handleScroll = async (e) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasNextPage) {
+          await fetchNextPage();
+        }
+        fetching = false;
+      }
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, [fetchNextPage, hasNextPage]);
+
+  useEffect(() => {
+    !comments.length &&
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    const newComments = [];
+
+    isSuccess &&
+      data?.pages.map((page) =>
+        page.data.results.map((item) => newComments.push(item))
+      );
+    setComments(newComments);
+  }, [data]);
 
   let loveClasses =
     "hover:bg-danger-highlight h-[40px] px-3 flex justify-around items-center rounded-lg";
@@ -364,7 +367,7 @@ const DiscussionPage = ({
                 thisQuestion={question}
                 questionid={match.params.id}
                 comments={comments}
-                commentLoader={commentLoader}
+                commentLoader={isLoading}
                 questionOwner={question?.user}
                 onUpdateComments={updateComments}
                 onMarkSolution={handleMarkSolution}
@@ -372,6 +375,12 @@ const DiscussionPage = ({
                 match={match}
                 questions={questions}
                 handleUpdatedQuestions={handleUpdatedQuestions}
+                //from useInfinteQuery
+                error={error}
+                isError={isError}
+                data={data}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
               />
             </div>
           ) : (

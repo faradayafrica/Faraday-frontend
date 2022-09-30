@@ -4,7 +4,6 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import PostPage from "../components/qfeedComponents/PostPage";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
-import QuestionsLoader from "../components/qfeedComponents/QuestionsLoader.jsx";
 import NotFound from "./NotFound.jsx";
 import http from "../services/httpService";
 
@@ -116,7 +115,6 @@ const Qfeed = (props) => {
 
   // Checks Local Storage and populates the Qfeed
   useEffect(() => {
-    console.log("All of EM Ques", questions);
     let storedQuestions;
 
     storedQuestions = JSON.parse(localStorage.getItem("questions"));
@@ -154,7 +152,7 @@ const Qfeed = (props) => {
       data?.pages.map((page) =>
         page.data.results.map((item) => newQuestions.push(item))
       );
-    setQuestions((prev) => prev.concat(newQuestions));
+    setQuestions(newQuestions);
 
     // Save state to Local Storage
     window.localStorage.setItem(
@@ -163,7 +161,6 @@ const Qfeed = (props) => {
         questions: newQuestions,
       })
     );
-    console.log(newQuestions.length, "QQQFFFDDD");
   }, [data]);
 
   return (
@@ -207,6 +204,8 @@ const Qfeed = (props) => {
                 onDeleteQuestion={deleteQuestion}
                 retry={refetch}
                 loader={isLoading}
+                isError={isError}
+                error={error}
                 data={data}
                 hasNextPage={hasNextPage}
                 isFetchingNextPage={isFetchingNextPage}

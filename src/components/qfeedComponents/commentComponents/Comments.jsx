@@ -24,7 +24,11 @@ const Comments = ({
   onMarkSolution,
   questions,
   handleUpdatedQuestions,
+  data,
   error,
+  isError,
+  hasNextPage,
+  isFetchingNextPage,
 }) => {
   const [comment, setComment] = useState("");
   const [pendingComments, setPendingComments] = useState([]);
@@ -108,7 +112,7 @@ const Comments = ({
     handleUpdatedQuestions([...clonedQuestions]);
   };
 
-  const postComment = async (postid, limit) => {
+  const postComment = (postid, limit) => {
     const myQuestion = { ...thisQuestion };
 
     let content = comment;
@@ -120,13 +124,17 @@ const Comments = ({
       document.getElementById("commentfield").value = "";
 
       try {
-        const { data } = await http.post(apiEndpoint, {
-          postid,
-          content,
-        });
-        onUpdateComments((prevComments) => [data, ...prevComments]);
+        const promise = http
+          .post(apiEndpoint, {
+            postid,
+            content,
+          })
+          .then((resp) => {
+            onUpdateComments((prevComments) => [resp.data, ...prevComments]);
+          });
+
+        PromiseToast("comment sent", "An error occurred, Try again", promise);
         myQuestion.comments += 1;
-        SuccessToast("Comment sent");
       } catch (e) {
         console.warn(e.message);
         if (!online) {
@@ -196,19 +204,38 @@ const Comments = ({
 
       {comments.length ? (
         <>
+          {/* Solution here */}
+          {uniqueComments
+            .filter((comment) => comment.is_solution === true)
+            .map((comment) => (
+              <CommentComponent
+                key={comment.id}
+                comment={comment}
+                match={match}
+                questionOwner={questionOwner}
+                currentUser={currentUser}
+                onDeleteComment={deleteComment}
+                onFollowUser={handleFollow}
+                is_solution={true}
+                onMarkSolution={onMarkSolution}
+              />
+            ))}
+
           {/* The rest of the comments */}
-          {allComments.map((comment) => (
-            <CommentComponent
-              key={comment.id}
-              match={match}
-              comment={comment}
-              questionOwner={questionOwner}
-              currentUser={currentUser}
-              onDeleteComment={deleteComment}
-              onFollowUser={handleFollow}
-              onMarkSolution={onMarkSolution}
-            />
-          ))}
+          {allComments
+            .filter((comment) => comment.is_solution !== true)
+            .map((comment) => (
+              <CommentComponent
+                key={comment.id}
+                match={match}
+                comment={comment}
+                questionOwner={questionOwner}
+                currentUser={currentUser}
+                onDeleteComment={deleteComment}
+                onFollowUser={handleFollow}
+                onMarkSolution={onMarkSolution}
+              />
+            ))}
         </>
       ) : (
         <>
@@ -216,13 +243,30 @@ const Comments = ({
             <div className="p-3 bg-white">
               <div className="p-3 rounded-lg border bg-background  text-center">
                 <p className="text-xs sm:text-base m-0 ">
-                  {error
-                    ? error
+                  {isError
+                    ? error.message
                     : "No comments yet! Be the first to comment on this question"}
                 </p>
               </div>
             </div>
           )}
+        </>
+      )}
+
+      {isFetchingNextPage && hasNextPage ? (
+        <>
+          <CommentsLoader short={true} />
+        </>
+      ) : null}
+
+      {!hasNextPage && data?.pages.length && (
+        <>
+          <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
+            <p className="text-xs sm:text-base m-0 ">
+              No more comments to fetch
+            </p>
+          </div>
+          <div className="h-[65px] w-full sm:hidden"></div>
         </>
       )}
 
