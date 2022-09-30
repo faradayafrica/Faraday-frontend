@@ -84,11 +84,18 @@ const TimeLine = (props) => {
           ""
         )}
 
-        {props.loader ? <QuestionsLoader /> : ""}
+        {props.loader && questions.length <= 1 ? (
+          <QuestionsLoader />
+        ) : (
+          // This is suppose to be the loader that shows when a user scrolls to the bottom after localStorage populates the Qfeed
+          <>
+            <div className="h-24"></div>
+          </>
+        )}
 
         {props.isFetchingNextPage && props.hasNextPage ? (
           <>
-            <CommentsLoader short="true" />
+            <QuestionsLoader short="true" />
             <div className="h-24"></div>
           </>
         ) : null}

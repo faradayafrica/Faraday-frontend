@@ -122,7 +122,7 @@ const Qfeed = (props) => {
     storedQuestions = JSON.parse(localStorage.getItem("questions"));
 
     if (storedQuestions) {
-      // setQuestions([...storedQuestions.questions]);
+      setQuestions([...storedQuestions.questions]);
     }
   }, []);
 
@@ -155,6 +155,14 @@ const Qfeed = (props) => {
         page.data.results.map((item) => newQuestions.push(item))
       );
     setQuestions((prev) => prev.concat(newQuestions));
+
+    // Save state to Local Storage
+    window.localStorage.setItem(
+      "questions",
+      JSON.stringify({
+        questions: newQuestions,
+      })
+    );
     console.log(newQuestions.length, "QQQFFFDDD");
   }, [data]);
 
