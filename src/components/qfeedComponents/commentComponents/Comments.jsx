@@ -10,6 +10,7 @@ import {
 
 import http from "../../../services/httpService";
 import AddComment from "./AddComment";
+import CommentsLoader from "./CommentsLoader";
 
 const Comments = ({
   match,
@@ -195,37 +196,19 @@ const Comments = ({
 
       {comments.length ? (
         <>
-          {/* Solution here */}
-          {uniqueComments
-            .filter((comment) => comment.is_solution === true)
-            .map((comment) => (
-              <CommentComponent
-                key={comment.id}
-                comment={comment}
-                match={match}
-                questionOwner={questionOwner}
-                currentUser={currentUser}
-                onDeleteComment={deleteComment}
-                onFollowUser={handleFollow}
-                is_solution={true}
-                onMarkSolution={onMarkSolution}
-              />
-            ))}
           {/* The rest of the comments */}
-          {allComments
-            .filter((comment) => comment.is_solution !== true)
-            .map((comment) => (
-              <CommentComponent
-                key={comment.id}
-                match={match}
-                comment={comment}
-                questionOwner={questionOwner}
-                currentUser={currentUser}
-                onDeleteComment={deleteComment}
-                onFollowUser={handleFollow}
-                onMarkSolution={onMarkSolution}
-              />
-            ))}
+          {allComments.map((comment) => (
+            <CommentComponent
+              key={comment.id}
+              match={match}
+              comment={comment}
+              questionOwner={questionOwner}
+              currentUser={currentUser}
+              onDeleteComment={deleteComment}
+              onFollowUser={handleFollow}
+              onMarkSolution={onMarkSolution}
+            />
+          ))}
         </>
       ) : (
         <>
@@ -244,10 +227,11 @@ const Comments = ({
       )}
 
       {commentLoader ? (
-        <div className="p-3">
-          <Loader msg="Fetching comments..." />
-          <div className="h-[65px] w-full sm:hidden"></div>
-        </div>
+        !comments.length ? (
+          <CommentsLoader />
+        ) : (
+          <CommentsLoader short={true} />
+        )
       ) : (
         <>
           {!comments.length === 0 && (
@@ -263,7 +247,7 @@ const Comments = ({
         </>
       )}
 
-      <div className="h-24 bg-white w-full  "></div>
+      <div className="h-4"></div>
     </div>
   );
 };

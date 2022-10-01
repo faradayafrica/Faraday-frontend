@@ -11,7 +11,6 @@ const CommentComponent = ({
   currentUser,
   onDeleteComment,
   onFollowUser,
-  is_solution,
   onMarkSolution,
 }) => {
   const [commentMenu, setCommentMenu] = useState(false);
@@ -20,19 +19,21 @@ const CommentComponent = ({
     setCommentMenu(!commentMenu);
   };
 
-  let commentClasses = "pt-3 pb-1 flex relative pl-3 pr-2";
+  let commentClasses = "pt-3 pb-1 flex relative pl-3 pr-2 comment-item";
 
-  commentClasses += is_solution ? " bg-[#F1FBEF66] is_solution  mb-4 " : "";
+  commentClasses += comment.is_solution
+    ? " bg-[#F1FBEF66] is_solution  mb-4"
+    : "";
 
   return (
     <div className={commentClasses}>
       <Link
-        to={`/me/${comment?.user.username}`}
+        to={`/me/${comment?.user?.username}`}
         style={{ textDecoration: "none" }}
-        className="w-14 mr-2 cursor-pointer"
+        className="w-14 mr-2 cursor-pointer "
       >
         <img
-          src={comment?.user.profile_pic}
+          src={comment?.user?.profile_pic}
           className="w-12 h-12 rounded-full mr-3 bg-background2"
           style={{ objectFit: "cover" }}
           alt=""
@@ -63,26 +64,26 @@ const CommentComponent = ({
           onDeleteComment={onDeleteComment}
           onFollowUser={onFollowUser}
           onMarkSolution={onMarkSolution}
-          is_solution={is_solution}
+          is_solution={comment.is_solution}
         />
       ) : (
         ""
       )}
 
-      <div className=" w-full text-faraday-night">
+      <div className=" w-full text-faraday-night ">
         <p className="m-0  text-xs sm:text-base mr-2">
           <span className="mr-2 font-semibold">
-            {comment?.user.firstname} {comment?.user.lastname}
+            {comment?.user?.firstname} {comment?.user?.lastname}
           </span>
           <span className="mr-2 text-night-secondary">
-            @{comment?.user.username}
+            @{comment?.user?.username}
           </span>
           <span className="mr-2 text-night-secondary">{comment?.created}</span>
         </p>
         <p className="text-sm sm:text-base m-0 mb-2 text-faraday-night">
           {comment?.content}
         </p>
-        {is_solution ? (
+        {comment.is_solution ? (
           <p className="text-brand-dark font-bold text-xs outline outline-1 inline-flex justify-center items-center outline-brand py-1 pr-2 rounded-full">
             <img src={mark} className="h-5 w-5 mx-1" alt="mark" /> The author
             marked this as a solution

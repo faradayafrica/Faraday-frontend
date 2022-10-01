@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 
 // icons import -unread variants
-import liked from "../../images/qfeed/red-love.svg";
-import profile from "../../images/profile2.png";
 
 import followUnread from "../../images/notification/follow_unread.svg";
 import markUnread from "../../images/notification/mark_unread.svg";

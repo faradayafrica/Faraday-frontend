@@ -14,6 +14,7 @@ import redLove from "../../images/qfeed/red-love.svg";
 import smiley from "../../images/qfeed/smiley.svg";
 import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
+import mark from "../../images/qfeed/mark.svg";
 
 const Question = (props) => {
   const [question, setQuestion] = useState(props.question);
@@ -203,10 +204,40 @@ const Question = (props) => {
               <h3 className="text-base sm:text-lg font-semibold m-0 mb-1">
                 {question?.title}
               </h3>
-              {/* Question body --optional */}
-              <p className="text-sm sm:text-base m-0 mb-2">
-                {question?.content}
-              </p>
+
+              {/* Question body if there's a solution --optional */}
+              {question.solution ? (
+                <div className="bg-[#F1FBEF66] rounded-lg p-3 mb-2 relative">
+                  <img src={mark} className="h-5 w-5 absolute right-3 top-3" />
+                  <div className="flex item-center text-night-secondary">
+                    <img
+                      src={question?.solution.user.profile_pic}
+                      className="h-5 w-5 rounded-full bg-background2"
+                    />
+
+                    <p className="text-sm pl-2 m-0">
+                      {question?.solution.user.firstname}{" "}
+                      {question?.solution.user.lastname}
+                    </p>
+                    <p className="text-sm pl-2 m-0">
+                      @{question?.solution.user.username}
+                    </p>
+                    <p className="text-sm pl-2 m-0">
+                      {question?.solution.created}
+                    </p>
+                  </div>
+                  <p className="text-sm sm:text-base m-0 mt-2">
+                    {question?.solution.content}
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {/* Question body without a selected solution --optional */}
+                  <p className="text-sm sm:text-base m-0 mb-2">
+                    {question?.content}
+                  </p>
+                </>
+              )}
             </Link>
           ) : (
             <>
@@ -233,7 +264,7 @@ const Question = (props) => {
             ) : (
               <img className="h-4 w-4" src={love} alt="react to question" />
             )}
-            <span className="ml-1 font-medium text-sm">
+            <span className="ml-1 font-medium text-xs">
               {question.likes ? question.likes : ""}
             </span>
           </button>
