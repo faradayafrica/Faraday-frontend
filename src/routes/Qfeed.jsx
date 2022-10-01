@@ -128,6 +128,7 @@ const Qfeed = (props) => {
 
   // Update state with the data data from React Query
   useEffect(() => {
+    document.title = `Faraday`;
     const newQuestions = [];
 
     isSuccess &&
