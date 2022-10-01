@@ -43,6 +43,33 @@ const QuestionsLoader = ({ type, short }) => {
               <button className="w-16 h-10 rounded-lg bg-background2 "></button>
             </div>
           </div>
+
+          <div className="mt-2">
+            <div className="w-full  py-1 flex  animate-pulse">
+              <div>
+                <div className="w-12 h-12 mr-2 bg-background2 rounded-full float-left"></div>
+              </div>
+              <div className="w-full">
+                <div className=" h-24 rounded-xl  bg-background2 mt-2"></div>
+              </div>
+            </div>
+            <div className="w-full  py-1 flex  animate-pulse">
+              <div>
+                <div className="w-12 h-12 mr-2 bg-background2 rounded-full float-left"></div>
+              </div>
+              <div className="w-full">
+                <div className=" h-24 rounded-xl  bg-background2 mt-2"></div>
+              </div>
+            </div>
+            <div className="w-full  py-1 flex  animate-pulse">
+              <div>
+                <div className="w-12 h-12 mr-2 bg-background2 rounded-full float-left"></div>
+              </div>
+              <div className="w-full">
+                <div className=" h-24 rounded-xl  bg-background2 mt-2"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </>
     );
@@ -52,7 +79,7 @@ const QuestionsLoader = ({ type, short }) => {
     <div ref={el} className="mt-4">
       {!short ? (
         <>
-          <div className="px-3 animate-pulse border-b-[1px] question-loader-item py-2">
+          <div className="px-3 animate-pulse border-b-[1px]  py-2">
             <div className="flex">
               <div className="w-14 mr-2 cursor-pointer  ">
                 <div className="w-12 h-12 rounded-full mr-2 bg-background2 float-left"></div>
@@ -72,7 +99,7 @@ const QuestionsLoader = ({ type, short }) => {
             </div>
           </div>
 
-          <div className="px-3 animate-pulse border-b-[1px] question-loader-item py-2">
+          <div className="px-3 animate-pulse border-b-[1px]  py-2">
             <div className="flex">
               <div className="w-14 mr-2 cursor-pointer  ">
                 <div className="w-12 h-12 rounded-full mr-2 bg-background2 float-left"></div>
@@ -92,27 +119,7 @@ const QuestionsLoader = ({ type, short }) => {
             </div>
           </div>
 
-          <div className="px-3 animate-pulse border-b-[1px] question-loader-item py-2">
-            <div className="flex">
-              <div className="w-14 mr-2 cursor-pointer  ">
-                <div className="w-12 h-12 rounded-full mr-2 bg-background2 float-left"></div>
-              </div>
-              <div className=" w-full  ">
-                <div className="max-w-[350px] h-3 rounded-xl bg-background2 mt-2"></div>
-                <div className="w-[150px] h-3 rounded-xl bg-background2 mt-2"></div>{" "}
-                <div className=" h-32 w-full rounded-xl bg-background2 mt-4"></div>
-                <div className="mt-3 py-2 border-background2 border-t-[1px] ">
-                  <div className="flex justify-between pr-12 sm:w-96 items-center">
-                    <button className="w-16 h-10 rounded-lg bg-background2"></button>
-                    <button className="w-16 h-10 rounded-lg bg-background2"></button>
-                    <button className="w-16 h-10 rounded-lg bg-background2 "></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="px-3 animate-pulse border-b-[1px] question-loader-item py-2">
+          <div className="px-3 animate-pulse border-b-[1px]  py-2">
             <div className="flex">
               <div className="w-14 mr-2 cursor-pointer  ">
                 <div className="w-12 h-12 rounded-full mr-2 bg-background2 float-left"></div>
@@ -133,7 +140,7 @@ const QuestionsLoader = ({ type, short }) => {
           </div>
         </>
       ) : (
-        <div className="w-full px-3 py-1 flex  animate-pulse">
+        <div className="w-full px-3 py-1 flex question-loader-item animate-pulse">
           <div>
             <div className="w-12 h-12 mr-2 bg-background2 rounded-full float-left"></div>
           </div>

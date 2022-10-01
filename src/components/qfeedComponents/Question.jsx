@@ -207,7 +207,7 @@ const Question = (props) => {
 
               {/* Question body if there's a solution --optional */}
               {question.solution ? (
-                <div className="bg-[#F1FBEFaa] rounded-lg p-3 mb-2 relative">
+                <div className="bg-[#F1FBEF99] rounded-lg p-[12px] mb-2 relative">
                   <img src={mark} className="h-4 w-4 absolute right-3 top-3" />
                   <div className="flex item-center text-night-secondary">
                     <img
