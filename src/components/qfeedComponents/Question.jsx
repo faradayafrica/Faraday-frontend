@@ -207,22 +207,33 @@ const Question = (props) => {
 
               {/* Question body if there's a solution --optional */}
               {question.solution ? (
-                <div className="bg-[#F1FBEF66] rounded-lg p-3 mb-2 relative">
-                  <img src={mark} className="h-5 w-5 absolute right-3 top-3" />
+                <div className="bg-[#F1FBEFaa] rounded-lg p-3 mb-2 relative">
+                  <img src={mark} className="h-4 w-4 absolute right-3 top-3" />
                   <div className="flex item-center text-night-secondary">
                     <img
                       src={question?.solution.user.profile_pic}
                       className="h-5 w-5 rounded-full bg-background2"
                     />
 
-                    <p className="text-sm pl-2 m-0">
-                      {question?.solution.user.firstname}{" "}
-                      {question?.solution.user.lastname}
+                    <p className="text-xs pl-1 m-0">
+                      {question?.solution.user.firstname.concat(
+                        question?.solution.user.lastname
+                      ).length > 15
+                        ? question?.solution.user.firstname
+                            .concat(question?.solution.user.lastname)
+                            .substring(0, 15) + "..."
+                        : question?.solution.user.firstname +
+                          " " +
+                          question?.solution.user.lastname}
                     </p>
-                    <p className="text-sm pl-2 m-0">
-                      @{question?.solution.user.username}
+                    <p className="text-xs pl-1 m-0">
+                      @
+                      {question?.solution.user.username > 15
+                        ? question?.solution.user.username.substring(0, 15) +
+                          "..."
+                        : question?.solution.user.username}
                     </p>
-                    <p className="text-sm pl-2 m-0">
+                    <p className="text-xs pl-1 m-0">
                       {question?.solution.created}
                     </p>
                   </div>
