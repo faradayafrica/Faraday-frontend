@@ -212,7 +212,7 @@ const Question = (props) => {
                   <div className="flex item-center text-night-secondary">
                     <img
                       src={question?.solution.user.profile_pic}
-                      className="h-5 w-5 rounded-full bg-background2"
+                      className="h-4 w-4 rounded-full bg-background2"
                     />
 
                     <p className="text-xs pl-1 m-0">
