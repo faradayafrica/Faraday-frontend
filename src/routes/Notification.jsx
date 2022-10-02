@@ -15,9 +15,7 @@ const Notification = () => {
   const [filter, setFilter] = useState("");
   const [showFilter, setShowFilter] = useState(false);
 
-  const el = useRef();
   const filter_modal = useRef();
-  const q = gsap.utils.selector(el);
 
   const markAsRead = async (notificationId) => {
     console.log("Mark me as read");
@@ -93,6 +91,7 @@ const Notification = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.title = `Faraday`;
   }, [isSuccess]);
 
   useEffect(() => {
@@ -181,7 +180,7 @@ const Notification = () => {
       )}
 
       {
-        <div ref={el}>
+        <div>
           <>
             {isSuccess &&
               (filter === "" || filter === "All") &&

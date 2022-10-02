@@ -80,9 +80,12 @@ const CommentComponent = ({
           </span>
           <span className="mr-2 text-night-secondary">{comment?.created}</span>
         </p>
-        <p className="text-sm sm:text-base m-0 mb-2 text-faraday-night">
-          {comment?.content}
-        </p>
+        <div className="text-sm sm:text-base m-0 mb-2 text-faraday-night">
+          {comment?.content.split("\n").map((item) => (
+            <p className="mb-1">{item}</p>
+          ))}
+        </div>
+
         {comment.is_solution ? (
           <p className="text-brand-dark font-bold text-xs outline outline-1 inline-flex justify-center items-center outline-brand py-1 pr-2 rounded-full">
             <img src={mark} className="h-5 w-5 mx-1" alt="mark" /> The author

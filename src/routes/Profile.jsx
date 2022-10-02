@@ -78,7 +78,7 @@ function Profile({ match }, props) {
     async function fetchUserSolutions() {
       try {
         const { data } = await http.get(userSolutionEndpoint);
-        setSolutions(data.results);
+        setSolutions(data.results.map((item) => item.question));
         // console.log("SOLn", data);
       } catch (e) {
         console.log(e.message);

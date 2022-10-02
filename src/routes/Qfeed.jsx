@@ -124,28 +124,9 @@ const Qfeed = (props) => {
     }
   }, []);
 
-  useEffect(() => {
-    let lastScrollTop = 0;
-
-    if (document.getElementById("timeline") !== null) {
-      window.addEventListener(
-        "scroll",
-        (e) => {
-          let st = e.target.documentElement.scrollTop;
-          if (st > lastScrollTop) {
-            document.getElementById("topnav").classList.add("hide-up"); // downscroll code
-          } else {
-            document.getElementById("topnav").classList.remove("hide-up"); // upscroll code
-          }
-          lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-        },
-        false
-      );
-    }
-  });
-
   // Update state with the data data from React Query
   useEffect(() => {
+    document.title = `Faraday`;
     const newQuestions = [];
 
     isSuccess &&
@@ -153,6 +134,7 @@ const Qfeed = (props) => {
         page.data.results.map((item) => newQuestions.push(item))
       );
     setQuestions(newQuestions);
+
 
     // Save state to Local Storage
     window.localStorage.setItem(
@@ -162,6 +144,7 @@ const Qfeed = (props) => {
       })
     );
   }, [data]);
+
 
   return (
     <div className="relative w-full route-wrapper ">

@@ -99,6 +99,26 @@ const App = () => {
     }
   }, [online]);
 
+  useEffect(() => {
+    let lastScrollTop = 0;
+
+    if (document.getElementById("timeline") !== null) {
+      window.addEventListener(
+        "scroll",
+        (e) => {
+          let st = e.target.documentElement.scrollTop;
+          if (st > lastScrollTop) {
+            document.getElementById("topnav").classList.add("hide-up"); // downscroll code
+          } else {
+            document.getElementById("topnav").classList.remove("hide-up"); // upscroll code
+          }
+          lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+        },
+        false
+      );
+    }
+  });
+
   return (
     <BrowserRouter>
       <UserProvider>
