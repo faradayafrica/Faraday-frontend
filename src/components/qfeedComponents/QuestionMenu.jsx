@@ -18,10 +18,16 @@ const QuestionMenu = ({
   const currentUser = getCurrentUser();
 
   const question_menu = useRef();
+  const question_menu_mobile = useRef();
 
   const handleQuestionMenu = () => {
     gsap.fromTo(
       question_menu.current,
+      { y: 0, opacity: 1 },
+      { y: +50, opacity: 0, duration: 0.2, ease: "power2.inOut" }
+    );
+    gsap.fromTo(
+      question_menu_mobile.current,
       { y: 0, opacity: 1 },
       { y: +50, opacity: 0, duration: 0.2, ease: "power2.inOut" }
     );
@@ -120,8 +126,8 @@ const QuestionMenu = ({
             ></div>
 
             <div
-              ref={question_menu}
-              className="z-50 absolute bottom-0 ask-shadow bg-white rounded-t-3xl w-full opacity-0"
+              ref={question_menu_mobile}
+              className="z-50 absolute bottom-0 ask-shadow bg-white rounded-t-3xl w-full "
             >
               <div className="w-12 h-2 rounded-full mt-2 mb-4 mx-auto  bg-background2"></div>
 

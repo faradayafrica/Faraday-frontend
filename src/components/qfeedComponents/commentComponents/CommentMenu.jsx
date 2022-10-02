@@ -3,7 +3,8 @@ import trashDefault from "../../../images/qfeed/trash-default.svg";
 import follow from "../../../images/qfeed/follow.svg";
 import unfollow from "../../../images/qfeed/unfollow.svg";
 import mark from "../../../images/qfeed/mark.svg";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import gsap from "gsap";
 
 const CommentMenu = ({
   match,
@@ -18,10 +19,39 @@ const CommentMenu = ({
 }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
 
+  const comment_menu = useRef();
+  const comment_menu_mobile = useRef();
+
+  const handleCommentMenu = () => {
+    gsap.fromTo(
+      comment_menu.current,
+      { y: 0, opacity: 1 },
+      { y: +50, opacity: 0, duration: 0.2, ease: "power2.inOut" }
+    );
+    gsap.fromTo(
+      comment_menu_mobile.current,
+      { y: 0, opacity: 1 },
+      { y: +50, opacity: 0, duration: 0.2, ease: "power2.inOut" }
+    );
+    setTimeout(() => {
+      onToggleCommentMenu(false);
+    }, 200);
+  };
+
   const hideMenu = () => {
-    onToggleCommentMenu();
+    handleCommentMenu();
     setConfirmDelete(false);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      gsap.fromTo(
+        comment_menu.current,
+        { y: +50, opacity: 0 },
+        { y: 0, opacity: 1, ease: "power2.inOut" }
+      );
+    }, 200);
+  }, []);
 
   return (
     <>
@@ -31,7 +61,10 @@ const CommentMenu = ({
           onClick={hideMenu}
         ></div>
 
-        <div className="absolute bottom-0 ask-shadow bg-white rounded-t-4xl w-full">
+        <div
+          ref={comment_menu_mobile}
+          className="absolute bottom-0 ask-shadow bg-white rounded-t-4xl w-full"
+        >
           <div className="w-12 h-2 rounded-full mt-2 mb-4 mx-auto bg-background2"></div>
           {questionOwner?.username === currentUser.username ? (
             <button
@@ -112,7 +145,10 @@ const CommentMenu = ({
         }}
       ></div>
 
-      <div className="absolute top-8 z-30 right-4 ask-shadow border bg-white rounded-xl p-1 mx-auto w-72 hidden sm:block">
+      <div
+        ref={comment_menu}
+        className="absolute top-8 z-30 right-4 ask-shadow border bg-white rounded-xl p-1 mx-auto w-72 hidden sm:block opacity-0"
+      >
         {questionOwner?.username === currentUser.username ? (
           <button
             className="items-center px-4 py-3 text-brand-dark hover:bg-brand-highlight rounded-lg w-full mb-1 text-left flex"
