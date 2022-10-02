@@ -237,16 +237,20 @@ const Question = (props) => {
                       {question?.solution.created}
                     </p>
                   </div>
-                  <p className="text-sm sm:text-base m-0 mt-2">
-                    {question?.solution.content}
-                  </p>
+                  <div className="text-sm sm:text-base m-0 mt-2">
+                    {question?.solution.content.split("\n").map((item) => (
+                      <p className="mb-1">{item}</p>
+                    ))}
+                  </div>
                 </div>
               ) : (
                 <>
                   {/* Question body without a selected solution --optional */}
-                  <p className="text-sm sm:text-base m-0 mb-2">
-                    {question?.content}
-                  </p>
+                  <div className="text-sm sm:text-base m-0 mb-2">
+                    {question?.content.split("\n").map((item) => (
+                      <p className="mb-1">{item}</p>
+                    ))}
+                  </div>
                 </>
               )}
             </Link>
