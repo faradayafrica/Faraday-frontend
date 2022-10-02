@@ -17,7 +17,6 @@ const CopyLink = (props) => {
   const copy_modal = useRef();
 
   const handleCopyLinkModal = () => {
-    console.log("disappear");
     gsap.fromTo(
       copy_modal.current,
       { y: 0, opacity: 1 },
