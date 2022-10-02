@@ -1,16 +1,43 @@
 import Loader from "../styledComponents/Loader";
 import closeImg from "../../images/qfeed/close.svg";
 import copy from "../../images/qfeed/copy.svg";
-import { useState } from "react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 import { SuccessToast } from "../common/CustomToast";
 
-const CopyLink = ({
-  isCopyLinkModal,
-  shortLink,
-  isCopied,
-  toggleCopyLinkModal,
-  handleIsCopied,
-}) => {
+const CopyLink = (props) => {
+  const {
+    isCopyLinkModal,
+    shortLink,
+    isCopied,
+    toggleCopyLinkModal,
+    handleIsCopied,
+  } = props;
+
+  const copy_modal = useRef();
+
+  const handleCopyLinkModal = () => {
+    console.log("disappear");
+    gsap.fromTo(
+      copy_modal.current,
+      { y: 0, opacity: 1 },
+      { y: +100, opacity: 0, duration: 0.2, ease: "power2.inOut" }
+    );
+    setTimeout(() => {
+      toggleCopyLinkModal(false);
+    }, 200);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      gsap.fromTo(
+        copy_modal.current,
+        { y: +100, opacity: 0 },
+        { y: 0, opacity: 1, ease: "power2.inOut" }
+      );
+    }, 200);
+  }, [isCopyLinkModal]);
+
   const copyQuestionLink = () => {
     const copyText = document.getElementById("link");
     navigator.clipboard.writeText(copyText.value);
@@ -23,13 +50,20 @@ const CopyLink = ({
       {isCopyLinkModal ? (
         <div className="fixed top-0 left-0  w-full bg-transparent z-50">
           <div
+            onClick={handleCopyLinkModal}
             className=" absolute top-0 h-screen w-full  bg-[#00000022]"
-            onClick={() => toggleCopyLinkModal()}
           ></div>
-          <div className="z-10 lg:w-[1024px] mx-auto h-screen flex justify-center items-start sm:items-start">
+          <div
+            ref={copy_modal}
+            className="z-10 lg:w-[1024px] mx-auto h-screen flex justify-center items-start sm:items-start opacity-0"
+          >
+            <div
+              onClick={() => handleCopyLinkModal()}
+              className=" fixed h-screen w-full"
+            ></div>
             <div className="w-[28rem] bg-white rounded-xl border ask-shadow p-2 relative my-24 mx-8 sm:mx-4  ">
               <button
-                onClick={() => toggleCopyLinkModal()}
+                onClick={() => handleCopyLinkModal()}
                 className="p-2 right-1 top-1 absolute rounded-lg hover:bg-danger-highlight hover:hot-shadow hidden sm:block"
               >
                 <img src={closeImg} alt="close modal" />

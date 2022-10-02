@@ -401,7 +401,7 @@ const Question = (props) => {
           isCopyLinkModal={isCopyLinkModal}
           isCopied={isCopied}
           shortLink={shortLink}
-          toggleCopyLinkModal={setCopyLinkModal}
+          toggleCopyLinkModal={handleCopyLinkModal}
           handleIsCopied={handleIsCopied}
         />
       </section>
