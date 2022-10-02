@@ -107,32 +107,48 @@ const DiscussionPage = ({
     }
   };
 
-  const handleMarkSolution = async (postid, commentid) => {
+  const handleMarkSolution = (postid, commentid) => {
     const commentsClone = [...comments];
     var index = commentsClone.findIndex((comment) => comment.id === commentid);
-    console.log(index);
 
     try {
       const apiEndpoint =
         process.env.REACT_APP_API_URL + "/qfeed/que/marksolution/";
 
-      const { data } = await http.post(apiEndpoint, {
-        postid: postid,
-        commentid: commentid,
-      });
+      const promise = http
+        .post(apiEndpoint, {
+          postid: postid,
+          commentid: commentid,
+        })
+        .then((resp) => {
+          for (let i = 0; i < commentsClone.length; i++) {
+            if (i === index) {
+              commentsClone[i].is_solution = resp.data.is_solution;
+            } else {
+              commentsClone[i].is_solution = false;
+            }
+          }
+          setComments(commentsClone);
 
-      data.is_solution
-        ? SuccessToast("Comment marked as solution")
-        : SuccessToast("Comment unmarked as solution");
+          // console.log(resp.data);
+          const quesClone = [...questions];
+          var QueIndex = questions.findIndex(
+            (ques) => ques.id === match.params.id
+          );
+          const thisQue = questions.find((que) => que.id === match.params.id);
 
-      for (let i = 0; i < commentsClone.length; i++) {
-        if (i === index) {
-          commentsClone[i].is_solution = data.is_solution;
-        } else {
-          commentsClone[i].is_solution = false;
-        }
-      }
-      setComments(commentsClone);
+          if (resp.data.is_solution === true) {
+            thisQue.solution = resp.data;
+            quesClone[QueIndex] = thisQue;
+          } else {
+            thisQue.solution = null;
+            quesClone[QueIndex] = thisQue;
+          }
+
+          handleUpdatedQuestions(quesClone);
+        });
+
+      PromiseToast("Solution updated", "Couldn't update solution", promise);
     } catch (e) {
       console.log(e);
       ErrorToast("Something went wrong, Try again later");
@@ -300,7 +316,7 @@ const DiscussionPage = ({
 
   return (
     <>
-      <div className=" bg-white z-30 bottom-0 left-0 h-screen w-screen sm:w-auto sm:static">
+      <div className=" bg-white z-30 bottom-0 left-0 h-min-screen w-screen sm:w-auto sm:static">
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
         <div className="z-50" id="discussion">
           <h1 className="text-2xl sm:text-2xl m-3 font-bold ">Discussion</h1>
