@@ -4,7 +4,6 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import PostPage from "../components/qfeedComponents/PostPage";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
-import QuestionsLoader from "../components/qfeedComponents/QuestionsLoader.jsx";
 import NotFound from "./NotFound.jsx";
 import http from "../services/httpService";
 
@@ -116,13 +115,12 @@ const Qfeed = (props) => {
 
   // Checks Local Storage and populates the Qfeed
   useEffect(() => {
-    console.log("All of EM Ques", questions);
     let storedQuestions;
 
     storedQuestions = JSON.parse(localStorage.getItem("questions"));
 
     if (storedQuestions) {
-      // setQuestions([...storedQuestions.questions]);
+      setQuestions([...storedQuestions.questions]);
     }
   }, []);
 
@@ -136,8 +134,17 @@ const Qfeed = (props) => {
         page.data.results.map((item) => newQuestions.push(item))
       );
     setQuestions(newQuestions);
-    console.log(newQuestions.length, "QQQFFFDDD");
-  }, [isSuccess]);
+
+
+    // Save state to Local Storage
+    window.localStorage.setItem(
+      "questions",
+      JSON.stringify({
+        questions: newQuestions,
+      })
+    );
+  }, [data]);
+
 
   return (
     <div className="relative w-full route-wrapper ">
@@ -180,6 +187,8 @@ const Qfeed = (props) => {
                 onDeleteQuestion={deleteQuestion}
                 retry={refetch}
                 loader={isLoading}
+                isError={isError}
+                error={error}
                 data={data}
                 hasNextPage={hasNextPage}
                 isFetchingNextPage={isFetchingNextPage}

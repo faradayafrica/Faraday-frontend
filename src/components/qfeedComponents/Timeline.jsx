@@ -3,14 +3,12 @@ import { Link } from "react-router-dom";
 import { saveState, getState } from "../common/StateSaver";
 import Question from "./Question";
 import SecondaryButton from "../styledComponents/SecondaryButton";
-import Loader from "../styledComponents/Loader";
 
 //icon import
 import ask from "../../images/qfeed/ask.svg";
 
 //style import
 import "../../styles/qfeed.css";
-import CommentsLoader from "./commentComponents/CommentsLoader";
 import QuestionsLoader from "./QuestionsLoader";
 
 const TimeLine = (props) => {
@@ -73,7 +71,7 @@ const TimeLine = (props) => {
           <img className="ask-shadow rounded-full" src={ask} alt="" />
         </Link>
 
-        {!props.loader && questions.length == 0 ? (
+        {props.isError ? (
           <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
             <>
               <p className="text-sm sm:text-base ">Something went wrong</p>
@@ -84,11 +82,9 @@ const TimeLine = (props) => {
           ""
         )}
 
-        {props.loader ? <QuestionsLoader /> : ""}
-
         {props.isFetchingNextPage && props.hasNextPage ? (
           <>
-            <CommentsLoader short="true" />
+            <QuestionsLoader short="true" />
             <div className="h-24"></div>
           </>
         ) : null}
@@ -101,6 +97,15 @@ const TimeLine = (props) => {
               </p>
             </div>
             <div className="h-[65px] w-full sm:hidden"></div>
+          </>
+        )}
+
+        {props.loader && questions.length <= 1 ? (
+          <QuestionsLoader />
+        ) : (
+          // This is suppose to be the loader that shows when a user scrolls to the bottom after localStorage populates the Qfeed
+          <>
+            <div className="h-24"></div>
           </>
         )}
       </div>

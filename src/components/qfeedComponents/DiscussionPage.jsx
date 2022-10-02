@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import CopyLink from "./CopyLink";
 import SecondaryButton from "../styledComponents/SecondaryButton";
 import Comments from "./commentComponents/Comments";
-import Loader from "../styledComponents/Loader";
 import { Link } from "react-router-dom";
 
 import love from "../../images/qfeed/love.svg";
@@ -25,23 +26,64 @@ const DiscussionPage = ({
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
   const apiEndpoint =
     process.env.REACT_APP_API_URL + `/qfeed/que/fetch/${match.params.id}/`;
-  const commentsApiEndpoint =
-    process.env.REACT_APP_API_URL + `/qfeed/que/comments/${match.params.id}/`;
 
   const [question, setQuestion] = useState(thisQuestion ? thisQuestion : {});
   const [comments, setComments] = useState([]);
   const [loader, setLoader] = useState(true);
-  const [commentLoader, setCommentLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
 
-  // console.log("Question?!!!!!!!!!!!!!!!!!!!!!!!!!!!", questions);
+  const [isCopyLinkModal, setCopyLinkModal] = useState(false);
+  const [isCopied, setCopied] = useState(false);
+  const [shortLink, setShortLink] = useState(
+    thisQuestion ? thisQuestion.short_link : ""
+  );
+
+  // Copy Link associated variables and function are recreated for the timeline on the Question tap
+  //We could use contextAPI to help them share same state and functions in the future
+
+  const handleIsCopied = (value) => {
+    setCopied(value);
+  };
+
+  const handleCopyLinkModal = () => {
+    setCopyLinkModal(!isCopyLinkModal);
+    setCopied(false);
+  };
+  const getShortLink = (id) => {
+    const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
+    const questionsClone = [...questions];
+    const question_index = questions.findIndex(
+      (question) => question.id === id
+    );
+
+    if (shortLink === "" || shortLink === null) {
+      try {
+        http
+          .post("https://frda.me/api/shorten/", {
+            original_url,
+          })
+          .then((resp) => {
+            setShortLink(resp.data.short_url);
+            questionsClone[question_index].short_link = resp.data.short_url;
+            handleUpdatedQuestions([...questionsClone]);
+            // sync with B.E
+            http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {
+              postid: id,
+              link: resp.data.short_url,
+            });
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
 
   const handleFollow = (user) => {
     const apiEndpoint =
       process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
 
-    const clonedQuestions = [...comments];
-    const userComments = clonedQuestions.filter(
+    const clonedComments = [...comments];
+    const userComments = clonedComments.filter(
       (comment) => comment.user.id === user.id
     );
 
@@ -135,14 +177,12 @@ const DiscussionPage = ({
           postid,
           value: "downvote",
         });
-        // SuccessToast("Question unliked");
         likeData = data.data;
       } else {
         const { data } = await http.post(apiEndpoint, {
           postid,
           value: "upvote",
         });
-        // SuccessToast("Question liked");
         likeData = data.data;
       }
 
@@ -164,16 +204,10 @@ const DiscussionPage = ({
       const { data } = await http.get(apiEndpoint);
       setQuestion(data);
     } catch (err) {
-      console.warn(err.message);
       setLoader(false);
     }
-    try {
-      const { data } = await http.get(commentsApiEndpoint);
-      setComments(data.results);
-    } catch (err) {
-      console.warn(err.message);
-      setCommentLoader(false);
-    }
+
+    refetch();
   };
 
   const updateComments = (newComments) => {
@@ -190,54 +224,70 @@ const DiscussionPage = ({
     }
   };
 
-  let nextCommentPageUrl = "";
-  const commentRequestQueue = [];
-
-  const fetchComments = async (url) => {
-    commentRequestQueue.push(url);
-    try {
-      const { data } = await http.get(url);
-      setComments((prevComment) => [...prevComment, ...data.results]);
-      setCommentLoader(false);
-      nextCommentPageUrl = data.next;
-    } catch (err) {
-      console.warn(err.message);
-      setCommentLoader(false);
-    }
-  };
-
-  const handleScroll = (e) => {
-    if (nextCommentPageUrl && document.getElementById("discussion") !== null) {
-      if (
-        e.target.documentElement.scrollTop + window.innerHeight + 1000 >=
-        e.target.documentElement.scrollHeight
-      ) {
-        if (!commentRequestQueue.includes(nextCommentPageUrl)) {
-          fetchComments(nextCommentPageUrl);
-          setCommentLoader(true);
-        } else {
-          console.warn("Duplicate C request blocked");
-        }
-      }
-    }
-  };
-
   useEffect(async () => {
     await fetchThisQuestion();
-
-    if (thisQuestion) {
-      if (question.comments > 0) {
-        fetchComments(commentsApiEndpoint);
-      } else {
-        setComments([]);
-        setCommentLoader(false);
-      }
-    } else {
-      fetchComments(commentsApiEndpoint);
-    }
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    window.addEventListener("scroll", handleScroll);
   }, []);
+
+  const fetchComments = async (pageParam) => {
+    const resp = await http.get(
+      process.env.REACT_APP_API_URL +
+        `/qfeed/que/comments/${match.params.id}/?page=${pageParam}`
+    );
+    return resp;
+  };
+
+  const {
+    data,
+    isSuccess,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useInfiniteQuery(
+    ["comments"],
+    ({ pageParam = 1 }) => fetchComments(pageParam),
+    {
+      cacheTime: 0,
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages?.length + 1;
+        return lastPage?.data?.next ? nextPage : undefined;
+      },
+    }
+  );
+
+  useEffect(() => {
+    let fetching = false;
+    const handleScroll = async (e) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasNextPage) {
+          await fetchNextPage();
+        }
+        fetching = false;
+      }
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, [fetchNextPage, hasNextPage]);
+
+  useEffect(() => {
+    !comments.length &&
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    const newComments = [];
+
+    isSuccess &&
+      data?.pages.map((page) =>
+        page.data.results.map((item) => newComments.push(item))
+      );
+    setComments(newComments);
+  }, [data]);
 
   let loveClasses =
     "hover:bg-danger-highlight h-[40px] px-3 flex justify-around items-center rounded-lg";
@@ -335,6 +385,18 @@ const DiscussionPage = ({
                         {question?.likes ? question?.likes : ""}
                       </span>
                     </button>
+
+                    <button
+                      onClick={() => handleCopyLinkModal()}
+                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background "
+                    >
+                      <img
+                        className="h-[18px] w-[18px] "
+                        src={link}
+                        alt="copy question link"
+                      />
+                    </button>
+
                     {/* The share buttons are currently disabled */}
                     <button
                       disabled
@@ -346,19 +408,17 @@ const DiscussionPage = ({
                         alt="share this question"
                       />
                     </button>
-                    <button
-                      disabled
-                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background "
-                    >
-                      <img
-                        className="h-[18px] w-[18px] opacity-50"
-                        src={link}
-                        alt="copy question link"
-                      />
-                    </button>
                   </div>
                 </div>
               </div>
+
+              <CopyLink
+                isCopyLinkModal={isCopyLinkModal}
+                isCopied={isCopied}
+                shortLink={shortLink}
+                toggleCopyLinkModal={setCopyLinkModal}
+                handleIsCopied={handleIsCopied}
+              />
 
               {/* Comments here */}
               <Comments
@@ -366,7 +426,7 @@ const DiscussionPage = ({
                 thisQuestion={question}
                 questionid={match.params.id}
                 comments={comments}
-                commentLoader={commentLoader}
+                commentLoader={isLoading}
                 questionOwner={question?.user}
                 onUpdateComments={updateComments}
                 onMarkSolution={handleMarkSolution}
@@ -374,6 +434,12 @@ const DiscussionPage = ({
                 match={match}
                 questions={questions}
                 handleUpdatedQuestions={handleUpdatedQuestions}
+                //from useInfinteQuery
+                error={error}
+                isError={isError}
+                data={data}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
               />
             </div>
           ) : (
