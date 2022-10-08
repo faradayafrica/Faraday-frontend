@@ -142,7 +142,7 @@ const CommentMenu = ({
         icon={mark}
         title={`You sure?`}
         message={`You must be certain that this is a solution to the question asked
-        as this might have intense consequences to other users if 
+        as this might cause real consequences to other users if 
         the solution is wrong.`}
         visible={confirmSolution}
         action={() => {
