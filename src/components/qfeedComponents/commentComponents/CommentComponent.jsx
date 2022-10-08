@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import ellipses from "../../../images/qfeed/ellipses.svg";
 import mark from "../../../images/qfeed/mark.svg";
+import info from "../../../images/qfeed/info.svg";
 import CommentMenu from "./CommentMenu";
+import Modal from "../../common/Modal";
 
 const CommentComponent = ({
   match,
@@ -14,6 +16,7 @@ const CommentComponent = ({
   onMarkSolution,
 }) => {
   const [commentMenu, setCommentMenu] = useState(false);
+  const [disclaimer, setDisclaimer] = useState(false);
 
   const toggleCommentMenu = () => {
     setCommentMenu(!commentMenu);
@@ -81,19 +84,40 @@ const CommentComponent = ({
           <span className="mr-2 text-night-secondary">{comment?.created}</span>
         </p>
         <div className="text-sm sm:text-base m-0 mb-2 text-faraday-night">
-          {comment?.content.split("\n").map((item) => (
-            <p className="mb-1">{item}</p>
+          {comment?.content.split("\n").map((item, idx) => (
+            <p className="mb-1" key={idx}>
+              {item}
+            </p>
           ))}
         </div>
 
         {comment.is_solution ? (
-          <p className="text-brand-dark font-bold text-xs outline outline-1 inline-flex justify-center items-center outline-brand py-1 pr-2 rounded-full">
-            <img src={mark} className="h-5 w-5 mx-1" alt="mark" /> The author
-            marked this as a solution
-          </p>
+          <div className=" flex items-start pb-2">
+            <div className="text-brand-dark font-bold text-xs outline outline-1 inline-flex justify-center items-center outline-brand py-1 pr-2 rounded-full">
+              <img src={mark} className="h-5 w-5 mx-1" alt="mark" />
+              The author marked this as a solution
+            </div>
+
+            <div
+              onClick={() => setDisclaimer(true)}
+              className="ml-1 py-1 rounded-full opacity-80 inline-flex justify-center items-center cursor-pointer"
+            >
+              <img src={info} className="h-5 w-5 mx-1" alt="disclaimer" />
+            </div>
+          </div>
         ) : (
           ""
         )}
+
+        <Modal
+          icon={info}
+          visible={disclaimer}
+          action={() => setDisclaimer(false)}
+          title={`Disclaimer`}
+          message={`Unless the account that created the question is the Faraday
+          official account, we can't take responsibility for the comment
+          marked as a solution.`}
+        />
       </div>
     </div>
   );
