@@ -25,7 +25,7 @@ function MobileSideNav() {
   const location = useLocation();
 
   useEffect(() => {
-    setQfeed(location.pathname === "/");
+    setQfeed(location.pathname === "/" || location.pathname === "/qfeed");
     setNotification(location.pathname === "/notification");
   }, [location.pathname]);
 
@@ -242,7 +242,7 @@ function MobileSideNav() {
             </div>
 
             <span className="version text-night-secondary">
-              PointBreak v1.0.0
+              PointBreak v1.3.0
             </span>
           </div>
         </div>

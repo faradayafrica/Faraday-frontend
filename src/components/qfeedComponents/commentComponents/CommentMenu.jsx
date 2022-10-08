@@ -5,6 +5,7 @@ import unfollow from "../../../images/qfeed/unfollow.svg";
 import mark from "../../../images/qfeed/mark.svg";
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
+import Modal from "../../common/Modal";
 
 const CommentMenu = ({
   match,
@@ -18,6 +19,7 @@ const CommentMenu = ({
   is_solution,
 }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmSolution, setConfirmSolution] = useState(false);
 
   const comment_menu = useRef();
   const comment_menu_mobile = useRef();
@@ -71,8 +73,7 @@ const CommentMenu = ({
               className="items-center px-4 py-3 text-brand-dark hover:bg-brand-highlight rounded-lg w-full  text-left flex "
               style={{ borderBottom: "1px #ECECF0 solid" }}
               onClick={() => {
-                onMarkSolution(match.params.id, selectedComment.id);
-                hideMenu();
+                setConfirmSolution(true);
               }}
             >
               <img className="mr-2" src={mark} alt="mark solution" />
@@ -137,6 +138,23 @@ const CommentMenu = ({
         </div>
       </div>
 
+      <Modal
+        icon={mark}
+        title={`You sure?`}
+        message={`You must be certain that this is a solution to the question asked
+        as this might have intense consequences to other users if 
+        the solution is wrong.`}
+        visible={confirmSolution}
+        action={() => {
+          setConfirmSolution(false);
+          onMarkSolution(match.params.id, selectedComment.id);
+          hideMenu();
+        }}
+        cancel={() => {
+          setConfirmSolution(false);
+        }}
+      />
+
       {/* Same menu but for Desktop mode */}
       <div
         className="fixed top-0 right-0 h-screen w-full left-0 z-20 bg-[#00000022] hidden sm:block"
@@ -154,8 +172,7 @@ const CommentMenu = ({
             className="items-center px-4 py-3 text-brand-dark hover:bg-brand-highlight rounded-lg w-full mb-1 text-left flex"
             style={{ borderBottom: "1px #ECECF0 solid" }}
             onClick={() => {
-              onMarkSolution(match.params.id, selectedComment.id);
-              hideMenu();
+              setConfirmSolution(true);
             }}
           >
             <img className="mr-2" src={mark} alt="mark solution" />

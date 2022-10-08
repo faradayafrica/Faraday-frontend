@@ -21,6 +21,7 @@ module.exports = {
 
       'brand-highlight': '#F1FBEF',
       'danger-highlight': '#FBEFF5',
+      'hover': '#FAFAFA',
 
       'shadow': '#9ba5a02c',
   

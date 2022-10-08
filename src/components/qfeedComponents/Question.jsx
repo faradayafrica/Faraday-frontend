@@ -148,7 +148,7 @@ const Question = (props) => {
   };
 
   return (
-    <div className="question-component pl-3 pr-2 pt-3 sm:pt-4 bg-white flex justify-start relative">
+    <div className=" question-component pl-3 pr-2 pt-3 sm:pt-4 bg-white hover:bg-[#fafafacc] flex justify-start relative">
       <Link
         to={`/me/${question?.user.username}`}
         style={{ textDecoration: "none" }}
@@ -207,7 +207,7 @@ const Question = (props) => {
 
               {/* Question body if there's a solution --optional */}
               {question.solution ? (
-                <div className="bg-[#F1FBEF99] rounded-lg p-[12px] mb-2 relative">
+                <div className="bg-[#F1FBEF77] rounded-lg p-[12px] mb-2 relative">
                   <img src={mark} className="h-4 w-4 absolute right-3 top-3" />
                   <div className="flex item-center text-night-secondary">
                     <img
@@ -238,8 +238,10 @@ const Question = (props) => {
                     </p>
                   </div>
                   <div className="text-sm sm:text-base m-0 mt-2">
-                    {question?.solution.content.split("\n").map((item) => (
-                      <p className="mb-1">{item}</p>
+                    {question?.solution.content.split("\n").map((item, idx) => (
+                      <p className="mb-1" key={idx}>
+                        {item}
+                      </p>
                     ))}
                   </div>
                 </div>
@@ -247,8 +249,10 @@ const Question = (props) => {
                 <>
                   {/* Question body without a selected solution --optional */}
                   <div className="text-sm sm:text-base m-0 mb-2">
-                    {question?.content.split("\n").map((item) => (
-                      <p className="mb-1">{item}</p>
+                    {question?.content.split("\n").map((item, idx) => (
+                      <p className="mb-1" key={idx}>
+                        {item}
+                      </p>
                     ))}
                   </div>
                 </>
