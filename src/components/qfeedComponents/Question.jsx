@@ -15,6 +15,8 @@ import smiley from "../../images/qfeed/smiley.svg";
 import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import mark from "../../images/qfeed/mark.svg";
+import info from "../../images/qfeed/info.svg";
+import Modal from "../common/Modal";
 
 const Question = (props) => {
   const [question, setQuestion] = useState(props.question);
@@ -24,6 +26,8 @@ const Question = (props) => {
   const [isCopyLinkModal, setCopyLinkModal] = useState(false);
   const [isCopied, setCopied] = useState(false);
   const [shortLink, setShortLink] = useState(props.question.short_link);
+
+  const [disclaimer, setDisclaimer] = useState(false);
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
 
@@ -162,7 +166,7 @@ const Question = (props) => {
         />
       </Link>
       <section className=" p-0 w-full">
-        <div className="pr-2" onClick={() => hideButtonPannel()}>
+        <div className="pr-2 relative" onClick={() => hideButtonPannel()}>
           {/* Profile details */}
           <p className="flex m-0 text-night-secondary mb-1 text-xs sm:text-sm">
             <span className="mr-2 font-semibold text-faraday-night">
@@ -171,6 +175,19 @@ const Question = (props) => {
             <span className="mr-2">@{question?.user.username}</span>{" "}
             <span>{question?.created}</span>
           </p>
+
+          {question.solution && (
+            <div className="absolute left-[-45px] bottom-0 ">
+              <div
+                onClick={() => {
+                  setDisclaimer(true);
+                }}
+                className="ml-1 py-1 rounded-full opacity-80 inline-flex bg-background justify-center items-center cursor-pointer"
+              >
+                <img src={info} className="h-5 w-5 mx-1" alt="disclaimer" />
+              </div>
+            </div>
+          )}
 
           <div
             className=" hover:bg-brand-highlight cursor-pointer absolute right-2 top-2 rounded-md"
@@ -192,6 +209,16 @@ const Question = (props) => {
             toggleQuestionMenu={toggleQuestionMenu}
             onFollowUser={props.onFollowUser}
             onDeleteQuestion={props.onDeleteQuestion}
+          />
+
+          <Modal
+            icon={info}
+            visible={disclaimer}
+            action={() => setDisclaimer(false)}
+            title={`Disclaimer`}
+            message={`Unless the account that created the question is the Faraday
+          official account, we can't take responsibility for the comment
+          marked as a solution.`}
           />
 
           {question?.created !== "Just now" ? (
@@ -237,6 +264,7 @@ const Question = (props) => {
                       {question?.solution.created}
                     </p>
                   </div>
+
                   <div className="text-sm sm:text-base m-0 mt-2">
                     {question?.solution.content.split("\n").map((item, idx) => (
                       <p className="mb-1" key={idx}>
