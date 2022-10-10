@@ -10,6 +10,7 @@ import {
 
 import http from "../../../services/httpService";
 import AddComment from "./AddComment";
+import CommentsLoader from "./CommentsLoader";
 
 const Comments = ({
   match,
@@ -23,12 +24,17 @@ const Comments = ({
   onMarkSolution,
   questions,
   handleUpdatedQuestions,
+  data,
+  error,
+  isError,
+  hasNextPage,
+  isFetchingNextPage,
 }) => {
   const [comment, setComment] = useState("");
   const [pendingComments, setPendingComments] = useState([]);
   const currentUser = getCurrentUser();
 
-  console.log("COMMENTS!!!1!", comments);
+  // console.log("COMMENTS!!!1!", comments);
 
   const uniqueComments = Array.from(new Set(comments.map((a) => a.id))).map(
     (id) => {
@@ -106,7 +112,7 @@ const Comments = ({
     handleUpdatedQuestions([...clonedQuestions]);
   };
 
-  const postComment = async (postid, limit) => {
+  const postComment = (postid, limit) => {
     const myQuestion = { ...thisQuestion };
 
     let content = comment;
@@ -118,13 +124,17 @@ const Comments = ({
       document.getElementById("commentfield").value = "";
 
       try {
-        const { data } = await http.post(apiEndpoint, {
-          postid,
-          content,
-        });
-        onUpdateComments((prevComments) => [data, ...prevComments]);
+        const promise = http
+          .post(apiEndpoint, {
+            postid,
+            content,
+          })
+          .then((resp) => {
+            onUpdateComments((prevComments) => [resp.data, ...prevComments]);
+          });
+
+        PromiseToast("comment sent", "An error occurred, Try again", promise);
         myQuestion.comments += 1;
-        SuccessToast("Comment sent");
       } catch (e) {
         console.warn(e.message);
         if (!online) {
@@ -210,6 +220,7 @@ const Comments = ({
                 onMarkSolution={onMarkSolution}
               />
             ))}
+
           {/* The rest of the comments */}
           {allComments
             .filter((comment) => comment.is_solution !== true)
@@ -232,7 +243,9 @@ const Comments = ({
             <div className="p-3 bg-white">
               <div className="p-3 rounded-lg border bg-background  text-center">
                 <p className="text-xs sm:text-base m-0 ">
-                  No comments yet! Be the first to comment on this question
+                  {isError
+                    ? error.message
+                    : "No comments yet! Be the first to comment on this question"}
                 </p>
               </div>
             </div>
@@ -240,11 +253,29 @@ const Comments = ({
         </>
       )}
 
-      {commentLoader ? (
-        <div className="p-3">
-          <Loader msg="fetching comments..." />
+      {isFetchingNextPage && hasNextPage ? (
+        <>
+          <CommentsLoader short={true} />
+        </>
+      ) : null}
+
+      {!hasNextPage && data?.pages.length && (
+        <>
+          <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
+            <p className="text-xs sm:text-base m-0 ">
+              No more comments to fetch
+            </p>
+          </div>
           <div className="h-[65px] w-full sm:hidden"></div>
-        </div>
+        </>
+      )}
+
+      {commentLoader ? (
+        !comments.length ? (
+          <CommentsLoader />
+        ) : (
+          <CommentsLoader short={true} />
+        )
       ) : (
         <>
           {!comments.length === 0 && (
@@ -260,7 +291,7 @@ const Comments = ({
         </>
       )}
 
-      <div className="h-24 bg-white w-full  "></div>
+      <div className="h-4"></div>
     </div>
   );
 };

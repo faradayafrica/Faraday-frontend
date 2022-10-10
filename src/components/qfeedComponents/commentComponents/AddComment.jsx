@@ -28,7 +28,7 @@ const AddComment = ({
         className="w-14 mr-2 cursor-pointer"
       >
         <img
-          src={`https://api.faraday.africa${currentUser?.profile_pic}`}
+          src={currentUser?.profile_pic}
           alt=""
           className="w-12 h-12 rounded-full mr-2 bg-background2 float-left"
           style={{ objectFit: "cover" }}

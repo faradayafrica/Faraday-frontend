@@ -1,0 +1,23 @@
+
+
+.border-light {
+    border: 1px solid theme("colors.background");
+}
+
+.notification-item {
+    cursor: pointer;
+}
+
+.notification-loader {
+    opacity: 0;
+}
+
+
+
+.filter-dropdown > p {
+    cursor: pointer;
+}
+
+.filter-dropdown > p:hover {
+    background-color: theme('colors.background');
+}

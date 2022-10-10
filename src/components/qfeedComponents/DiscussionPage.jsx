@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import CopyLink from "./CopyLink";
 import SecondaryButton from "../styledComponents/SecondaryButton";
 import Comments from "./commentComponents/Comments";
-import Loader from "../styledComponents/Loader";
 import { Link } from "react-router-dom";
 
 import love from "../../images/qfeed/love.svg";
@@ -12,6 +13,7 @@ import http from "../../services/httpService";
 import ellipses from "../../images/qfeed/ellipses.svg";
 import QuestionMenu from "./QuestionMenu";
 import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
+import QuestionsLoader from "./QuestionsLoader";
 
 const DiscussionPage = ({
   match,
@@ -24,23 +26,64 @@ const DiscussionPage = ({
   const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
   const apiEndpoint =
     process.env.REACT_APP_API_URL + `/qfeed/que/fetch/${match.params.id}/`;
-  const commentsApiEndpoint =
-    process.env.REACT_APP_API_URL + `/qfeed/que/comments/${match.params.id}/`;
 
   const [question, setQuestion] = useState(thisQuestion ? thisQuestion : {});
   const [comments, setComments] = useState([]);
   const [loader, setLoader] = useState(true);
-  const [commentLoader, setCommentLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
 
-  // console.log("Question?!!!!!!!!!!!!!!!!!!!!!!!!!!!", questions);
+  const [isCopyLinkModal, setCopyLinkModal] = useState(false);
+  const [isCopied, setCopied] = useState(false);
+  const [shortLink, setShortLink] = useState(
+    thisQuestion ? thisQuestion.short_link : ""
+  );
+
+  // Copy Link associated variables and function are recreated for the timeline on the Question tap
+  //We could use contextAPI to help them share same state and functions in the future
+
+  const handleIsCopied = (value) => {
+    setCopied(value);
+  };
+
+  const handleCopyLinkModal = () => {
+    setCopyLinkModal(!isCopyLinkModal);
+    setCopied(false);
+  };
+  const getShortLink = (id) => {
+    const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
+    const questionsClone = [...questions];
+    const question_index = questions.findIndex(
+      (question) => question.id === id
+    );
+
+    if (shortLink === "" || shortLink === null) {
+      try {
+        http
+          .post("https://frda.me/api/shorten/", {
+            original_url,
+          })
+          .then((resp) => {
+            setShortLink(resp.data.short_url);
+            questionsClone[question_index].short_link = resp.data.short_url;
+            handleUpdatedQuestions([...questionsClone]);
+            // sync with B.E
+            http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {
+              postid: id,
+              link: resp.data.short_url,
+            });
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
 
   const handleFollow = (user) => {
     const apiEndpoint =
       process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
 
-    const clonedQuestions = [...comments];
-    const userComments = clonedQuestions.filter(
+    const clonedComments = [...comments];
+    const userComments = clonedComments.filter(
       (comment) => comment.user.id === user.id
     );
 
@@ -64,32 +107,48 @@ const DiscussionPage = ({
     }
   };
 
-  const handleMarkSolution = async (postid, commentid) => {
+  const handleMarkSolution = (postid, commentid) => {
     const commentsClone = [...comments];
     var index = commentsClone.findIndex((comment) => comment.id === commentid);
-    console.log(index);
 
     try {
       const apiEndpoint =
         process.env.REACT_APP_API_URL + "/qfeed/que/marksolution/";
 
-      const { data } = await http.post(apiEndpoint, {
-        postid: postid,
-        commentid: commentid,
-      });
+      const promise = http
+        .post(apiEndpoint, {
+          postid: postid,
+          commentid: commentid,
+        })
+        .then((resp) => {
+          for (let i = 0; i < commentsClone.length; i++) {
+            if (i === index) {
+              commentsClone[i].is_solution = resp.data.is_solution;
+            } else {
+              commentsClone[i].is_solution = false;
+            }
+          }
+          setComments(commentsClone);
 
-      data.is_solution
-        ? SuccessToast("Comment marked as solution")
-        : SuccessToast("Comment unmarked as solution");
+          // console.log(resp.data);
+          const quesClone = [...questions];
+          var QueIndex = questions.findIndex(
+            (ques) => ques.id === match.params.id
+          );
+          const thisQue = questions.find((que) => que.id === match.params.id);
 
-      for (let i = 0; i < commentsClone.length; i++) {
-        if (i === index) {
-          commentsClone[i].is_solution = data.is_solution;
-        } else {
-          commentsClone[i].is_solution = false;
-        }
-      }
-      setComments(commentsClone);
+          if (resp.data.is_solution === true) {
+            thisQue.solution = resp.data;
+            quesClone[QueIndex] = thisQue;
+          } else {
+            thisQue.solution = null;
+            quesClone[QueIndex] = thisQue;
+          }
+
+          handleUpdatedQuestions(quesClone);
+        });
+
+      PromiseToast("Solution updated", "Couldn't update solution", promise);
     } catch (e) {
       console.log(e);
       ErrorToast("Something went wrong, Try again later");
@@ -134,14 +193,12 @@ const DiscussionPage = ({
           postid,
           value: "downvote",
         });
-        // SuccessToast("Question unliked");
         likeData = data.data;
       } else {
         const { data } = await http.post(apiEndpoint, {
           postid,
           value: "upvote",
         });
-        // SuccessToast("Question liked");
         likeData = data.data;
       }
 
@@ -163,16 +220,10 @@ const DiscussionPage = ({
       const { data } = await http.get(apiEndpoint);
       setQuestion(data);
     } catch (err) {
-      console.warn(err.message);
       setLoader(false);
     }
-    try {
-      const { data } = await http.get(commentsApiEndpoint);
-      setComments(data.results);
-    } catch (err) {
-      console.warn(err.message);
-      setCommentLoader(false);
-    }
+
+    refetch();
   };
 
   const updateComments = (newComments) => {
@@ -189,86 +240,73 @@ const DiscussionPage = ({
     }
   };
 
-  let nextCommentPageUrl = "";
-  const commentRequestQueue = [];
-
-  const fetchComments = async (url) => {
-    commentRequestQueue.push(url);
-    try {
-      const { data } = await http.get(url);
-      setComments((prevComment) => [...prevComment, ...data.results]);
-      setCommentLoader(false);
-      nextCommentPageUrl = data.next;
-    } catch (err) {
-      console.warn(err.message);
-      setCommentLoader(false);
-    }
-  };
-
-  const handleScroll = (e) => {
-    if (nextCommentPageUrl && document.getElementById("discussion") !== null) {
-      if (
-        e.target.documentElement.scrollTop + window.innerHeight + 1000 >=
-        e.target.documentElement.scrollHeight
-      ) {
-        if (!commentRequestQueue.includes(nextCommentPageUrl)) {
-          fetchComments(nextCommentPageUrl);
-          setCommentLoader(true);
-        } else {
-          console.warn("Duplicate C request blocked");
-        }
-      }
-    }
-  };
-
-  useEffect(() => {});
-
-  useEffect(() => {
-    if (thisQuestion) {
-      if (question.comments > 0) {
-        fetchComments(commentsApiEndpoint);
-      } else {
-        setComments([]);
-        setCommentLoader(false);
-      }
-    } else {
-      fetchComments(commentsApiEndpoint);
-    }
-    fetchThisQuestion();
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    window.addEventListener("scroll", handleScroll);
+  useEffect(async () => {
+    await fetchThisQuestion();
   }, []);
 
-  let lastScrollTop = 0;
+  const fetchComments = async (pageParam) => {
+    const resp = await http.get(
+      process.env.REACT_APP_API_URL +
+        `/qfeed/que/comments/${match.params.id}/?page=${pageParam}`
+    );
+    return resp;
+  };
+
+  const {
+    data,
+    isSuccess,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useInfiniteQuery(
+    ["comments"],
+    ({ pageParam = 1 }) => fetchComments(pageParam),
+    {
+      cacheTime: 0,
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages?.length + 1;
+        return lastPage?.data?.next ? nextPage : undefined;
+      },
+    }
+  );
 
   useEffect(() => {
-    if (
-      document.getElementById("topnav") !== null &&
-      document.getElementById("bottomnav") !== null
-    ) {
-      document.getElementById("topnav").classList.remove("hide-up");
-      document.getElementById("bottomnav").classList.remove("hide-down");
-    }
-
-    window.addEventListener(
-      "scroll",
-      (e) => {
-        let st = e.target.documentElement.scrollTop;
-        if (st > lastScrollTop) {
-          // downscroll code
-          document.getElementById("topnav").classList.add("hide-up");
-        } else {
-          // upscroll code
-          document.getElementById("topnav").classList.remove("hide-up");
+    let fetching = false;
+    const handleScroll = async (e) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasNextPage) {
+          await fetchNextPage();
         }
-        lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-      },
-      false
-    );
-  });
+        fetching = false;
+      }
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, [fetchNextPage, hasNextPage]);
+
+  useEffect(() => {
+    !comments.length &&
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    const newComments = [];
+
+    isSuccess &&
+      data?.pages.map((page) =>
+        page.data.results.map((item) => newComments.push(item))
+      );
+    setComments(newComments);
+  }, [data]);
 
   let loveClasses =
-    "hover:bg-danger-highlight h-[40px] px-3 flex justify-around items-center rounded-lg mr-4";
+    "hover:bg-danger-highlight h-[40px] px-3 flex justify-around items-center rounded-lg";
 
   if (!question?.liked) {
     loveClasses += " bg-background ";
@@ -278,7 +316,7 @@ const DiscussionPage = ({
 
   return (
     <>
-      <div className=" bg-white z-30 bottom-0 left-0 h-screen w-screen sm:w-auto sm:static">
+      <div className=" bg-white z-30 bottom-0 left-0 h-min-screen w-screen sm:w-auto sm:static">
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
         <div className="z-50" id="discussion">
           <h1 className="text-2xl sm:text-2xl m-3 font-bold ">Discussion</h1>
@@ -333,13 +371,17 @@ const DiscussionPage = ({
                   {question?.title}
                 </h3>
 
-                <p className="text-sm sm:text-base m-0 mb-2 ">
-                  {question?.content}
-                </p>
+                <div className="text-sm sm:text-base m-0 mb-2 ">
+                  {question?.content.split("\n").map((item, idx) => (
+                    <p className="mb-1" key={idx}>
+                      {item}
+                    </p>
+                  ))}
+                </div>
 
                 {/* Engagement buttons  */}
                 <div className="mt-3 py-2 border-background2 border-t-[1px] border-b-[1px]">
-                  <div className="flex justify-between pr-12 sm:w-96 items-center ">
+                  <div className="flex justify-between pr-12 sm:w-96 items-center mr-4">
                     <button
                       className={loveClasses}
                       onClick={() => handleQuestionLike(match.params.id)}
@@ -361,10 +403,22 @@ const DiscussionPage = ({
                         {question?.likes ? question?.likes : ""}
                       </span>
                     </button>
+
+                    <button
+                      onClick={() => handleCopyLinkModal()}
+                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background "
+                    >
+                      <img
+                        className="h-[18px] w-[18px] "
+                        src={link}
+                        alt="copy question link"
+                      />
+                    </button>
+
                     {/* The share buttons are currently disabled */}
                     <button
                       disabled
-                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background mr-4"
+                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background"
                     >
                       <img
                         className="h-[18px] w-[18px] opacity-50"
@@ -372,19 +426,17 @@ const DiscussionPage = ({
                         alt="share this question"
                       />
                     </button>
-                    <button
-                      disabled
-                      className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background"
-                    >
-                      <img
-                        className="h-[18px] w-[18px] opacity-50"
-                        src={link}
-                        alt="copy question link"
-                      />
-                    </button>
                   </div>
                 </div>
               </div>
+
+              <CopyLink
+                isCopyLinkModal={isCopyLinkModal}
+                isCopied={isCopied}
+                shortLink={shortLink}
+                toggleCopyLinkModal={setCopyLinkModal}
+                handleIsCopied={handleIsCopied}
+              />
 
               {/* Comments here */}
               <Comments
@@ -392,7 +444,7 @@ const DiscussionPage = ({
                 thisQuestion={question}
                 questionid={match.params.id}
                 comments={comments}
-                commentLoader={commentLoader}
+                commentLoader={isLoading}
                 questionOwner={question?.user}
                 onUpdateComments={updateComments}
                 onMarkSolution={handleMarkSolution}
@@ -400,14 +452,18 @@ const DiscussionPage = ({
                 match={match}
                 questions={questions}
                 handleUpdatedQuestions={handleUpdatedQuestions}
+                //from useInfinteQuery
+                error={error}
+                isError={isError}
+                data={data}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
               />
             </div>
           ) : (
             <>
               {loader ? (
-                <div className="m-3">
-                  <Loader msg="This might take a while..." />
-                </div>
+                <QuestionsLoader type="discussion" />
               ) : (
                 <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
                   <>

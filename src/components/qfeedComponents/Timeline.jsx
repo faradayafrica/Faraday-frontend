@@ -3,17 +3,19 @@ import { Link } from "react-router-dom";
 import { saveState, getState } from "../common/StateSaver";
 import Question from "./Question";
 import SecondaryButton from "../styledComponents/SecondaryButton";
-import Loader from "../styledComponents/Loader";
 
 //icon import
 import ask from "../../images/qfeed/ask.svg";
 
 //style import
 import "../../styles/qfeed.css";
+import QuestionsLoader from "./QuestionsLoader";
 
 const TimeLine = (props) => {
   const [questions, setQuestions] = useState([]);
   const [scrollPosition, setScrollPosition] = useState([]);
+
+  // console.log(props.loader, "loader");
 
   useEffect(() => {
     setQuestions(props.questions);
@@ -56,19 +58,20 @@ const TimeLine = (props) => {
               onFollowUser={props.onFollowUser}
               onDeleteQuestion={props.onDeleteQuestion}
               key={question.id}
+              {...props}
             />
           ))}
         </>
 
         <Link
           to="/qfeed/post"
-          className="sm:hidden fixed right-6 bottom-20 h-16 w-16"
+          className="sm:hidden fixed right-6 bottom-20 h-16 w-16 z-50"
         >
           {" "}
           <img className="ask-shadow rounded-full" src={ask} alt="" />
         </Link>
 
-        {!props.loader && questions.length == 0 ? (
+        {props.isError ? (
           <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
             <>
               <p className="text-sm sm:text-base ">Something went wrong</p>
@@ -79,23 +82,30 @@ const TimeLine = (props) => {
           ""
         )}
 
-        {props.loader ? (
-          <div className="m-3">
-            <Loader msg="Fetching questions" />
-            <div className="h-[65px] w-full sm:hidden"></div>
-          </div>
-        ) : (
+        {props.isFetchingNextPage && props.hasNextPage ? (
           <>
-            {!questions.length == 0 && (
-              <>
-                <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
-                  <p className="text-xs sm:text-base m-0 ">
-                    No more question to fetch
-                  </p>
-                </div>
-                <div className="h-[65px] w-full sm:hidden"></div>
-              </>
-            )}
+            <QuestionsLoader short="true" />
+            <div className="h-24"></div>
+          </>
+        ) : null}
+
+        {!props.hasNextPage && props.data?.pages.length && (
+          <>
+            <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
+              <p className="text-xs sm:text-base m-0 ">
+                No more questions to fetch
+              </p>
+            </div>
+            <div className="h-[65px] w-full sm:hidden"></div>
+          </>
+        )}
+
+        {props.loader && questions.length <= 1 ? (
+          <QuestionsLoader />
+        ) : (
+          // This is suppose to be the loader that shows when a user scrolls to the bottom after localStorage populates the Qfeed
+          <>
+            <div className="h-24"></div>
           </>
         )}
       </div>

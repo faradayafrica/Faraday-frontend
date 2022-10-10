@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import PostPage from "../components/qfeedComponents/PostPage";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
@@ -14,21 +15,54 @@ import {
 
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
-  const [loader, setLoader] = useState(true);
-
-  const removeDuplicate = (arr) => {
-    const arrWithUniqueItems = Array.from(new Set(arr.map((a) => a.id))).map(
-      (id) => {
-        return arr.find((a) => a.id === id);
-      }
-    );
-
-    return arrWithUniqueItems;
-  };
-
   const { online } = props;
 
-  const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/fetch/";
+  const fetchQuestions = async (pageParam) => {
+    const resp = await http.get(
+      process.env.REACT_APP_API_URL + `/qfeed/que/fetch/?page=${pageParam}`
+    );
+    return resp;
+  };
+
+  const {
+    data,
+    isSuccess,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useInfiniteQuery(
+    ["questions"],
+    ({ pageParam = 1 }) => fetchQuestions(pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages?.length + 1;
+        return lastPage?.data?.next ? nextPage : undefined;
+      },
+    }
+  );
+
+  useEffect(() => {
+    let fetching = false;
+    const handleScroll = async (e) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasNextPage) {
+          await fetchNextPage();
+        }
+        fetching = false;
+      }
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, [fetchNextPage, hasNextPage]);
 
   const handleFollow = (user) => {
     const apiEndpoint =
@@ -79,101 +113,42 @@ const Qfeed = (props) => {
     setQuestions([...updatedQuestions]);
   };
 
-  const retry = async () => {
-    setLoader(true);
-    fetchQuestions(apiEndpoint);
-    window.addEventListener("scroll", handleScroll);
-  };
-
-  let nextQuestionPageUrl = "";
-  const questionRequestQueue = [];
-
-  const fetchQuestions = async (url) => {
-    questionRequestQueue.push(url);
-
-    try {
-      // console.log("ques", questions);
-      const { data } = await http.get(url);
-      setQuestions((prevQuestions) => [...prevQuestions, ...data.results]);
-
-      setLoader(false);
-      nextQuestionPageUrl = data.next;
-
-      // Save state to Local Storage
-      window.localStorage.setItem(
-        "questions",
-        JSON.stringify({
-          next: data.next,
-          questions: questions.concat(...data.results),
-        })
-      );
-    } catch (err) {
-      setLoader(false);
-      throw err;
-    }
-  };
-
-  const handleScroll = (e) => {
-    if (nextQuestionPageUrl && document.getElementById("timeline") !== null) {
-      if (
-        e.target.documentElement.scrollTop + window.innerHeight + 1000 >=
-        e.target.documentElement.scrollHeight
-      ) {
-        if (!questionRequestQueue.includes(nextQuestionPageUrl)) {
-          // console.log("Request Q>", questionRequestQueue);
-          fetchQuestions(nextQuestionPageUrl);
-          setLoader(true);
-        } else {
-          console.warn("Duplicate request blocked");
-        }
-      }
-    }
-  };
-
   // Checks Local Storage and populates the Qfeed
   useEffect(() => {
     let storedQuestions;
 
     storedQuestions = JSON.parse(localStorage.getItem("questions"));
-    // console.log(storedQuestions);
 
     if (storedQuestions) {
       setQuestions([...storedQuestions.questions]);
-      nextQuestionPageUrl = storedQuestions.next
-        ? storedQuestions.next
-        : apiEndpoint;
-    } else {
-      fetchQuestions(apiEndpoint);
     }
-    window.addEventListener("scroll", handleScroll);
   }, []);
 
-  let lastScrollTop = 0;
-
+  // Update state with the data data from React Query
   useEffect(() => {
-    if (document.getElementById("timeline") !== null) {
-      window.addEventListener(
-        "scroll",
-        (e) => {
-          let st = e.target.documentElement.scrollTop;
-          if (st > lastScrollTop) {
-            // downscroll code
-            document.getElementById("topnav").classList.add("hide-up");
-            // document.getElementById("bottomnav").classList.add("hide-down");
-          } else {
-            // upscroll code
-            document.getElementById("topnav").classList.remove("hide-up");
-            // document.getElementById("bottomnav").classList.remove("hide-down");
-          }
-          lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-        },
-        false
+    document.title = `Faraday`;
+    const newQuestions = [];
+
+    isSuccess &&
+      data?.pages.map((page) =>
+        page.data.results.map((item) => newQuestions.push(item))
       );
-    }
-  });
+    setQuestions(newQuestions);
+
+
+    // Save state to Local Storage
+    window.localStorage.setItem(
+      "questions",
+      JSON.stringify({
+        questions: newQuestions,
+      })
+    );
+  }, [data]);
+
 
   return (
     <div className="relative w-full route-wrapper ">
+      {/* <QuestionsLoader type="qfeed" /> */}
       <div className="w-full bg-white ">
         <Switch>
           <Route
@@ -206,13 +181,17 @@ const Qfeed = (props) => {
             render={(props) => (
               <TimeLine
                 online={online}
-                questions={removeDuplicate(questions)}
+                questions={questions}
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}
                 onDeleteQuestion={deleteQuestion}
-                retry={retry}
-                loader={loader}
-                nextQuestionPageUrl={nextQuestionPageUrl}
+                retry={refetch}
+                loader={isLoading}
+                isError={isError}
+                error={error}
+                data={data}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
                 {...props}
               />
             )}

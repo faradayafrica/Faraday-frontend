@@ -25,7 +25,7 @@ function MobileSideNav() {
   const location = useLocation();
 
   useEffect(() => {
-    setQfeed(location.pathname === "/");
+    setQfeed(location.pathname === "/" || location.pathname === "/qfeed");
     setNotification(location.pathname === "/notification");
   }, [location.pathname]);
 
@@ -72,7 +72,7 @@ function MobileSideNav() {
         .fromTo(
           nav.current,
           { y: 200, opacity: 0 },
-          { y: 0, opacity: 1, ease: "power2.inOut" }
+          { y: 0, opacity: 1, ease: "power2.inOut", stagger: 0.3 }
         );
     }, 50);
   });
@@ -164,7 +164,7 @@ function MobileSideNav() {
                 <div className="mt-4 bg-white rounded-xl p-3">
                   <div className="flex items-center">
                     <img
-                      src={`https://api.faraday.africa${currentUser?.profile_pic}`}
+                      src={currentUser?.profile_pic}
                       alt={`${currentUser?.first_name} ${currentUser?.last_name}`}
                       className="rounded-full mr-2 h-11 w-11"
                       width="40px"
@@ -242,7 +242,7 @@ function MobileSideNav() {
             </div>
 
             <span className="version text-night-secondary">
-              PointBreak v1.0.0
+              PointBreak v1.3.0
             </span>
           </div>
         </div>
