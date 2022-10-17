@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
+import http from "../../services/httpService";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import Input from "../styledComponents/input";
 import TextArea from "../styledComponents/TextArea";
 import Select from "../styledComponents/select";
 import PrimaryButton from "../styledComponents/PrimaryButton";
+import "../../styles/form.css";
 
 class Form extends Component {
   state = {
@@ -42,23 +45,27 @@ class Form extends Component {
     this.doSubmit();
   };
 
-  imageHandler = (e) => {
-    // const reader = new FileReader();
-    // reader.onload = () => {
-    //   if (reader.readyState === 2) {
-    //     const data = { ...this.state.data };
-    //     data["image"] = reader.result;
-    //     this.setState({ data });
-    //   }
-    // };
+  uploadImage = (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "jb9mgkw8");
 
-    // reader.readAsDataURL(e.target.files[0]);
+    axios
+      .post(
+        "https://api.cloudinary.com/v1_1/faraday-africa/image/upload",
+        formData
+      )
+      .then((resp) => {
+        const data = { ...this.state.data };
+        data["image"] = resp.data.secure_url;
+        data["imageFile"] = file;
+        this.setState({ data });
+      });
+  };
 
-    var url = URL.createObjectURL(e.target.files[0]);
-    const data = { ...this.state.data };
-    data["image"] = url;
-    data["imageFile"] = e.target.files[0];
-    this.setState({ data });
+  imageHandler = (file) => {
+    this.uploadImage(file);
+    var url = URL.createObjectURL(file);
   };
 
   handleChange = ({ currentTarget: input }) => {
@@ -102,7 +109,6 @@ class Form extends Component {
     var select = document.getElementById("month");
     var text = select.options[select.selectedIndex].text;
     this.selectedMonth = text;
-    console.log(this.selectedMonth);
 
     this.setState({ data, errors });
   };
@@ -115,7 +121,7 @@ class Form extends Component {
   renderRedirectBtn(label, link, msg) {
     return (
       <div
-        className='mx-auto text-center mt-3 text-md'
+        className="mx-auto text-center mt-3 text-md"
         style={{ maxWidth: "425px", alignText: "center" }}
       >
         <p>
@@ -123,7 +129,7 @@ class Form extends Component {
           <Link to={`/${link}`} style={{ textDecoration: "none" }}>
             {" "}
             <span
-              className='icon-container-secondary link-brand bubbly-button'
+              className="icon-container-secondary link-brand bubbly-button"
               style={{}}
             >
               {label} here
@@ -200,7 +206,7 @@ class Form extends Component {
 
     return (
       <TextArea
-        type='text'
+        type="text"
         name={name}
         rows={rows}
         value={data[name]}
@@ -217,27 +223,27 @@ class Form extends Component {
     const { data } = this.state;
 
     return (
-      <div className='form-group mt-4 '>
+      <div className="form-group mt-4 ">
         <img
-          className='add-profile-btn'
+          className="add-profile-btn"
           src={data.image}
-          id='img'
-          alt=''
+          id="img"
+          alt=""
           onClick={(event) => {
             this.fileInputRef.current.click();
           }}
         />
 
         <input
-          type='file'
-          name='image-upload'
+          type="file"
+          name="image-upload"
           id={name}
-          accept='image/*'
-          onChange={this.imageHandler}
+          accept="image/*"
+          onChange={(event) => this.imageHandler(event.target.files[0])}
           ref={this.fileInputRef}
           style={{ display: "none" }}
         />
-        <label htmlFor={name} className='sr-only'>
+        <label htmlFor={name} className="sr-only">
           Add Image
         </label>
       </div>

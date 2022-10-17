@@ -1,6 +1,7 @@
 import axios from 'axios';
 import logger from './logService';
 import { toast } from 'react-toastify';
+import {refreshJwt} from "./authService"
 // import { configure } from '@testing-library/react';
 
 axios.interceptors.response.use(null, error => {
@@ -17,16 +18,27 @@ axios.interceptors.response.use(null, error => {
   return Promise.reject(error);
 });
 
+const securedRequest = axios.create({
+  baseURL: process.env.REACT_APP_API_URL
+});  
+
+securedRequest.interceptors.response.use(null, error => {
+  if(error.response.status == "401") {
+  //  window.location = "/logout";
+  refreshJwt()
+  } 
+});
+
 function setJwt(jwt) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+  securedRequest.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
 }
 
 const exportedObject = {
-  get: axios.get,
-  post: axios.post,
-  put: axios.put,
-  patch: axios.patch,
-  delete: axios.delete,
+  get: securedRequest.get,
+  post: securedRequest.post,
+  put: securedRequest.put,
+  patch: securedRequest.patch,
+  delete: securedRequest.delete,
   setJwt,
 };
 

@@ -1223,15 +1223,7 @@ form {
   color: var(--text2-black);
 }
 
-.add-profile-btn {
-  height: 180px;
-  width: 180px;
 
-  background-color: var(--background) !important;
-  border: 2px dashed var(--outline) !important;
-
-  object-fit: cover;
-}
 
 .progress-container {
   height: 4px;

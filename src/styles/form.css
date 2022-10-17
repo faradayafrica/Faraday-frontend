@@ -1,0 +1,10 @@
+.add-profile-btn {
+    height: 180px;
+    width: 180px;
+  
+    background-color: var(--background) !important;
+    border: 2px dashed var(--outline) !important;
+  
+    object-fit: cover;
+    margin:auto;
+  }
