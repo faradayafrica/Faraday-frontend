@@ -1,6 +1,5 @@
 import http from "./httpService";
 import jwtDecode from "jwt-decode";
-import axios from "axios";
 
 const apiEndpoint = process.env.REACT_APP_API_URL + "/users/login/";
 const tokenKey = "token";
@@ -54,16 +53,17 @@ export async function confirmEmail({ confirmationCode }) {
 }
 
 export async function updateSchoolDetail(user) {
+  console.log(user, "School details oo")
   const url = process.env.REACT_APP_API_URL + "/users/edu_update/";
   // const jwt = getJwt();
-  await axios.patch(url, {
-    ...user,
-  });
+  // await http.patch(url, {
+  //   ...user,
+  // });
 }
 
 export async function editUserProfile(user) {
   const url = process.env.REACT_APP_API_URL + "/users/edu_update/";
-  await axios.patch(url, {
+  await http.patch(url, {
     ...user,
   });
 }
@@ -71,7 +71,7 @@ export async function editUserProfile(user) {
 export async function updatePersonalDetail(data) {
   const url = process.env.REACT_APP_API_URL + "/users/bio_update/";
 
-  await axios.patch(url, data);
+  await http.patch(url, data);
 }
 
 export async function resendEmailConfirmation() {

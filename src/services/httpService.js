@@ -17,16 +17,20 @@ axios.interceptors.response.use(null, error => {
   return Promise.reject(error);
 });
 
+const securedRequest = axios.create({
+  baseURL: process.env.REACT_APP_API_URL
+});  
+
 function setJwt(jwt) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+  securedRequest.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
 }
 
 const exportedObject = {
-  get: axios.get,
-  post: axios.post,
-  put: axios.put,
-  patch: axios.patch,
-  delete: axios.delete,
+  get: securedRequest.get,
+  post: securedRequest.post,
+  put: securedRequest.put,
+  patch: securedRequest.patch,
+  delete: securedRequest.delete,
   setJwt,
 };
 
