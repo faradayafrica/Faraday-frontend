@@ -25,6 +25,19 @@ import { SuccessToast } from "./components/common/CustomToast.js";
 const App = () => {
   const [online, setOnline] = useState(true);
   const [hideOnlineStatus, setHideOnlineStatus] = useState(false);
+  const [clearCache, setClearCache] = useState(false);
+
+  useEffect(() => {
+    if (window.location.pathname == "/login" && clearCache) {
+      window.location.reload(true);
+      setClearCache(false);
+    }
+  });
+
+  const handleClearCache = () => {
+    setClearCache(true);
+    console.log("Made ", clearCache);
+  };
 
   const syncPendingComments = async () => {
     const apiEndpoint =
@@ -134,7 +147,22 @@ const App = () => {
             <Route path="/terms-and-condition" component={TermsAndCondition} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
             <Route path="/login" component={LoginForm} />
-            <Route path="/logout" component={Logout} />
+            <Route
+              path="/login"
+              render={(props) => (
+                <LoginForm clearCache={clearCache} {...props} />
+              )}
+            />
+            <Route
+              path="/logout"
+              render={(props) => (
+                <Logout
+                  handleClearCache={handleClearCache}
+                  clearCache={clearCache}
+                  {...props}
+                />
+              )}
+            />
             <ProtectedRoute
               path="/qfeed"
               render={(props) => <Qfeed online={online} {...props} />}
