@@ -1,5 +1,6 @@
 import http from "./httpService";
 import jwtDecode from "jwt-decode";
+import axios from "axios"
 
 const apiEndpoint = process.env.REACT_APP_API_URL + "/users/login/";
 const tokenKey = "token";
@@ -9,11 +10,11 @@ http.setJwt(getJwt());
 
 export async function login({ username, password }) {
   let newUsername = username.toLowerCase();
-  const { data } = await http.post(apiEndpoint, {
+  const { data } = await axios.post(apiEndpoint, {
     username: newUsername,
     password,
   });
-  const jwt = data.access;
+  const jwt = data.access; 
   const refresh = data.refresh;
   
   localStorage.setItem(tokenKey, jwt);

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
-import http from "../../services/httpService";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Input from "../styledComponents/input";

@@ -24,8 +24,8 @@ const securedRequest = axios.create({
 
 securedRequest.interceptors.response.use(null, error => {
   if(error.response.status == "401") {
-  //  window.location = "/logout";
-  refreshJwt()
+   window.location = "/logout";
+   window.location.reload(true)
   } 
 });
 
