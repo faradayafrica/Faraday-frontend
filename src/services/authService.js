@@ -14,7 +14,7 @@ export async function login({ username, password }) {
     username: newUsername,
     password,
   });
-  const jwt = data.access;
+  const jwt = data.access; 
   const refresh = data.refresh;
   
   localStorage.setItem(tokenKey, jwt);
