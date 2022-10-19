@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@cloudinary/react": "^1.5.0",
+    "@cloudinary/url-gen": "^1.8.6",
     "@headlessui/react": "^1.6.6",
     "@tanstack/react-query": "^4.3.4",
     "@testing-library/jest-dom": "^5.14.1",
