@@ -90,7 +90,8 @@ export async function resendEmailConfirmation() {
 }
 
 export function logout() {
-  localStorage.removeItem(tokenKey);
+  window.localStorage.clear();
+  
 }
 
 
