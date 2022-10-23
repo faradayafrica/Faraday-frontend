@@ -1,17 +1,15 @@
-import { Component } from "react";
+import { useEffect } from "react";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 import auth from "../services/authService";
 
-class Logout extends Component {
-  componentDidMount() {
-    window.localStorage.clear();
-
+const Logout = ({ handleClearCache, clearCache }) => {
+  useEffect(() => {
+    handleClearCache();
     auth.logout();
-    window.location = "/login";
-  }
+  });
 
-  render() {
-    return null;
-  }
-}
+  if (clearCache) return <Redirect to={"/login"} />;
+  return <div>We will miss you</div>;
+};
 
 export default Logout;

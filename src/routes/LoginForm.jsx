@@ -7,6 +7,11 @@ import auth from "../services/authService";
 import faraday from "../images/logo.svg";
 
 class LoginForm extends Form {
+  componentDidMount() {
+    // console.log("props", this.props);
+    if (this.props.clearCache == true) window.location.reload(true);
+  }
+
   state = {
     data: { username: "", password: "" },
     redirect: null,
