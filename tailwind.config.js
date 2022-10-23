@@ -9,6 +9,7 @@ module.exports = {
       'brand': '#05b851',
       'brand-dark': '#2C974B',
       'faraday-night': '#333B47',
+      'faraday-night-hover': '#1F232B',
       'night-secondary': '#6C757D',
       'outline': '#ECECF0',
       'secondary': '#7494cf',
