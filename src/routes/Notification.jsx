@@ -8,8 +8,9 @@ import gsap from "gsap";
 
 import "../styles/notification.css";
 import caretIcon from "../images/caret.svg";
+import arrowRight from "../images/qfeed/arrow-right.svg";
 
-const Notification = () => {
+const Notification = (props) => {
   const apiEndpoint = process.env.REACT_APP_API_URL + `/notifications/`;
 
   const [filter, setFilter] = useState("");
@@ -117,8 +118,18 @@ const Notification = () => {
   return (
     <div className="relative w-full route-wrapper" id="notification-wrapper">
       <div className="min-h-[70px] sm:min-h-[0px] bg-transparent"> </div>
-      <div className="flex justify-between items-center m-3">
-        <h1 className="text-2xl sm:text-2xl font-bold">Notification</h1>
+      <div className="flex justify-between items-center p-3">
+        <div className="flex items-center">
+          <img
+            src={arrowRight}
+            className="w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180"
+            alt="return"
+            onClick={() => {
+              props.history.goBack();
+            }}
+          />
+          <h1 className="text-2xl sm:text-2xl font-bold m-0 ">Notification</h1>
+        </div>
 
         <div className="relative">
           <button

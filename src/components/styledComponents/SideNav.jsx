@@ -180,7 +180,7 @@ function SideNav({ history, online, hideOnlineStatus }) {
             {/* Ask question btn */}
             <Link to="/qfeed/post" className=" ">
               {" "}
-              <PrimaryButton cta="Add a question" />
+              <PrimaryButton cta="Ask a question" />
             </Link>
           </div>
         </div>

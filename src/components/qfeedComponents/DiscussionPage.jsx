@@ -11,6 +11,7 @@ import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
 import ellipses from "../../images/qfeed/ellipses.svg";
+import arrowRight from "../../images/qfeed/arrow-right.svg";
 import QuestionMenu from "./QuestionMenu";
 import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
 import QuestionsLoader from "./QuestionsLoader";
@@ -38,7 +39,7 @@ const DiscussionPage = ({
     thisQuestion ? thisQuestion.short_link : ""
   );
 
-  // Copy Link associated variables and function are recreated for the timeline on the Question tap
+  // Copy Link associated variables and function are recreated for the timeline on the Question tab
   //We could use contextAPI to help them share same state and functions in the future
 
   const handleIsCopied = (value) => {
@@ -48,6 +49,7 @@ const DiscussionPage = ({
   const handleCopyLinkModal = () => {
     setCopyLinkModal(!isCopyLinkModal);
     setCopied(false);
+    console.log("here");
   };
   const getShortLink = (id) => {
     const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
@@ -319,7 +321,17 @@ const DiscussionPage = ({
       <div className=" bg-white z-30 bottom-0 left-0 h-min-screen w-screen sm:w-auto sm:static">
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
         <div className="z-50" id="discussion">
-          <h1 className="text-2xl sm:text-2xl m-3 font-bold ">Discussion</h1>
+          <div className="flex items-center p-3">
+            <img
+              src={arrowRight}
+              className="w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180"
+              alt="return"
+              onClick={() => {
+                history.goBack();
+              }}
+            />
+            <h1 className="text-2xl sm:text-2xl font-bold m-0 ">Discussion</h1>
+          </div>
           {question.user ? (
             <div className=" py-3 relative">
               <div className="pl-3 pr-2">
@@ -405,7 +417,10 @@ const DiscussionPage = ({
                     </button>
 
                     <button
-                      onClick={() => handleCopyLinkModal()}
+                      onClick={() => {
+                        handleCopyLinkModal();
+                        getShortLink(question.id);
+                      }}
                       className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background "
                     >
                       <img
