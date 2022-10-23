@@ -11,6 +11,7 @@ import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
 import ellipses from "../../images/qfeed/ellipses.svg";
+import arrowRight from "../../images/qfeed/arrow-right.svg";
 import QuestionMenu from "./QuestionMenu";
 import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
 import QuestionsLoader from "./QuestionsLoader";
@@ -315,12 +316,24 @@ const DiscussionPage = ({
     loveClasses += " bg-danger-highlight text-danger";
   }
 
+  console.log("DP", history);
+
   return (
     <>
       <div className=" bg-white z-30 bottom-0 left-0 h-min-screen w-screen sm:w-auto sm:static">
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
         <div className="z-50" id="discussion">
-          <h1 className="text-2xl sm:text-2xl m-3 font-bold ">Discussion</h1>
+          <div className="flex items-center p-3">
+            <img
+              src={arrowRight}
+              className="w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180"
+              alt="return"
+              onClick={() => {
+                history.goBack();
+              }}
+            />
+            <h1 className="text-2xl sm:text-2xl font-bold m-0 ">Discussion</h1>
+          </div>
           {question.user ? (
             <div className=" py-3 relative">
               <div className="pl-3 pr-2">
