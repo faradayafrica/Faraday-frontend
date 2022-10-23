@@ -2,8 +2,9 @@ import { useState } from "react";
 import PrimaryButton from "../styledComponents/PrimaryButton";
 import addContentImg from "../../images/qfeed/add.svg";
 import removeContentImg from "../../images/qfeed/remove.svg";
+import arrowRight from "../../images/qfeed/arrow-right.svg";
 
-const PostComponent = ({ LIMIT, postQuestion }) => {
+const PostComponent = ({ LIMIT, postQuestion, history }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isContentInput, setContentInput] = useState(false);
@@ -26,7 +27,19 @@ const PostComponent = ({ LIMIT, postQuestion }) => {
 
   return (
     <>
-      <h1 className="text-2xl sm:text-2xl m-3 font-bold">Ask your Question</h1>
+      <div className="flex items-center p-3">
+        <img
+          src={arrowRight}
+          className="w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180"
+          alt="return"
+          onClick={() => {
+            history.goBack();
+          }}
+        />
+        <h1 className="text-2xl sm:text-2xl font-bold m-0 ">
+          Ask your Question
+        </h1>
+      </div>
       <div className="p-3 mt-2 bg-brand-higlight relative">
         <label className="block w-full m-0 relative">
           {title.length > LIMIT.title ? (
@@ -94,26 +107,34 @@ const PostComponent = ({ LIMIT, postQuestion }) => {
               onClick={() => {
                 setContentInput(true);
               }}
-              className="px-2 py-[9px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
-              style={{ border: "1.4px solid #05b851" }}
+              className="border-x border-y border-outline flex items-center px-2 py-[9px] rounded-lg font-normal text-sm  text-faraday-night hover:bg-brand-highlight "
             >
-              <img src={addContentImg} alt="show content input field" />
+              <img
+                className="mr-2 h-[10px] w-[10px]"
+                src={addContentImg}
+                alt="show content input field"
+              />
+              Add content
             </button>
           ) : (
             <button
               onClick={() => {
                 setContentInput(false);
               }}
-              className="px-2 py-[12px] rounded-lg font-semibold text-brand hover:bg-brand-highlight "
-              style={{ border: "1.4px solid #05b851" }}
+              className="border-x border-y border-outline flex items-center px-2 py-[9px] rounded-lg font-normal text-sm  text-faraday-night hover:bg-brand-highlight "
             >
-              <img src={removeContentImg} alt="hide content input field" />
+              <img
+                className="mr-2 h-[10px] w-[10px]"
+                src={removeContentImg}
+                alt="hide content input field"
+              />
+              Hide content
             </button>
           )}
 
           <div className="fixed sm:absolute bottom-0 left-0 p-3 w-full z-50 bg-white">
             <PrimaryButton
-              cta="Fly"
+              cta="Send question"
               wide={true}
               action={() => postQuestion(title, content)}
             />

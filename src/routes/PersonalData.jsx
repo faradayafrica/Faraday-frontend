@@ -174,17 +174,18 @@ class PersonalData extends Form {
         </div>
         <div className="form-container">
           <div className="logo-container">
-            <img className="logo" src={faraday} alt="faraday" />
+            <img className="logo mx-auto" src={faraday} alt="faraday" />
           </div>
           <h3 className="form-title ">Let’s finish up</h3>
           <p className="mx-3 extra-info text-md">
-            Let’s get to know you a little beter. What makes you special?
+            Let’s get to know you a little better.
           </p>
 
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             {this.renderFileInput("image")}
-            {this.renderTextArea("bio", "Your bio")}
+
+            {this.renderTextArea("bio", "What makes you special?")}
             {this.renderGenderSelect("gender", "Gender", this.state.gender)}
 
             <div className="horinzontal-align label-group">
@@ -200,12 +201,12 @@ class PersonalData extends Form {
             </div>
 
             {this.renderButton("Next")}
-            <button
+            {/* <button
               className="btn btn-green-outline btn-login my-2 bubbly-button font-medium"
               onClick={this.skipValidation}
             >
               Skip
-            </button>
+            </button> */}
           </form>
         </div>
       </div>
@@ -216,7 +217,6 @@ class PersonalData extends Form {
     // window.location = "/qfeed";
     try {
       await auth.refreshJwt();
-      console.log("form skipped");
       this.setState({ ...this.state, redirect: "/qfeed" });
     } catch (e) {
       console.throw(e);

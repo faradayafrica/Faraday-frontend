@@ -4,7 +4,7 @@ import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
 import { getCurrentUser } from "../../services/authService";
 
 const PostPage = (props) => {
-  const LIMIT = { title: 130, content: 256 };
+  const LIMIT = { title: 150, content: 400 };
 
   const currentUser = getCurrentUser();
 

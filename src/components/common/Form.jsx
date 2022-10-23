@@ -6,7 +6,9 @@ import Input from "../styledComponents/input";
 import TextArea from "../styledComponents/TextArea";
 import Select from "../styledComponents/select";
 import PrimaryButton from "../styledComponents/PrimaryButton";
+import Myspinner from "../styledComponents/Spinner";
 import "../../styles/form.css";
+import { ErrorToast } from "./CustomToast";
 
 class Form extends Component {
   state = {
@@ -45,6 +47,7 @@ class Form extends Component {
   };
 
   uploadImage = (file) => {
+    const spinner = document.getElementById("spinnerContainer");
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "jb9mgkw8");
@@ -58,11 +61,19 @@ class Form extends Component {
         const data = { ...this.state.data };
         data["image"] = resp.data.secure_url;
         data["imageFile"] = file;
+        spinner.classList.add("vanish");
         this.setState({ data });
+      })
+      .catch((err) => {
+        ErrorToast("Couldn't upload image");
+        spinner.classList.add("vanish");
       });
   };
 
   imageHandler = (file) => {
+    const spinner = document.getElementById("spinnerContainer");
+    spinner.classList.remove("vanish");
+
     this.uploadImage(file);
     var url = URL.createObjectURL(file);
   };
@@ -114,7 +125,11 @@ class Form extends Component {
 
   renderButton(label, isFluid) {
     // console.log(this.validate());
-    return <PrimaryButton cta={label} disabled={this.validate()} wide />;
+    return (
+      <div className="mt-3">
+        <PrimaryButton cta={label} disabled={this.validate()} wide />
+      </div>
+    );
   }
 
   renderRedirectBtn(label, link, msg) {
@@ -127,10 +142,7 @@ class Form extends Component {
           {msg}
           <Link to={`/${link}`} style={{ textDecoration: "none" }}>
             {" "}
-            <span
-              className="icon-container-secondary link-brand bubbly-button"
-              style={{}}
-            >
+            <span className="icon-container-secondary link-brand bubbly-button">
               {label} here
             </span>
           </Link>{" "}
@@ -222,9 +234,9 @@ class Form extends Component {
     const { data } = this.state;
 
     return (
-      <div className="form-group mt-4 ">
+      <div className="form-group m-0  mx-auto">
         <img
-          className="add-profile-btn"
+          className="add-profile-btn cursor-pointer"
           src={data.image}
           id="img"
           alt=""

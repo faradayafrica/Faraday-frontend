@@ -1,12 +1,17 @@
 import React from "react";
-import Joi from "joi-browser";
+import { Redirect } from "react-router-dom";
 import Myspinner from "../components/styledComponents/Spinner";
 import Form from "../components/common/Form";
-import faraday from "../images/logo.svg";
+import Joi from "joi-browser";
 import auth from "../services/authService";
-import { Redirect } from "react-router-dom";
+import faraday from "../images/logo.svg";
 
 class LoginForm extends Form {
+  componentDidMount() {
+    // console.log("props", this.props);
+    if (this.props.clearCache == true) window.location.reload(true);
+  }
+
   state = {
     data: { username: "", password: "" },
     redirect: null,
@@ -30,11 +35,13 @@ class LoginForm extends Form {
           <Myspinner />
         </div>
         <div className="form-container">
-          <div className="logo-container">
-            <img className="logo" src={faraday} alt="faraday" />
+          <div className="logo-container ">
+            <img className="logo mx-auto" src={faraday} alt="faraday" />
           </div>
-          <h3 className="form-title">Welcome back</h3>
-
+          <h3 className="form-title">Welcome back</h3>{" "}
+          <p className="font-medium text-brand">
+            to <span className="font-bold">Beta</span>
+          </p>
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             {this.renderInput("username", "Username or Email")}
