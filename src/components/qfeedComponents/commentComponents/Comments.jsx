@@ -1,6 +1,5 @@
 import { useState } from "react";
 import CommentComponent from "./CommentComponent";
-import Loader from "../../styledComponents/Loader";
 import { getCurrentUser } from "../../../services/authService";
 import {
   SuccessToast,
@@ -259,17 +258,6 @@ const Comments = ({
         </>
       ) : null}
 
-      {!hasNextPage && data?.pages.length && (
-        <>
-          <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
-            <p className="text-xs sm:text-base m-0 ">
-              No more comments to fetch
-            </p>
-          </div>
-          <div className="h-[65px] w-full sm:hidden"></div>
-        </>
-      )}
-
       {commentLoader ? (
         !comments.length ? (
           <CommentsLoader />
@@ -278,7 +266,7 @@ const Comments = ({
         )
       ) : (
         <>
-          {!comments.length === 0 && (
+          {comments.length > 0 && !hasNextPage && (
             <>
               <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
                 <p className="text-xs sm:text-base m-0 ">

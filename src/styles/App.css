@@ -950,6 +950,11 @@ textarea {
   font-weight: 600 !important;
 }
 
+.form-group {
+  margin: 0 !important;
+  margin-top: .8rem !important
+}
+
 /*************************************************** 
 TAGS
 ***************************************************/
@@ -1051,7 +1056,8 @@ LOGIN
   margin-left: auto;
   margin-right: auto;
 
-  /* border-radius: 6px; */
+  border-radius: 6px;
+  border: .5px solid var(--outline);
   /* border: 0.5px solid var(--outline); */
   background-color: var(--white) !important;
   width: 100%;
@@ -1067,7 +1073,8 @@ form {
 }
 
 .form-container:hover {
-  box-shadow: 8px 8px 0px var(--shadow);
+  box-shadow: 10px 10px 0px var(--shadow);
+  transform: scale(100.3%);
 }
 
 
@@ -1083,11 +1090,17 @@ form {
 }
 
 .form-control {
-  border-radius: 0px !important;
   border: none !important;
-  border-bottom: 1.5px solid var(--secondary-text) !important;
+  border-bottom: .5px solid var(--secondary-text) !important;
   min-height: 50px !important;
+  background-color: #f8f9fa88 !important;
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+  border-bottom-left-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
 }
+
+
 
 .form-control input:not(:placeholder-shown) {
   border-radius: 0px !important;
@@ -1117,7 +1130,8 @@ form {
 .form-control:focus {
   /* background-color: var(--brand-highlight) !important; */
   background-color: var(--background) !important;
-  border-color: var(--faraday-night) !important;
+  border-bottom: 1px solid var(--faraday-night) !important;
+  
   box-shadow: none !important;
 }
 
@@ -1214,9 +1228,7 @@ form {
 
 .faraday-terms {
   color: var(--text2-black) !important;
-  font-size: 14px;
   opacity: 0.7;
-  margin: 0;
 }
 
 .extra-info {
@@ -1275,13 +1287,17 @@ form {
 }
 
 @media screen and (max-width: 567px) {
+
   .form-container {
     margin-top: 4rem;
+    margin-bottom: 0;
     box-shadow: none !important;
+    border: none;
+    padding: 0;
   }
 
   .login-page {
-    padding: 2rem;
+    padding: 1rem;
     background-color: var(--white) !important;
   }
 

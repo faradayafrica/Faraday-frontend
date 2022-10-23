@@ -316,8 +316,6 @@ const DiscussionPage = ({
     loveClasses += " bg-danger-highlight text-danger";
   }
 
-  console.log("DP", history);
-
   return (
     <>
       <div className=" bg-white z-30 bottom-0 left-0 h-min-screen w-screen sm:w-auto sm:static">
