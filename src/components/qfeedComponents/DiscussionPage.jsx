@@ -38,7 +38,7 @@ const DiscussionPage = ({
     thisQuestion ? thisQuestion.short_link : ""
   );
 
-  // Copy Link associated variables and function are recreated for the timeline on the Question tap
+  // Copy Link associated variables and function are recreated for the timeline on the Question tab
   //We could use contextAPI to help them share same state and functions in the future
 
   const handleIsCopied = (value) => {
@@ -48,6 +48,7 @@ const DiscussionPage = ({
   const handleCopyLinkModal = () => {
     setCopyLinkModal(!isCopyLinkModal);
     setCopied(false);
+    console.log("here");
   };
   const getShortLink = (id) => {
     const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
@@ -405,7 +406,10 @@ const DiscussionPage = ({
                     </button>
 
                     <button
-                      onClick={() => handleCopyLinkModal()}
+                      onClick={() => {
+                        handleCopyLinkModal();
+                        getShortLink(question.id);
+                      }}
                       className="icon-brnd-hover hover:bg-brnd-highlight px-3 h-[40px] flex justify-around items-center rounded-lg bg-background "
                     >
                       <img
