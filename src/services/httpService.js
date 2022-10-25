@@ -22,11 +22,11 @@ const securedRequest = axios.create({
   baseURL: process.env.REACT_APP_API_URL
 });  
 
-securedRequest.interceptors.response.use(null, error => {
-  if(error.response.status == "401") {
+securedRequest.interceptors.response.use(response => {
+  if(response.status == "401") {
    window.location = "/logout";
   } else {
-    console.log("All cool from interceptor")
+    return response;
   }
 });
 

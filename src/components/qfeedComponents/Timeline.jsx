@@ -104,15 +104,6 @@ const TimeLine = (props) => {
           ""
         )}
 
-        {props.loader && questions.length <= 1 ? (
-          <QuestionsLoader />
-        ) : (
-          // This is suppose to be the loader that shows when a user scrolls to the bottom after localStorage populates the Qfeed
-          <>
-            <div className="h-24"></div>
-          </>
-        )}
-
         {props.loader ? (
           !questions.length ? (
             <QuestionsLoader />
@@ -135,6 +126,15 @@ const TimeLine = (props) => {
                 <div className="h-[65px] w-full sm:hidden"></div>
               </>
             )}
+          </>
+        )}
+
+        {props.loader && questions.length <= 1 ? (
+          <QuestionsLoader />
+        ) : (
+          // This is suppose to be the loader that shows when a user scrolls to the bottom after localStorage populates the Qfeed
+          <>
+            <div className="h-24"></div>
           </>
         )}
       </div>
