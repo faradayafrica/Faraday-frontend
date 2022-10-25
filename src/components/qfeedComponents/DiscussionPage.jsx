@@ -237,7 +237,7 @@ const DiscussionPage = ({
       const { data } = await http.get(apiEndpoint);
       setQuestion(data.data);
     } catch (err) {
-      console.warn(err.message);
+      console.log(err);
       setLoader(false);
     }
   };
@@ -332,7 +332,7 @@ const DiscussionPage = ({
             />
             <h1 className="text-2xl sm:text-2xl font-bold m-0 ">Discussion</h1>
           </div>
-          {question.user ? (
+          {question?.user ? (
             <div className=" py-3 relative">
               <div className="pl-3 pr-2">
                 <Link

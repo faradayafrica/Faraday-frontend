@@ -525,7 +525,7 @@ SIDENAV STYLING
 
 .sidenav-container .active-nav {
   font-weight: 600;
-  background-color: var(--background2);
+  background-color: var(--background);
 }
 
 .sidenav-container p {

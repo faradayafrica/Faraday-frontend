@@ -233,14 +233,14 @@ class AddSchoolDetail extends Form {
 
     try {
       await auth.updateSchoolDetail(data);
-      // window.location = "/update-personal-data";
       progress?.classList.add("progress-75");
       spinner?.classList.add("vanish");
+      // window.location = "/update-personal-data";
       this.setState({ ...this.state, redirect: "/update-personal-data" });
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         const errors = { ...this.state.errors };
-        errors.school = "Something went wrong";
+        errors.school = "Something went wrong, try again later";
         this.setState({ errors });
         spinner.classList.add("vanish");
       } else if (ex.response && ex.response.status === 401) {
