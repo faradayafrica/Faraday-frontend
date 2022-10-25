@@ -10,7 +10,7 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
   const [isContentInput, setContentInput] = useState(false);
 
   let titleClasses =
-    "bg-gradient-to-t from-background to-white focus:to-background rounded-t-[10px] rounded-b-[4px] mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-outline border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-base sm:text-lg font-semibold ";
+    "focus:bg-gradient-to-t from-background to-white rounded-t-[10px] rounded-b-[4px] mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-outline border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-base sm:text-lg font-semibold ";
 
   titleClasses +=
     title.length > LIMIT.title
@@ -18,7 +18,7 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
       : "";
 
   let contentClasses =
-    "bg-gradient-to-t from-background to-white focus:to-background rounded-t-[10px] rounded-b-[4px] mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-outline border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-sm ";
+    "focus:bg-gradient-to-t from-background to-white  rounded-t-[10px] rounded-b-[4px] mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-outline border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-sm ";
 
   contentClasses +=
     content.length > LIMIT.content
