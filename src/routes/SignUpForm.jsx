@@ -20,33 +20,26 @@ class SignUpForm extends Form {
       username: "",
       email: "",
       password: "",
-      // confirmPassword: "",
+      confirmPassword: "",
     },
     errors: { email: "" },
     errorMessage: null,
     redirect: null,
-    showPassword: false,
   };
 
   schema = {
     fname: Joi.string().alphanum().required().label("First name"),
     lname: Joi.string().alphanum().required().label("Last name"),
-    username: Joi.string()
-      .alphanum()
-      .min(3)
-      .max(30)
-      .required()
-      .label("Username")
-      .regex(/^\s*\w+(?:[^\w,]+\w+)*[^,\w]*$/),
+    username: Joi.string().min(3).max(30).required().label("Username"),
     email: Joi.string().email().required().label("Email"),
     password: Joi.string().min(8).required().label("Password"),
-    // confirmPassword: Joi.string()
-    //   .required()
-    //   .valid(Joi.ref("password"))
-    //   .label("Please make sure this")
-    //   .options({
-    //     language: { any: { allowOnly: "matches with password" } },
-    //   }),
+    confirmPassword: Joi.string()
+      .required()
+      .valid(Joi.ref("password"))
+      .label("Please make sure this")
+      .options({
+        language: { any: { allowOnly: "matches with password" } },
+      }),
   };
 
   doSubmit = async () => {
@@ -74,7 +67,7 @@ class SignUpForm extends Form {
             ...this.state,
             errorMessage: err.response.data.message,
           });
-          ErrorToast(`Sorry! ${err.response.data.message}`);
+          ErrorToast(`Sorry! ${err.response.data.message[0]}`);
         })
         .finally(() => {
           spinner.classList.add("vanish");
@@ -141,16 +134,12 @@ class SignUpForm extends Form {
             {this.renderInput("email", "Email")}
 
             {/* <div className='horinzontal-align label-group mb-3'> */}
-            {this.renderPassword(
-              "password",
-              "Password",
-              this.state.showPassword ? "" : "password"
-            )}
-            {/* {this.renderInput(
+            {this.renderInput("password", "Password", "password")}
+            {this.renderInput(
               "confirmPassword",
               "Confirm Password",
               "password"
-            )} */}
+            )}
             {/* </div> */}
 
             {this.renderButton("Sign up")}
