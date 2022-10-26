@@ -23,13 +23,10 @@ const securedRequest = axios.create({
 });  
 
 securedRequest.interceptors.response.use(response => {
-  return response;
-}, function(error){
-  console.log("Interceptor", error)
-  if(error.status == "401") {
+  if(response.status == "401") {
    window.location = "/logout";
   } else {
-    return error;
+    return response;
   }
 });
 
