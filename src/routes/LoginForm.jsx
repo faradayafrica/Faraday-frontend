@@ -80,12 +80,16 @@ class LoginForm extends Form {
         spinner.classList.add("vanish");
       } else if (ex.response && ex.response.status >= 400) {
         const errors = { ...this.state.errors };
-        errors.username = "Username or password is incorrect";
+        if (ex.response.data.detail.includes("password")) {
+          errors.password = ex.response.data.detail;
+        } else {
+          errors.username = ex.response.data.detail;
+        }
         this.setState({ errors });
         spinner.classList.add("vanish");
       } else {
         const errors = { ...this.state.errors };
-        errors.username = "Check your internet connection and try again";
+        errors.username = "Something went wrong, please try again";
         this.setState({ errors });
         spinner.classList.add("vanish");
       }

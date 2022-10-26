@@ -33,7 +33,7 @@ function MobileSideNav() {
     let qfeedClasses = "w-50 h-12 flex justify-center items-center rounded-xl";
 
     if (focus === true) {
-      qfeedClasses += " bg-brand-highlight active-icon";
+      qfeedClasses += " bg-background active-icon";
       return qfeedClasses;
     } else {
       return qfeedClasses;

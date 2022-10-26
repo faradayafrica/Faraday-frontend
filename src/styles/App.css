@@ -524,9 +524,8 @@ SIDENAV STYLING
 }
 
 .sidenav-container .active-nav {
-  color: var(--brand) !important;
   font-weight: 600;
-  background-color: var(--brand-highlight);
+  background-color: var(--background);
 }
 
 .sidenav-container p {
@@ -548,17 +547,18 @@ SIDENAV STYLING
 
 
 .active-icon svg {
-  fill: var(--brand) !important;
+  fill: var(--faraday-night) !important;
   /* stroke: var(--brand) !important; */
-  filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
-    hue-rotate(115deg) brightness(98%) contrast(96%);
+  filter: brightness(0) saturate(100%) brightness(98%) contrast(96%);
 }
 
 .active-icon img {
   fill: var(--brand) !important;
-  filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
-    hue-rotate(115deg) brightness(98%) contrast(96%);
-}
+  filter: brightness(0) saturate(100%) brightness(98%) contrast(96%);
+  /* filter: brightness(0) saturate(100%) invert(57%) sepia(86%) saturate(3930%)
+    hue-rotate(115deg) brightness(98%) contrast(96%); */
+  }
+  
 
 .navlink:hover {
   background-color: var(--background);

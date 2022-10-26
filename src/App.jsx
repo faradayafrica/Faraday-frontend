@@ -21,6 +21,7 @@ import SideNav from "./components/styledComponents/SideNav.jsx";
 
 import http from "./services/httpService";
 import { SuccessToast } from "./components/common/CustomToast.js";
+import MissingQuestion from "./routes/MissingQuestion.jsx";
 
 const App = () => {
   const [online, setOnline] = useState(true);
@@ -173,6 +174,7 @@ const App = () => {
               path="/me/:username"
               render={(props) => <Profile {...props} />}
             />
+            <Route path="/missing-question" component={MissingQuestion} />
             <Route path="/not-found" component={NotFound} />
             <ProtectedRoute path="/" exact component={Qfeed} />
             <Redirect push to="/not-found" />

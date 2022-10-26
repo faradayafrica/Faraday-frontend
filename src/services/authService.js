@@ -44,35 +44,53 @@ export function getCurrentUser() {
 }
 export async function confirmEmail({ confirmationCode }) {
   const user = getCurrentUser();
-  http.setJwt(getJwt());
+  //  http.setJwt(getJwt());
 
   const url = process.env.REACT_APP_API_URL + "/users/verifyotp/";
-  await http.post(url, {
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
+};
+
+  await axios.post(url, {
     email: user.email,
     otp: confirmationCode,
-  });
+  }, config);
 }
 
 export async function updateSchoolDetail(user) {
   console.log(user, "School details oo")
   const url = process.env.REACT_APP_API_URL + "/users/edu_update/";
   // const jwt = getJwt();
-  // await http.patch(url, {
-  //   ...user,
-  // });
+
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
+  };
+
+  await axios.patch(url, {
+    ...user,
+  }, config);
 }
 
 export async function editUserProfile(user) {
   const url = process.env.REACT_APP_API_URL + "/users/edu_update/";
-  await http.patch(url, {
+
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
+  };
+
+  await axios.patch(url, {
     ...user,
-  });
+  }, config);
 }
 
 export async function updatePersonalDetail(data) {
   const url = process.env.REACT_APP_API_URL + "/users/bio_update/";
 
-  await http.patch(url, data);
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
+  };
+
+  await axios.patch(url, data, config);
 }
 
 export async function resendEmailConfirmation() {
@@ -85,7 +103,7 @@ export async function resendEmailConfirmation() {
 
   const url = process.env.REACT_APP_API_URL + "/users/resendotp/";
 
-  await http.post(url, {email}, config);
+  await axios.post(url, {email}, config);
 
 }
 

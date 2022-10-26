@@ -10,15 +10,15 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
   const [isContentInput, setContentInput] = useState(false);
 
   let titleClasses =
-    "focus:bg-gradient-to-t from-background to-white mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-outline border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-base sm:text-lg font-semibold ";
+    "focus:bg-gradient-to-t from-background to-white rounded-t-[10px] rounded-b-[4px] mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-outline border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-base sm:text-lg font-semibold ";
 
   titleClasses +=
     title.length > LIMIT.title
-      ? "focus:bg-gradient-to-t from-danger-highlight to-white focus:border-danger border-danger"
+      ? "focus:bg-gradient-to-t from-danger-highlight to-white focus:border-danger border-danger "
       : "";
 
   let contentClasses =
-    "focus:bg-gradient-to-t from-background to-white mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-outline border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-sm ";
+    "focus:bg-gradient-to-t from-background to-white  rounded-t-[10px] rounded-b-[4px] mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-outline border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-sm ";
 
   contentClasses +=
     content.length > LIMIT.content
