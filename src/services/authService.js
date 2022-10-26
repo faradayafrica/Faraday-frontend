@@ -86,11 +86,11 @@ export async function editUserProfile(user) {
 export async function updatePersonalDetail(data) {
   const url = process.env.REACT_APP_API_URL + "/users/bio_update/";
 
-  const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
-  };
+  // const config = {
+  //   headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
+  // };
 
-  await axios.patch(url, data, config);
+  await http.patch(url, data);
 }
 
 export async function resendEmailConfirmation() {
