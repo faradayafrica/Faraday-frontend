@@ -7,6 +7,7 @@ import addImage from "../images/Add Image.svg";
 import auth from "../services/authService";
 import { getYear, getMonth } from "../services/bioServices";
 import { Redirect } from "react-router-dom";
+import defaultProfile from "../images/default-profile.png";
 
 class PersonalData extends Form {
   state = {
@@ -272,7 +273,15 @@ class PersonalData extends Form {
     }-${this.state.data.day}`;
 
     const formData = new FormData();
-    formData.append("profile_pic", this.state.data.image);
+    if (
+      this.state.data.image ==
+      "/static/media/Add Image.b2309ebf700c4fec8376adf1bed746c5.svg"
+    ) {
+      console.log("Not this image");
+      formData.append("profile_pic", defaultProfile);
+    } else {
+      formData.append("profile_pic", this.state.data.image);
+    }
     formData.append("dob", date);
     formData.append("gender", this.state.data.gender);
     formData.append("bio", this.state.data.bio);
@@ -286,25 +295,11 @@ class PersonalData extends Form {
 
       // return;
       this.setState({ ...this.state, redirect: "/qfeed" });
-      // window.location = "/";
     } catch (ex) {
-      // console.log(ex);
-      if (ex.response && ex.response.status === 500) {
-        const errors = { ...this.state.errors };
-        errors.bio = "Something went wrong";
-        this.setState({ errors });
-        spinner.classList.add("vanish");
-      } else if (ex.response && ex.response.status === 401) {
-        const errors = { ...this.state.errors };
-        errors.bio = `There's an auth error`;
-        this.setState({ errors });
-        spinner.classList.add("vanish");
-      } else {
-        const errors = { ...this.state.errors };
-        errors.bio = "Check your internet connection and try again";
-        this.setState({ errors });
-        spinner.classList.add("vanish");
-      }
+      const errors = { ...this.state.errors };
+      errors.bio = "Something went wrong, try again later";
+      this.setState({ errors });
+      spinner.classList.add("vanish");
     }
   };
 }

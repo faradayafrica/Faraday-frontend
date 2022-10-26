@@ -6,7 +6,7 @@ import faraday from "../images/logo.svg";
 import auth from "../services/authService";
 import UserContext from "../context/userContext";
 import { Redirect } from "react-router-dom";
-import { PromiseToast } from "../components/common/CustomToast";
+import { ErrorToast, PromiseToast } from "../components/common/CustomToast";
 
 class ConfirmEmail extends Form {
   static contextType = UserContext;
@@ -44,33 +44,37 @@ class ConfirmEmail extends Form {
 
   doResend = () => {
     const spinner = document.getElementById("spinnerContainer");
-    spinner.classList.remove("vanish");
-
-    try {
-      let resend = this.state.resend;
-      const promise = auth.resendEmailConfirmation().then(() => {
-        resend = true;
-        this.setState({ resend });
-      });
-      spinner.classList.add("vanish");
-      PromiseToast(
-        "Code resent",
-        "Can't resend at the moment, try again later ",
-        promise
-      );
-    } catch (ex) {
-      if (ex.response && ex.response.status >= 400) {
-        const errors = { ...this.state.errors };
-        errors.confirmationCode = `Code not sent, ${ex.response.data.detail}`;
-        // spinner.classList.add("vanish");
-        this.setState({ errors });
-      } else {
-        const errors = { ...this.state.errors };
-        errors.confirmationCode =
-          "Check your internet connection and try again";
-        // spinner.classList.add("vanish");
-        this.setState({ errors });
+    console.log(auth.getCurrentUser().email, "Confirm Password");
+    if (auth.getCurrentUser().email) {
+      spinner.classList.remove("vanish");
+      try {
+        let resend = this.state.resend;
+        const promise = auth.resendEmailConfirmation().then(() => {
+          resend = true;
+          this.setState({ resend });
+        });
+        spinner.classList.add("vanish");
+        PromiseToast(
+          "Code resent",
+          "Can't resend at the moment, try again later ",
+          promise
+        );
+      } catch (ex) {
+        if (ex.response && ex.response.status >= 400) {
+          const errors = { ...this.state.errors };
+          errors.confirmationCode = `Code not sent, ${ex.response.data.detail}`;
+          // spinner.classList.add("vanish");
+          this.setState({ errors });
+        } else {
+          const errors = { ...this.state.errors };
+          errors.confirmationCode =
+            "Check your internet connection and try again";
+          // spinner.classList.add("vanish");
+          this.setState({ errors });
+        }
       }
+    } else {
+      ErrorToast("Sorry, we didn't get your email.");
     }
   };
 
@@ -79,20 +83,20 @@ class ConfirmEmail extends Form {
     const spinner = document.getElementById("spinnerContainer");
     const progress = document.getElementById("progressBar");
     spinner.classList.remove("vanish");
+    const { data } = this.state;
 
     // call the backend
     try {
-      const { data } = this.state;
       await auth.confirmEmail(data);
+
       progress.classList.add("progress-50");
       this.setState({ ...this.state, redirect: "/update-school-detail" });
       spinner.classList.add("vanish");
-
       // this.props.history.push("/update-school-detail");
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         const errors = { ...this.state.errors };
-        errors.confirmationCode = "Something went wrong";
+        errors.confirmationCode = ex.response.data.detail;
         spinner.classList.add("vanish");
         this.setState({ errors });
       } else if (ex.response && ex.response.status >= 400) {
@@ -103,8 +107,7 @@ class ConfirmEmail extends Form {
         this.setState({ errors });
       } else {
         const errors = { ...this.state.errors };
-        errors.confirmationCode =
-          "Check your internet connection and try again";
+        errors.confirmationCode = "Something went wrong, try again later";
         spinner.classList.add("vanish");
         this.setState({ errors });
       }
@@ -129,7 +132,7 @@ class ConfirmEmail extends Form {
         </div>
         <div className="form-container">
           <div className="logo-container">
-            <img className="logo" src={faraday} alt="faraday" />
+            <img className="logo mx-auto" src={faraday} alt="faraday" />
           </div>
           <h3 className="form-title">We sent a code to your Email</h3>
           <p className="mx-3 extra-info text-md">

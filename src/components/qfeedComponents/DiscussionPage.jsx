@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import CopyLink from "./CopyLink";
 import SecondaryButton from "../styledComponents/SecondaryButton";
@@ -13,7 +13,7 @@ import http from "../../services/httpService";
 import ellipses from "../../images/qfeed/ellipses.svg";
 import arrowRight from "../../images/qfeed/arrow-right.svg";
 import QuestionMenu from "./QuestionMenu";
-import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
+import { ErrorToast, PromiseToast } from "../common/CustomToast";
 import QuestionsLoader from "./QuestionsLoader";
 
 const DiscussionPage = ({
@@ -234,10 +234,11 @@ const DiscussionPage = ({
 
   const fetchThisQuestion = async () => {
     try {
-      const { data } = await http.get(apiEndpoint);
-      setQuestion(data.data);
-    } catch (err) {
-      console.warn(err.message);
+      await http.get(apiEndpoint).then((resp) => setQuestion(resp.data.data));
+    } catch (ex) {
+      if (ex.response.status == 404) {
+        history.replace("/missing-question");
+      }
       setLoader(false);
     }
   };
@@ -332,7 +333,7 @@ const DiscussionPage = ({
             />
             <h1 className="text-2xl sm:text-2xl font-bold m-0 ">Discussion</h1>
           </div>
-          {question.user ? (
+          {question?.user ? (
             <div className=" py-3 relative">
               <div className="pl-3 pr-2">
                 <Link
@@ -483,7 +484,7 @@ const DiscussionPage = ({
                 <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
                   <>
                     <p className="text-xs sm:text-base ">
-                      Question currently unavailable
+                      Couldn't fetch this question at this time, try again later
                     </p>
                     <SecondaryButton cta="Retry" action={retry} />
                   </>

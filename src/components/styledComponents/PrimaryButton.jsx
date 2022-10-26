@@ -5,11 +5,7 @@ const PrimaryButton = ({ cta, wide, action, disabled }) => {
   classes += wide ? " w-full" : "";
 
   return (
-    <button
-      onClick={() => action()}
-      className={classes}
-      disabled={false || disabled}
-    >
+    <button onClick={action} className={classes} disabled={false || disabled}>
       {cta}
     </button>
   );
