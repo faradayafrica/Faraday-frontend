@@ -211,6 +211,41 @@ class Form extends Component {
       />
     );
   }
+  
+  renderPassword(name, placeholder, type = "text") {
+    const { data, errors } = this.state;
+
+    return (
+      <>
+        <Input
+          type={type}
+          name={name}
+          value={data[name]}
+          label={placeholder}
+          placeholder={placeholder}
+          onChange={this.handleChange}
+          error={errors[name]}
+        />
+
+        <div
+          onClick={() => {
+            const showPassword = !this.state.showPassword;
+            this.setState({ showPassword });
+          }}
+          className="text-left mt-2 mb-4 text-sm flex cursor-pointer items-center"
+        >
+          <div className="mr-1 border h-4 w-4 flex items-center justify-center rounded-full">
+            <div
+              className={`h-3 w-3 rounded-full ${
+                this.state.showPassword ? "bg-faraday-night" : ""
+              }`}
+            ></div>
+          </div>
+          <p className="m-0">Show password </p>
+        </div>
+      </>
+    );
+  }
 
   renderTextArea(name, placeholder, rows = 2, isTitle) {
     const { data, errors } = this.state;
