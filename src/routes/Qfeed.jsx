@@ -131,10 +131,9 @@ const Qfeed = (props) => {
 
     isSuccess &&
       data?.pages.map((page) =>
-        page.data.results.map((item) => newQuestions.push(item))
+        page.data?.results.map((item) => newQuestions.push(item))
       );
     setQuestions(newQuestions);
-
 
     // Save state to Local Storage
     window.localStorage.setItem(
@@ -144,7 +143,6 @@ const Qfeed = (props) => {
       })
     );
   }, [data]);
-
 
   return (
     <div className="relative w-full route-wrapper ">

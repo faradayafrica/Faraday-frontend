@@ -16,6 +16,7 @@ class LoginForm extends Form {
     data: { username: "", password: "" },
     redirect: null,
     errors: {},
+    showPassword: false,
   };
 
   schema = {
@@ -45,7 +46,11 @@ class LoginForm extends Form {
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             {this.renderInput("username", "Username or Email")}
-            {this.renderInput("password", "Password", "password")}
+            {this.renderPassword(
+              "password",
+              "Password",
+              this.state.showPassword ? "" : "password"
+            )}
             {this.renderButton("Login")}
           </form>
         </div>

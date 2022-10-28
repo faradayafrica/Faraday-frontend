@@ -1,11 +1,12 @@
 import http from "./httpService";
+import axios from 'axios'
 import auth from "./authService";
 
 const apiEndpoint = process.env.REACT_APP_API_URL + "/users/register/";
 
 export async function register(user) {
   let newUsername = user.username.toLowerCase();
-  const { data } = await http.post(apiEndpoint, {
+  const { data } = await axios.post(apiEndpoint, {
     fname: user.fname,
     lname: user.lname,
     username: newUsername,

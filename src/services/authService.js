@@ -23,15 +23,17 @@ export async function login({ username, password }) {
 
 export async function refreshJwt() {
   const refresh_token = getRefresh();
-  const response = await http.post(
+  await axios.post(
     `${process.env.REACT_APP_API_URL + "/users/refresh_token/"}`,
     {
       refresh: refresh_token,
     }
-    );
+    ).then(resp => {
+      const jwt = resp.data.access;
+      localStorage.setItem(tokenKey, jwt)
+    });
     
-  const jwt = response.data.access;
-  localStorage.setItem(tokenKey, jwt);
+  
 }
 
 export function getCurrentUser() {
@@ -86,11 +88,12 @@ export async function editUserProfile(user) {
 export async function updatePersonalDetail(data) {
   const url = process.env.REACT_APP_API_URL + "/users/bio_update/";
 
-  // const config = {
-  //   headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
-  // };
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
+  };
 
-  await http.patch(url, data);
+  await axios.patch(url, data, config);
+  // refreshJwt();
 }
 
 export async function resendEmailConfirmation() {
@@ -116,6 +119,7 @@ export function logout() {
 export function getJwt() {
   return localStorage.getItem(tokenKey);
 }
+
 export function getRefresh() {
   try {
     return localStorage.getItem(refreshKey);
