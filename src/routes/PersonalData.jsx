@@ -189,14 +189,15 @@ class PersonalData extends Form {
             {this.renderTextArea("bio", "What makes you special?")}
             {this.renderGenderSelect("gender", "Gender", this.state.gender)}
 
-            <div className="horinzontal-align label-group">
-              <div className=" col-4">
+            <div className="horinzontal-align label-group relative mt-4">
+              <p className="absolute top-0 text-md">Date of birth</p>
+              <div className=" col-4 mt-3">
                 {this.renderDateSelect("year", "Year", this.state.year)}
               </div>
-              <div className="col-4 mr-3">
+              <div className="col-4 mt-3">
                 {this.renderDateSelect("month", "Month", this.state.month)}
               </div>
-              <div className="col">
+              <div className="col mt-3">
                 {this.renderDateSelect("day", "Day", this.listDays())}
               </div>
             </div>
@@ -268,9 +269,9 @@ class PersonalData extends Form {
     // 12-month-2022 : we care only about the month
     const monthIndex = new Date(`12-${this.state.data.month}-2022`).getMonth();
 
-    const date = `${this.state.data.year}-${
-      monthIndex > 10 ? `0${monthIndex}` : monthIndex
-    }-${this.state.data.day}`;
+    const date = `${this.state.data.year}-${monthIndex + 1}-${
+      this.state.data.day
+    }`;
 
     const formData = new FormData();
     if (
@@ -293,8 +294,7 @@ class PersonalData extends Form {
       progress.classList.add("progress-100");
       spinner.classList.add("vanish");
 
-      // return;
-      this.setState({ ...this.state, redirect: "/qfeed" });
+      window.location.replace("/");
     } catch (ex) {
       const errors = { ...this.state.errors };
       errors.bio = "Something went wrong, try again later";
