@@ -200,18 +200,20 @@ class Form extends Component {
     const { data, errors } = this.state;
 
     return (
-      <Input
-        type={type}
-        name={name}
-        value={data[name]}
-        label={placeholder}
-        placeholder={placeholder}
-        onChange={this.handleChange}
-        error={errors[name]}
-      />
+      <>
+        <Input
+          type={type}
+          name={name}
+          value={data[name]}
+          label={placeholder}
+          placeholder={placeholder}
+          onChange={this.handleChange}
+          error={errors[name]}
+        />
+      </>
     );
   }
-  
+
   renderPassword(name, placeholder, type = "text") {
     const { data, errors } = this.state;
 
