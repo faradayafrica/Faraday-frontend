@@ -23,15 +23,17 @@ export async function login({ username, password }) {
 
 export async function refreshJwt() {
   const refresh_token = getRefresh();
-  const response = await http.post(
+  await axios.post(
     `${process.env.REACT_APP_API_URL + "/users/refresh_token/"}`,
     {
       refresh: refresh_token,
     }
-    );
+    ).then(resp => {
+      const jwt = resp.data.access;
+      localStorage.setItem(tokenKey, jwt)
+    });
     
-  const jwt = response.data.access;
-  localStorage.setItem(tokenKey, jwt);
+  
 }
 
 export function getCurrentUser() {
@@ -116,6 +118,7 @@ export function logout() {
 export function getJwt() {
   return localStorage.getItem(tokenKey);
 }
+
 export function getRefresh() {
   try {
     return localStorage.getItem(refreshKey);
