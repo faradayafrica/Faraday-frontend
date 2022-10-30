@@ -23,7 +23,6 @@ const Qfeed = (props) => {
   const user = getCurrentUser();
 
   const fetchQuestions = async (pageParam) => {
-    console.log(user.username, "From Qfeed");
     if (user.username) {
       const resp = await http.get(
         process.env.REACT_APP_API_URL + `/qfeed/que/fetch/?page=${pageParam}`

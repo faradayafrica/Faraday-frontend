@@ -29,7 +29,7 @@ securedRequest.interceptors.response.use(response => {
   if(error.response.status == "401") {
    window.location = "/logout";
   } else {
-    return response;
+    return error;
   }
 });
 
