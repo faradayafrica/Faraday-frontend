@@ -164,7 +164,11 @@ const App = () => {
                 />
               )}
             />
-            <ProtectedRoute
+            {/* <ProtectedRoute
+              path="/qfeed"
+              render={(props) => <Qfeed online={online} {...props} />}
+            /> */}
+            <Route
               path="/qfeed"
               render={(props) => <Qfeed online={online} {...props} />}
             />
@@ -176,7 +180,10 @@ const App = () => {
             />
             <Route path="/missing-question" component={MissingQuestion} />
             <Route path="/not-found" component={NotFound} />
-            <ProtectedRoute path="/" exact component={Qfeed} />
+            <Route
+              path="/"
+              render={(props) => <Qfeed online={online} {...props} />}
+            />
             <Redirect push to="/not-found" />
           </Switch>
         </div>

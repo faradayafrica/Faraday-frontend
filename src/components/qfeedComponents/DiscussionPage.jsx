@@ -238,6 +238,9 @@ const DiscussionPage = ({
     } catch (ex) {
       if (ex.response.status == 404) {
         history.replace("/missing-question");
+      } else {
+        setLoader(false);
+        console.log("Problem");
       }
       setLoader(false);
     }
@@ -303,7 +306,7 @@ const DiscussionPage = ({
 
     isSuccess &&
       data?.pages.map((page) =>
-        page.data.results.map((item) => newComments.push(item))
+        page.data?.results.map((item) => newComments.push(item))
       );
     setComments(newComments);
   }, [data]);

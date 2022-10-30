@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import ProtectedRoute from "../components/common/ProtectedRoute.jsx";
 import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import PostPage from "../components/qfeedComponents/PostPage";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
@@ -174,7 +175,8 @@ const Qfeed = (props) => {
               />
             )}
           />
-          <Route
+
+          <ProtectedRoute
             path="/"
             render={(props) => (
               <TimeLine
@@ -194,6 +196,26 @@ const Qfeed = (props) => {
               />
             )}
           />
+          {/* <Route
+            path="/"
+            render={(props) => (
+              <TimeLine
+                online={online}
+                questions={questions}
+                handleUpdatedQuestions={updateQuestions}
+                onFollowUser={handleFollow}
+                onDeleteQuestion={deleteQuestion}
+                retry={refetch}
+                loader={isLoading}
+                isError={isError}
+                error={error}
+                data={data}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                {...props}
+              />
+            )}
+          /> */}
           <Route path="/not-found" component={NotFound} />
           <Redirect push to="/not-found" />
         </Switch>
