@@ -187,26 +187,6 @@ const Qfeed = (props) => {
             )}
           />
 
-          {/* <ProtectedRoute
-            path="/"
-            render={(props) => (
-              <TimeLine
-                online={online}
-                questions={questions}
-                handleUpdatedQuestions={updateQuestions}
-                onFollowUser={handleFollow}
-                onDeleteQuestion={deleteQuestion}
-                retry={refetch}
-                loader={isLoading}
-                isError={isError}
-                error={error}
-                data={data}
-                hasNextPage={hasNextPage}
-                isFetchingNextPage={isFetchingNextPage}
-                {...props}
-              />
-            )}
-          /> */}
           <Route
             path="/"
             render={(props) => (
