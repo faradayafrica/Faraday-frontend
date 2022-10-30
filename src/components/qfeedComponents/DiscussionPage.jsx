@@ -10,6 +10,7 @@ import redLove from "../../images/qfeed/red-love.svg";
 import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import http from "../../services/httpService";
+import axios from "axios";
 import ellipses from "../../images/qfeed/ellipses.svg";
 import arrowRight from "../../images/qfeed/arrow-right.svg";
 import QuestionMenu from "./QuestionMenu";
@@ -234,10 +235,10 @@ const DiscussionPage = ({
 
   const fetchThisQuestion = async () => {
     try {
-      await http.get(apiEndpoint).then((resp) => setQuestion(resp.data.data));
+      await axios.get(apiEndpoint).then((resp) => setQuestion(resp.data.data));
     } catch (ex) {
       setLoader(false);
-      if (ex.response.status == 401) {
+      if (ex.response.status == 404) {
         history.replace("/missing-question");
       } else {
         console.log("Problem");
@@ -251,7 +252,7 @@ const DiscussionPage = ({
   }, []);
 
   const fetchComments = async (pageParam) => {
-    const resp = await http.get(
+    const resp = await axios.get(
       process.env.REACT_APP_API_URL +
         `/qfeed/que/comments/${match.params.id}/?page=${pageParam}`
     );
@@ -486,7 +487,7 @@ const DiscussionPage = ({
               ) : (
                 <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
                   <>
-                    <p className="text-xs sm:text-base ">
+                    <p className="text-xs sm:text-sm ">
                       Couldn't fetch this question at this time, try again later
                     </p>
                     <SecondaryButton cta="Retry" action={retry} />

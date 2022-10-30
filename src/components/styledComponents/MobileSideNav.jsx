@@ -88,27 +88,33 @@ function MobileSideNav() {
             id="topnav"
             className="ask-shadow nav-container rounded-xl bg-white flex justify-between"
           >
-            <img
-              className="p-3 rounded-xl cursor-pointer  "
-              data-toggle="tooltip"
-              title="mobile-sidenav"
-              onClick={handleMobileMenuClick}
-              src={menu}
-              alt="reveal sidebar"
-            />
+            {currentUser.username ? (
+              <>
+                <img
+                  className="p-3 rounded-xl cursor-pointer  "
+                  data-toggle="tooltip"
+                  title="mobile-sidenav"
+                  onClick={handleMobileMenuClick}
+                  src={menu}
+                  alt="reveal sidebar"
+                />
 
-            <Link
-              to={`/me/${currentUser.username}`}
-              style={{ textDecoration: "none" }}
-            >
-              <img
-                className="p-3 rounded-xl cursor-pointer"
-                data-toggle="tooltip"
-                title="view profile"
-                src={profile}
-                alt="profile"
-              />
-            </Link>
+                <Link
+                  to={`/me/${currentUser.username}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <img
+                    className="p-3 rounded-xl cursor-pointer"
+                    data-toggle="tooltip"
+                    title="view profile"
+                    src={profile}
+                    alt="profile"
+                  />
+                </Link>
+              </>
+            ) : (
+              <p className="font-bold m-0 p-3">Faraday Guest Mode</p>
+            )}
           </div>
         </div>
 

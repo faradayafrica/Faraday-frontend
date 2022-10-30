@@ -7,6 +7,8 @@ import PostPage from "../components/qfeedComponents/PostPage";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
 import NotFound from "./NotFound.jsx";
 import http from "../services/httpService";
+import axios from "axios";
+import { getCurrentUser } from "../services/authService.js";
 
 import {
   PromiseToast,
@@ -18,11 +20,21 @@ const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
   const { online } = props;
 
+  const user = getCurrentUser();
+
   const fetchQuestions = async (pageParam) => {
-    const resp = await http.get(
-      process.env.REACT_APP_API_URL + `/qfeed/que/fetch/?page=${pageParam}`
-    );
-    return resp;
+    console.log(user.username, "From Qfeed");
+    if (user.username) {
+      const resp = await http.get(
+        process.env.REACT_APP_API_URL + `/qfeed/que/fetch/?page=${pageParam}`
+      );
+      return resp;
+    } else {
+      const resp = await axios.get(
+        process.env.REACT_APP_API_URL + `/qfeed/que/fetch/?page=${pageParam}`
+      );
+      return resp;
+    }
   };
 
   const {
@@ -131,7 +143,7 @@ const Qfeed = (props) => {
     const newQuestions = [];
 
     isSuccess &&
-      data?.pages.map((page) =>
+      data.pages?.map((page) =>
         page.data?.results.map((item) => newQuestions.push(item))
       );
     setQuestions(newQuestions);
@@ -176,27 +188,7 @@ const Qfeed = (props) => {
             )}
           />
 
-          <ProtectedRoute
-            path="/"
-            render={(props) => (
-              <TimeLine
-                online={online}
-                questions={questions}
-                handleUpdatedQuestions={updateQuestions}
-                onFollowUser={handleFollow}
-                onDeleteQuestion={deleteQuestion}
-                retry={refetch}
-                loader={isLoading}
-                isError={isError}
-                error={error}
-                data={data}
-                hasNextPage={hasNextPage}
-                isFetchingNextPage={isFetchingNextPage}
-                {...props}
-              />
-            )}
-          />
-          {/* <Route
+          {/* <ProtectedRoute
             path="/"
             render={(props) => (
               <TimeLine
@@ -216,6 +208,26 @@ const Qfeed = (props) => {
               />
             )}
           /> */}
+          <Route
+            path="/"
+            render={(props) => (
+              <TimeLine
+                online={online}
+                questions={questions}
+                handleUpdatedQuestions={updateQuestions}
+                onFollowUser={handleFollow}
+                onDeleteQuestion={deleteQuestion}
+                retry={refetch}
+                loader={isLoading}
+                isError={isError}
+                error={error}
+                data={data}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                {...props}
+              />
+            )}
+          />
           <Route path="/not-found" component={NotFound} />
           <Redirect push to="/not-found" />
         </Switch>
