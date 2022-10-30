@@ -22,6 +22,9 @@ import SideNav from "./components/styledComponents/SideNav.jsx";
 import http from "./services/httpService";
 import { SuccessToast } from "./components/common/CustomToast.js";
 import MissingQuestion from "./routes/MissingQuestion.jsx";
+import ForgotPassword from "./routes/forgot-password/ForgotPassword.jsx";
+import ConfirmAccount from "./routes/forgot-password/ConfirmAccount.jsx";
+import ResetPassword from "./routes/forgot-password/ResetPassword.jsx";
 
 const App = () => {
   const [online, setOnline] = useState(true);
@@ -164,15 +167,24 @@ const App = () => {
                 />
               )}
             />
-            {/* <ProtectedRoute
-              path="/qfeed"
-              render={(props) => <Qfeed online={online} {...props} />}
-            /> */}
+            {/* Routes for password recovery starts here */}
+            <Route
+              path="/forgot-password"
+              render={(props) => <ForgotPassword {...props} />}
+            />
+            <Route
+              path="/confirm-account"
+              render={(props) => <ConfirmAccount {...props} />}
+            />
+            <Route
+              path="/reset-password"
+              render={(props) => <ResetPassword {...props} />}
+            />
+            {/* Routes for password recovery ends here */}
             <Route
               path="/qfeed"
               render={(props) => <Qfeed online={online} {...props} />}
             />
-
             <ProtectedRoute path="/notification" component={Notification} />
             <ProtectedRoute
               path="/me/:username"

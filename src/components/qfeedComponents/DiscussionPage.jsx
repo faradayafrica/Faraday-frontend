@@ -236,10 +236,10 @@ const DiscussionPage = ({
     try {
       await http.get(apiEndpoint).then((resp) => setQuestion(resp.data.data));
     } catch (ex) {
-      if (ex.response.status == 404) {
+      setLoader(false);
+      if (ex.response.status == 401) {
         history.replace("/missing-question");
       } else {
-        setLoader(false);
         console.log("Problem");
       }
       setLoader(false);
