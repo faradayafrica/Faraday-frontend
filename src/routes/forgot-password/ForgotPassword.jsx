@@ -1,19 +1,19 @@
 import React from "react";
-import { Redirect, Link } from "react-router-dom";
-import Myspinner from "../components/styledComponents/Spinner";
-import Form from "../components/common/Form";
 import Joi from "joi-browser";
-import auth from "../services/authService";
-import faraday from "../images/logo.svg";
+import { Redirect } from "react-router-dom";
+import Myspinner from "../../components/styledComponents/Spinner";
+import Form from "../../components/common/Form";
+import auth from "../../services/authService";
+import faraday from "../../images/logo.svg";
 
-class LoginForm extends Form {
+class ForgotPassword extends Form {
   componentDidMount() {
     // console.log("props", this.props);
     if (this.props.clearCache == true) window.location.reload(true);
   }
 
   state = {
-    data: { username: "", password: "" },
+    data: { username: "" },
     redirect: null,
     errors: {},
     showPassword: false,
@@ -21,7 +21,6 @@ class LoginForm extends Form {
 
   schema = {
     username: Joi.string().min(3).max(30).required().label("Username"),
-    password: Joi.string().min(8).required().label("Password"),
   };
 
   render() {
@@ -39,22 +38,14 @@ class LoginForm extends Form {
           <div className="logo-container ">
             <img className="logo mx-auto" src={faraday} alt="faraday" />
           </div>
-          <h3 className="form-title">Welcome back</h3>{" "}
-          <p className="font-medium text-brand">
-            to <span className="font-bold">Beta</span>
+          <h3 className="form-title">Recover Account</h3>
+          <p className="text-xs mt-1 max-w-[280px] mx-auto">
+            Please fill in details associated to the account you want to recover
           </p>
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             {this.renderInput("username", "Username or Email")}
-            {this.renderPassword(
-              "password",
-              "Password",
-              this.state.showPassword ? "" : "password"
-            )}
-            {this.renderButton("Login")}
-            <Link to="/forgot-password">
-              <p className="text-sm mt-2 mb-0">forgot password</p>
-            </Link>
+            {this.renderButton("Continue")}
           </form>
         </div>
         {this.renderRedirectBtn("Sign up", "signup", "Don't have an account?")}
@@ -70,7 +61,7 @@ class LoginForm extends Form {
     // call the backend
     try {
       const { data } = this.state;
-      await auth.login(data);
+      await auth.forgotPassword(data);
       spinner.classList.add("vanish");
 
       const user = auth.getCurrentUser();
@@ -78,7 +69,7 @@ class LoginForm extends Form {
         window.location = "/";
       } else {
         auth.resendEmailConfirmation();
-        this.setState({ ...this.state, redirect: "/confirm-email" });
+        this.setState({ ...this.state, redirect: "/confirm-account" });
       }
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
@@ -105,4 +96,4 @@ class LoginForm extends Form {
   };
 }
 
-export default LoginForm;
+export default ForgotPassword;

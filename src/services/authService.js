@@ -109,6 +109,16 @@ export async function resendEmailConfirmation() {
 
 }
 
+//Confirm password http call starts here
+export async function forgotPassword({ username }) {
+  const apiEndpoint = process.env.REACT_APP_API_URL + "/users/forgot-password/";
+  let newUsername = username.toLowerCase();
+  await axios.post(apiEndpoint, {
+    username: newUsername
+  });
+}
+//Confirm password http call ends here
+
 export function logout() {
   window.localStorage.clear();
   
@@ -139,5 +149,6 @@ export default {
   resendEmailConfirmation,
   updateSchoolDetail,
   updatePersonalDetail,
+  forgotPassword,
   refreshJwt,
 };

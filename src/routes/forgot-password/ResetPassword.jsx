@@ -1,26 +1,25 @@
 import React from "react";
 import { Redirect, Link } from "react-router-dom";
-import Myspinner from "../components/styledComponents/Spinner";
-import Form from "../components/common/Form";
+import Myspinner from "../../components/styledComponents/Spinner";
+import Form from "../../components/common/Form";
 import Joi from "joi-browser";
-import auth from "../services/authService";
-import faraday from "../images/logo.svg";
+import auth from "../../services/authService";
+import faraday from "../../images/logo.svg";
 
-class LoginForm extends Form {
+class ResetPassword extends Form {
   componentDidMount() {
     // console.log("props", this.props);
     if (this.props.clearCache == true) window.location.reload(true);
   }
 
   state = {
-    data: { username: "", password: "" },
+    data: { password: "" },
     redirect: null,
     errors: {},
     showPassword: false,
   };
 
   schema = {
-    username: Joi.string().min(3).max(30).required().label("Username"),
     password: Joi.string().min(8).required().label("Password"),
   };
 
@@ -39,22 +38,16 @@ class LoginForm extends Form {
           <div className="logo-container ">
             <img className="logo mx-auto" src={faraday} alt="faraday" />
           </div>
-          <h3 className="form-title">Welcome back</h3>{" "}
-          <p className="font-medium text-brand">
-            to <span className="font-bold">Beta</span>
-          </p>
+          <h3 className="form-title">Enter a new password</h3>{" "}
+          <p className="text-xs mt-1 max-w-[280px] mx-auto">Final step</p>
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
-            {this.renderInput("username", "Username or Email")}
             {this.renderPassword(
               "password",
               "Password",
               this.state.showPassword ? "" : "password"
             )}
-            {this.renderButton("Login")}
-            <Link to="/forgot-password">
-              <p className="text-sm mt-2 mb-0">forgot password</p>
-            </Link>
+            {this.renderButton("Change Password")}
           </form>
         </div>
         {this.renderRedirectBtn("Sign up", "signup", "Don't have an account?")}
@@ -105,4 +98,4 @@ class LoginForm extends Form {
   };
 }
 
-export default LoginForm;
+export default ResetPassword;
