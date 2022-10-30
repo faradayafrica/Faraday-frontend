@@ -93,7 +93,6 @@ export async function updatePersonalDetail(data) {
   };
 
   await axios.patch(url, data, config);
-  // refreshJwt();
 }
 
 export async function resendEmailConfirmation() {
