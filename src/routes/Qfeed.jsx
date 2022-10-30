@@ -143,7 +143,7 @@ const Qfeed = (props) => {
     const newQuestions = [];
 
     isSuccess &&
-      data.pages?.map((page) =>
+      data?.pages.map((page) =>
         page.data?.results.map((item) => newQuestions.push(item))
       );
     setQuestions(newQuestions);
