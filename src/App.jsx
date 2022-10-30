@@ -51,7 +51,7 @@ const App = () => {
 
     window.localStorage.setItem("pendingComments", JSON.stringify([]));
 
-    storedComments.forEach(async (item, index, array) => {
+    storedComments?.forEach(async (item, index, array) => {
       const { content, postid } = item;
 
       try {
@@ -77,7 +77,7 @@ const App = () => {
 
     window.localStorage.setItem("pendingQuestions", JSON.stringify([]));
 
-    storedComments.forEach(async (item, index, array) => {
+    storedComments?.forEach(async (item, index, array) => {
       const { title, content } = item;
 
       try {
