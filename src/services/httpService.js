@@ -27,9 +27,10 @@ securedRequest.interceptors.response.use(response => {
 }, function(error){
   console.log("Interceptor", error.response.status)
   if(error.response.status == "401") {
+
    window.location = "/logout";
   } else {
-    return error;
+    return response;
   }
 });
 
