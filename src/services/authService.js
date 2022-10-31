@@ -111,10 +111,10 @@ export async function resendEmailConfirmation() {
 
 //Confirm password http call starts here
 export async function forgotPassword({ username }) {
-  const apiEndpoint = process.env.REACT_APP_API_URL + "/users/forgot-password/";
+  const apiEndpoint = process.env.REACT_APP_API_URL + "/users/password/reset/";
   let newUsername = username.toLowerCase();
   await axios.post(apiEndpoint, {
-    username: newUsername
+    email: newUsername
   });
 }
 //Confirm password http call ends here
