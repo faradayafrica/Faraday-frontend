@@ -52,8 +52,10 @@ class LoginForm extends Form {
               this.state.showPassword ? "" : "password"
             )}
             {this.renderButton("Login")}
-            <Link to="/forgot-password">
-              <p className="text-sm mt-2 mb-0">forgot password</p>
+            <Link to="/forgot-password" style={{ textDecoration: "none" }}>
+              <p className="text-sm mt-2 mb-0 text-night-secondary">
+                forgot password
+              </p>
             </Link>
           </form>
         </div>

@@ -1,19 +1,18 @@
 import React from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Myspinner from "../../components/styledComponents/Spinner";
 import Form from "../../components/common/Form";
 import Joi from "joi-browser";
 import auth from "../../services/authService";
+import UserContext from "../../context/userContext";
 import faraday from "../../images/logo.svg";
+import { ErrorToast } from "../../components/common/CustomToast";
 
 class ResetPassword extends Form {
-  componentDidMount() {
-    // console.log("props", this.props);
-    if (this.props.clearCache == true) window.location.reload(true);
-  }
+  static contextType = UserContext;
 
   state = {
-    data: { password: "" },
+    data: { password: "", confirmPassword: "" },
     redirect: null,
     errors: {},
     showPassword: false,
@@ -21,6 +20,7 @@ class ResetPassword extends Form {
 
   schema = {
     password: Joi.string().min(8).required().label("Password"),
+    confirmPassword: Joi.string().min(8).required().label("Password"),
   };
 
   render() {
@@ -47,6 +47,11 @@ class ResetPassword extends Form {
               "Password",
               this.state.showPassword ? "" : "password"
             )}
+            {this.renderInput(
+              "confirmPassword",
+              "Confirm Password",
+              "password"
+            )}
             {this.renderButton("Change Password")}
           </form>
         </div>
@@ -56,6 +61,7 @@ class ResetPassword extends Form {
   }
 
   doSubmit = async () => {
+    const { user } = this.context;
     //Activate spinner
     const spinner = document.getElementById("spinnerContainer");
     spinner.classList.remove("vanish");
@@ -63,36 +69,19 @@ class ResetPassword extends Form {
     // call the backend
     try {
       const { data } = this.state;
-      await auth.login(data);
+      await auth.resetPassword({
+        ...user,
+        new_password: data.password,
+        confirm_password: data.confirmPassword,
+      });
       spinner.classList.add("vanish");
-
-      const user = auth.getCurrentUser();
-      if (user.email_verified) {
-        window.location = "/";
+      this.setState({ ...this.state, redirect: "/login" });
+    } catch (error) {
+      spinner.classList.add("vanish");
+      if (error.response.status >= 400) {
+        ErrorToast(error.message);
       } else {
-        auth.resendEmailConfirmation();
-        this.setState({ ...this.state, redirect: "/confirm-email" });
-      }
-    } catch (ex) {
-      if (ex.response && ex.response.status === 500) {
-        const errors = { ...this.state.errors };
-        errors.username = "Internal error, please try again";
-        this.setState({ errors });
-        spinner.classList.add("vanish");
-      } else if (ex.response && ex.response.status >= 400) {
-        const errors = { ...this.state.errors };
-        if (ex.response.data.detail.includes("password")) {
-          errors.password = ex.response.data.detail;
-        } else {
-          errors.username = ex.response.data.detail;
-        }
-        this.setState({ errors });
-        spinner.classList.add("vanish");
-      } else {
-        const errors = { ...this.state.errors };
-        errors.username = "Something went wrong, please try again";
-        this.setState({ errors });
-        spinner.classList.add("vanish");
+        ErrorToast("Something went wrong, please try again later");
       }
     }
   };

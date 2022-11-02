@@ -44,20 +44,6 @@ export function getCurrentUser() {
     return { email_verified: null };
   }
 }
-export async function confirmEmail({ confirmationCode }) {
-  const user = getCurrentUser();
-  //  http.setJwt(getJwt());
-
-  const url = process.env.REACT_APP_API_URL + "/users/verifyotp/";
-  const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
-};
-
-  await axios.post(url, {
-    email: user.email,
-    otp: confirmationCode,
-  }, config);
-}
 
 export async function updateSchoolDetail(user) {
   console.log(user, "School details oo")
@@ -95,6 +81,21 @@ export async function updatePersonalDetail(data) {
   await axios.patch(url, data, config);
 }
 
+export async function confirmEmail({ confirmationCode }) {
+  const user = getCurrentUser();
+  //  http.setJwt(getJwt());
+
+  const url = process.env.REACT_APP_API_URL + "/users/verifyotp/";
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
+};
+
+  await axios.post(url, {
+    email: user.email,
+    otp: confirmationCode,
+  }, config);
+}
+
 export async function resendEmailConfirmation() {
   const user = getCurrentUser();
  const {email} = user
@@ -109,15 +110,37 @@ export async function resendEmailConfirmation() {
 
 }
 
-//Confirm password http call starts here
-export async function forgotPassword({ username }) {
+//Recover password by email http call starts here
+//STEP 1
+export async function forgotPassword({ email }) {
   const apiEndpoint = process.env.REACT_APP_API_URL + "/users/password/reset/";
-  let newUsername = username.toLowerCase();
+  let newEmail = email.toLowerCase();
   await axios.post(apiEndpoint, {
-    email: newUsername
+    email: newEmail
   });
 }
-//Confirm password http call ends here
+
+//STEP 2
+export async function confirmAccount({ email, confirmationCode }) {
+  const apiEndpoint = process.env.REACT_APP_API_URL + "/users/password/reset/confirm/";
+
+  await axios.post(apiEndpoint, {
+    email,
+    otp_code: confirmationCode,
+  });
+}
+
+//STEP 3
+export async function resetPassword({ email, new_password, confirm_password }) {
+  const apiEndpoint = process.env.REACT_APP_API_URL + "/users/password/reset/complete/";
+
+  await axios.post(apiEndpoint, {
+    email,
+    new_password,
+    confirm_password,
+  });
+}
+//Recover password by email http call ends here
 
 export function logout() {
   window.localStorage.clear();
@@ -139,16 +162,20 @@ export function getRefresh() {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
+  tokenKey,
+  getJwt,
+  refreshJwt,
+  getRefresh,
+  getCurrentUser,
+  
   login,
   logout,
-  getCurrentUser,
-  getJwt,
-  getRefresh,
-  tokenKey,
   confirmEmail,
   resendEmailConfirmation,
   updateSchoolDetail,
   updatePersonalDetail,
+
   forgotPassword,
-  refreshJwt,
+  confirmAccount,
+  resetPassword,
 };

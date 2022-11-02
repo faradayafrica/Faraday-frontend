@@ -43,13 +43,17 @@ class ConfirmAccount extends Form {
   }
 
   doResend = () => {
+    const { user } = this.context;
     const spinner = document.getElementById("spinnerContainer");
-    console.log(auth.getCurrentUser().email, "Confirm Password");
-    if (auth.getCurrentUser().email) {
+
+    if (user.email) {
       spinner.classList.remove("vanish");
+
       try {
+        // .forgotPassword(data)
+        // .then(() => setUser({ ...this.state.data }));
         let resend = this.state.resend;
-        const promise = auth.resendEmailConfirmation().then(() => {
+        const promise = auth.forgotPassword({ email: user.email }).then(() => {
           resend = true;
           this.setState({ resend });
         });
@@ -60,16 +64,15 @@ class ConfirmAccount extends Form {
           promise
         );
       } catch (ex) {
+        spinner.classList.add("vanish");
         if (ex.response && ex.response.status >= 400) {
           const errors = { ...this.state.errors };
           errors.confirmationCode = `Code not sent, ${ex.response.data.detail}`;
-          // spinner.classList.add("vanish");
           this.setState({ errors });
         } else {
           const errors = { ...this.state.errors };
           errors.confirmationCode =
             "Check your internet connection and try again";
-          // spinner.classList.add("vanish");
           this.setState({ errors });
         }
       }
@@ -85,31 +88,20 @@ class ConfirmAccount extends Form {
     spinner.classList.remove("vanish");
     const { data } = this.state;
 
+    const { user } = this.context;
     // call the backend
     try {
-      await auth.confirmAccount(data);
+      await auth.confirmAccount({ ...user, ...data });
 
       progress.classList.add("progress-50");
-      this.setState({ ...this.state, redirect: "/update-school-detail" });
+      this.setState({ ...this.state, redirect: "/reset-password" });
       spinner.classList.add("vanish");
-      // this.props.history.push("/update-school-detail");
-    } catch (ex) {
-      if (ex.response && ex.response.status === 500) {
-        const errors = { ...this.state.errors };
-        errors.confirmationCode = ex.response.data.detail;
-        spinner.classList.add("vanish");
-        this.setState({ errors });
-      } else if (ex.response && ex.response.status >= 400) {
-        const errors = { ...this.state.errors };
-        errors.confirmationCode =
-          "Please make sure the code provided above is correct";
-        spinner.classList.add("vanish");
-        this.setState({ errors });
+    } catch (error) {
+      spinner.classList.add("vanish");
+      if (error.response.status === 401) {
+        ErrorToast("Enter the right code and try again");
       } else {
-        const errors = { ...this.state.errors };
-        errors.confirmationCode = "Something went wrong, try again later";
-        spinner.classList.add("vanish");
-        this.setState({ errors });
+        ErrorToast(error.message);
       }
     }
   };
@@ -149,7 +141,7 @@ class ConfirmAccount extends Form {
                 <input
                   // autoFocus
                   readOnly
-                  value={auth.getCurrentUser().email || user.email}
+                  value={user.email}
                   name="email"
                   id="email"
                   className="form-control static-input rounded-lg"

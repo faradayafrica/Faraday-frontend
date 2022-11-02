@@ -5,22 +5,21 @@ import Myspinner from "../../components/styledComponents/Spinner";
 import Form from "../../components/common/Form";
 import auth from "../../services/authService";
 import faraday from "../../images/logo.svg";
+import { ErrorToast } from "../../components/common/CustomToast";
+import UserContext from "../../context/userContext";
 
 class ForgotPassword extends Form {
-  componentDidMount() {
-    // console.log("props", this.props);
-    if (this.props.clearCache == true) window.location.reload(true);
-  }
+  static contextType = UserContext;
 
   state = {
-    data: { username: "" },
+    data: { email: "" },
     redirect: null,
     errors: {},
     showPassword: false,
   };
 
   schema = {
-    username: Joi.string().min(3).max(30).required().label("Username"),
+    email: Joi.string().email().required().label("Email"),
   };
 
   render() {
@@ -44,7 +43,7 @@ class ForgotPassword extends Form {
           </p>
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
-            {this.renderInput("username", "Username or Email")}
+            {this.renderInput("email", "Email")}
             {this.renderButton("Continue")}
           </form>
         </div>
@@ -58,39 +57,22 @@ class ForgotPassword extends Form {
     const spinner = document.getElementById("spinnerContainer");
     spinner.classList.remove("vanish");
 
+    const { setUser } = this.context;
+
     // call the backend
     try {
       const { data } = this.state;
-      await auth.forgotPassword(data);
+      await auth
+        .forgotPassword(data)
+        .then(() => setUser({ ...this.state.data }));
       spinner.classList.add("vanish");
-
-      const user = auth.getCurrentUser();
-      if (user.email_verified) {
-        window.location = "/";
+      this.setState({ ...this.state, redirect: "/confirm-account" });
+    } catch (error) {
+      spinner.classList.add("vanish");
+      if (error.response.status === 404) {
+        ErrorToast("There's no account associated with this email");
       } else {
-        auth.resendEmailConfirmation();
-        this.setState({ ...this.state, redirect: "/confirm-account" });
-      }
-    } catch (ex) {
-      if (ex.response && ex.response.status === 500) {
-        const errors = { ...this.state.errors };
-        errors.username = "Internal error, please try again";
-        this.setState({ errors });
-        spinner.classList.add("vanish");
-      } else if (ex.response && ex.response.status >= 400) {
-        const errors = { ...this.state.errors };
-        if (ex.response.data.detail.includes("password")) {
-          errors.password = ex.response.data.detail;
-        } else {
-          errors.username = ex.response.data.detail;
-        }
-        this.setState({ errors });
-        spinner.classList.add("vanish");
-      } else {
-        const errors = { ...this.state.errors };
-        errors.username = "Something went wrong, please try again";
-        this.setState({ errors });
-        spinner.classList.add("vanish");
+        ErrorToast(`Code not sent, ${error.message}`);
       }
     }
   };

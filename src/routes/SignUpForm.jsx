@@ -40,13 +40,6 @@ class SignUpForm extends Form {
       .regex(/^\s*\w+(?:[^\w,]+\w+)*[^,\w]*$/),
     email: Joi.string().email().required().label("Email"),
     password: Joi.string().min(8).required().label("Password"),
-    // confirmPassword: Joi.string()
-    //   .required()
-    //   .valid(Joi.ref("password"))
-    //   .label("Please make sure this")
-    //   .options({
-    //     language: { any: { allowOnly: "matches with password" } },
-    //   }),
   };
 
   doSubmit = async () => {
