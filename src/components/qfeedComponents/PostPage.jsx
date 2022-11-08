@@ -78,7 +78,7 @@ const PostPage = (props) => {
     }
   };
 
-  if (!currentUser.user) {
+  if (!currentUser.username) {
     // window.location = "/logout";
     props.history.replace("/logout");
   }
