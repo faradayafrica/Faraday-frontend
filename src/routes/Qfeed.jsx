@@ -93,7 +93,7 @@ const Qfeed = (props) => {
       const msg = user.is_following ? `Unfollowed` : "Followed";
 
       PromiseToast(
-        `${msg} ${user.username}`,
+        `${msg} @${user.username}`,
         "An error occurred, Try again",
         promise
       );

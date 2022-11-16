@@ -150,7 +150,7 @@ function SideNav({ history, online, hideOnlineStatus }) {
   }, []);
 
   return (
-    <>
+    <div className="bg-whit">
       {hideOnlineStatus ? (
         <>
           {online && (
@@ -167,7 +167,10 @@ function SideNav({ history, online, hideOnlineStatus }) {
           Juice Out! You are offline
         </div>
       )}
-      <div className="w-80 px-2 bg-whte sidenav-container active">
+      <div
+        style={{ minWidth: "180px" }}
+        className=" px-2 bg-whte sidenav-container active"
+      >
         <div className="position-fixed d-flex flex-column justify-content-between h-100">
           <div>
             <nav className="row my-3 ml-1 menu-nav pb-4">
@@ -212,7 +215,7 @@ function SideNav({ history, online, hideOnlineStatus }) {
       ) : (
         ""
       )}
-    </>
+    </div>
   );
 }
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import QuestionMenu from "./QuestionMenu";
 import CopyLink from "./CopyLink";
+import ReactMarkdown from "react-markdown";
 
 import { SuccessToast } from "../common/CustomToast";
 import http from "../../services/httpService";
@@ -152,7 +153,7 @@ const Question = (props) => {
   };
 
   return (
-    <div className=" question-component pl-3 pr-2 pt-3 sm:pt-4 bg-white hover:bg-[#fafafacc] flex justify-start relative">
+    <div className=" question-component pl-3 pr-2 pt-3 sm:pt-4 bg-white hover:bg-[#fafafacc] flex justify-start items-start relative">
       <Link
         to={`/me/${question?.user.username}`}
         style={{ textDecoration: "none" }}
@@ -232,6 +233,15 @@ const Question = (props) => {
                 {question?.title}
               </h3>
 
+              {/* Question body without a selected solution --optional */}
+              <div className="text-sm sm:text-base m-0 mb-2">
+                {question?.content.split("\n").map((item, idx) => (
+                  <p className="mb-1" key={idx}>
+                    {item}
+                  </p>
+                ))}
+              </div>
+
               {/* Question body if there's a solution --optional */}
               {question.solution ? (
                 <div className="bg-[#F1FBEF77] rounded-lg p-[12px] mb-2 relative">
@@ -266,6 +276,7 @@ const Question = (props) => {
                   </div>
 
                   <div className="text-sm sm:text-base m-0 mt-2">
+                    {/* <ReactMarkdown children={question?.solution.content} /> */}
                     {question?.solution.content.split("\n").map((item, idx) => (
                       <p className="mb-1" key={idx}>
                         {item}
@@ -274,16 +285,7 @@ const Question = (props) => {
                   </div>
                 </div>
               ) : (
-                <>
-                  {/* Question body without a selected solution --optional */}
-                  <div className="text-sm sm:text-base m-0 mb-2">
-                    {question?.content.split("\n").map((item, idx) => (
-                      <p className="mb-1" key={idx}>
-                        {item}
-                      </p>
-                    ))}
-                  </div>
-                </>
+                ""
               )}
             </Link>
           ) : (

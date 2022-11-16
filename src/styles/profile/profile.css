@@ -1,0 +1,21 @@
+.profile-wrapper {
+    overflow-x: hidden;
+}
+
+
+.question-section {
+    max-width: 844px;
+    min-width: auto
+}
+
+.profile-question-section {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.question-container {
+    min-width: calc(100% - 8rem);
+    cursor: pointer;
+    /* min-width: 50% */
+}
+

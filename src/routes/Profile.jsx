@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Loader from "../components/styledComponents/Loader";
 import http from "../services/httpService";
 import { getCurrentUser } from "../services/authService";
 import Question from "../components/qfeedComponents/Question";
 import "../styles/profile.scss";
+import "../styles/profile/profile.css";
 import PrimaryButton from "../components/styledComponents/PrimaryButton";
-import { SuccessToast, ErrorToast } from "../components/common/CustomToast";
-// import SecondaryButton from "../components/styledComponents/SecondaryButton";
+import SecondaryButton from "../components/styledComponents/SecondaryButton";
+import {
+  SuccessToast,
+  ErrorToast,
+  PromiseToast,
+} from "../components/common/CustomToast";
 import { Tab } from "@headlessui/react";
+
+import arrow from "../images/qfeed/arrow-right.svg";
+import ProfileQuestion from "../components/profileComponents/ProfileQuestion";
 
 function Profile({ match }, props) {
   const currentUser = getCurrentUser();
@@ -22,8 +30,33 @@ function Profile({ match }, props) {
     `/users/${match.params.username}/solutions/`;
 
   const [user, setUser] = useState();
+  const [unfollowMsg, setUnfollowMsg] = useState("Following");
   const [questions, setQuestions] = useState();
   const [solutions, setSolutions] = useState();
+
+  const handleFollow = (user) => {
+    const apiEndpoint =
+      process.env.REACT_APP_API_URL +
+      `/users/${user?.profile.username}/follow/`;
+
+    const clonedUser = { ...user };
+
+    try {
+      const promise = http.post(apiEndpoint).then((resp) => {
+        clonedUser.profile.is_following = !clonedUser.profile.is_following;
+        setUser({ ...clonedUser });
+      });
+
+      const msg = clonedUser.profile.is_following ? `Unfollowed` : "Followed";
+      PromiseToast(
+        `${msg} @${user.username}`,
+        "An error occurred, Try again",
+        promise
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const deleteQuestion = async (selectedQuestion) => {
     const remainingQuestions = questions.filter((question) => {
@@ -96,121 +129,116 @@ function Profile({ match }, props) {
 
   return (
     <>
-      <div className="w-full route-wrapper text-faraday-night">
-        <div className="min-h-[70px] sm:min-h-[20px] "> </div>
+      <div className="w-full route-wrapper profile-wrapper text-faraday-night">
+        <div className="min-h-[70px] sm:min-h-[20px] bg-brand-highight"> </div>
         {user ? (
           <>
-            <div className="mx-3 mt-2 text-sm sm:text-base">
-              <div className=" flex items-start">
+            <div className=" text-sm sm:text-base">
+              <div className=" bg-brand-highlight flex items-center justify-center ">
                 <img
                   src={user?.profile.profile_pic}
                   alt="profile"
-                  className="h-16 w-16 rounded-full "
+                  style={{ objectFit: "cover", border: "3px solid #fff " }}
+                  className="h-24 w-24 rounded-full relative top-8"
                 />
+              </div>
 
-                <div className="ml-3">
+              <div className="px-3 mt-4 ">
+                <div className="flex justify-between items-end ">
                   <div className="mt-2">
-                    <span className=" m-0 mt-2 font-bold text-sm sm:text-base">
+                    <div className="font-bold text-sm sm:text-base">
                       {user?.profile.firstname + " " + user?.profile.lastname}
-                    </span>
-                    <span className="ml-2 text-sm">
+                    </div>
+                    <div className="text-xm text-night-secondary">
                       @{user?.profile.username}
-                    </span>
+                    </div>
                   </div>
 
-                  <div className="flex ">
-                    <p className="mr-3">
-                      <span className="font-bold">
-                        {user?.profile.questions}
-                      </span>{" "}
-                      Questions
-                    </p>
-                    <p>
-                      <span className="font-bold">
-                        {user?.profile.solutions}
-                      </span>{" "}
-                      Solutions
-                    </p>
-                  </div>
+                  {currentUser.username !== match.params.username ? (
+                    <div onClick={() => handleFollow(user)}>
+                      {console.log(user.profile.is_following)}
+
+                      {user.profile.is_following == true ? (
+                        <span
+                          onMouseEnter={() => setUnfollowMsg("Unfollow")}
+                          onMouseLeave={() => setUnfollowMsg("Following")}
+                        >
+                          <SecondaryButton>{unfollowMsg}</SecondaryButton>
+                        </span>
+                      ) : (
+                        <PrimaryButton cta="Follow" />
+                      )}
+                    </div>
+                  ) : (
+                    " "
+                  )}
+                </div>
+
+                <p className="mt-2">
+                  {user.profile.bio
+                    ? user.profile.bio
+                    : `A ${user?.profile.level}L student of ${user?.profile.school} studying ${user?.profile.department}.`}
+                </p>
+
+                <div className="text-xs text-night-secondary">
+                  <p className="m-0">{user?.profile.school}</p>
+                  <p className="m-0">{user?.profile.department}</p>
+                  {user?.profile.level && (
+                    <p className="m-0">{user?.profile.level} Level</p>
+                  )}
                 </div>
               </div>
-              <div className="mt-3 mb-1">
-                {currentUser.username !== match.params.username ? (
-                  <PrimaryButton wide cta="follow" />
-                ) : (
-                  ""
-                )}
-              </div>
-              {user?.profile.level ? (
-                <p className="">
-                  {`A ${user?.profile.level}L student of ${user?.profile.school} studying ${user?.profile.department}.`}
-                </p>
-              ) : (
-                ""
-              )}
             </div>
 
-            {/* We need a nav here */}
-            <Tab.Group>
-              <Tab.List className="border-b">
-                {["Questions", "Solutions"].map((tab, index) => (
-                  <Tab
-                    key={index}
-                    className={({ selected }) =>
-                      `text-xl m-3 font-bold outline-none ${
-                        selected
-                          ? "border-b-4 border-b-brand "
-                          : "text-gray-500"
-                      }`
-                    }
-                  >
-                    {tab}
-                  </Tab>
+            <div className="question-section p-3 border-t mt-3">
+              <div className="flex py-2  justify-between items-center">
+                <p className="text-night-secondary m-0">
+                  <span className="font-bold text-faraday-night">
+                    {user.profile.questions}{" "}
+                  </span>
+                  {user.profile.questions > 1 ? "Questions" : "Question"}
+                </p>
+
+                <button className="flex items-center justify-center text-sm hover:text-brand">
+                  <span style={{ whiteSpace: "nowrap" }}>Show more</span>{" "}
+                  <img src={arrow} alt="" className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="profile-question-section flex items-start">
+                {questions?.map((question) => (
+                  <ProfileQuestion key={question.id} question={question} />
                 ))}
-              </Tab.List>
-              <Tab.Panels>
-                <Tab.Panel>
-                  <div>
-                    {questions ? (
-                      <>
-                        {questions.map((question) => (
-                          <Question
-                            question={question}
-                            questions={questions}
-                            handleUpdatedQuestions={updateQuestions}
-                            onDeleteQuestion={deleteQuestion}
-                            key={question.id}
-                          />
-                        ))}
-                      </>
-                    ) : (
-                      <div className="m-3">
-                        <Loader
-                          msg={`Loading ${currentUser.first_name}'s questions`}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </Tab.Panel>
-                <Tab.Panel>
-                  {solutions ? (
-                    <>
-                      {solutions.map((question) => (
-                        <Question
-                          question={question}
-                          questions={questions}
-                          handleUpdatedQuestions={updateQuestions}
-                          onDeleteQuestion={deleteQuestion}
-                          key={question.id}
-                        />
-                      ))}
-                    </>
-                  ) : (
-                    ""
-                  )}
-                </Tab.Panel>
-              </Tab.Panels>
-            </Tab.Group>
+              </div>
+            </div>
+
+            {user.profile.solutions > 0 && (
+              <div className="question-section p-3">
+                <div className="flex py-2  justify-between items-center">
+                  <p className="text-night-secondary m-0">
+                    <span className="font-bold text-faraday-night">
+                      {user.profile.solutions}{" "}
+                    </span>
+                    {user.profile.solutions > 1 ? "Solutions" : "Solution"}
+                  </p>
+
+                  <button className="flex items-center justify-center text-sm hover:text-brand">
+                    <span style={{ whiteSpace: "nowrap" }}>Show more</span>{" "}
+                    <img src={arrow} alt="" className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="profile-question-section flex items-start">
+                  {solutions?.map((question) => (
+                    <ProfileQuestion
+                      key={question.id}
+                      type="soln"
+                      question={question}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </>
         ) : (
           <div className="m-3">
