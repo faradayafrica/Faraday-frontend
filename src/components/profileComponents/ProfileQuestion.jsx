@@ -1,4 +1,3 @@
-import Question from "../qfeedComponents/Question";
 import { useHistory } from "react-router-dom";
 
 const ProfileQuestion = ({ question, type }) => {
@@ -6,10 +5,10 @@ const ProfileQuestion = ({ question, type }) => {
 
   return (
     <div
-      className="question-container border rounded-xl p-2 mb-3 mr-3"
+      className="question-container border rounded-xl mb-3 mr-3"
       onClick={() => history.push(`/qfeed/${question.id}`)}
     >
-      <div className="profile-row text-[12px] text-night-secondary flex items-center justify-start">
+      <div className="profile-row text-[12px] text-night-secondary flex items-center justify-start p-2">
         <img
           src={question?.user.profile_pic}
           alt=""
@@ -26,12 +25,12 @@ const ProfileQuestion = ({ question, type }) => {
         </span>
         <span className="ml-1">{question?.created}</span>
       </div>
-      <h3 className="text-base sm:text-lg font-semibold m-0 mb-1">
+      <h3 className="text-base sm:text-lg font-semibold m-0 mb-1 px-2">
         {question?.title}
       </h3>
 
       {type == "soln" && (
-        <p className="bg-[#F1FBEF77] rounded-lg p-[8px] mb-2 relative text-sm">
+        <p className="bg-[#F1FBEF77] p-2 pt-3 m-[2px] border-t relative text-sm">
           {question.solution?.content}
         </p>
       )}

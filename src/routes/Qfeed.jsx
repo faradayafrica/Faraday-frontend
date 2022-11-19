@@ -57,6 +57,7 @@ const Qfeed = (props) => {
     }
   );
 
+  //next page fetch from the useInfinite Query
   useEffect(() => {
     let fetching = false;
     const handleScroll = async (e) => {

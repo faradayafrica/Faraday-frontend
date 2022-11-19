@@ -93,9 +93,9 @@ const CommentComponent = ({
 
         {comment.is_solution ? (
           <div className=" flex items-start pb-2">
-            <div className="text-brand-dark font-bold text-xs outline outline-1 inline-flex justify-center items-center outline-brand py-1 pr-2 rounded-full">
-              <img src={mark} className="h-5 w-5 mx-1" alt="mark" />
-              The author marked this as a solution
+            <div className="text-brand-dark bg-brand-highlight cursor-pointer font-bold text-xs outline outline-1 inline-flex justify-center items-center outline-brand py-1 pr-2 rounded-full">
+              <img src={mark} className="h-[18px] w-[18px] mx-1" alt="mark" />
+              Solution marked by @{questionOwner.username}
             </div>
 
             <div

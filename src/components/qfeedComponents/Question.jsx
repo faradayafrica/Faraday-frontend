@@ -244,46 +244,58 @@ const Question = (props) => {
 
               {/* Question body if there's a solution --optional */}
               {question.solution ? (
-                <div className="bg-[#F1FBEF77] rounded-lg p-[12px] mb-2 relative">
-                  <img src={mark} className="h-4 w-4 absolute right-3 top-3" />
-                  <div className="flex item-center text-night-secondary">
+                <>
+                  <div className="bg-[#F1FBEF77] rounded-lg p-[12px] relative">
                     <img
-                      src={question?.solution.user.profile_pic}
-                      className="h-4 w-4 rounded-full bg-background2"
+                      src={mark}
+                      className="h-4 w-4 absolute right-3 top-3"
                     />
+                    <div className="flex item-center text-night-secondary">
+                      <img
+                        src={question?.solution.user.profile_pic}
+                        className="h-4 w-4 rounded-full bg-background2"
+                      />
 
-                    <p className="text-xs pl-1 m-0">
-                      {question?.solution.user.firstname.concat(
-                        question?.solution.user.lastname
-                      ).length > 15
-                        ? question?.solution.user.firstname
-                            .concat(question?.solution.user.lastname)
-                            .substring(0, 15) + "..."
-                        : question?.solution.user.firstname +
-                          " " +
-                          question?.solution.user.lastname}
-                    </p>
-                    <p className="text-xs pl-1 m-0">
-                      @
-                      {question?.solution.user.username > 15
-                        ? question?.solution.user.username.substring(0, 15) +
-                          "..."
-                        : question?.solution.user.username}
-                    </p>
-                    <p className="text-xs pl-1 m-0">
-                      {question?.solution.created}
-                    </p>
-                  </div>
-
-                  <div className="text-sm sm:text-base m-0 mt-2">
-                    {/* <ReactMarkdown children={question?.solution.content} /> */}
-                    {question?.solution.content.split("\n").map((item, idx) => (
-                      <p className="mb-1" key={idx}>
-                        {item}
+                      <p className="text-xs pl-1 m-0">
+                        {question?.solution.user.firstname.concat(
+                          question?.solution.user.lastname
+                        ).length > 15
+                          ? question?.solution.user.firstname
+                              .concat(question?.solution.user.lastname)
+                              .substring(0, 15) + "..."
+                          : question?.solution.user.firstname +
+                            " " +
+                            question?.solution.user.lastname}
                       </p>
-                    ))}
+                      <p className="text-xs pl-1 m-0">
+                        @
+                        {question?.solution.user.username > 15
+                          ? question?.solution.user.username.substring(0, 15) +
+                            "..."
+                          : question?.solution.user.username}
+                      </p>
+                      <p className="text-xs pl-1 m-0">
+                        {question?.solution.created}
+                      </p>
+                    </div>
+
+                    <div className="text-sm sm:text-base m-0 mt-2">
+                      {/* <ReactMarkdown children={question?.solution.content} /> */}
+                      {question?.solution.content
+                        .split("\n")
+                        .map((item, idx) => (
+                          <p className="mb-1" key={idx}>
+                            {item}
+                          </p>
+                        ))}
+                    </div>
                   </div>
-                </div>
+                  <div className="text-xs mb-2 text-brand-dark">
+                    {" "}
+                    Solution selected by{" "}
+                    <span className="font-bold">@{question.user.username}</span>
+                  </div>
+                </>
               ) : (
                 ""
               )}
