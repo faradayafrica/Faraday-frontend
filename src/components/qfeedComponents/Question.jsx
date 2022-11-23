@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import QuestionMenu from "./QuestionMenu";
 import CopyLink from "./CopyLink";
-import ReactMarkdown from "react-markdown";
+// import ReactMarkdown from "react-markdown";
 
-import { SuccessToast } from "../common/CustomToast";
+// import { SuccessToast } from "../common/CustomToast";
 import http from "../../services/httpService";
 
 //icon import
@@ -16,6 +16,7 @@ import smiley from "../../images/qfeed/smiley.svg";
 import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
 import mark from "../../images/qfeed/mark.svg";
+import verify from "../../images/verify.svg";
 import info from "../../images/qfeed/info.svg";
 import Modal from "../common/Modal";
 
@@ -170,10 +171,13 @@ const Question = (props) => {
         <div className="pr-2 relative" onClick={() => hideButtonPannel()}>
           {/* Profile details */}
           <p className="flex m-0 text-night-secondary mb-1 text-xs sm:text-sm">
-            <span className="mr-2 font-semibold text-faraday-night">
-              {question?.user.firstname} {question?.user.lastname}
+            <span className="mr-2 font-semibold text-faraday-night flex items-center">
+              {question?.user.firstname} {question?.user.lastname}{" "}
+              {question?.user.account_verified && (
+                <img src={verify} className="h-5 w-5 ml-1" alt="" />
+              )}
             </span>
-            <span className="mr-2">@{question?.user.username}</span>{" "}
+            <span className="mr-2 ">@{question?.user.username} </span>{" "}
             <span>{question?.created}</span>
           </p>
 

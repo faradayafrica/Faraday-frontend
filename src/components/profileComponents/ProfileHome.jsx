@@ -6,6 +6,7 @@ import SecondaryButton from "../../components/styledComponents/SecondaryButton";
 import arrow from "../../images/qfeed/arrow-right.svg";
 import Loader from "../../components/styledComponents/Loader";
 import QuestionsLoader from "../qfeedComponents/QuestionsLoader";
+import verify from "../../images/verify.svg";
 
 const ProfileHome = ({
   user,
@@ -44,8 +45,11 @@ const ProfileHome = ({
             <div className="px-3 mt-4 ">
               <div className="flex justify-between items-end ">
                 <div className="mt-2">
-                  <div className="font-bold text-sm sm:text-base">
-                    {user?.profile.firstname + " " + user?.profile.lastname}
+                  <div className="font-bold text-sm sm:text-base flex items-center">
+                    {user?.profile.firstname + " " + user?.profile.lastname}{" "}
+                    {user.profile.account_verified && (
+                      <img src={verify} className="h-5 w-5 ml-[2px]" alt="" />
+                    )}
                   </div>
                   <div className="text-xm text-night-secondary">
                     @{user?.profile.username}
@@ -111,7 +115,7 @@ const ProfileHome = ({
             </div>
 
             <div className="profile-question-section flex items-start">
-              {isQuestionLoading ? (
+              {isQuestionLoading || !questions.length ? (
                 <QuestionsLoader type="profile" />
               ) : questionError ? (
                 "Error here"
@@ -147,7 +151,7 @@ const ProfileHome = ({
               </div>
 
               <div className="profile-question-section flex items-start">
-                {isSolutionLoading ? (
+                {isSolutionLoading || !solutions.length ? (
                   <QuestionsLoader type="profile" />
                 ) : solutionError ? (
                   "Error here"

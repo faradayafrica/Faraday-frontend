@@ -53,11 +53,12 @@ function Profile({ match, history }) {
     isLoading: isQuestionLoading,
     // isError,
     error: questionError,
-    refetch,
+    refetch: refetchQuestion,
   } = useInfiniteQuery(
     ["user-questions"],
     ({ pageParam = 1 }) => fetchQuestions(pageParam),
     {
+      cacheTime: 0,
       getNextPageParam: (lastPage, allPages) => {
         const nextPage = allPages?.length + 1;
         return lastPage?.data?.next ? nextPage : undefined;
@@ -205,6 +206,8 @@ function Profile({ match, history }) {
     setLoading(true);
     async function fetchdata() {
       try {
+        setQuestions([]);
+        setSolutions([]);
         const { data } = await http.get(userEndpoint);
         setUser(data);
         setLoading(false);
@@ -215,18 +218,9 @@ function Profile({ match, history }) {
       }
     }
 
-    async function fetchUserSolutions() {
-      try {
-        const { data } = await http.get(userSolutionEndpoint);
-        setSolutions(data.results.map((item) => item.question));
-        // console.log("SOLn", data);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
     fetchdata();
-    // fetchUserSolutions();
+    refetchQuestion();
+    refetchSolution();
   }, [pathname]);
 
   const updateQuestions = (updatedQuestions) => {
