@@ -1,3 +1,5 @@
+import verify from "../../images/verify.svg";
+
 import { useHistory } from "react-router-dom";
 
 const ProfileQuestion = ({ question, type }) => {
@@ -14,8 +16,11 @@ const ProfileQuestion = ({ question, type }) => {
           alt=""
           className="h-3 w-3 rounded-full"
         />
-        <span className="ml-1">
-          {question?.user.firstname} {question.user.lastname}
+        <span className="ml-1 flex items-center">
+          {question?.user.firstname} {question.user.lastname}{" "}
+          {question?.user.account_verified && (
+            <img src={verify} className="h-4 w-4 ml-[2px]" alt="" />
+          )}
         </span>{" "}
         {/* <span className="ml-1">{question?.user.username}</span>{" "} */}
         <span className="ml-1">
