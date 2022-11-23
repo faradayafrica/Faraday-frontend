@@ -19,17 +19,20 @@ axios.interceptors.response.use(null, error => {
 });
 
 const securedRequest = axios.create({
-  baseURL: process.env.REACT_APP_API_URL
+  baseURL: process.env.REACT_APP_API_URL,
+  headers: { "Content-Type": "application/json" },
 });  
 
-securedRequest.interceptors.response.use(response => {
+securedRequest.interceptors.response.use(
+  function(response){
   return response;
 }, function(error){
-  console.log("Interceptor", error.response.status)
+  // console.log("Interceptor", error.response.status)
   if(error.response.status == "401") {
-   window.location = "/logout";
+    window.location = "/logout";
   } else {
-    return error;
+    // console.log("Interceptor", error)
+    return Promise.reject(error);
   }
 });
 

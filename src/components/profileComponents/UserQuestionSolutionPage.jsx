@@ -1,6 +1,5 @@
 import { Tab } from "@headlessui/react";
 import Question from "../qfeedComponents/Question";
-import { getCurrentUser } from "../../services/authService";
 import Loader from "../../components/styledComponents/Loader";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import arrowRight from "../../images/qfeed/arrow-right.svg";
@@ -16,7 +15,6 @@ const UserQuestionSolutionPage = ({
   fetchQuestionNextPage,
   hasQuestionNextPage,
 }) => {
-  const currentUser = getCurrentUser();
   const history = useHistory();
 
   useEffect(() => {
@@ -42,24 +40,25 @@ const UserQuestionSolutionPage = ({
   return (
     <>
       {/* We need a nav here */}
-      <div className="w-full route-wrapper profile-wrapper text-faraday-night">
-        <div className="min-h-[70px] sm:min-h-[20px]"> </div>
-        <div className="flex items-center p-3 sticky top-10">
-          <img
-            src={arrowRight}
-            className="w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180"
-            alt="return"
-            onClick={() => {
-              history.goBack();
-            }}
-          />
-          <h1 className="text-2xl sm:text-2xl font-bold m-0 ">
-            {user?.profile.firstname}'s question feed
-          </h1>
-        </div>
-
+      <div className="w-full profile-wrapper text-faraday-night bg-white relative">
         <Tab.Group>
-          <Tab.List className="border-b">
+          <Tab.List className="border-b bg-white fixed sm:static z-20 w-full">
+            <div className="">
+              <div className="min-h-[70px] sm:min-h-[20px] w-full"> </div>
+              <div className="flex items-center p-3 sticky top-10">
+                <img
+                  src={arrowRight}
+                  className="w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180"
+                  alt="return"
+                  onClick={() => {
+                    history.goBack();
+                  }}
+                />
+                <h1 className="text-2xl sm:text-2xl font-bold m-0 ">
+                  {user?.profile.firstname}'s question feed
+                </h1>
+              </div>
+            </div>
             {["Questions", "Solutions"].map((tab, index) => (
               <Tab
                 key={index}
@@ -75,9 +74,12 @@ const UserQuestionSolutionPage = ({
               </Tab>
             ))}
           </Tab.List>
-          <Tab.Panels>
+          <Tab.Panels className="mt-48 sm:mt-2 pt-2">
             <Tab.Panel>
-              <div>
+              <div
+              // className="profile-question-section h-[600px]"
+              // style={{ overflowY: "auto" }}
+              >
                 {questions ? (
                   <>
                     {questions.map((question) => (
@@ -102,13 +104,13 @@ const UserQuestionSolutionPage = ({
             <Tab.Panel>
               {solutions ? (
                 <>
-                  {solutions.map((question) => (
+                  {solutions.map((item) => (
                     <Question
-                      question={question}
-                      questions={questions}
+                      question={item.question}
+                      questions={item.questions}
                       handleUpdatedQuestions={updateQuestions}
                       onDeleteQuestion={deleteQuestion}
-                      key={question.id}
+                      key={item.question.id}
                     />
                   ))}
                 </>

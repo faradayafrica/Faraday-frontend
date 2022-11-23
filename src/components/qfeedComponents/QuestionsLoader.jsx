@@ -21,6 +21,56 @@ const QuestionsLoader = ({ type, short }) => {
     );
   });
 
+  if (type === "profile") {
+    return (
+      <div className="profile-question-section flex items-start mt-4">
+        <div className="question-container border rounded-xl mb-3 mr-3 p-2 animate-pulse">
+          <div className="profile-row text-[12px] text-night-secondary flex items-center justify-start py-2 ">
+            <div className="h-3 w-3 rounded-full bg-background2 "></div>
+            <span className="ml-1 bg-background2 h-3 w-24 rounded-lg"></span>{" "}
+            {/* <span className="ml-1">{question?.user.username}</span>{" "} */}
+            <span className="ml-1 bg-background2 h-3 w-6 rounded-lg"></span>
+          </div>
+          <div className=" bg-background2 h-24 w-full rounded-lg"></div>
+          {/* <p className="bg-[#F1FBEF77] p-2 pt-3 m-[2px] border-t relative text-sm"></p> */}
+        </div>
+
+        <div className="question-container border rounded-xl mb-3 mr-3 p-2 animate-pulse">
+          <div className="profile-row text-[12px] text-night-secondary flex items-center justify-start py-2 ">
+            <div className="h-3 w-3 rounded-full bg-background2 "></div>
+            <span className="ml-1 bg-background2 h-3 w-24 rounded-lg"></span>{" "}
+            {/* <span className="ml-1">{question?.user.username}</span>{" "} */}
+            <span className="ml-1 bg-background2 h-3 w-6 rounded-lg"></span>
+          </div>
+          <div className=" bg-background2 h-24 w-full rounded-lg"></div>
+          {/* <p className="bg-[#F1FBEF77] p-2 pt-3 m-[2px] border-t relative text-sm"></p> */}
+        </div>
+
+        <div className="question-container border rounded-xl mb-3 mr-3 p-2 animate-pulse">
+          <div className="profile-row text-[12px] text-night-secondary flex items-center justify-start py-2 ">
+            <div className="h-3 w-3 rounded-full bg-background2 "></div>
+            <span className="ml-1 bg-background2 h-3 w-24 rounded-lg"></span>{" "}
+            {/* <span className="ml-1">{question?.user.username}</span>{" "} */}
+            <span className="ml-1 bg-background2 h-3 w-6 rounded-lg"></span>
+          </div>
+          <div className=" bg-background2 h-24 w-full rounded-lg"></div>
+          {/* <p className="bg-[#F1FBEF77] p-2 pt-3 m-[2px] border-t relative text-sm"></p> */}
+        </div>
+
+        <div className="question-container border rounded-xl mb-3 mr-3 p-2 animate-pulse">
+          <div className="profile-row text-[12px] text-night-secondary flex items-center justify-start py-2 ">
+            <div className="h-3 w-3 rounded-full bg-background2 "></div>
+            <span className="ml-1 bg-background2 h-3 w-24 rounded-lg"></span>{" "}
+            {/* <span className="ml-1">{question?.user.username}</span>{" "} */}
+            <span className="ml-1 bg-background2 h-3 w-6 rounded-lg"></span>
+          </div>
+          <div className=" bg-background2 h-24 w-full rounded-lg"></div>
+          {/* <p className="bg-[#F1FBEF77] p-2 pt-3 m-[2px] border-t relative text-sm"></p> */}
+        </div>
+      </div>
+    );
+  }
+
   if (type == "discussion") {
     return (
       <>
@@ -140,7 +190,6 @@ const QuestionsLoader = ({ type, short }) => {
           </div>
         </>
       ) : (
-
         <>
           <div className="px-3 animate-pulse border-b-[1px] question-loader-item py-2">
             <div className="flex">
@@ -160,7 +209,6 @@ const QuestionsLoader = ({ type, short }) => {
                 </div>
               </div>
             </div>
-
           </div>
 
           <div className="h-12"></div>

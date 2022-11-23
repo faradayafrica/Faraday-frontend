@@ -1,21 +1,32 @@
 .profile-wrapper {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
-
 .question-section {
-    max-width: 844px;
-    min-width: auto
+  /* max-width: 844px; */
+  min-width: auto;
 }
 
 .profile-question-section {
-    overflow-x: auto;
-    overflow-y: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .question-container {
-    min-width: calc(100% - 8rem);
+  min-width: calc(100% - 8rem);
+  cursor: pointer;
+  /* min-width: 50% */
+}
+@media only screen and (max-width: 600px) {
+  .question-container {
+    min-width: calc(100% - 4rem);
     cursor: pointer;
     /* min-width: 50% */
+  }
 }
 
+.top-sticky-side {
+  background-color: bisque;
+  position: sticky !important;
+  top: 0;
+}

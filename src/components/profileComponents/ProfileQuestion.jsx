@@ -19,7 +19,7 @@ const ProfileQuestion = ({ question, type }) => {
         </span>{" "}
         {/* <span className="ml-1">{question?.user.username}</span>{" "} */}
         <span className="ml-1">
-          {question?.user.username > 8
+          {question?.user.username.length > 8
             ? question?.user.username.substring(0, 8) + "..."
             : question?.user.username}
         </span>
@@ -29,9 +29,12 @@ const ProfileQuestion = ({ question, type }) => {
         {question?.title}
       </h3>
 
-      {type == "soln" && (
+      {type === "soln" && (
         <p className="bg-[#F1FBEF77] p-2 pt-3 m-[2px] border-t relative text-sm">
-          {question.solution?.content}
+          {/* {question.solution?.content} */}
+          {question?.solution?.content.length > 80
+            ? question?.solution?.content.substring(0, 80) + "..."
+            : question?.solution?.content}
         </p>
       )}
     </div>
