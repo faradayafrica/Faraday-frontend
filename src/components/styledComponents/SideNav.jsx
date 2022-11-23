@@ -143,6 +143,12 @@ function SideNav({ history, online, hideOnlineStatus }) {
     }
   }, []);
 
+  useEffect(() => {
+    if (!currentUser.username) {
+      setLinks([]);
+    }
+  }, []);
+
   return (
     <>
       {hideOnlineStatus ? (
@@ -167,7 +173,6 @@ function SideNav({ history, online, hideOnlineStatus }) {
             <nav className="row my-3 ml-1 menu-nav pb-4">
               <img className=" navlink-brand " src={faraday} alt="faraday" />
             </nav>
-
             {links?.map((link) => (
               <NavLink
                 key={link.item}
@@ -176,12 +181,18 @@ function SideNav({ history, online, hideOnlineStatus }) {
                 handleLink={handleLink}
               />
             ))}
-
             {/* Ask question btn */}
-            <Link to="/qfeed/post" className=" ">
-              {" "}
-              <PrimaryButton cta="Ask a question" />
-            </Link>
+            {currentUser.username ? (
+              <Link to="/qfeed/post" className=" ">
+                {" "}
+                <PrimaryButton cta="Ask a question" />
+              </Link>
+            ) : (
+              <Link to="/login" className=" ">
+                {" "}
+                <PrimaryButton cta="Login" />
+              </Link>
+            )}
           </div>
         </div>
       </div>

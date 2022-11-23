@@ -78,6 +78,11 @@ const PostPage = (props) => {
     }
   };
 
+  if (!currentUser.username) {
+    // window.location = "/logout";
+    props.history.replace("/logout");
+  }
+
   return (
     <div className=" w-full">
       <div className="min-h-[70px] sm:min-h-[0px]  "> </div>
