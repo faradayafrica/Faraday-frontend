@@ -111,7 +111,7 @@ const ProfileHome = ({
             </div>
 
             <div className="profile-question-section flex items-start">
-              {isQuestionLoading ? (
+              {isQuestionLoading || !questions.length ? (
                 <QuestionsLoader type="profile" />
               ) : questionError ? (
                 "Error here"
@@ -147,7 +147,7 @@ const ProfileHome = ({
               </div>
 
               <div className="profile-question-section flex items-start">
-                {isSolutionLoading ? (
+                {isSolutionLoading || !solutions.length ? (
                   <QuestionsLoader type="profile" />
                 ) : solutionError ? (
                   "Error here"
