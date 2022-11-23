@@ -1,29 +1,171 @@
-import React, { useEffect, useState } from "react";
-import Loader from "../components/styledComponents/Loader";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import http from "../services/httpService";
 import { getCurrentUser } from "../services/authService";
-import Question from "../components/qfeedComponents/Question";
+import { Switch, Route, Redirect } from "react-router-dom";
 import "../styles/profile.scss";
-import PrimaryButton from "../components/styledComponents/PrimaryButton";
-import { SuccessToast, ErrorToast } from "../components/common/CustomToast";
-// import SecondaryButton from "../components/styledComponents/SecondaryButton";
-import { Tab } from "@headlessui/react";
+import "../styles/profile/profile.css";
+import {
+  SuccessToast,
+  ErrorToast,
+  PromiseToast,
+} from "../components/common/CustomToast";
 
-function Profile({ match }, props) {
+import UserQuestionSolutionPage from "../components/profileComponents/UserQuestionSolutionPage";
+import NotFound from "./NotFound";
+import ProfileHome from "../components/profileComponents/ProfileHome";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import ProfileHomeLoader from "../components/profileComponents/ProfileHomeLoader";
+function Profile({ match, history }) {
   const currentUser = getCurrentUser();
-  // console.log("currentUser", currentUser);
 
-  const userEndpoint =
-    process.env.REACT_APP_API_URL + `/users/${match.params.username}/`;
-  const userQuestionEndpoint =
-    process.env.REACT_APP_API_URL + `/users/${match.params.username}/ques/`;
-  const userSolutionEndpoint =
-    process.env.REACT_APP_API_URL +
-    `/users/${match.params.username}/solutions/`;
+  const userEndpoint = `/users/${match.params.username}/`;
+  const userQuestionEndpoint = `/users/${match.params.username}/ques/`;
+  const userSolutionEndpoint = `/users/${match.params.username}/solutions/`;
 
   const [user, setUser] = useState();
   const [questions, setQuestions] = useState();
   const [solutions, setSolutions] = useState();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [pathname, setPathname] = useState(match.params.username);
+
+  const fetchQuestions = async (pageParam) => {
+    const resp = await http.get(
+      process.env.REACT_APP_API_URL + userQuestionEndpoint
+    );
+    return resp;
+  };
+
+  const fetchSolutions = async (pageParam) => {
+    const resp = await http.get(
+      process.env.REACT_APP_API_URL + userSolutionEndpoint
+    );
+    return resp;
+  };
+
+  // React Query >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  const {
+    data: questionData,
+    isSuccess: isQuestionSuccess,
+    hasNextPage: hasQuestionNextPage,
+    fetchNextPage: fetchQuestionNextPage,
+    isFetchingNextPage: isFetchingQuestionNextPage,
+    isLoading: isQuestionLoading,
+    // isError,
+    error: questionError,
+    refetch,
+  } = useInfiniteQuery(
+    ["user-questions"],
+    ({ pageParam = 1 }) => fetchQuestions(pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages?.length + 1;
+        return lastPage?.data?.next ? nextPage : undefined;
+      },
+    }
+  );
+
+  const {
+    data: solutionData,
+    isSuccess: isSolutionSuccess,
+    hasNextPage: hasSolutionNextPage,
+    fetchNextPage: fetchSolutionNextPage,
+    isFetchingNextPage: isFetchingSolutionNextPage,
+    isLoading: isSolutionLoading,
+    // isError,
+    error: solutionError,
+    refetch: refetchSolution,
+  } = useInfiniteQuery(
+    ["user-solutions"],
+    ({ pageParam = 1 }) => fetchSolutions(pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages?.length + 1;
+        return lastPage?.data?.next ? nextPage : undefined;
+      },
+    }
+  );
+
+  // React Query <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+  //updates the data from the useInfiniteQuery into the questions state
+  useEffect(() => {
+    const newQuestions = [];
+
+    isQuestionSuccess &&
+      !isQuestionLoading &&
+      questionData?.pages.map((page) =>
+        page.data?.results.map((item) => {
+          // console.log("Question first fetch");
+          return newQuestions.push(item);
+        })
+      );
+    setQuestions(newQuestions);
+  }, [questionData]);
+
+  //updates the data from the useInfiniteQuery into the solutions state
+  useEffect(() => {
+    const newSolutions = [];
+
+    isSolutionSuccess &&
+      !isSolutionLoading &&
+      solutionData?.pages.map((page) =>
+        page.data?.results.map((item) => {
+          // console.log("Solution first fetch");
+          return newSolutions.push(item);
+        })
+      );
+    setSolutions(newSolutions);
+  }, [solutionData, isSolutionSuccess]);
+
+  useEffect(() => {
+    let fetching = false;
+    const handleScroll = async (e) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasQuestionNextPage) {
+          await fetchQuestionNextPage();
+        } else {
+          fetching = false;
+        }
+      }
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+
+    //We have a bug at the moment, this block of code runs and fetches more
+    // questions when a user reaches the end of the page, whether on the question tab
+    //or solution tab. This can be revisited in the future when users have > 30
+    //questions/ solutions
+  }, [fetchQuestionNextPage, hasQuestionNextPage]);
+
+  const handleFollow = (user) => {
+    const apiEndpoint =
+      process.env.REACT_APP_API_URL +
+      `/users/${user?.profile.username}/follow/`;
+
+    const clonedUser = { ...user };
+
+    try {
+      const promise = http.post(apiEndpoint).then((resp) => {
+        clonedUser.profile.is_following = !clonedUser.profile.is_following;
+        setUser({ ...clonedUser });
+      });
+
+      const msg = clonedUser.profile.is_following ? `Unfollowed` : "Followed";
+      PromiseToast(
+        `${msg} @${user.username}`,
+        "An error occurred, Try again",
+        promise
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const deleteQuestion = async (selectedQuestion) => {
     const remainingQuestions = questions.filter((question) => {
@@ -49,29 +191,27 @@ function Profile({ match }, props) {
       setQuestions([...remainingQuestions]);
       fetchdata();
     } catch (e) {
-      console.warn("Buttocks", e.message);
+      console.warn(e.message);
       ErrorToast("Couldn't delete question");
     }
   };
 
   useEffect(() => {
-    document.title = `${currentUser?.last_name} ${currentUser?.first_name} Profile`;
+    setPathname(match.params.username);
+  });
 
+  useLayoutEffect(() => {
+    // document.title = `${currentUser?.last_name} ${currentUser?.first_name} Profile`;
+    setLoading(true);
     async function fetchdata() {
       try {
         const { data } = await http.get(userEndpoint);
         setUser(data);
+        setLoading(false);
       } catch (e) {
-        console.log(e.message);
-      }
-    }
-
-    async function fetchUserQuestions() {
-      try {
-        const { data } = await http.get(userQuestionEndpoint);
-        setQuestions(data.results);
-      } catch (e) {
-        console.log(e.message);
+        console.log(e);
+        setLoading(false);
+        setError("Couldn't fetch user at this time");
       }
     }
 
@@ -81,144 +221,69 @@ function Profile({ match }, props) {
         setSolutions(data.results.map((item) => item.question));
         // console.log("SOLn", data);
       } catch (e) {
-        console.log(e.message);
+        console.log(e);
       }
     }
 
-    fetchUserSolutions();
     fetchdata();
-    fetchUserQuestions();
-  }, []);
+    // fetchUserSolutions();
+  }, [pathname]);
 
   const updateQuestions = (updatedQuestions) => {
     setQuestions([...updatedQuestions]);
   };
 
   return (
-    <>
-      <div className="w-full route-wrapper text-faraday-night">
-        <div className="min-h-[70px] sm:min-h-[20px] "> </div>
-        {user ? (
-          <>
-            <div className="mx-3 mt-2 text-sm sm:text-base">
-              <div className=" flex items-start">
-                <img
-                  src={user?.profile.profile_pic}
-                  alt="profile"
-                  className="h-16 w-16 rounded-full "
-                />
+    <div className="w-full route-wrapper profile-wrapper text-faraday-night">
+      {loading ? (
+        <ProfileHomeLoader />
+      ) : error ? (
+        error
+      ) : (
+        <Switch>
+          <Route
+            path="/me/:username/qfeed"
+            render={(props) => (
+              <UserQuestionSolutionPage
+                user={user}
+                questions={questions}
+                solutions={solutions}
+                deleteQuestion={deleteQuestion}
+                updateQuestions={updateQuestions}
+                fetchQuestionNextPage={fetchQuestionNextPage}
+                hasQuestionNextPage={hasQuestionNextPage}
+                fetchSolutionNextPage={fetchSolutionNextPage}
+                hasSolutionNextPage={hasSolutionNextPage}
+              />
+            )}
+          />
 
-                <div className="ml-3">
-                  <div className="mt-2">
-                    <span className=" m-0 mt-2 font-bold text-sm sm:text-base">
-                      {user?.profile.firstname + " " + user?.profile.lastname}
-                    </span>
-                    <span className="ml-2 text-sm">
-                      @{user?.profile.username}
-                    </span>
-                  </div>
-
-                  <div className="flex ">
-                    <p className="mr-3">
-                      <span className="font-bold">
-                        {user?.profile.questions}
-                      </span>{" "}
-                      Questions
-                    </p>
-                    <p>
-                      <span className="font-bold">
-                        {user?.profile.solutions}
-                      </span>{" "}
-                      Solutions
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-3 mb-1">
-                {currentUser.username !== match.params.username ? (
-                  <PrimaryButton wide cta="follow" />
-                ) : (
-                  ""
-                )}
-              </div>
-              {user?.profile.level ? (
-                <p className="">
-                  {`A ${user?.profile.level}L student of ${user?.profile.school} studying ${user?.profile.department}.`}
-                </p>
-              ) : (
-                ""
-              )}
-            </div>
-
-            {/* We need a nav here */}
-            <Tab.Group>
-              <Tab.List className="border-b">
-                {["Questions", "Solutions"].map((tab, index) => (
-                  <Tab
-                    key={index}
-                    className={({ selected }) =>
-                      `text-xl m-3 font-bold outline-none ${
-                        selected
-                          ? "border-b-4 border-b-brand "
-                          : "text-gray-500"
-                      }`
-                    }
-                  >
-                    {tab}
-                  </Tab>
-                ))}
-              </Tab.List>
-              <Tab.Panels>
-                <Tab.Panel>
-                  <div>
-                    {questions ? (
-                      <>
-                        {questions.map((question) => (
-                          <Question
-                            question={question}
-                            questions={questions}
-                            handleUpdatedQuestions={updateQuestions}
-                            onDeleteQuestion={deleteQuestion}
-                            key={question.id}
-                          />
-                        ))}
-                      </>
-                    ) : (
-                      <div className="m-3">
-                        <Loader
-                          msg={`Loading ${currentUser.first_name}'s questions`}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </Tab.Panel>
-                <Tab.Panel>
-                  {solutions ? (
-                    <>
-                      {solutions.map((question) => (
-                        <Question
-                          question={question}
-                          questions={questions}
-                          handleUpdatedQuestions={updateQuestions}
-                          onDeleteQuestion={deleteQuestion}
-                          key={question.id}
-                        />
-                      ))}
-                    </>
-                  ) : (
-                    ""
-                  )}
-                </Tab.Panel>
-              </Tab.Panels>
-            </Tab.Group>
-          </>
-        ) : (
-          <div className="m-3">
-            <Loader msg={`Just a moment`} />
-          </div>
-        )}
-      </div>
-    </>
+          <Route
+            path="/"
+            render={(props) => (
+              // <>
+              //   {console.log(user, "<<<<<<")}
+              //   <div>HI</div>
+              // </>
+              <ProfileHome
+                user={user}
+                currentUser={currentUser}
+                handleFollow={handleFollow}
+                questions={questions}
+                isQuestionLoading={isQuestionLoading}
+                questionError={questionError}
+                isSolutionLoading={isSolutionLoading}
+                solutionError={solutionError}
+                solutions={solutions}
+                {...props}
+              />
+            )}
+          />
+          <Route path="/not-found" component={NotFound} />
+          <Redirect push to="/not-found" />
+        </Switch>
+      )}
+    </div>
   );
 }
 
