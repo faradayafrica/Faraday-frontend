@@ -290,6 +290,7 @@ const AddSchoolDetail = () => {
       })
         .then((res) => res.json())
         .then((data) => data.data),
+    refetchOnWindowFocus: false,
   });
 
   const { data: facultiesData } = useQuery({
@@ -304,6 +305,7 @@ const AddSchoolDetail = () => {
         .then((res) => res.json())
         .then((data) => data.data),
     enabled: !!schoolCode,
+    refetchOnWindowFocus: false,
   });
 
   const { data: departmentData } = useQuery({
@@ -321,6 +323,7 @@ const AddSchoolDetail = () => {
         .then((res) => res.json())
         .then((data) => data.data),
     enabled: !!schoolCode && !!facultySel,
+    refetchOnWindowFocus: false,
   });
 
   // console.log(facultiesData, "facultiesData");
