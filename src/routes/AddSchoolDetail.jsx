@@ -255,7 +255,8 @@ import PrimaryButton from "../components/styledComponents/PrimaryButton";
 // }
 
 const AddSchoolDetail = () => {
-  const [schoolCode, setSchoolCode] = useState();
+  const [schoolCode, setSchoolCode] = useState(null);
+  const [facultySel, setFaultySel] = useState(null);
 
   const {
     register,
@@ -266,12 +267,13 @@ const AddSchoolDetail = () => {
   } = useForm();
 
   const schoolWatch = watch("school");
+  const facultyWatch = watch("faculty");
 
   // console.log(schoolWatch, "schoolWatch");
   const values = getValues();
   const faculty = getValues("faculty");
 
-  console.log(values, faculty, "values");
+  // console.log(values, faculty, "values");
 
   const {
     isLoading,
@@ -305,10 +307,10 @@ const AddSchoolDetail = () => {
   });
 
   const { data: departmentData } = useQuery({
-    queryKey: ["facultiesData", schoolCode],
+    queryKey: ["departmentData", schoolCode, facultySel],
     queryFn: () =>
       fetch(
-        `https://univast.faraday.africa/academia/department/${schoolCode}/${faculty}`,
+        `https://univast.faraday.africa/academia/department/${schoolCode}/${facultySel}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -318,19 +320,25 @@ const AddSchoolDetail = () => {
       )
         .then((res) => res.json())
         .then((data) => data.data),
-    enabled: schoolCode && !!faculty,
+    enabled: !!schoolCode && !!facultySel,
   });
 
   // console.log(facultiesData, "facultiesData");
 
   useEffect(() => {
     let selectSch = document.getElementById("school");
-    if (schoolsData) {
-      let selectSchCode =
-        selectSch.options[selectSch.selectedIndex].dataset.code;
+    let selectSchCode = selectSch.options[selectSch.selectedIndex].dataset.code;
+    if (schoolsData && selectSchCode !== "School") {
       setSchoolCode(selectSchCode);
     }
   }, [schoolWatch, schoolsData]);
+
+  useEffect(() => {
+    let facSel = document.getElementById("faculty")?.value;
+    if (facultiesData && facSel !== "Faculty") {
+      setFaultySel(facSel);
+    }
+  }, [facultyWatch, facultiesData]);
 
   const onSubmit = async (data) => {
     console.log(data);
