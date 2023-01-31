@@ -1115,6 +1115,11 @@ form {
   background-color: var(--background) !important;
 }
 
+.log select option {
+  width: 100%;
+  width: 125px;
+}
+
 .form-title {
   /* position: relative; */
   top: -0.8rem;

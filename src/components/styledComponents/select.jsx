@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-const Select = ({ name, label, options, error, ...rest }) => {
+const Select = ({ name, label, options, error, register, ...rest }) => {
   return (
     <div className='form-group log'>
       <label className='sr-only' htmlFor={name}>
@@ -9,22 +9,25 @@ const Select = ({ name, label, options, error, ...rest }) => {
       <select
         name={name}
         id={name}
-        {...rest}
+        {...register}
+        // {...rest}
         className='form-control '
         placeholder={name}
       >
         {/* <option value=' ' /> */}
-        <option value>{label}</option>
-        {options.map(option => (
-          <option key={option.name} value={option.name}>
+        <option value={null} data-code={label}>
+          {label}
+        </option>
+        {options?.map((option) => (
+          <option key={option.name} value={option.name} data-code={option.code}>
             {option.name}
           </option>
         ))}
       </select>
       {error && (
         <div className='alert alert-warning my-1 '>
-          <div className='dialog-arrow alert-warning'> </div>{' '}
-          <p className='m-0 alert-body'>{error}</p>{' '}
+          <div className='dialog-arrow alert-warning'> </div>{" "}
+          <p className='m-0 alert-body'>{error}</p>{" "}
         </div>
       )}
     </div>

@@ -16,6 +16,7 @@ class Form extends Component {
     errors: {},
   };
 
+  selectedSchoolCode = "";
   selectedFaculty = "";
   selectedMonth = "";
 
@@ -99,10 +100,13 @@ class Form extends Component {
     const data = { ...this.state.data };
     data[input.name] = input.value;
 
-    var select = document.getElementById("faculty");
-    var text = select.options[select.selectedIndex].text;
+    var selectFac = document.getElementById("faculty");
+    var text = selectFac.options[selectFac.selectedIndex].text;
     this.selectedFaculty = text;
-    // console.log(this.selectedFaculty);
+
+    let selectSch = document.getElementById("school");
+    var selectSchCode = selectSch.options[selectSch.selectedIndex].dataset.code;
+    this.selectedSchoolCode = selectSchCode;
 
     this.setState({ data, errors });
   };
@@ -126,7 +130,7 @@ class Form extends Component {
   renderButton(label, isFluid) {
     // console.log(this.validate());
     return (
-      <div className="mt-3">
+      <div className='mt-3'>
         <PrimaryButton cta={label} disabled={this.validate()} wide />
       </div>
     );
@@ -135,14 +139,14 @@ class Form extends Component {
   renderRedirectBtn(label, link, msg) {
     return (
       <div
-        className="mx-auto text-center mt-3 text-md"
+        className='mx-auto text-center mt-3 text-md'
         style={{ maxWidth: "425px", alignText: "center" }}
       >
         <p>
           {msg}
           <Link to={`/${link}`} style={{ textDecoration: "none" }}>
             {" "}
-            <span className="icon-container-secondary link-brand bubbly-button">
+            <span className='icon-container-secondary link-brand bubbly-button'>
               {label} here
             </span>
           </Link>{" "}
@@ -234,16 +238,16 @@ class Form extends Component {
             const showPassword = !this.state.showPassword;
             this.setState({ showPassword });
           }}
-          className="text-left mt-2 mb-4 text-sm flex cursor-pointer items-center"
+          className='text-left mt-2 mb-4 text-sm flex cursor-pointer items-center'
         >
-          <div className="mr-1 border h-4 w-4 flex items-center justify-center rounded-full">
+          <div className='mr-1 border h-4 w-4 flex items-center justify-center rounded-full'>
             <div
               className={`h-3 w-3 rounded-full ${
                 this.state.showPassword ? "bg-faraday-night" : ""
               }`}
             ></div>
           </div>
-          <p className="m-0">Show password </p>
+          <p className='m-0'>Show password </p>
         </div>
       </>
     );
@@ -254,7 +258,7 @@ class Form extends Component {
 
     return (
       <TextArea
-        type="text"
+        type='text'
         name={name}
         rows={rows}
         value={data[name]}
@@ -271,27 +275,27 @@ class Form extends Component {
     const { data } = this.state;
 
     return (
-      <div className="form-group m-0  mx-auto">
+      <div className='form-group m-0  mx-auto'>
         <img
-          className="add-profile-btn cursor-pointer"
+          className='add-profile-btn cursor-pointer'
           src={data.image}
-          id="img"
-          alt=""
+          id='img'
+          alt=''
           onClick={(event) => {
             this.fileInputRef.current.click();
           }}
         />
 
         <input
-          type="file"
-          name="image-upload"
+          type='file'
+          name='image-upload'
           id={name}
-          accept="image/*"
+          accept='image/*'
           onChange={(event) => this.imageHandler(event.target.files[0])}
           ref={this.fileInputRef}
           style={{ display: "none" }}
         />
-        <label htmlFor={name} className="sr-only">
+        <label htmlFor={name} className='sr-only'>
           Add Image
         </label>
       </div>
