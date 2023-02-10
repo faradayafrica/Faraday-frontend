@@ -137,20 +137,6 @@ const App = () => {
     }
   });
 
-  const schoolData = useQuery({
-    queryKey: ["schoolsData"],
-    queryFn: () =>
-      fetch("https://univast.faraday.africa/academia/schools/NG", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Api-Key ${process.env.REACT_APP_UNIVAST_KEY}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => data.data),
-    refetchOnWindowFocus: false,
-  });
-
   return (
     <BrowserRouter>
       <UserProvider>
