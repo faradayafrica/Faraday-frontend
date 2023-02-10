@@ -25,7 +25,6 @@ import MissingQuestion from "./routes/MissingQuestion.jsx";
 import ForgotPassword from "./routes/forgot-password/ForgotPassword.jsx";
 import ConfirmAccount from "./routes/forgot-password/ConfirmAccount.jsx";
 import ResetPassword from "./routes/forgot-password/ResetPassword.jsx";
-import { useQuery } from "@tanstack/react-query";
 
 const App = () => {
   const [online, setOnline] = useState(true);
