@@ -28,6 +28,10 @@ const Select = ({
           <Listbox.Label hidden> {label}</Listbox.Label>
           <Listbox.Button className='form-control truncate relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-green-300 sm:text-sm'>
             {value ? value : <span className='text-gray-400'>{label}</span>}
+
+            <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
+              <ArrowDown />
+            </span>
           </Listbox.Button>
           <Listbox.Options className='absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-30'>
             {lists?.map((list) => (
@@ -100,3 +104,22 @@ const Select = ({
 };
 
 export default Select;
+
+const ArrowDown = ({ ...rest }) => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      fill='none'
+      viewBox='0 0 24 24'
+      strokeWidth={1.5}
+      stroke='currentColor'
+      className='w-4 h-4'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        d='M19.5 8.25l-7.5 7.5-7.5-7.5'
+      />
+    </svg>
+  );
+};
