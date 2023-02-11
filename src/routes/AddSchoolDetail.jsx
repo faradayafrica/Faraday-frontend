@@ -262,6 +262,7 @@ const AddSchoolDetail = () => {
   const [facultyValue, setFacultyValue] = useState("");
   const [departmentValue, setDepartmentValue] = useState("");
   const [levelValue, setLevelValue] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   const {
     register,
@@ -367,7 +368,10 @@ const AddSchoolDetail = () => {
       await auth.updateSchoolDetail(data);
       progress?.classList.add("progress-75");
       spinner?.classList.add("vanish");
-      // <Redirect to="/update-personal-data" />;
+
+      setRedirect(true);
+
+      // window.location.replace("/update-personal-data");
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         // const errors = { ...this.state.errors };
@@ -390,6 +394,7 @@ const AddSchoolDetail = () => {
 
   return (
     <div className='login-page'>
+      {redirect && <Redirect to='/update-personal-data' />}
       {/* the spinner */}
       <div id='spinnerContainer' className='spinner-container vanish'>
         <Myspinner />
