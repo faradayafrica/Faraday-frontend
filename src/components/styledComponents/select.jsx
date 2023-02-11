@@ -60,7 +60,7 @@ const Select = ({
             {loading && (
               <Listbox.Option className='py-3'>Loading...</Listbox.Option>
             )}
-            {!loading && lists.length === 0 && (
+            {!loading && lists?.length === 0 && (
               <Listbox.Option className='py-3'>
                 Sorry, No {label} found!
               </Listbox.Option>
