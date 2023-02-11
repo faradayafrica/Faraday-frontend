@@ -78,17 +78,14 @@ const Select = ({
       <select
         name={name}
         id={name}
-        {...register}
-        // {...rest}
+        {...rest}
         className='form-control '
         placeholder={name}
       >
         {/* <option value=' ' /> */}
-        <option value={null} data-code={label}>
-          {label}
-        </option>
-        {options?.map((option) => (
-          <option key={option.name} value={option.name} data-code={option.code}>
+        <option value>{label}</option>
+        {options.map((option) => (
+          <option key={option.name} value={option.name}>
             {option.name}
           </option>
         ))}
