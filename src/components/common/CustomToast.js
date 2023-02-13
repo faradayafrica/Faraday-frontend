@@ -9,7 +9,7 @@ export async function SuccessToast(message) {
       backgroundColor: "#F1FBEF",
       fontSize: "14px",
       paddingTop: "8px",
-      paddingBottom: "8px"
+      paddingBottom: "8px",
     },
     iconTheme: {
       primary: "#05b851",
@@ -27,7 +27,7 @@ export async function ErrorToast(message) {
       backgroundColor: "#F1FBEF",
       fontSize: "14px",
       paddingTop: "8px",
-      paddingBottom: "8px"
+      paddingBottom: "8px",
     },
     iconTheme: {
       primary: "#05b851",
@@ -37,11 +37,32 @@ export async function ErrorToast(message) {
 }
 
 export async function PromiseToast(success_msg, error_msg, promise) {
-  toast.promise(promise, {
-    loading: "Loading",
-    success: success_msg,
-    error: error_msg,
-  }, {
+  toast.promise(
+    promise,
+    {
+      loading: "Loading",
+      success: success_msg,
+      error: error_msg,
+    },
+    {
+      style: {
+        border: "1px solid #05b851",
+        padding: "16px",
+        color: "#2C974B",
+        backgroundColor: "#F1FBEF",
+        fontSize: "14px",
+        paddingTop: "8px",
+        paddingBottom: "8px",
+      },
+      iconTheme: {
+        primary: "#05b851",
+        secondary: "#FFFAEE",
+      },
+    }
+  );
+}
+export async function LoadingToast(message) {
+  toast.loading(message, {
     style: {
       border: "1px solid #05b851",
       padding: "16px",
@@ -49,7 +70,7 @@ export async function PromiseToast(success_msg, error_msg, promise) {
       backgroundColor: "#F1FBEF",
       fontSize: "14px",
       paddingTop: "8px",
-      paddingBottom: "8px"
+      paddingBottom: "8px",
     },
     iconTheme: {
       primary: "#05b851",
@@ -59,6 +80,6 @@ export async function PromiseToast(success_msg, error_msg, promise) {
 }
 
 export default {
-ErrorToast,
-SuccessToast
+  ErrorToast,
+  SuccessToast,
 };
