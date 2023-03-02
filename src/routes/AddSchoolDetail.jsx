@@ -10,6 +10,7 @@ import Select from "../components/styledComponents/select";
 import { useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import PrimaryButton from "../components/styledComponents/PrimaryButton";
+import { Listbox } from "@headlessui/react";
 
 // class AddSchoolDetail extends Form {
 //   state = {
@@ -257,6 +258,11 @@ import PrimaryButton from "../components/styledComponents/PrimaryButton";
 const AddSchoolDetail = () => {
   const [schoolCode, setSchoolCode] = useState(null);
   const [facultySel, setFaultySel] = useState(null);
+  const [schoolValue, setSchoolValue] = useState("");
+  const [facultyValue, setFacultyValue] = useState("");
+  const [departmentValue, setDepartmentValue] = useState("");
+  const [levelValue, setLevelValue] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   const {
     register,
@@ -266,19 +272,31 @@ const AddSchoolDetail = () => {
     formState: { errors },
   } = useForm();
 
-  const schoolWatch = watch("school");
-  const facultyWatch = watch("faculty");
+  const getSchoolInfo = (data, label, event) => {
+    if (label === "School") {
+      setSchoolCode(data.code);
+    }
+    if (label === "Faculty") {
+      setFaultySel(data.name);
+    }
 
-  // console.log(schoolWatch, "schoolWatch");
-  const values = getValues();
-  const faculty = getValues("faculty");
+    // TODO: Keyboard navigate doesn't work, and this is suppose to be for it
+    if (event) {
+      if (event.key === "Enter" && label === "School") {
+        setSchoolCode(data.code);
+      }
+      if (event.key === "Enter" && label === "Faculty") {
+        setFaultySel(data.name);
+      }
+    }
+  };
 
   // console.log(values, faculty, "values");
 
   const {
-    isLoading,
-    error,
     data: schoolsData,
+    isLoading: schoolsLoading,
+    error,
   } = useQuery({
     queryKey: ["schoolsData"],
     queryFn: () =>
@@ -293,7 +311,13 @@ const AddSchoolDetail = () => {
     refetchOnWindowFocus: false,
   });
 
-  const { data: facultiesData } = useQuery({
+  const {
+    data: facultiesData,
+    isLoading: facultyLoading,
+    isPaused,
+    isRefetching,
+    isFetching,
+  } = useQuery({
     queryKey: ["facultiesData", schoolCode],
     queryFn: () =>
       fetch(`https://univast.faraday.africa/academia/faculties/${schoolCode}`, {
@@ -308,11 +332,11 @@ const AddSchoolDetail = () => {
     refetchOnWindowFocus: false,
   });
 
-  const { data: departmentData } = useQuery({
+  const { data: departmentData, isLoading: departmentLoading } = useQuery({
     queryKey: ["departmentData", schoolCode, facultySel],
     queryFn: () =>
       fetch(
-        `https://univast.faraday.africa/academia/department/${schoolCode}/${facultySel}`,
+        `https://univast.faraday.africa/academia/departments/${schoolCode}/${facultySel}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -328,23 +352,13 @@ const AddSchoolDetail = () => {
 
   // console.log(facultiesData, "facultiesData");
 
-  useEffect(() => {
-    let selectSch = document.getElementById("school");
-    let selectSchCode = selectSch.options[selectSch.selectedIndex].dataset.code;
-    if (schoolsData && selectSchCode !== "School") {
-      setSchoolCode(selectSchCode);
-    }
-  }, [schoolWatch, schoolsData]);
-
-  useEffect(() => {
-    let facSel = document.getElementById("faculty")?.value;
-    if (facultiesData && facSel !== "Faculty") {
-      setFaultySel(facSel);
-    }
-  }, [facultyWatch, facultiesData]);
-
-  const onSubmit = async (data) => {
-    console.log(data);
+  const onSubmit = async () => {
+    const data = {
+      school: schoolValue,
+      faculty: facultyValue,
+      department: departmentValue,
+      level: levelValue,
+    };
 
     const progress = document.getElementById("progressBar");
     const spinner = document.getElementById("spinnerContainer");
@@ -354,7 +368,10 @@ const AddSchoolDetail = () => {
       await auth.updateSchoolDetail(data);
       progress?.classList.add("progress-75");
       spinner?.classList.add("vanish");
-      // <Redirect to="/update-personal-data" />;
+
+      setRedirect(true);
+
+      // window.location.replace("/update-personal-data");
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         // const errors = { ...this.state.errors };
@@ -377,6 +394,7 @@ const AddSchoolDetail = () => {
 
   return (
     <div className='login-page'>
+      {redirect && <Redirect to='/update-personal-data' />}
       {/* the spinner */}
       <div id='spinnerContainer' className='spinner-container vanish'>
         <Myspinner />
@@ -411,52 +429,40 @@ const AddSchoolDetail = () => {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Select
-            name={"school"}
-            // value={data[name]}
-            value=''
+            signup
+            lists={schoolsData}
+            loading={schoolsLoading}
+            value={schoolValue}
+            setValue={setSchoolValue}
             label={"School"}
-            options={schoolsData ? schoolsData : []}
-            onChange={() => null}
-            error={""}
-            register={register("school", {
-              required: true,
-            })}
+            optionClick={getSchoolInfo}
           />
           <Select
-            name={"faculty"}
-            // value={data[name]}
-            value=''
+            signup
+            lists={facultiesData}
+            loading={facultyLoading}
+            value={facultyValue}
+            setValue={setFacultyValue}
+            optionClick={getSchoolInfo}
             label={"Faculty"}
-            options={facultiesData ? facultiesData : []}
-            onChange={() => null}
-            error={""}
-            register={register("faculty", {
-              required: true,
-            })}
           />
           <Select
-            name='department'
-            // value={data[name]}
-            value=''
+            signup
+            lists={departmentData}
+            loading={departmentLoading}
+            value={departmentValue}
+            setValue={setDepartmentValue}
+            optionClick={getSchoolInfo}
             label={"Department"}
-            options={departmentData ? departmentData : []}
-            onChange={() => null}
-            error={""}
-            register={register("department", {
-              required: true,
-            })}
           />
           <Select
-            name={"level"}
-            // value={data[name]}
-            value=''
+            signup
+            lists={getLevel()}
+            loading={false}
+            value={levelValue}
+            setValue={setLevelValue}
+            optionClick={getSchoolInfo}
             label={"Level"}
-            options={[{ name: "100" }, { name: "200" }]}
-            onChange={() => null}
-            error={""}
-            register={register("level", {
-              required: true,
-            })}
           />
 
           <div className='mt-3'>

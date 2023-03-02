@@ -46,16 +46,15 @@ const Qfeed = (props) => {
     isError,
     error,
     refetch,
-  } = useInfiniteQuery(
-    ["questions"],
-    ({ pageParam = 1 }) => fetchQuestions(pageParam),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        const nextPage = allPages?.length + 1;
-        return lastPage?.data?.next ? nextPage : undefined;
-      },
-    }
-  );
+  } = useInfiniteQuery({
+    queryKey: ["questions"],
+    queryFn: ({ pageParam = 1 }) => fetchQuestions(pageParam),
+    refetchOnWindowFocus: false,
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage = allPages?.length + 1;
+      return lastPage?.data?.next ? nextPage : undefined;
+    },
+  });
 
   //next page fetch from the useInfinite Query
   useEffect(() => {
@@ -158,12 +157,12 @@ const Qfeed = (props) => {
   }, [data]);
 
   return (
-    <div className="relative w-full route-wrapper ">
+    <div className='relative w-full route-wrapper '>
       {/* <QuestionsLoader type="qfeed" /> */}
-      <div className="w-full bg-white ">
+      <div className='w-full bg-white '>
         <Switch>
           <Route
-            path="/qfeed/post"
+            path='/qfeed/post'
             render={(props) => (
               <PostPage
                 online={online}
@@ -175,7 +174,7 @@ const Qfeed = (props) => {
           />
 
           <Route
-            path="/qfeed/:id"
+            path='/qfeed/:id'
             render={(props) => (
               <DiscussionPage
                 online={online}
@@ -189,7 +188,7 @@ const Qfeed = (props) => {
           />
 
           <Route
-            path="/"
+            path='/'
             render={(props) => (
               <TimeLine
                 online={online}
@@ -197,7 +196,7 @@ const Qfeed = (props) => {
                 handleUpdatedQuestions={updateQuestions}
                 onFollowUser={handleFollow}
                 onDeleteQuestion={deleteQuestion}
-                retry={refetch}
+                refetch={refetch}
                 loader={isLoading}
                 isError={isError}
                 error={error}
@@ -208,8 +207,8 @@ const Qfeed = (props) => {
               />
             )}
           />
-          <Route path="/not-found" component={NotFound} />
-          <Redirect push to="/not-found" />
+          <Route path='/not-found' component={NotFound} />
+          <Redirect push to='/not-found' />
         </Switch>
       </div>
     </div>

@@ -139,26 +139,26 @@ const App = () => {
   return (
     <BrowserRouter>
       <UserProvider>
-        <Toaster position="top-center" reverseOrder={false} />
-        <div className="text-faraday-night max-w-[1024px] p-0 mx-auto flex">
+        <Toaster position='top-center' reverseOrder={false} />
+        <div className='text-faraday-night max-w-[1024px] p-0 mx-auto flex'>
           <MobileSideNav />
           <SideNav online={online} hideOnlineStatus={hideOnlineStatus} />
           <Switch>
-            <Route path="/signup" component={SignUpForm} />
-            <Route path="/confirm-email" component={ConfirmEmail} />
-            <Route path="/update-school-detail" component={AddSchoolDetail} />
-            <Route path="/update-personal-data" component={PersonalData} />
-            <Route path="/terms-and-condition" component={TermsAndCondition} />
-            <Route path="/privacy-policy" component={PrivacyPolicy} />
-            <Route path="/login" component={LoginForm} />
+            <Route path='/signup' component={SignUpForm} />
+            <Route path='/confirm-email' component={ConfirmEmail} />
+            <Route path='/update-school-detail' component={AddSchoolDetail} />
+            <Route path='/update-personal-data' component={PersonalData} />
+            <Route path='/terms-and-condition' component={TermsAndCondition} />
+            <Route path='/privacy-policy' component={PrivacyPolicy} />
+            <Route path='/login' component={LoginForm} />
             <Route
-              path="/login"
+              path='/login'
               render={(props) => (
                 <LoginForm clearCache={clearCache} {...props} />
               )}
             />
             <Route
-              path="/logout"
+              path='/logout'
               render={(props) => (
                 <Logout
                   handleClearCache={handleClearCache}
@@ -169,34 +169,34 @@ const App = () => {
             />
             {/* Routes for password recovery starts here */}
             <Route
-              path="/forgot-password"
+              path='/forgot-password'
               render={(props) => <ForgotPassword {...props} />}
             />
             <Route
-              path="/confirm-account"
+              path='/confirm-account'
               render={(props) => <ConfirmAccount {...props} />}
             />
             <Route
-              path="/reset-password"
+              path='/reset-password'
               render={(props) => <ResetPassword {...props} />}
             />
             {/* Routes for password recovery ends here */}
             <Route
-              path="/qfeed"
+              path='/qfeed'
               render={(props) => <Qfeed online={online} {...props} />}
             />
-            <ProtectedRoute path="/notification" component={Notification} />
+            <ProtectedRoute path='/notification' component={Notification} />
             <ProtectedRoute
-              path="/me/:username"
+              path='/me/:username'
               render={(props) => <Profile {...props} />}
             />
-            <Route path="/missing-question" component={MissingQuestion} />
-            <Route path="/not-found" component={NotFound} />
+            <Route path='/missing-question' component={MissingQuestion} />
+            <Route path='/not-found' component={NotFound} />
             <Route
-              path="/"
+              path='/'
               render={(props) => <Qfeed online={online} {...props} />}
             />
-            <Redirect push to="/not-found" />
+            <Redirect push to='/not-found' />
           </Switch>
         </div>
       </UserProvider>

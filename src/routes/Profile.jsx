@@ -13,8 +13,9 @@ import {
 import UserQuestionSolutionPage from "../components/profileComponents/UserQuestionSolutionPage";
 import NotFound from "./NotFound";
 import ProfileHome from "../components/profileComponents/ProfileHome";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueries, useQuery } from "@tanstack/react-query";
 import ProfileHomeLoader from "../components/profileComponents/ProfileHomeLoader";
+
 function Profile({ match, history }) {
   const currentUser = getCurrentUser();
 
@@ -25,6 +26,7 @@ function Profile({ match, history }) {
   const [user, setUser] = useState();
   const [questions, setQuestions] = useState();
   const [solutions, setSolutions] = useState();
+  const [bookmarks, setBookmarks] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [pathname, setPathname] = useState(match.params.username);
@@ -39,6 +41,13 @@ function Profile({ match, history }) {
   const fetchSolutions = async (pageParam) => {
     const resp = await http.get(
       process.env.REACT_APP_API_URL + userSolutionEndpoint
+    );
+    return resp;
+  };
+
+  const fetchBookmarks = async () => {
+    const resp = await http.get(
+      process.env.REACT_APP_API_URL + "qfeed/que/bookmarks/"
     );
     return resp;
   };
@@ -87,6 +96,26 @@ function Profile({ match, history }) {
     }
   );
 
+  const {
+    data: bookmarkData,
+    isSuccess: isBookmarkSuccess,
+    hasNextPage: hasBookmarkNextPage,
+    fetchNextPage: fetchBookmarkNextPage,
+    isFetchingNextPage: isFetchingBookmarkNextPage,
+    isLoading: isBookmarkLoading,
+    // isError,
+    error: bookmarkError,
+    refetch: refetchBookmark,
+  } = useInfiniteQuery({
+    queryKey: ["bookmark"],
+    queryFn: ({ pageParam = 1 }) => fetchBookmarks(pageParam),
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage = allPages?.length + 1;
+      return lastPage?.data?.next ? nextPage : undefined;
+    },
+    refetchOnWindowFocus: false,
+  });
+
   // React Query <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
   //updates the data from the useInfiniteQuery into the questions state
@@ -118,6 +147,21 @@ function Profile({ match, history }) {
       );
     setSolutions(newSolutions);
   }, [solutionData, isSolutionSuccess]);
+
+  //updates the data from the useInfiniteQuery into the bookmarks state
+  useEffect(() => {
+    const newBookmarks = [];
+
+    isBookmarkSuccess &&
+      !isBookmarkLoading &&
+      bookmarkData?.pages.map((page) =>
+        page.data?.results[0].ques.map((item) => {
+          // console.log("Bookmark first fetch");
+          return newBookmarks.push(item);
+        })
+      );
+    setBookmarks(newBookmarks);
+  }, [bookmarkData, isBookmarkSuccess]);
 
   useEffect(() => {
     let fetching = false;
@@ -228,7 +272,7 @@ function Profile({ match, history }) {
   };
 
   return (
-    <div className="w-full route-wrapper profile-wrapper text-faraday-night">
+    <div className='w-full route-wrapper profile-wrapper text-faraday-night'>
       {loading ? (
         <ProfileHomeLoader />
       ) : error ? (
@@ -236,24 +280,27 @@ function Profile({ match, history }) {
       ) : (
         <Switch>
           <Route
-            path="/me/:username/qfeed"
+            path='/me/:username/qfeed'
             render={(props) => (
               <UserQuestionSolutionPage
                 user={user}
                 questions={questions}
                 solutions={solutions}
+                bookmarks={bookmarks}
                 deleteQuestion={deleteQuestion}
                 updateQuestions={updateQuestions}
                 fetchQuestionNextPage={fetchQuestionNextPage}
                 hasQuestionNextPage={hasQuestionNextPage}
                 fetchSolutionNextPage={fetchSolutionNextPage}
                 hasSolutionNextPage={hasSolutionNextPage}
+                fetchBookmarkNextPage={fetchBookmarkNextPage}
+                hasBookmarkNextPage={hasBookmarkNextPage}
               />
             )}
           />
 
           <Route
-            path="/"
+            path='/'
             render={(props) => (
               // <>
               //   {console.log(user, "<<<<<<")}
@@ -264,17 +311,20 @@ function Profile({ match, history }) {
                 currentUser={currentUser}
                 handleFollow={handleFollow}
                 questions={questions}
-                isQuestionLoading={isQuestionLoading}
-                questionError={questionError}
-                isSolutionLoading={isSolutionLoading}
-                solutionError={solutionError}
+                bookmarks={bookmarks}
                 solutions={solutions}
+                isQuestionLoading={isQuestionLoading}
+                isBookmarkLoading={isBookmarkLoading}
+                isSolutionLoading={isSolutionLoading}
+                questionError={questionError}
+                bookmarkError={bookmarkError}
+                solutionError={solutionError}
                 {...props}
               />
             )}
           />
-          <Route path="/not-found" component={NotFound} />
-          <Redirect push to="/not-found" />
+          <Route path='/not-found' component={NotFound} />
+          <Redirect push to='/not-found' />
         </Switch>
       )}
     </div>

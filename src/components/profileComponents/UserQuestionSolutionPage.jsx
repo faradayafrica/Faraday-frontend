@@ -9,11 +9,13 @@ const UserQuestionSolutionPage = ({
   user,
   questions,
   solutions,
+  bookmarks,
   deleteQuestion,
   updateQuestions,
-
   fetchQuestionNextPage,
   hasQuestionNextPage,
+  fetchBookmarkNextPage,
+  hasBookmarkNextPage,
 }) => {
   const history = useHistory();
 
@@ -40,26 +42,26 @@ const UserQuestionSolutionPage = ({
   return (
     <>
       {/* We need a nav here */}
-      <div className="w-full profile-wrapper text-faraday-night bg-white relative">
+      <div className='w-full profile-wrapper text-faraday-night bg-white relative'>
         <Tab.Group>
-          <Tab.List className="border-b bg-white fixed sm:static z-20 w-full">
-            <div className="">
-              <div className="min-h-[70px] sm:min-h-[20px] w-full"> </div>
-              <div className="flex items-center p-3 sticky top-10">
+          <Tab.List className='border-b bg-white fixed sm:static z-20 w-full'>
+            <div className=''>
+              <div className='min-h-[70px] sm:min-h-[20px] w-full'> </div>
+              <div className='flex items-center p-3 sticky top-10'>
                 <img
                   src={arrowRight}
-                  className="w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180"
-                  alt="return"
+                  className='w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180'
+                  alt='return'
                   onClick={() => {
                     history.goBack();
                   }}
                 />
-                <h1 className="text-2xl sm:text-2xl font-bold m-0 ">
+                <h1 className='text-2xl sm:text-2xl font-bold m-0 '>
                   {user?.profile.firstname}'s question feed
                 </h1>
               </div>
             </div>
-            {["Questions", "Solutions"].map((tab, index) => (
+            {["Questions", "Solutions", "Bookmarks"].map((tab, index) => (
               <Tab
                 key={index}
                 className={({ selected }) =>
@@ -74,7 +76,7 @@ const UserQuestionSolutionPage = ({
               </Tab>
             ))}
           </Tab.List>
-          <Tab.Panels className="mt-48 sm:mt-2 pt-2">
+          <Tab.Panels className='mt-48 sm:mt-2 pt-2'>
             <Tab.Panel>
               <div
               // className="profile-question-section h-[600px]"
@@ -93,7 +95,7 @@ const UserQuestionSolutionPage = ({
                     ))}
                   </>
                 ) : (
-                  <div className="m-3">
+                  <div className='m-3'>
                     <Loader
                       msg={`Loading ${user?.profile.first_name}'s questions`}
                     />
@@ -111,6 +113,23 @@ const UserQuestionSolutionPage = ({
                       handleUpdatedQuestions={updateQuestions}
                       onDeleteQuestion={deleteQuestion}
                       key={item.question.id}
+                    />
+                  ))}
+                </>
+              ) : (
+                ""
+              )}
+            </Tab.Panel>
+            <Tab.Panel>
+              {bookmarks.length ? (
+                <>
+                  {bookmarks?.map((bookmark) => (
+                    <Question
+                      question={bookmark}
+                      questions={bookmarks}
+                      handleUpdatedQuestions={updateQuestions}
+                      onDeleteQuestion={deleteQuestion}
+                      key={bookmark.id}
                     />
                   ))}
                 </>
