@@ -1,5 +1,5 @@
 import axios from "axios";
-import logger from "../../services/logService";
+import logger from "./logService";
 import { toast } from "react-toastify";
 import { refreshJwt } from "./authService";
 // import { configure } from '@testing-library/react';

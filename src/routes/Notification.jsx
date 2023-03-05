@@ -8,7 +8,7 @@ import gsap from "gsap";
 
 import "../styles/notification.css";
 import caretIcon from "../images/caret.svg";
-import arrowRight from "../images/qfeed/arrow-right.svg";
+import arrowRight from "../Qfeed/assets/arrow-right.svg";
 
 const Notification = (props) => {
   const apiEndpoint = process.env.REACT_APP_API_URL + `/notifications/`;

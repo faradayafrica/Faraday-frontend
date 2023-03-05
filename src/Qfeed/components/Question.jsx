@@ -12,16 +12,16 @@ import {
 import http from "../../common/services/httpService";
 
 //icon import
-import ellipses from "../../images/qfeed/ellipses.svg";
-import arrow from "../../images/qfeed/arrow-right.svg";
-import love from "../../images/qfeed/love.svg";
-import redLove from "../../images/qfeed/red-love.svg";
-import smiley from "../../images/qfeed/smiley.svg";
-import share from "../../images/qfeed/share.svg";
-import link from "../../images/qfeed/link.svg";
-import mark from "../../images/qfeed/mark.svg";
-import verify from "../../images/verify.svg";
-import info from "../../images/qfeed/info.svg";
+import ellipses from "../assets/ellipses.svg";
+import arrow from "../assets/arrow-right.svg";
+import love from "../assets/love.svg";
+import redLove from "../assets/red-love.svg";
+import smiley from "../assets/smiley.svg";
+import share from "../assets/share.svg";
+import link from "../assets/link.svg";
+import mark from "../assets/mark.svg";
+import verify from "../assets/verify.svg";
+import info from "../assets/info.svg";
 import Modal from "../../common/components/Modal";
 import { toast } from "react-hot-toast";
 

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import PrimaryButton from "../../styledComponents/PrimaryButton";
+import PrimaryButton from "../../../components/styledComponents/PrimaryButton";
 
 const AddComment = ({
   online,

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import ellipses from "../../../images/qfeed/ellipses.svg";
-import mark from "../../../images/qfeed/mark.svg";
-import info from "../../../images/qfeed/info.svg";
+import ellipses from "../../assets/ellipses.svg";
+import mark from "../../assets/mark.svg";
+import info from "../../assets/info.svg";
 import CommentMenu from "./CommentMenu";
 import Modal from "../../../common/components/Modal";
 

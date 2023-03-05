@@ -4,8 +4,8 @@ import NavLink from "./NavLink";
 import { useState, useEffect } from "react";
 import { getCurrentUser } from "../../common/services/authService";
 import PrimaryButton from "./PrimaryButton";
-import PostComponent from "../qfeedComponents/PostComponent";
-import closeImg from "../../images/qfeed/close.svg";
+import PostComponent from "../../Qfeed/components/PostComponent";
+import closeImg from "../../Qfeed/assets/close.svg";
 import { ErrorToast, SuccessToast } from "../../common/components/CustomToast";
 
 function SideNav({ history, online, hideOnlineStatus }) {

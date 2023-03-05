@@ -1,8 +1,8 @@
 import { useState } from "react";
-import PrimaryButton from "../styledComponents/PrimaryButton";
-import addContentImg from "../../images/qfeed/add.svg";
-import removeContentImg from "../../images/qfeed/remove.svg";
-import arrowRight from "../../images/qfeed/arrow-right.svg";
+import PrimaryButton from "../../components/styledComponents/PrimaryButton";
+import addContentImg from "../assets/add.svg";
+import removeContentImg from "../assets/remove.svg";
+import arrowRight from "../assets/arrow-right.svg";
 
 const PostComponent = ({ LIMIT, postQuestion, history }) => {
   const [title, setTitle] = useState("");

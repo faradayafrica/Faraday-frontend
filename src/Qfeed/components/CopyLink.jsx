@@ -1,6 +1,6 @@
-import Loader from "../styledComponents/Loader";
-import closeImg from "../../images/qfeed/close.svg";
-import copy from "../../images/qfeed/copy.svg";
+import Loader from "../../components/styledComponents/Loader";
+import closeImg from "../assets/close.svg";
+import copy from "../assets/copy.svg";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { SuccessToast } from "../../common/components/CustomToast";

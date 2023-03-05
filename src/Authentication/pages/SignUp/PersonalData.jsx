@@ -5,7 +5,7 @@ import Myspinner from "../../../components/styledComponents/Spinner";
 import faraday from "../../../common/assets/logo.svg";
 import addImage from "../../assets/add-imge.svg";
 import auth from "../../../common/services/authService";
-import { getYear, getMonth } from "../../../services/bioServices";
+import { getYear, getMonth } from "../../services/bioServices";
 import { Redirect } from "react-router-dom";
 import defaultProfile from "../../assets/default-profile.png";
 

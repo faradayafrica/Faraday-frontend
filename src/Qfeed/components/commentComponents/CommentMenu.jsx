@@ -1,8 +1,8 @@
-import trash from "../../../images/qfeed/trash.svg";
-import trashDefault from "../../../images/qfeed/trash-default.svg";
-import follow from "../../../images/qfeed/follow.svg";
-import unfollow from "../../../images/qfeed/unfollow.svg";
-import mark from "../../../images/qfeed/mark.svg";
+import trash from "../../assets/trash.svg";
+import trashDefault from "../../assets/trash-default.svg";
+import follow from "../../assets/follow.svg";
+import unfollow from "../../assets/unfollow.svg";
+import mark from "../../assets/mark.svg";
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import Modal from "../../../common/components/Modal";

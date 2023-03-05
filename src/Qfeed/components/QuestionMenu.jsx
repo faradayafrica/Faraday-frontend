@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { getCurrentUser } from "../../common/services/authService";
 import gsap from "gsap";
-import trash from "../../images/qfeed/trash.svg";
-import trashDefault from "../../images/qfeed/trash-default.svg";
-import follow from "../../images/qfeed/follow.svg";
-import unfollow from "../../images/qfeed/unfollow.svg";
+import trash from "../assets/trash.svg";
+import trashDefault from "../assets/trash-default.svg";
+import follow from "../assets/follow.svg";
+import unfollow from "../assets/unfollow.svg";
 
 const QuestionMenu = ({
   question,

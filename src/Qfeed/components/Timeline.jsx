@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { saveState, getState } from "../../common/components/StateSaver";
 import Question from "./Question";
-import SecondaryButton from "../styledComponents/SecondaryButton";
+import SecondaryButton from "../../components/styledComponents/SecondaryButton";
+import PrimaryButton from "../../components/styledComponents/PrimaryButton";
 
 //icon import
-import ask from "../../images/qfeed/ask.svg";
+import ask from "../assets/ask.svg";
 
 //style import
 import "../../styles/qfeed.css";
 import QuestionsLoader from "./QuestionsLoader";
-import PrimaryButton from "../styledComponents/PrimaryButton";
 
 const TimeLine = (props) => {
   const [questions, setQuestions] = useState([]);

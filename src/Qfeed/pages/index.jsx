@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import ProtectedRoute from "../common/components/ProtectedRoute.jsx";
-import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
-import PostPage from "../components/qfeedComponents/PostPage";
-import TimeLine from "../components/qfeedComponents/Timeline.jsx";
-import NotFound from "./NotFound.jsx";
-import http from "../common/services/httpService";
+// import ProtectedRoute from "../../common/components/ProtectedRoute.jsx";
+import DiscussionPage from "../components/DiscussionPage.jsx";
+import PostPage from "../components/PostPage";
+import TimeLine from "../components/Timeline.jsx";
+import NotFound from "../../common/components/NotFound.jsx";
+import http from "../../common/services/httpService";
 import axios from "axios";
-import { getCurrentUser } from "../common/services/authService.js";
+import { getCurrentUser } from "../../common/services/authService.js";
 
 import {
   PromiseToast,
   SuccessToast,
   ErrorToast,
-} from "../common/components/CustomToast.jsx";
+} from "../../common/components/CustomToast.jsx";
 
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);

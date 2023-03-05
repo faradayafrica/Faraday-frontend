@@ -1,4 +1,4 @@
-import verify from "../../images/verify.svg";
+import verify from "../../Qfeed/assets/verify.svg";
 
 import { useHistory } from "react-router-dom";
 

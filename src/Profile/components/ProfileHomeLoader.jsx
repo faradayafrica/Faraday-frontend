@@ -1,5 +1,5 @@
-import QuestionsLoader from "../qfeedComponents/QuestionsLoader";
-import "../../styles/profile/profile.css";
+import QuestionsLoader from "../../Qfeed/components/QuestionsLoader";
+import "../styles/profile.css";
 
 const ProfileHomeLoader = () => {
   return (

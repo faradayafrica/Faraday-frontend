@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import CopyLink from "./CopyLink";
-import SecondaryButton from "../styledComponents/SecondaryButton";
+import SecondaryButton from "../../components/styledComponents/SecondaryButton";
 import Comments from "./commentComponents/Comments";
 import { Link } from "react-router-dom";
 
-import love from "../../images/qfeed/love.svg";
-import redLove from "../../images/qfeed/red-love.svg";
-import share from "../../images/qfeed/share.svg";
-import link from "../../images/qfeed/link.svg";
+import love from "../assets/love.svg";
+import redLove from "../assets/red-love.svg";
+import share from "../assets/share.svg";
+import link from "../assets/link.svg";
 import http from "../../common/services/httpService";
 import axios from "axios";
-import ellipses from "../../images/qfeed/ellipses.svg";
-import arrowRight from "../../images/qfeed/arrow-right.svg";
+import ellipses from "../assets/ellipses.svg";
+import arrowRight from "../assets/arrow-right.svg";
 import QuestionMenu from "./QuestionMenu";
 import { ErrorToast, PromiseToast } from "../../common/components/CustomToast";
 import QuestionsLoader from "./QuestionsLoader";

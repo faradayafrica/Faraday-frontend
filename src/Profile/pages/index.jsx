@@ -1,20 +1,20 @@
 import React, { useEffect, useState, useLayoutEffect } from "react";
-import http from "../common/services/httpService";
-import { getCurrentUser } from "../common/services/authService";
+import http from "../../common/services/httpService";
+import { getCurrentUser } from "../../common/services/authService";
 import { Switch, Route, Redirect } from "react-router-dom";
 import "../styles/profile.scss";
-import "../styles/profile/profile.css";
+import "../styles/profile.css";
 import {
   SuccessToast,
   ErrorToast,
   PromiseToast,
-} from "../common/components/CustomToast";
+} from "../../common/components/CustomToast";
 
-import UserQuestionSolutionPage from "../components/profileComponents/UserQuestionSolutionPage";
-import NotFound from "./NotFound";
-import ProfileHome from "../components/profileComponents/ProfileHome";
+import UserQuestionSolutionPage from "../components/UserQuestionSolutionPage";
+import NotFound from "../../common/components/NotFound";
+import ProfileHome from "../components/ProfileHome";
 import { useInfiniteQuery, useQueries, useQuery } from "@tanstack/react-query";
-import ProfileHomeLoader from "../components/profileComponents/ProfileHomeLoader";
+import ProfileHomeLoader from "../components/ProfileHomeLoader";
 
 function Profile({ match, history }) {
   const currentUser = getCurrentUser();

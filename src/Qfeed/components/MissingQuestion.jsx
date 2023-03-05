@@ -1,4 +1,4 @@
-import arrowRight from "../images/qfeed/arrow-right.svg";
+// import arrowRight from "../assets/arrow-right.svg";
 import { Link } from "react-router-dom";
 
 const MissingQuestion = ({ history }) => {

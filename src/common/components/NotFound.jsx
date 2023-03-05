@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import notFound from "../images/memes/notfound.jpg";
+import notFound from "../assets/memes/notfound.jpg";
 import { Link } from "react-router-dom";
 
 class NotFound extends Component {
