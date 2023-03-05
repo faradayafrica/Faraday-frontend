@@ -2,16 +2,16 @@ import { Link } from "react-router-dom";
 
 // icons import -unread variants
 
-import followUnread from "../../images/notification/follow_unread.svg";
-import markUnread from "../../images/notification/mark_unread.svg";
-import queUnread from "../../images/notification/add_que_unread.svg";
-import commentUnread from "../../images/notification/add_comment_unread.svg";
+import followUnread from "../assets/follow_unread.svg";
+import markUnread from "../assets/mark_unread.svg";
+import queUnread from "../assets/add_que_unread.svg";
+import commentUnread from "../assets/add_comment_unread.svg";
 
 // read variants
-import follow from "../../images/notification/follow.svg";
-import mark from "../../images/notification/mark.svg";
-import queIcon from "../../images/notification/add_que.svg";
-import commentIcon from "../../images/notification/add_comment.svg";
+import follow from "../assets/follow.svg";
+import mark from "../assets/mark.svg";
+import queIcon from "../assets/add_que.svg";
+import commentIcon from "../assets/add_comment.svg";
 import { useState } from "react";
 
 const NotificationItem = ({

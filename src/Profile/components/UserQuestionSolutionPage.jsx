@@ -1,6 +1,6 @@
 import { Tab } from "@headlessui/react";
 import Question from "../../Qfeed/components/Question";
-import Loader from "../../components/styledComponents/Loader";
+import Loader from "../../common/components/Loader";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import arrowRight from "../../Qfeed/assets/arrow-right.svg";
 import { useEffect } from "react";

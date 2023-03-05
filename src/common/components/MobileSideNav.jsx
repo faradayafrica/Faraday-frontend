@@ -2,19 +2,19 @@ import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { getCurrentUser } from "../../common/services/authService";
+import { getCurrentUser } from "../services/authService";
 
 // icons import
-import logout from "../../images/nav/logout.svg";
-import menu from "../../images/nav/menu.svg";
-import profile from "../../images/nav/profile.svg";
-import bell from "../../images/nav/bell.svg";
-import qfeed from "../../images/nav/qfeed.svg";
-import close from "../../images/nav/close_md.svg";
+import logout from "../assets/nav/logout.svg";
+import menu from "../assets/nav/menu.svg";
+import profile from "../assets/nav/profile.svg";
+import bell from "../assets/nav/bell.svg";
+import qfeed from "../assets/nav/qfeed.svg";
+import close from "../assets/nav/close_md.svg";
 
 //styles import
-import "../../styles/mobileSideNav.scss";
-import "../../styles/topnav.css";
+import "../styles/mobileSideNav.scss";
+import "../styles/topnav.css";
 
 function MobileSideNav() {
   const [isQfeed, setQfeed] = useState();

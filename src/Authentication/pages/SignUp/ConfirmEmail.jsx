@@ -1,5 +1,5 @@
 import React from "react";
-import Myspinner from "../../../components/styledComponents/Spinner";
+import Myspinner from "../../../common/components/Spinner";
 import Joi from "joi-browser";
 import Form from "../../components/Form";
 import faraday from "../../../common/assets/logo.svg";

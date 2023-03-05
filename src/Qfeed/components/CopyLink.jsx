@@ -1,4 +1,4 @@
-import Loader from "../../components/styledComponents/Loader";
+import Loader from "../../common/components/Loader";
 import closeImg from "../assets/close.svg";
 import copy from "../assets/copy.svg";
 import { useEffect, useRef } from "react";

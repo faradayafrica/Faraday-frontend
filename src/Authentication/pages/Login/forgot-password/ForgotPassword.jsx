@@ -1,7 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import { Redirect } from "react-router-dom";
-import Myspinner from "../../../../components/styledComponents/Spinner";
+import Myspinner from "../../../../common/components/Spinner";
 import Form from "../../../components/Form";
 import auth from "../../../../common/services/authService";
 import faraday from "../../../../common/assets/logo.svg";

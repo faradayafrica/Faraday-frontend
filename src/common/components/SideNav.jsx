@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import faraday from "../../images/logo.svg";
+import faraday from "../../common/assets/logo.svg";
 import NavLink from "./NavLink";
 import { useState, useEffect } from "react";
-import { getCurrentUser } from "../../common/services/authService";
+import { getCurrentUser } from "../services/authService";
 import PrimaryButton from "./PrimaryButton";
 import PostComponent from "../../Qfeed/components/PostComponent";
 import closeImg from "../../Qfeed/assets/close.svg";
-import { ErrorToast, SuccessToast } from "../../common/components/CustomToast";
+import { ErrorToast, SuccessToast } from "./CustomToast";
 
 function SideNav({ history, online, hideOnlineStatus }) {
   const currentUser = getCurrentUser();

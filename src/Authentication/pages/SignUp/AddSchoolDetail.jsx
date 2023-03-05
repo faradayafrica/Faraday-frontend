@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Joi from "joi-browser";
-import Myspinner from "../../../components/styledComponents/Spinner";
+import Myspinner from "../../../common/components/Spinner";
 import Form from "../../components/Form";
 import faraday from "../../../common/assets/logo.svg";
 import auth from "../../../common/services/authService";
@@ -10,10 +10,10 @@ import {
   getLevel,
 } from "../../../common/services/schoolService";
 import { Redirect } from "react-router-dom";
-import Select from "../../../components/styledComponents/select";
+import Select from "../../../common/components/form/select";
 import { useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import PrimaryButton from "../../../components/styledComponents/PrimaryButton";
+import PrimaryButton from "../../../common/components/PrimaryButton";
 import { Listbox } from "@headlessui/react";
 
 // class AddSchoolDetail extends Form {

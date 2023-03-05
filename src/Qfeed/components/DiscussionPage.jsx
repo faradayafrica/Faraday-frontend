@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import CopyLink from "./CopyLink";
-import SecondaryButton from "../../components/styledComponents/SecondaryButton";
+import SecondaryButton from "../../common/components/SecondaryButton";
 import Comments from "./commentComponents/Comments";
 import { Link } from "react-router-dom";
 

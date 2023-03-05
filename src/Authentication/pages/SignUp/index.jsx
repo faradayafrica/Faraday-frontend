@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "../../components/Form";
-import Myspinner from "../../../components/styledComponents/Spinner";
+import Myspinner from "../../../common/components/Spinner";
 import faraday from "../../../common/assets/logo.svg";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";

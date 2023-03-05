@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PrimaryButton from "../../components/styledComponents/PrimaryButton";
+import PrimaryButton from "../../common/components/PrimaryButton";
 import addContentImg from "../assets/add.svg";
 import removeContentImg from "../assets/remove.svg";
 import arrowRight from "../assets/arrow-right.svg";

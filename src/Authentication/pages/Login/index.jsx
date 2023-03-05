@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect, Link } from "react-router-dom";
-import Myspinner from "../../../components/styledComponents/Spinner";
+import Myspinner from "../../../common/components/Spinner";
 import Form from "../../components/Form";
 import Joi from "joi-browser";
 import auth from "../../../common/services/authService";

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import ProfileQuestion from "./ProfileQuestion";
-import PrimaryButton from "../../components/styledComponents/PrimaryButton";
-import SecondaryButton from "../../components/styledComponents/SecondaryButton";
+import PrimaryButton from "../../common/components/PrimaryButton";
+import SecondaryButton from "../../common/components/SecondaryButton";
 import arrow from "../../Qfeed/assets/arrow-right.svg";
-import Loader from "../../components/styledComponents/Loader";
+import Loader from "../../common/components/Loader";
 import QuestionsLoader from "../../Qfeed/components/QuestionsLoader";
 import verify from "../../Qfeed/assets/verify.svg";
 

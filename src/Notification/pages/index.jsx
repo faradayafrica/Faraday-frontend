@@ -1,14 +1,14 @@
 import { useEffect, useState, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import NotificationItem from "../components/notificationComponents/NotificationItem";
-import NotificationLoader from "../components/notificationComponents/NotificationLoader";
-import SecondaryButton from "../components/styledComponents/SecondaryButton";
-import http from "../common/services/httpService";
+import NotificationItem from "../components/NotificationItem";
+import NotificationLoader from "../components/NotificationLoader";
+import SecondaryButton from "../../common/components/SecondaryButton";
+import http from "../../common/services/httpService";
 import gsap from "gsap";
 
 import "../styles/notification.css";
-import caretIcon from "../images/caret.svg";
-import arrowRight from "../Qfeed/assets/arrow-right.svg";
+import caretIcon from "../assets/caret.svg";
+import arrowRight from "../../Qfeed/assets/arrow-right.svg";
 
 const Notification = (props) => {
   const apiEndpoint = process.env.REACT_APP_API_URL + `/notifications/`;
