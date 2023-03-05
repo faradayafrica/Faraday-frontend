@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
-import auth from "../services/authService";
+import auth from "../../common/services/authService";
 
 const Logout = ({ handleClearCache, clearCache }) => {
   useEffect(() => {

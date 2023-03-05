@@ -1,12 +1,12 @@
 import React from "react";
 import { Redirect, Link } from "react-router-dom";
-import Myspinner from "../components/styledComponents/Spinner";
-import Form from "../components/common/Form";
+import Myspinner from "../../../components/styledComponents/Spinner";
+import Form from "../../components/Form";
 import Joi from "joi-browser";
-import auth from "../services/authService";
-import faraday from "../images/logo.svg";
+import auth from "../../../common/services/authService";
+import faraday from "../../../common/assets/logo.svg";
 
-class LoginForm extends Form {
+class LoginPage extends Form {
   componentDidMount() {
     // console.log("props", this.props);
     if (this.props.clearCache == true) window.location.reload(true);
@@ -107,4 +107,4 @@ class LoginForm extends Form {
   };
 }
 
-export default LoginForm;
+export default LoginPage;

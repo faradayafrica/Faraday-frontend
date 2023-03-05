@@ -1,7 +1,11 @@
 import PostComponent from "./PostComponent";
-import http from "../../services/httpService";
-import { SuccessToast, ErrorToast, PromiseToast } from "../common/CustomToast";
-import { getCurrentUser } from "../../services/authService";
+import http from "../../common/services/httpService";
+import {
+  SuccessToast,
+  ErrorToast,
+  PromiseToast,
+} from "../../common/components/CustomToast";
+import { getCurrentUser } from "../../common/services/authService";
 
 const PostPage = (props) => {
   const LIMIT = { title: 150, content: 400 };

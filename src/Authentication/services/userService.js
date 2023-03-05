@@ -1,6 +1,6 @@
-import http from "./httpService";
-import axios from 'axios'
-import auth from "./authService";
+import http from "../../common/services/httpService";
+import axios from "axios";
+import auth from "../../common/services/authService";
 
 const apiEndpoint = process.env.REACT_APP_API_URL + "/users/register/";
 

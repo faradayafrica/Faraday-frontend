@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { saveState, getState } from "../common/StateSaver";
+import { saveState, getState } from "../../common/components/StateSaver";
 import Question from "./Question";
 import SecondaryButton from "../styledComponents/SecondaryButton";
 
@@ -43,10 +43,10 @@ const TimeLine = (props) => {
   }, [window.pageYOffset]);
 
   return (
-    <div className='relative'>
-      <div className='bg-white ' id='timeline'>
-        <div className='min-h-[70px] sm:min-h-[0px] bg-transparent'> </div>
-        <h1 className='text-2xl sm:text-2xl m-3 font-bold'>Question Feed</h1>
+    <div className="relative">
+      <div className="bg-white " id="timeline">
+        <div className="min-h-[70px] sm:min-h-[0px] bg-transparent"> </div>
+        <h1 className="text-2xl sm:text-2xl m-3 font-bold">Question Feed</h1>
         {/* The questions */}
 
         <>
@@ -67,16 +67,16 @@ const TimeLine = (props) => {
           ) : (
             <>
               {!props.loader && (
-                <div className='p-3 bg-white'>
-                  <div className='p-3 rounded-lg border bg-background  text-center'>
-                    <p className='text-xs sm:text-base m-0  mb-2'>
+                <div className="p-3 bg-white">
+                  <div className="p-3 rounded-lg border bg-background  text-center">
+                    <p className="text-xs sm:text-base m-0  mb-2">
                       {props.isError
                         ? props.error.message
                         : "No questions yet! Be the first to ask the first question"}
                     </p>
 
-                    <Link to='/qfeed/post'>
-                      <PrimaryButton cta='Ask a question' />
+                    <Link to="/qfeed/post">
+                      <PrimaryButton cta="Ask a question" />
                     </Link>
                   </div>
                 </div>
@@ -87,18 +87,18 @@ const TimeLine = (props) => {
 
         {/* Fixed CTA on the timeline for mobile */}
         <Link
-          to='/qfeed/post'
-          className='sm:hidden fixed right-6 bottom-20 h-16 w-16 z-50'
+          to="/qfeed/post"
+          className="sm:hidden fixed right-6 bottom-20 h-16 w-16 z-50"
         >
           {" "}
-          <img className='ask-shadow rounded-full' src={ask} alt='' />
+          <img className="ask-shadow rounded-full" src={ask} alt="" />
         </Link>
 
         {props.isError ? (
-          <div className='p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center'>
+          <div className="p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center">
             <>
-              <p className='text-sm sm:text-base '>Something went wrong</p>
-              <SecondaryButton cta='Retry' action={props.refetch} />
+              <p className="text-sm sm:text-base ">Something went wrong</p>
+              <SecondaryButton cta="Retry" action={props.refetch} />
             </>
           </div>
         ) : (
@@ -109,22 +109,22 @@ const TimeLine = (props) => {
           !questions.length ? (
             <QuestionsLoader />
           ) : (
-            <QuestionsLoader short='true' />
+            <QuestionsLoader short="true" />
           )
         ) : (
           <>
             {questions.length > 0 && !props.hasNextPage && (
               <>
-                <div className='p-3 m-3 mr-1 rounded-lg border bg-background  text-center'>
-                  <p className='text-xs sm:text-base m-0 mb-2 '>
+                <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
+                  <p className="text-xs sm:text-base m-0 mb-2 ">
                     No more questions to fetch
                   </p>
 
-                  <Link to='/qfeed/post'>
-                    <PrimaryButton cta='Ask a question' />
+                  <Link to="/qfeed/post">
+                    <PrimaryButton cta="Ask a question" />
                   </Link>
                 </div>
-                <div className='h-[65px] w-full sm:hidden'></div>
+                <div className="h-[65px] w-full sm:hidden"></div>
               </>
             )}
           </>
@@ -135,7 +135,7 @@ const TimeLine = (props) => {
         ) : (
           // This is suppose to be the loader that shows when a user scrolls to the bottom after localStorage populates the Qfeed
           <>
-            <div className='h-24'></div>
+            <div className="h-24"></div>
           </>
         )}
       </div>

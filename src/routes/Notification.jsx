@@ -3,7 +3,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import NotificationItem from "../components/notificationComponents/NotificationItem";
 import NotificationLoader from "../components/notificationComponents/NotificationLoader";
 import SecondaryButton from "../components/styledComponents/SecondaryButton";
-import http from "../services/httpService";
+import http from "../common/services/httpService";
 import gsap from "gsap";
 
 import "../styles/notification.css";

@@ -1,6 +1,6 @@
 import http from "./httpService";
 import jwtDecode from "jwt-decode";
-import axios from "axios"
+import axios from "axios";
 
 const apiEndpoint = process.env.REACT_APP_API_URL + "/users/login/";
 const tokenKey = "token";
@@ -14,26 +14,23 @@ export async function login({ username, password }) {
     username: newUsername,
     password,
   });
-  const jwt = data.access; 
+  const jwt = data.access;
   const refresh = data.refresh;
-  
+
   localStorage.setItem(tokenKey, jwt);
   localStorage.setItem(refreshKey, refresh);
 }
 
 export async function refreshJwt() {
   const refresh_token = getRefresh();
-  await axios.post(
-    `${process.env.REACT_APP_API_URL + "/users/refresh_token/"}`,
-    {
+  await axios
+    .post(`${process.env.REACT_APP_API_URL + "/users/refresh_token/"}`, {
       refresh: refresh_token,
-    }
-    ).then(resp => {
+    })
+    .then((resp) => {
       const jwt = resp.data.access;
-      localStorage.setItem(tokenKey, jwt)
+      localStorage.setItem(tokenKey, jwt);
     });
-    
-  
 }
 
 export function getCurrentUser() {
@@ -51,31 +48,39 @@ export async function updateSchoolDetail(user) {
   // const jwt = getJwt();
 
   const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` },
   };
 
-  await axios.patch(url, {
-    ...user,
-  }, config);
+  await axios.patch(
+    url,
+    {
+      ...user,
+    },
+    config
+  );
 }
 
 export async function editUserProfile(user) {
   const url = process.env.REACT_APP_API_URL + "/users/edu_update/";
 
   const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` },
   };
 
-  await axios.patch(url, {
-    ...user,
-  }, config);
+  await axios.patch(
+    url,
+    {
+      ...user,
+    },
+    config
+  );
 }
 
 export async function updatePersonalDetail(data) {
   const url = process.env.REACT_APP_API_URL + "/users/bio_update/";
 
   const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` },
   };
 
   await axios.patch(url, data, config);
@@ -87,27 +92,30 @@ export async function confirmEmail({ confirmationCode }) {
 
   const url = process.env.REACT_APP_API_URL + "/users/verifyotp/";
   const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
-};
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` },
+  };
 
-  await axios.post(url, {
-    email: user.email,
-    otp: confirmationCode,
-  }, config);
+  await axios.post(
+    url,
+    {
+      email: user.email,
+      otp: confirmationCode,
+    },
+    config
+  );
 }
 
 export async function resendEmailConfirmation() {
   const user = getCurrentUser();
- const {email} = user
+  const { email } = user;
 
   const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` }
-};
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` },
+  };
 
   const url = process.env.REACT_APP_API_URL + "/users/resendotp/";
 
-  await axios.post(url, {email}, config);
-
+  await axios.post(url, { email }, config);
 }
 
 //Recover password by email http call starts here
@@ -116,13 +124,14 @@ export async function forgotPassword({ email }) {
   const apiEndpoint = process.env.REACT_APP_API_URL + "/users/password/reset/";
   let newEmail = email.toLowerCase();
   await axios.post(apiEndpoint, {
-    email: newEmail
+    email: newEmail,
   });
 }
 
 //STEP 2
 export async function confirmAccount({ email, confirmationCode }) {
-  const apiEndpoint = process.env.REACT_APP_API_URL + "/users/password/reset/confirm/";
+  const apiEndpoint =
+    process.env.REACT_APP_API_URL + "/users/password/reset/confirm/";
 
   await axios.post(apiEndpoint, {
     email,
@@ -132,7 +141,8 @@ export async function confirmAccount({ email, confirmationCode }) {
 
 //STEP 3
 export async function resetPassword({ email, new_password, confirm_password }) {
-  const apiEndpoint = process.env.REACT_APP_API_URL + "/users/password/reset/complete/";
+  const apiEndpoint =
+    process.env.REACT_APP_API_URL + "/users/password/reset/complete/";
 
   await axios.post(apiEndpoint, {
     email,
@@ -144,9 +154,7 @@ export async function resetPassword({ email, new_password, confirm_password }) {
 
 export function logout() {
   window.localStorage.clear();
-  
 }
-
 
 export function getJwt() {
   return localStorage.getItem(tokenKey);
@@ -167,7 +175,7 @@ export default {
   refreshJwt,
   getRefresh,
   getCurrentUser,
-  
+
   login,
   logout,
   confirmEmail,

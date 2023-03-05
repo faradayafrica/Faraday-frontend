@@ -4,7 +4,7 @@ import ellipses from "../../../images/qfeed/ellipses.svg";
 import mark from "../../../images/qfeed/mark.svg";
 import info from "../../../images/qfeed/info.svg";
 import CommentMenu from "./CommentMenu";
-import Modal from "../../common/Modal";
+import Modal from "../../../common/components/Modal";
 
 const CommentComponent = ({
   match,

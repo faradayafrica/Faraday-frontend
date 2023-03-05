@@ -1,12 +1,12 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import Myspinner from "../../components/styledComponents/Spinner";
-import Form from "../../components/common/Form";
+import Myspinner from "../../../../components/styledComponents/Spinner";
+import Form from "../../../components/Form";
 import Joi from "joi-browser";
-import auth from "../../services/authService";
-import UserContext from "../../context/userContext";
-import faraday from "../../images/logo.svg";
-import { ErrorToast } from "../../components/common/CustomToast";
+import auth from "../../../../common/services/authService";
+import UserContext from "../../../context/userContext";
+import faraday from "../../../../common/assets/logo.svg";
+import { ErrorToast } from "../../../../common/components/CustomToast";
 
 class ResetPassword extends Form {
   static contextType = UserContext;

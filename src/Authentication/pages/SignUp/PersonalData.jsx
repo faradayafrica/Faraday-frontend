@@ -1,13 +1,13 @@
 import React from "react";
 import Joi from "joi-browser";
-import Form from "../components/common/Form";
-import Myspinner from "../components/styledComponents/Spinner";
-import faraday from "../images/logo.svg";
-import addImage from "../images/Add Image.svg";
-import auth from "../services/authService";
-import { getYear, getMonth } from "../services/bioServices";
+import Form from "../../components/Form";
+import Myspinner from "../../../components/styledComponents/Spinner";
+import faraday from "../../../common/assets/logo.svg";
+import addImage from "../../assets/add-imge.svg";
+import auth from "../../../common/services/authService";
+import { getYear, getMonth } from "../../../services/bioServices";
 import { Redirect } from "react-router-dom";
-import defaultProfile from "../images/default-profile.png";
+import defaultProfile from "../../assets/default-profile.png";
 
 class PersonalData extends Form {
   state = {

@@ -1,14 +1,17 @@
 import React from "react";
-import Myspinner from "../../components/styledComponents/Spinner";
+import Myspinner from "../../../components/styledComponents/Spinner";
 import Joi from "joi-browser";
-import Form from "../../components/common/Form";
-import faraday from "../../images/logo.svg";
-import auth from "../../services/authService";
+import Form from "../../components/Form";
+import faraday from "../../../common/assets/logo.svg";
+import auth from "../../../common/services/authService";
 import UserContext from "../../context/userContext";
 import { Redirect } from "react-router-dom";
-import { ErrorToast, PromiseToast } from "../../components/common/CustomToast";
+import {
+  ErrorToast,
+  PromiseToast,
+} from "../../../common/components/CustomToast";
 
-class ConfirmAccount extends Form {
+class ConfirmEmail extends Form {
   static contextType = UserContext;
 
   state = {
@@ -43,17 +46,13 @@ class ConfirmAccount extends Form {
   }
 
   doResend = () => {
-    const { user } = this.context;
     const spinner = document.getElementById("spinnerContainer");
-
-    if (user.email) {
+    console.log(auth.getCurrentUser().email, "Confirm Password");
+    if (auth.getCurrentUser().email) {
       spinner.classList.remove("vanish");
-
       try {
-        // .forgotPassword(data)
-        // .then(() => setUser({ ...this.state.data }));
         let resend = this.state.resend;
-        const promise = auth.forgotPassword({ email: user.email }).then(() => {
+        const promise = auth.resendEmailConfirmation().then(() => {
           resend = true;
           this.setState({ resend });
         });
@@ -64,15 +63,16 @@ class ConfirmAccount extends Form {
           promise
         );
       } catch (ex) {
-        spinner.classList.add("vanish");
         if (ex.response && ex.response.status >= 400) {
           const errors = { ...this.state.errors };
           errors.confirmationCode = `Code not sent, ${ex.response.data.detail}`;
+          // spinner.classList.add("vanish");
           this.setState({ errors });
         } else {
           const errors = { ...this.state.errors };
           errors.confirmationCode =
             "Check your internet connection and try again";
+          // spinner.classList.add("vanish");
           this.setState({ errors });
         }
       }
@@ -88,20 +88,31 @@ class ConfirmAccount extends Form {
     spinner.classList.remove("vanish");
     const { data } = this.state;
 
-    const { user } = this.context;
     // call the backend
     try {
-      await auth.confirmAccount({ ...user, ...data });
+      await auth.confirmEmail(data);
 
       progress.classList.add("progress-50");
-      this.setState({ ...this.state, redirect: "/reset-password" });
+      this.setState({ ...this.state, redirect: "/update-school-detail" });
       spinner.classList.add("vanish");
-    } catch (error) {
-      spinner.classList.add("vanish");
-      if (error.response.status === 401) {
-        ErrorToast("Enter the right code and try again");
+      // this.props.history.push("/update-school-detail");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 500) {
+        const errors = { ...this.state.errors };
+        errors.confirmationCode = ex.response.data.detail;
+        spinner.classList.add("vanish");
+        this.setState({ errors });
+      } else if (ex.response && ex.response.status >= 400) {
+        const errors = { ...this.state.errors };
+        errors.confirmationCode =
+          "Please make sure the code provided above is correct";
+        spinner.classList.add("vanish");
+        this.setState({ errors });
       } else {
-        ErrorToast(error.message);
+        const errors = { ...this.state.errors };
+        errors.confirmationCode = "Something went wrong, try again later";
+        spinner.classList.add("vanish");
+        this.setState({ errors });
       }
     }
   };
@@ -128,7 +139,7 @@ class ConfirmAccount extends Form {
           </div>
           <h3 className="form-title">We sent a code to your Email</h3>
           <p className="mx-3 extra-info text-md">
-            Enter it below to confirm your account.
+            Enter it below to confirm your email.
           </p>
 
           <form onSubmit={this.handleSubmit}>
@@ -141,7 +152,7 @@ class ConfirmAccount extends Form {
                 <input
                   // autoFocus
                   readOnly
-                  value={user.email}
+                  value={auth.getCurrentUser().email || user.email}
                   name="email"
                   id="email"
                   className="form-control static-input rounded-lg"
@@ -149,7 +160,7 @@ class ConfirmAccount extends Form {
               </div>
             </div>
             {this.renderInput("confirmationCode", "Enter Confirmation Code")}
-            {this.renderButton("Confirm my account")}
+            {this.renderButton("Confirm my email")}
           </form>
         </div>
         {!this.state.resend && (
@@ -176,4 +187,4 @@ class ConfirmAccount extends Form {
   }
 }
 
-export default ConfirmAccount;
+export default ConfirmEmail;

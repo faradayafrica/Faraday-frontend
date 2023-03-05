@@ -3,7 +3,7 @@ import closeImg from "../../images/qfeed/close.svg";
 import copy from "../../images/qfeed/copy.svg";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { SuccessToast } from "../common/CustomToast";
+import { SuccessToast } from "../../common/components/CustomToast";
 
 const CopyLink = (props) => {
   const {

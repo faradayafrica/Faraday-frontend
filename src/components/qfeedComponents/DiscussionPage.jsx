@@ -9,12 +9,12 @@ import love from "../../images/qfeed/love.svg";
 import redLove from "../../images/qfeed/red-love.svg";
 import share from "../../images/qfeed/share.svg";
 import link from "../../images/qfeed/link.svg";
-import http from "../../services/httpService";
+import http from "../../common/services/httpService";
 import axios from "axios";
 import ellipses from "../../images/qfeed/ellipses.svg";
 import arrowRight from "../../images/qfeed/arrow-right.svg";
 import QuestionMenu from "./QuestionMenu";
-import { ErrorToast, PromiseToast } from "../common/CustomToast";
+import { ErrorToast, PromiseToast } from "../../common/components/CustomToast";
 import QuestionsLoader from "./QuestionsLoader";
 
 const DiscussionPage = ({

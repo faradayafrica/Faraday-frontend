@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Joi from "joi-browser";
-import Myspinner from "../components/styledComponents/Spinner";
-import Form from "../components/common/Form";
-import faraday from "../images/logo.svg";
-import auth from "../services/authService";
-import { getSchools, getFaculties, getLevel } from "../services/schoolService";
+import Myspinner from "../../../components/styledComponents/Spinner";
+import Form from "../../components/Form";
+import faraday from "../../../common/assets/logo.svg";
+import auth from "../../../common/services/authService";
+import {
+  getSchools,
+  getFaculties,
+  getLevel,
+} from "../../../common/services/schoolService";
 import { Redirect } from "react-router-dom";
-import Select from "../components/styledComponents/select";
+import Select from "../../../components/styledComponents/select";
 import { useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import PrimaryButton from "../components/styledComponents/PrimaryButton";
+import PrimaryButton from "../../../components/styledComponents/PrimaryButton";
 import { Listbox } from "@headlessui/react";
 
 // class AddSchoolDetail extends Form {
@@ -393,21 +397,21 @@ const AddSchoolDetail = () => {
   };
 
   return (
-    <div className='login-page'>
-      {redirect && <Redirect to='/update-personal-data' />}
+    <div className="login-page">
+      {redirect && <Redirect to="/update-personal-data" />}
       {/* the spinner */}
-      <div id='spinnerContainer' className='spinner-container vanish'>
+      <div id="spinnerContainer" className="spinner-container vanish">
         <Myspinner />
       </div>
-      <div className='progress-container mx-auto mt-3'>
-        <div className='progress progress-50'></div>
+      <div className="progress-container mx-auto mt-3">
+        <div className="progress progress-50"></div>
       </div>
-      <div className='form-container'>
-        <div className='logo-container'>
-          <img className='logo mx-auto' src={faraday} alt='faraday' />
+      <div className="form-container">
+        <div className="logo-container">
+          <img className="logo mx-auto" src={faraday} alt="faraday" />
         </div>
-        <h3 className='form-title '>We're almost done</h3>
-        <p className='mx-3 extra-info text-md'>
+        <h3 className="form-title ">We're almost done</h3>
+        <p className="mx-3 extra-info text-md">
           We just need your academic information.
         </p>
         {/* 
@@ -465,9 +469,9 @@ const AddSchoolDetail = () => {
             label={"Level"}
           />
 
-          <div className='mt-3'>
+          <div className="mt-3">
             <PrimaryButton
-              cta='Next'
+              cta="Next"
               // disabled={validate()}
               wide
             />

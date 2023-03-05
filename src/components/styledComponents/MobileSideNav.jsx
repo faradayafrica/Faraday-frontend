@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { getCurrentUser } from "../../services/authService";
+import { getCurrentUser } from "../../common/services/authService";
 
 // icons import
 import logout from "../../images/nav/logout.svg";

@@ -1,13 +1,13 @@
 import { useState } from "react";
 import CommentComponent from "./CommentComponent";
-import { getCurrentUser } from "../../../services/authService";
+import { getCurrentUser } from "../../../common/services/authService";
 import {
   SuccessToast,
   ErrorToast,
   PromiseToast,
-} from "../../common/CustomToast";
+} from "../../../common/components/CustomToast";
 
-import http from "../../../services/httpService";
+import http from "../../../common/services/httpService";
 import AddComment from "./AddComment";
 import CommentsLoader from "./CommentsLoader";
 

@@ -1,16 +1,16 @@
 import React from "react";
-import Form from "../components/common/Form";
-import Myspinner from "../components/styledComponents/Spinner";
-import faraday from "../images/logo.svg";
+import Form from "../../components/Form";
+import Myspinner from "../../../components/styledComponents/Spinner";
+import faraday from "../../../common/assets/logo.svg";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
 import { Redirect } from "react-router";
-import UserContext from "../context/userContext";
+import UserContext from "../../context/userContext";
 
-import * as userService from "../services/userService";
-import { ErrorToast } from "../components/common/CustomToast";
+import * as userService from "../../services/userService";
+import { ErrorToast } from "../../../common/components/CustomToast";
 
-class SignUpForm extends Form {
+class SignUpPage extends Form {
   static contextType = UserContext;
 
   state = {
@@ -171,4 +171,4 @@ class SignUpForm extends Form {
   }
 }
 
-export default SignUpForm;
+export default SignUpPage;

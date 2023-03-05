@@ -5,7 +5,7 @@ import unfollow from "../../../images/qfeed/unfollow.svg";
 import mark from "../../../images/qfeed/mark.svg";
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
-import Modal from "../../common/Modal";
+import Modal from "../../../common/components/Modal";
 
 const CommentMenu = ({
   match,

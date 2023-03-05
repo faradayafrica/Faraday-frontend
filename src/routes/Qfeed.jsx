@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import ProtectedRoute from "../components/common/ProtectedRoute.jsx";
+import ProtectedRoute from "../common/components/ProtectedRoute.jsx";
 import DiscussionPage from "../components/qfeedComponents/DiscussionPage.jsx";
 import PostPage from "../components/qfeedComponents/PostPage";
 import TimeLine from "../components/qfeedComponents/Timeline.jsx";
 import NotFound from "./NotFound.jsx";
-import http from "../services/httpService";
+import http from "../common/services/httpService";
 import axios from "axios";
-import { getCurrentUser } from "../services/authService.js";
+import { getCurrentUser } from "../common/services/authService.js";
 
 import {
   PromiseToast,
   SuccessToast,
   ErrorToast,
-} from "../components/common/CustomToast.js";
+} from "../common/components/CustomToast.jsx";
 
 const Qfeed = (props) => {
   const [questions, setQuestions] = useState([]);
@@ -157,12 +157,12 @@ const Qfeed = (props) => {
   }, [data]);
 
   return (
-    <div className='relative w-full route-wrapper '>
+    <div className="relative w-full route-wrapper ">
       {/* <QuestionsLoader type="qfeed" /> */}
-      <div className='w-full bg-white '>
+      <div className="w-full bg-white ">
         <Switch>
           <Route
-            path='/qfeed/post'
+            path="/qfeed/post"
             render={(props) => (
               <PostPage
                 online={online}
@@ -174,7 +174,7 @@ const Qfeed = (props) => {
           />
 
           <Route
-            path='/qfeed/:id'
+            path="/qfeed/:id"
             render={(props) => (
               <DiscussionPage
                 online={online}
@@ -188,7 +188,7 @@ const Qfeed = (props) => {
           />
 
           <Route
-            path='/'
+            path="/"
             render={(props) => (
               <TimeLine
                 online={online}
@@ -207,8 +207,8 @@ const Qfeed = (props) => {
               />
             )}
           />
-          <Route path='/not-found' component={NotFound} />
-          <Redirect push to='/not-found' />
+          <Route path="/not-found" component={NotFound} />
+          <Redirect push to="/not-found" />
         </Switch>
       </div>
     </div>

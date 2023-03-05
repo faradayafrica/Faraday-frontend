@@ -1,12 +1,12 @@
 import React from "react";
 import Joi from "joi-browser";
 import { Redirect } from "react-router-dom";
-import Myspinner from "../../components/styledComponents/Spinner";
-import Form from "../../components/common/Form";
-import auth from "../../services/authService";
-import faraday from "../../images/logo.svg";
-import { ErrorToast } from "../../components/common/CustomToast";
-import UserContext from "../../context/userContext";
+import Myspinner from "../../../../components/styledComponents/Spinner";
+import Form from "../../../components/Form";
+import auth from "../../../../common/services/authService";
+import faraday from "../../../../common/assets/logo.svg";
+import { ErrorToast } from "../../../../common/components/CustomToast";
+import UserContext from "../../../context/userContext";
 
 class ForgotPassword extends Form {
   static contextType = UserContext;

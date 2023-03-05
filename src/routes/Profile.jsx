@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useLayoutEffect } from "react";
-import http from "../services/httpService";
-import { getCurrentUser } from "../services/authService";
+import http from "../common/services/httpService";
+import { getCurrentUser } from "../common/services/authService";
 import { Switch, Route, Redirect } from "react-router-dom";
 import "../styles/profile.scss";
 import "../styles/profile/profile.css";
@@ -8,7 +8,7 @@ import {
   SuccessToast,
   ErrorToast,
   PromiseToast,
-} from "../components/common/CustomToast";
+} from "../common/components/CustomToast";
 
 import UserQuestionSolutionPage from "../components/profileComponents/UserQuestionSolutionPage";
 import NotFound from "./NotFound";
@@ -272,7 +272,7 @@ function Profile({ match, history }) {
   };
 
   return (
-    <div className='w-full route-wrapper profile-wrapper text-faraday-night'>
+    <div className="w-full route-wrapper profile-wrapper text-faraday-night">
       {loading ? (
         <ProfileHomeLoader />
       ) : error ? (
@@ -280,7 +280,7 @@ function Profile({ match, history }) {
       ) : (
         <Switch>
           <Route
-            path='/me/:username/qfeed'
+            path="/me/:username/qfeed"
             render={(props) => (
               <UserQuestionSolutionPage
                 user={user}
@@ -300,7 +300,7 @@ function Profile({ match, history }) {
           />
 
           <Route
-            path='/'
+            path="/"
             render={(props) => (
               // <>
               //   {console.log(user, "<<<<<<")}
@@ -323,8 +323,8 @@ function Profile({ match, history }) {
               />
             )}
           />
-          <Route path='/not-found' component={NotFound} />
-          <Redirect push to='/not-found' />
+          <Route path="/not-found" component={NotFound} />
+          <Redirect push to="/not-found" />
         </Switch>
       )}
     </div>
