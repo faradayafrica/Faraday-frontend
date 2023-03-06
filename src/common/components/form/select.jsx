@@ -3,6 +3,7 @@ import React from "react";
 import { useLayoutEffect } from "react";
 import { useState } from "react";
 import searchIcon from "../../assets/search.svg";
+import "../../styles/select.css";
 
 const Select = ({
   name,
