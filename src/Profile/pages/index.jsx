@@ -139,8 +139,8 @@ function Profile({ match, history }) {
 
     isSolutionSuccess &&
       !isSolutionLoading &&
-      solutionData?.pages.map((page) =>
-        page.data?.results.map((item) => {
+      solutionData?.pages?.map((page) =>
+        page.data?.results?.map((item) => {
           // console.log("Solution first fetch");
           return newSolutions.push(item);
         })
@@ -154,8 +154,8 @@ function Profile({ match, history }) {
 
     isBookmarkSuccess &&
       !isBookmarkLoading &&
-      bookmarkData?.pages.map((page) =>
-        page.data?.results[0].ques.map((item) => {
+      bookmarkData?.pages?.map((page) =>
+        page.data?.results?.[0]?.ques.map((item) => {
           // console.log("Bookmark first fetch");
           return newBookmarks.push(item);
         })

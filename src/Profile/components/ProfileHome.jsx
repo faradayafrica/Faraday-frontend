@@ -84,9 +84,11 @@ const ProfileHome = ({
               </div>
 
               <p className="mt-2">
-                {user?.profile.bio
+                {user?.profile?.bio
                   ? user?.profile.bio
-                  : `A ${user?.profile.level}L student of ${user?.profile.school} studying ${user?.profile.department}.`}
+                  : user?.profile?.level
+                  ? `A ${user?.profile.level}L student of ${user?.profile.school} studying ${user?.profile.department}.`
+                  : ""}
               </p>
 
               <div className="text-xs text-night-secondary">
@@ -99,6 +101,7 @@ const ProfileHome = ({
             </div>
           </div>
 
+          {/* Questions section starts here */}
           <div className="question-section p-3 border-t mt-3">
             <div className="flex py-2  justify-between items-center">
               <p className="text-night-secondary m-0">
@@ -122,7 +125,7 @@ const ProfileHome = ({
             </div>
 
             <div className="profile-question-section flex items-start">
-              {isQuestionLoading || !questions.length ? (
+              {isQuestionLoading ? (
                 <QuestionsLoader type="profile" />
               ) : questionError ? (
                 "Error here"
@@ -131,9 +134,13 @@ const ProfileHome = ({
                   <ProfileQuestion key={question.id} question={question} />
                 ))
               )}
+              {!isQuestionLoading && !questions.length ? "No Question" : ""}
+              {/* TODO: Build a proper empty content component */}
             </div>
           </div>
+          {/* Questions section ends here */}
 
+          {/* Solutions section starts here */}
           {user?.profile.solutions > 0 && (
             <div className="question-section p-3">
               <div className="flex py-2  justify-between items-center">
@@ -158,7 +165,7 @@ const ProfileHome = ({
               </div>
 
               <div className="profile-question-section flex items-start">
-                {isSolutionLoading || !solutions.length ? (
+                {isSolutionLoading ? (
                   <QuestionsLoader type="profile" />
                 ) : solutionError ? (
                   "Error here"
@@ -174,7 +181,9 @@ const ProfileHome = ({
               </div>
             </div>
           )}
+          {/* Solutions section ends here */}
 
+          {/* Bookmarks section starts here */}
           <div className="question-section p-3 border-t mt-3">
             <div className="flex py-2  justify-between items-center">
               <p className="text-night-secondary m-0">
@@ -198,7 +207,7 @@ const ProfileHome = ({
             </div>
 
             <div className="profile-question-section flex items-start">
-              {isBookmarkLoading || !bookmarks.length ? (
+              {isBookmarkLoading ? (
                 <QuestionsLoader type="profile" />
               ) : bookmarkError ? (
                 "Error here"
@@ -207,8 +216,15 @@ const ProfileHome = ({
                   <ProfileQuestion key={question.id} question={question} />
                 ))
               )}
+              {!isBookmarkLoading && !bookmarks.length ? (
+                <div>Checked, and no bookmarks</div>
+              ) : (
+                ""
+              )}
+              {/* TODO: Build a proper empty content component */}
             </div>
           </div>
+          {/* Bookmarks section ends here */}
         </>
       ) : (
         <div className="m-3">
