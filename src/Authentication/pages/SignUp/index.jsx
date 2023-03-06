@@ -6,6 +6,8 @@ import Joi from "joi-browser";
 import { Link } from "react-router-dom";
 import { Redirect } from "react-router";
 import UserContext from "../../context/userContext";
+import { connect } from "react-redux";
+import { fetchSchoolThunk } from "../../../common/features/auth/univastSlice";
 
 import * as userService from "../../services/userService";
 import { ErrorToast } from "../../../common/components/CustomToast";
@@ -27,6 +29,11 @@ class SignUpPage extends Form {
     redirect: null,
     showPassword: false,
   };
+
+  componentDidMount() {
+    const { fetchSchool } = this.props;
+    fetchSchool();
+  }
 
   schema = {
     fname: Joi.string().alphanum().required().label("First name"),
@@ -171,4 +178,10 @@ class SignUpPage extends Form {
   }
 }
 
-export default SignUpPage;
+// These lines of code bellow allows us to interact with the redux store from here
+
+const mapDispatchToProps = {
+  fetchSchool: fetchSchoolThunk,
+};
+
+export default connect(null, mapDispatchToProps)(SignUpPage);
