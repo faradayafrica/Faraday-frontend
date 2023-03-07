@@ -12,6 +12,7 @@ const initialState = {
   thisQuestion: {
     question: {},
     comments: [],
+    shortLink: "",
   },
   feed: {
     qfeed: [],
@@ -81,7 +82,6 @@ export const markSolutionThunk = createAsyncThunk(
   "qfeed/mark-solution",
   async ({ postid, commentid }, { rejectWithValue }) => {
     try {
-      console.log(postid, commentid);
       const response = await QService.markSolution(postid, commentid);
       return response;
     } catch (error) {
@@ -202,7 +202,6 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(voteQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      console.log(data, "vote");
 
       if (data) {
         // Updates the qfeed after voting
@@ -222,16 +221,34 @@ const qfeedSlice = createSlice({
 
     // <--------------------Comment Actions------------------------------>
 
-    // Extra Reducers for question vote action
+    // Extra Reducers for mark Solution
     builder.addCase(markSolutionThunk.pending, (state) => {
       state.status = QfeedStates.LOADING;
     });
     builder.addCase(markSolutionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      console.log(data, "comments fetched");
 
       if (data) {
+        // Updates the solution from the comments array
+        const newComments = state.thisQuestion.comments.map((comment) => {
+          if (comment.id === data.id) {
+            return Object.assign({}, data);
+          } else {
+            return Object.assign({}, comment, { is_solution: false });
+          }
+        });
+        state.thisQuestion.comments = newComments;
         state.status = QfeedStates.SUCCESSFUL;
+
+        // Update solution for question on the Qfeed Home
+        const newFeed = state.feed.qfeed;
+        const question = newFeed.find(
+          (q) => q.id === state.thisQuestion.question.id
+        );
+        if (question) {
+          question.solution = data;
+        }
+        state.feed.qfeed = newFeed;
       }
     });
     builder.addCase(markSolutionThunk.rejected, (state) => {

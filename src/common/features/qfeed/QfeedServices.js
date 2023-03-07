@@ -65,7 +65,7 @@ export default class QService {
   }
 
   static async markSolution(postid, commentid) {
-    const { data } = await http.post(apiRoutes.markSolution, {
+    const data = await http.post(apiRoutes.markSolution, {
       postid,
       commentid,
     });

@@ -21,6 +21,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   deleteQuestionThunk,
   fetchCommentsThunk,
+  markSolutionThunk,
   updateFeed,
   updateQuestion,
   voteQuestionThunk,
@@ -29,7 +30,6 @@ import { useLayoutEffect } from "react";
 import QService from "../../common/features/qfeed/QfeedServices";
 
 const DiscussionPage = ({ match, history, online }) => {
-  // const [comments, setComments] = useState([]);
   const [loader, setLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
 
@@ -54,6 +54,7 @@ const DiscussionPage = ({ match, history, online }) => {
     setCopied(false);
     console.log("here");
   };
+
   const getShortLink = (id) => {
     const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
     const questionsClone = [...questions];
@@ -84,51 +85,7 @@ const DiscussionPage = ({ match, history, online }) => {
   };
 
   const handleMarkSolution = (postid, commentid) => {
-    const commentsClone = [...comments];
-    var index = commentsClone.findIndex((comment) => comment.id === commentid);
-
-    try {
-      const apiEndpoint =
-        process.env.REACT_APP_API_URL + "/qfeed/que/marksolution/";
-
-      const promise = http
-        .post(apiEndpoint, {
-          postid: postid,
-          commentid: commentid,
-        })
-        .then((resp) => {
-          for (let i = 0; i < commentsClone.length; i++) {
-            if (i === index) {
-              commentsClone[i].is_solution = resp.data.is_solution;
-            } else {
-              commentsClone[i].is_solution = false;
-            }
-          }
-          // setComments(commentsClone);
-          dispatch(updateQuestion({ name: "comments", value: commentsClone }));
-
-          // console.log(resp.data);
-          const quesClone = [...questions];
-          var QueIndex = questions.findIndex(
-            (ques) => ques.id === match.params.id
-          );
-          const thisQue = questions.find((que) => que.id === match.params.id);
-
-          if (resp.data.is_solution === true) {
-            thisQue.solution = resp.data;
-            quesClone[QueIndex] = thisQue;
-          } else {
-            thisQue.solution = null;
-            quesClone[QueIndex] = thisQue;
-          }
-          dispatch(updateFeed({ name: "qfeed", value: quesClone }));
-        });
-
-      PromiseToast("Solution updated", "Couldn't update solution", promise);
-    } catch (e) {
-      console.log(e);
-      ErrorToast("Something went wrong, Try again later");
-    }
+    dispatch(markSolutionThunk({ postid, commentid }));
   };
 
   const toggleQuestionMenu = () => {
@@ -177,7 +134,7 @@ const DiscussionPage = ({ match, history, online }) => {
 
   useEffect(async () => {
     if (question.user) {
-      console.log("question dey");
+      // Skip
     } else {
       fetchThisQuestion();
     }
@@ -255,7 +212,7 @@ const DiscussionPage = ({ match, history, online }) => {
 
   // Initialize the state of the Discussion feed when navigating from the Qfeen home
   useLayoutEffect(() => {
-    const thisQuestion = questions.find((q) => q.id === match.params.id);
+    const thisQuestion = questions?.find((q) => q.id === match.params.id);
     const value = thisQuestion ? thisQuestion : {};
     dispatch(updateQuestion({ name: "question", value }));
     setShortLink(thisQuestion ? thisQuestion.short_link : "");
@@ -263,7 +220,6 @@ const DiscussionPage = ({ match, history, online }) => {
 
   return (
     <>
-      {console.log(comments, "comments")}
       <div className=" bg-white z-30 bottom-0 left-0 h-min-screen w-screen sm:w-auto sm:static">
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
         <div className="z-50" id="discussion">
@@ -273,6 +229,7 @@ const DiscussionPage = ({ match, history, online }) => {
               className="w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180"
               alt="return"
               onClick={() => {
+                dispatch(updateQuestion({ name: "comments", value: [] }));
                 history.goBack();
               }}
             />
