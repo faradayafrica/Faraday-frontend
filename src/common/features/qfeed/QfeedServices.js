@@ -26,6 +26,14 @@ export default class QService {
     return data;
   }
 
+  static async createQuestion(title, content) {
+    const { data } = await http.post(apiRoutes.postQuestion, {
+      title,
+      content,
+    });
+    return data;
+  }
+
   static async deleteQuestion(ques_id) {
     const { data } = await http.delete(
       apiRoutes.deleteQuestion + `${ques_id}/`

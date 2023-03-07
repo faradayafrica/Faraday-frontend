@@ -43,8 +43,6 @@ const Question = (props) => {
   const dispatch = useDispatch();
   const { qfeed: questions } = useSelector((state) => state.qfeed.feed);
 
-  const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
-
   let smileyClasses =
     "ml-2 hover:bg-brand-highlight px-2  h-8 flex justify-around items-center rounded-lg";
 

@@ -7,6 +7,7 @@ const apiRoutes = {
   fetchQuestions: apiBase + "/qfeed/que/fetch/",
   deleteQuestion: apiBase + "/qfeed/que/delete/",
   vote: apiBase + "/qfeed/que/vote_que/",
+  postQuestion: apiBase + "/qfeed/que/create_que/",
 
   // Notification
   // Profile

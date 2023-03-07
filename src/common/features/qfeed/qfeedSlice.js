@@ -18,6 +18,8 @@ const initialState = {
     profile: [],
   },
   error: "",
+  status: "base",
+  toast: "",
 };
 
 // Follow a user
@@ -26,6 +28,19 @@ export const followUserThunk = createAsyncThunk(
   async ({ username }, { rejectWithValue }) => {
     try {
       const response = await QService.followUser(username);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
+// Ask a question
+export const createQuestionThunk = createAsyncThunk(
+  "qfeed/create-question",
+  async ({ title, content }, { rejectWithValue }) => {
+    try {
+      const response = await QService.createQuestion(title, content);
       return response;
     } catch (error) {
       return rejectWithValue(error.toString());
@@ -76,6 +91,12 @@ const qfeedSlice = createSlice({
       const { value } = action.payload;
       state.thisQuestion.question = value;
     },
+    resetStatus: (state) => {
+      state.base = QfeedStates.BASE;
+    },
+    resetToast: (state) => {
+      state.base = "";
+    },
   },
 
   // Extra Reducers for follow action
@@ -114,6 +135,26 @@ const qfeedSlice = createSlice({
       }
     });
     builder.addCase(followUserThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra Reducers for creating a question
+    builder.addCase(createQuestionThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(createQuestionThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+      console.log(data, state.status, "create que");
+
+      if (data) {
+        // Updates the qfeed after voting
+        state.feed.qfeed = [data, ...state.feed.qfeed];
+        state.thisQuestion.question = {};
+        state.status = QfeedStates.SUCCESSFUL;
+        state.toast = "Success";
+      }
+    });
+    builder.addCase(createQuestionThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
     });
 
@@ -164,4 +205,5 @@ const qfeedSlice = createSlice({
 });
 
 export default qfeedSlice.reducer;
-export const { updateFeed, updateQuestion } = qfeedSlice.actions;
+export const { updateFeed, updateQuestion, resetStatus, resetToast } =
+  qfeedSlice.actions;

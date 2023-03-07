@@ -1,26 +1,18 @@
-import { useState, useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useLayoutEffect, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import DiscussionPage from "../components/DiscussionPage.jsx";
 import PostPage from "../components/PostPage";
 import TimeLine from "../components/Timeline.jsx";
 import NotFound from "../../common/components/NotFound.jsx";
-import http from "../../common/services/httpService";
 import QService from "../../common/features/qfeed/QfeedServices.js";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteQuestionThunk,
-  followUserThunk,
-  updateFeed,
-} from "../../common/features/qfeed/qfeedSlice.js";
+import { useDispatch } from "react-redux";
+import { updateFeed } from "../../common/features/qfeed/qfeedSlice.js";
 
 const Qfeed = (props) => {
-  const { online } = props;
-
-  // Redux biz starts here
-  const { qfeed: questions } = useSelector((state) => state.qfeed.feed);
   const dispatch = useDispatch();
-  // Redux biz ends here
+  const { online } = props;
 
   const {
     data,
@@ -62,39 +54,20 @@ const Qfeed = (props) => {
     };
   }, [fetchNextPage, hasNextPage]);
 
-  // Checks Local Storage and populates the Qfeed
-  useEffect(() => {
-    let storedQuestions;
-
-    storedQuestions = JSON.parse(localStorage.getItem("questions"));
-
-    if (storedQuestions) {
-      dispatch(
-        updateFeed({ name: "qfeed", value: storedQuestions?.questions })
-      );
-    }
-  }, []);
-
   // Update state with the data data from React Query
   useEffect(() => {
-    document.title = `Faraday`;
     const newQuestions = [];
 
     isSuccess &&
       data?.pages.map((page) =>
         page.data?.results.map((item) => newQuestions.push(item))
       );
-    // setQuestions(newQuestions);
     dispatch(updateFeed({ name: "qfeed", value: newQuestions }));
-
-    // Save state to Local Storage
-    window.localStorage.setItem(
-      "questions",
-      JSON.stringify({
-        questions: newQuestions,
-      })
-    );
   }, [data]);
+
+  useLayoutEffect(() => {
+    document.title = "Faraday";
+  }, []);
 
   return (
     <div className="relative w-full route-wrapper ">

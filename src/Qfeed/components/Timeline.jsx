@@ -27,6 +27,7 @@ const TimeLine = (props) => {
     }
   }, []);
 
+  // Save scroll position
   useEffect(() => {
     const save = () => {
       setScrollPosition(window.pageYOffset);
