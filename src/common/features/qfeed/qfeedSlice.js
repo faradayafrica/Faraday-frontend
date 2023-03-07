@@ -11,7 +11,7 @@ export const QfeedStates = {
 const initialState = {
   thisQuestion: {
     question: {},
-    comments: {},
+    comments: [],
   },
   feed: {
     qfeed: [],
@@ -66,8 +66,23 @@ export const voteQuestionThunk = createAsyncThunk(
   "qfeed/vote-question",
   async ({ postid, value = "upvote" }, { rejectWithValue }) => {
     try {
-      console.log(postid, value);
       const response = await QService.voteQuestion(postid, value);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
+// <--------------------Comment Thunk------------------------------>
+
+// Mark a comment as Solution
+export const markSolutionThunk = createAsyncThunk(
+  "qfeed/mark-solution",
+  async ({ postid, commentid }, { rejectWithValue }) => {
+    try {
+      console.log(postid, commentid);
+      const response = await QService.markSolution(postid, commentid);
       return response;
     } catch (error) {
       return rejectWithValue(error.toString());
@@ -88,8 +103,11 @@ const qfeedSlice = createSlice({
       };
     },
     updateQuestion: (state, action) => {
-      const { value } = action.payload;
-      state.thisQuestion.question = value;
+      const { name, value } = action.payload;
+      state.thisQuestion = {
+        ...state.thisQuestion,
+        [name]: value,
+      };
     },
     resetStatus: (state) => {
       state.base = QfeedStates.BASE;
@@ -191,14 +209,32 @@ const qfeedSlice = createSlice({
         const newFeed = state.feed.qfeed.map((question) =>
           question.id === data.id ? data : question
         );
-
         state.feed.qfeed = newFeed;
 
         // Update the discussionPage after voting
         state.thisQuestion.question = data;
+        state.status = QfeedStates.SUCCESSFUL;
       }
     });
     builder.addCase(voteQuestionThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // <--------------------Comment Actions------------------------------>
+
+    // Extra Reducers for question vote action
+    builder.addCase(markSolutionThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(markSolutionThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+      console.log(data, "comments fetched");
+
+      if (data) {
+        state.status = QfeedStates.SUCCESSFUL;
+      }
+    });
+    builder.addCase(markSolutionThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
     });
   },

@@ -17,8 +17,14 @@ export default class QService {
       const resp = await axios.get(
         apiRoutes.fetchQuestions + `?page=${pageParam}`
       );
+
       return resp;
     }
+  }
+
+  static async fetchQuestion(ques_id) {
+    const resp = await axios.get(apiRoutes.fetchQuestions + `${ques_id}/`);
+    return resp.data;
   }
 
   static async followUser(username) {
@@ -45,6 +51,23 @@ export default class QService {
     const { data } = await http.post(apiRoutes.vote, {
       postid,
       value,
+    });
+    return data;
+  }
+
+  // Comment Services starts here
+  static async fetchQuestionComments(postid, pageParam) {
+    const data = await http.get(
+      apiRoutes.fetchComments + `${postid}/?page=${pageParam}`
+    );
+
+    return data;
+  }
+
+  static async markSolution(postid, commentid) {
+    const { data } = await http.post(apiRoutes.markSolution, {
+      postid,
+      commentid,
     });
     return data;
   }
