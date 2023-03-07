@@ -6,8 +6,14 @@ import {
   PromiseToast,
 } from "../../common/components/CustomToast";
 import { getCurrentUser } from "../../common/services/authService";
+import { useSelector, useDispatch } from "react-redux";
+import { updateFeed } from "../../common/features/qfeed/qfeedSlice";
 
 const PostPage = (props) => {
+  // Redux here
+  const { questions } = useSelector((state) => state.qfeed.feed);
+  const dispatch = useDispatch();
+
   const LIMIT = { title: 150, content: 400 };
 
   const currentUser = getCurrentUser();
@@ -54,8 +60,12 @@ const PostPage = (props) => {
         const promise = http
           .post(apiEndpoint, { title, content })
           .then((resp) => {
-            props.handleUpdatedQuestions([resp.data.data, ...props.questions]);
-            // console.log(resp.data.data, "resp");
+            dispatch(
+              updateFeed({
+                name: "qfeed",
+                value: [resp.data.data, ...questions],
+              })
+            );
           });
 
         PromiseToast("Question sent", "Question not sent", promise);
@@ -73,7 +83,12 @@ const PostPage = (props) => {
 
           const data = makeQuestion(title, content);
 
-          props.handleUpdatedQuestions([data, ...props.questions]);
+          dispatch(
+            updateFeed({
+              name: "qfeed",
+              value: [data, ...questions],
+            })
+          );
           SuccessToast("Question will be sent when connection is restored");
 
           props.history.replace("/");

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import CopyLink from "./CopyLink";
@@ -16,32 +17,33 @@ import arrowRight from "../assets/arrow-right.svg";
 import QuestionMenu from "./QuestionMenu";
 import { ErrorToast, PromiseToast } from "../../common/components/CustomToast";
 import QuestionsLoader from "./QuestionsLoader";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  deleteQuestionThunk,
+  updateFeed,
+  updateQuestion,
+  voteQuestionThunk,
+} from "../../common/features/qfeed/qfeedSlice";
+import { useLayoutEffect } from "react";
 
-const DiscussionPage = ({
-  match,
-  history,
-  online,
-  questions,
-  handleUpdatedQuestions,
-  onDeleteQuestion,
-}) => {
-  const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
+const DiscussionPage = ({ match, history, online, onDeleteQuestion }) => {
   const apiEndpoint =
     process.env.REACT_APP_API_URL + `/qfeed/que/fetch/${match.params.id}/`;
 
-  const [question, setQuestion] = useState(thisQuestion ? thisQuestion : {});
+  // const [_, setQuestion] = useState({});
   const [comments, setComments] = useState([]);
   const [loader, setLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
 
   const [isCopyLinkModal, setCopyLinkModal] = useState(false);
   const [isCopied, setCopied] = useState(false);
-  const [shortLink, setShortLink] = useState(
-    thisQuestion ? thisQuestion.short_link : ""
-  );
+  const [shortLink, setShortLink] = useState();
 
-  // Copy Link associated variables and function are recreated for the timeline on the Question tab
-  //We could use contextAPI to help them share same state and functions in the future
+  // Redux biz starts here
+  const { qfeed: questions } = useSelector((state) => state.qfeed.feed);
+  const { question } = useSelector((state) => state.qfeed.thisQuestion);
+  const dispatch = useDispatch();
+  // Redux biz ends here
 
   const handleIsCopied = (value) => {
     setCopied(value);
@@ -68,7 +70,7 @@ const DiscussionPage = ({
           .then((resp) => {
             setShortLink(resp.data.short_url);
             questionsClone[question_index].short_link = resp.data.short_url;
-            handleUpdatedQuestions([...questionsClone]);
+            dispatch(updateFeed({ name: "qfeed", value: questionsClone }));
             // sync with B.E
             http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {
               postid: id,
@@ -147,8 +149,7 @@ const DiscussionPage = ({
             thisQue.solution = null;
             quesClone[QueIndex] = thisQue;
           }
-
-          handleUpdatedQuestions(quesClone);
+          dispatch(updateFeed({ name: "qfeed", value: quesClone }));
         });
 
       PromiseToast("Solution updated", "Couldn't update solution", promise);
@@ -162,66 +163,33 @@ const DiscussionPage = ({
     setQuestionMenu(!setQuestionMenu);
   };
 
-  const handleQuestionDelete = (question) => {
-    onDeleteQuestion(question);
+  const handleQuestionDelete = (ques_id) => {
+    dispatch(deleteQuestionThunk({ ques_id }));
     history.goBack();
   };
 
   const handleQuestionLike = async (postid) => {
-    const oldLikes = question.likes;
-    const oldLiked = question.liked;
-    const updatedQuestion = { ...question };
-
-    const clonedQuestions = [...questions];
-    var index = clonedQuestions.findIndex((q) => q.id === question.id);
-
-    if (!question.liked) {
-      updatedQuestion.likes = oldLikes + 1;
-      updatedQuestion.liked = !oldLiked;
-      setQuestion({ ...updatedQuestion });
+    if (question.liked) {
+      dispatch(voteQuestionThunk({ postid, value: "downvote" }));
     } else {
-      updatedQuestion.likes = oldLikes - 1;
-      updatedQuestion.liked = !oldLiked;
-      setQuestion({ ...updatedQuestion });
-    }
-
-    try {
-      const apiEndpoint =
-        process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
-
-      let likeData;
-
-      if (oldLiked) {
-        const { data } = await http.post(apiEndpoint, {
-          postid,
-          value: "downvote",
-        });
-        likeData = data.data;
-      } else {
-        const { data } = await http.post(apiEndpoint, {
-          postid,
-          value: "upvote",
-        });
-        likeData = data.data;
-      }
-
-      if (index >= 0) {
-        clonedQuestions[index] = { ...likeData };
-      }
-      handleUpdatedQuestions(clonedQuestions);
-    } catch (err) {
-      updatedQuestion.liked = oldLiked;
-      updatedQuestion.likes = oldLikes;
-      setQuestion({ ...updatedQuestion });
-      console.warn("error", err.message);
+      dispatch(voteQuestionThunk({ postid }));
     }
   };
+
+  useLayoutEffect(() => {
+    const thisQuestion = questions.find((q) => q.id === match.params.id);
+    const value = thisQuestion ? thisQuestion : {};
+    // console.log(value);
+    dispatch(updateQuestion({ value }));
+    setShortLink(thisQuestion ? thisQuestion.short_link : "");
+  }, []);
 
   const retry = async () => {
     setLoader(true);
     try {
       const { data } = await http.get(apiEndpoint);
-      setQuestion(data);
+      // setQuestion(data);
+      dispatch(updateQuestion({ value: data }));
     } catch (err) {
       setLoader(false);
     }
@@ -235,20 +203,26 @@ const DiscussionPage = ({
 
   const fetchThisQuestion = async () => {
     try {
-      await axios.get(apiEndpoint).then((resp) => setQuestion(resp.data.data));
+      await axios
+        .get(apiEndpoint)
+        .then((resp) => dispatch(updateQuestion({ value: resp.data.data })));
     } catch (ex) {
       setLoader(false);
       if (ex.response.status == 404) {
         history.replace("/missing-question");
       } else {
-        console.log("Problem");
+        // console.log("Problem");
       }
       setLoader(false);
     }
   };
 
   useEffect(async () => {
-    await fetchThisQuestion();
+    if (question.user) {
+      //Skip
+    } else {
+      fetchThisQuestion();
+    }
   }, []);
 
   const fetchComments = async (pageParam) => {
@@ -323,6 +297,7 @@ const DiscussionPage = ({
 
   return (
     <>
+      {/* {console.log(question, "question")} */}
       <div className=" bg-white z-30 bottom-0 left-0 h-min-screen w-screen sm:w-auto sm:static">
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
         <div className="z-50" id="discussion">
@@ -470,8 +445,8 @@ const DiscussionPage = ({
                 onMarkSolution={handleMarkSolution}
                 fetchThisQuestion={fetchThisQuestion}
                 match={match}
-                questions={questions}
-                handleUpdatedQuestions={handleUpdatedQuestions}
+                // questions={questions}
+                // handleUpdatedQuestions={handleUpdatedQuestions}
                 //from useInfinteQuery
                 error={error}
                 isError={isError}

@@ -1,40 +1,26 @@
 import { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
-// import ProtectedRoute from "../../common/components/ProtectedRoute.jsx";
 import DiscussionPage from "../components/DiscussionPage.jsx";
 import PostPage from "../components/PostPage";
 import TimeLine from "../components/Timeline.jsx";
 import NotFound from "../../common/components/NotFound.jsx";
 import http from "../../common/services/httpService";
-import axios from "axios";
-import { getCurrentUser } from "../../common/services/authService.js";
-
+import QService from "../../common/features/qfeed/QfeedServices.js";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  PromiseToast,
-  SuccessToast,
-  ErrorToast,
-} from "../../common/components/CustomToast.jsx";
+  deleteQuestionThunk,
+  followUserThunk,
+  updateFeed,
+} from "../../common/features/qfeed/qfeedSlice.js";
 
 const Qfeed = (props) => {
-  const [questions, setQuestions] = useState([]);
   const { online } = props;
 
-  const user = getCurrentUser();
-
-  const fetchQuestions = async (pageParam) => {
-    if (user.username) {
-      const resp = await http.get(
-        process.env.REACT_APP_API_URL + `/qfeed/que/fetch/?page=${pageParam}`
-      );
-      return resp;
-    } else {
-      const resp = await axios.get(
-        process.env.REACT_APP_API_URL + `/qfeed/que/fetch/?page=${pageParam}`
-      );
-      return resp;
-    }
-  };
+  // Redux biz starts here
+  const { qfeed: questions } = useSelector((state) => state.qfeed.feed);
+  const dispatch = useDispatch();
+  // Redux biz ends here
 
   const {
     data,
@@ -48,7 +34,7 @@ const Qfeed = (props) => {
     refetch,
   } = useInfiniteQuery({
     queryKey: ["questions"],
-    queryFn: ({ pageParam = 1 }) => fetchQuestions(pageParam),
+    queryFn: ({ pageParam = 1 }) => QService.fetchQuestions(pageParam),
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage, allPages) => {
       const nextPage = allPages?.length + 1;
@@ -76,55 +62,6 @@ const Qfeed = (props) => {
     };
   }, [fetchNextPage, hasNextPage]);
 
-  const handleFollow = (user) => {
-    const apiEndpoint =
-      process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
-
-    const clonedQuestions = [...questions];
-    const userQuestions = clonedQuestions.filter((q) => q.user.id === user.id);
-
-    try {
-      const promise = http.post(apiEndpoint).then((resp) => {
-        userQuestions.map(
-          (question) =>
-            (question.user.is_following = !question.user.is_following)
-        );
-      });
-      const msg = user.is_following ? `Unfollowed` : "Followed";
-
-      PromiseToast(
-        `${msg} @${user.username}`,
-        "An error occurred, Try again",
-        promise
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const deleteQuestion = async (selectedQuestion) => {
-    const remainingQuestions = questions.filter((question) => {
-      return question.id !== selectedQuestion.id;
-    });
-
-    const apiEndpoint =
-      process.env.REACT_APP_API_URL +
-      `/qfeed/que/delete/${selectedQuestion.id}/`;
-
-    try {
-      await http.delete(apiEndpoint);
-      SuccessToast("Question deleted");
-      setQuestions([...remainingQuestions]);
-    } catch (e) {
-      console.warn("Buttocks", e.message);
-      ErrorToast("Couldn't delete question");
-    }
-  };
-
-  const updateQuestions = (updatedQuestions) => {
-    setQuestions([...updatedQuestions]);
-  };
-
   // Checks Local Storage and populates the Qfeed
   useEffect(() => {
     let storedQuestions;
@@ -132,7 +69,9 @@ const Qfeed = (props) => {
     storedQuestions = JSON.parse(localStorage.getItem("questions"));
 
     if (storedQuestions) {
-      setQuestions([...storedQuestions.questions]);
+      dispatch(
+        updateFeed({ name: "qfeed", value: storedQuestions?.questions })
+      );
     }
   }, []);
 
@@ -145,7 +84,8 @@ const Qfeed = (props) => {
       data?.pages.map((page) =>
         page.data?.results.map((item) => newQuestions.push(item))
       );
-    setQuestions(newQuestions);
+    // setQuestions(newQuestions);
+    dispatch(updateFeed({ name: "qfeed", value: newQuestions }));
 
     // Save state to Local Storage
     window.localStorage.setItem(
@@ -163,28 +103,12 @@ const Qfeed = (props) => {
         <Switch>
           <Route
             path="/qfeed/post"
-            render={(props) => (
-              <PostPage
-                online={online}
-                questions={questions}
-                handleUpdatedQuestions={updateQuestions}
-                {...props}
-              />
-            )}
+            render={(props) => <PostPage online={online} {...props} />}
           />
 
           <Route
             path="/qfeed/:id"
-            render={(props) => (
-              <DiscussionPage
-                online={online}
-                questions={questions}
-                handleUpdatedQuestions={updateQuestions}
-                onFollowUser={handleFollow}
-                onDeleteQuestion={deleteQuestion}
-                {...props}
-              />
-            )}
+            render={(props) => <DiscussionPage online={online} {...props} />}
           />
 
           <Route
@@ -192,10 +116,6 @@ const Qfeed = (props) => {
             render={(props) => (
               <TimeLine
                 online={online}
-                questions={questions}
-                handleUpdatedQuestions={updateQuestions}
-                onFollowUser={handleFollow}
-                onDeleteQuestion={deleteQuestion}
                 refetch={refetch}
                 loader={isLoading}
                 isError={isError}

@@ -24,17 +24,24 @@ import verify from "../assets/verify.svg";
 import info from "../assets/info.svg";
 import Modal from "../../common/components/Modal";
 import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteQuestionThunk,
+  updateFeed,
+  voteQuestionThunk,
+} from "../../common/features/qfeed/qfeedSlice";
 
 const Question = (props) => {
-  const [question, setQuestion] = useState(props.question);
+  const { question } = props;
   const [questionMenu, setQuestionMenu] = useState(false);
   const [isButtonPannel, setButtonPannel] = useState(false);
-
   const [isCopyLinkModal, setCopyLinkModal] = useState(false);
   const [isCopied, setCopied] = useState(false);
   const [shortLink, setShortLink] = useState(props.question.short_link);
-
   const [disclaimer, setDisclaimer] = useState(false);
+
+  const dispatch = useDispatch();
+  const { qfeed: questions } = useSelector((state) => state.qfeed.feed);
 
   const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
 
@@ -75,8 +82,8 @@ const Question = (props) => {
 
   const getShortLink = (id) => {
     const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
-    const questionsClone = [...props.questions];
-    const question_index = props.questions.findIndex(
+    const questionsClone = [...questions];
+    const question_index = questions.findIndex(
       (question) => question.id === id
     );
 
@@ -89,7 +96,7 @@ const Question = (props) => {
           .then((resp) => {
             setShortLink(resp.data.short_url);
             questionsClone[question_index].short_link = resp.data.short_url;
-            props.handleUpdatedQuestions([...questionsClone]);
+            dispatch(updateFeed({ name: "qfeed", value: questionsClone }));
             // sync with B.E
             http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {
               postid: id,
@@ -108,53 +115,10 @@ const Question = (props) => {
 
   // This could go 2 levels up the family tree (@Qfeed) so that there's no need to recreate the function @DiscussionPage
   const handleLike = async (postid) => {
-    const oldLikes = question.likes;
-    const oldLiked = question.liked;
-    const updatedQuestion = { ...question };
-
-    const clonedQuestions = [...props.questions];
-    const index = clonedQuestions.findIndex((q) => q.id === question.id);
-
-    hideButtonPannel();
-
-    if (!question.liked) {
-      updatedQuestion.likes = oldLikes + 1;
-      updatedQuestion.liked = !oldLiked;
-      setQuestion({ ...updatedQuestion });
+    if (question.liked) {
+      dispatch(voteQuestionThunk({ postid, value: "downvote" }));
     } else {
-      updatedQuestion.likes = oldLikes - 1;
-      updatedQuestion.liked = !oldLiked;
-      setQuestion({ ...updatedQuestion });
-    }
-
-    try {
-      let likeData;
-
-      if (oldLiked) {
-        const { data } = await http.post(apiEndpoint, {
-          postid,
-          value: "downvote",
-        });
-        // SuccessToast("Question unliked");
-        likeData = data.data;
-      } else {
-        const { data } = await http.post(apiEndpoint, {
-          postid,
-          value: "upvote",
-        });
-        // SuccessToast("Question liked");
-        likeData = data.data;
-      }
-
-      if (index >= -1) {
-        clonedQuestions[index] = { ...likeData };
-      }
-      props.handleUpdatedQuestions(clonedQuestions);
-    } catch (err) {
-      updatedQuestion.liked = oldLiked;
-      updatedQuestion.likes = oldLikes;
-      setQuestion({ ...updatedQuestion });
-      console.warn("error", err.message);
+      dispatch(voteQuestionThunk({ postid }));
     }
   };
 
@@ -187,6 +151,10 @@ const Question = (props) => {
       props.refetch();
     }
   };
+
+  function handleQuestionDelete(ques_id) {
+    dispatch(deleteQuestionThunk({ ques_id }));
+  }
 
   return (
     <div className=" question-component pl-3 pr-2 pt-3 sm:pt-4 bg-white hover:bg-[#fafafacc] flex justify-start items-start relative">
@@ -247,8 +215,7 @@ const Question = (props) => {
             questionMenu={questionMenu}
             question={question}
             toggleQuestionMenu={toggleQuestionMenu}
-            onFollowUser={props.onFollowUser}
-            onDeleteQuestion={props.onDeleteQuestion}
+            onDeleteQuestion={handleQuestionDelete}
             handleSaveQues={handleSaveQues}
           />
 

@@ -10,12 +10,6 @@ export const UnivastStates = {
 
 const initialState = {
   status: UnivastStates.BASE,
-  data: {
-    school: "",
-    faculty: "",
-    department: "",
-    level: "",
-  },
   allSchools: [],
   error: "",
 };
@@ -42,15 +36,6 @@ const univastSlice = createSlice({
   initialState,
 
   reducers: {
-    updateData: (state, action) => {
-      const { name, value } = action.payload;
-      console.log(value, "*****");
-      state.data = {
-        ...state.data,
-        [name]: value,
-      };
-    },
-
     resetError: (state) => {
       state.error = "";
     },
@@ -75,8 +60,8 @@ const univastSlice = createSlice({
   },
 });
 
-export const allSchools = (state) => state.univast.allSchools;
-export const selectsignUp = (state) => state.signup;
+// export const allSchools = (state) => state.univast.allSchools;
+// export const selectsignUp = (state) => state.signup;
 
 export default univastSlice.reducer;
-export const { updateData, resetError } = univastSlice.actions;
+export const { resetError } = univastSlice.actions;

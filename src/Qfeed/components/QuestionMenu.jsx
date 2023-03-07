@@ -6,11 +6,16 @@ import trashDefault from "../assets/trash-default.svg";
 import follow from "../assets/follow.svg";
 import unfollow from "../assets/unfollow.svg";
 
+import { useDispatch } from "react-redux";
+import {
+  deleteQuestionThunk,
+  followUserThunk,
+} from "../../common/features/qfeed/qfeedSlice";
+
 const QuestionMenu = ({
   question,
   questionMenu,
   toggleQuestionMenu,
-  onFollowUser,
   onDeleteQuestion,
   handleSaveQues,
 }) => {
@@ -21,6 +26,14 @@ const QuestionMenu = ({
   const question_menu = useRef();
   const question_menu_mobile = useRef();
 
+  // Redux here
+  const dispatch = useDispatch();
+
+  function handleFollow(username) {
+    dispatch(followUserThunk({ username }));
+  }
+
+  // Gsap animation
   const handleQuestionMenu = () => {
     gsap.fromTo(
       question_menu.current,
@@ -90,7 +103,7 @@ const QuestionMenu = ({
                   <button
                     className="px-4 py-3 text-danger hover:bg-danger-highlight rounded-lg w-full text-left flex"
                     onClick={() => {
-                      onDeleteQuestion(question);
+                      onDeleteQuestion(question.id);
                       hideMenu();
                     }}
                   >
@@ -104,7 +117,7 @@ const QuestionMenu = ({
                 <button
                   className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                   onClick={() => {
-                    onFollowUser(question?.user);
+                    handleFollow(question?.user?.username);
                     hideMenu();
                   }}
                 >
@@ -155,7 +168,7 @@ const QuestionMenu = ({
                     <button
                       className="px-4 py-3 text-danger hover:bg-danger-highlight rounded-lg w-full text-left flex"
                       onClick={() => {
-                        onDeleteQuestion(question);
+                        onDeleteQuestion(question.id);
                         hideMenu();
                       }}
                     >
@@ -169,7 +182,7 @@ const QuestionMenu = ({
                   <button
                     className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                     onClick={() => {
-                      onFollowUser(question?.user);
+                      handleFollow(question?.user?.username);
                       hideMenu();
                     }}
                   >

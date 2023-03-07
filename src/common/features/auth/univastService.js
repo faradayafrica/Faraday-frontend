@@ -2,8 +2,6 @@ import apiRoutes from "../../routes/apiRoutes";
 import http from "../../services/httpService";
 import axios from "axios";
 
-const apiBase = process.env.REACT_APP_API_URL;
-
 export default class UnivastService {
   static async getSchools() {
     const response = await http.get(apiRoutes.getSchool, {

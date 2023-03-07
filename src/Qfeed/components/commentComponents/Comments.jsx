@@ -10,6 +10,8 @@ import {
 import http from "../../../common/services/httpService";
 import AddComment from "./AddComment";
 import CommentsLoader from "./CommentsLoader";
+import { useSelector, useDispatch } from "react-redux";
+import { updateFeed } from "../../../common/features/qfeed/qfeedSlice";
 
 const Comments = ({
   match,
@@ -21,8 +23,8 @@ const Comments = ({
   questionOwner,
   fetchThisQuestion,
   onMarkSolution,
-  questions,
-  handleUpdatedQuestions,
+  // questions,
+  // handleUpdatedQuestions,
   data,
   error,
   isError,
@@ -33,7 +35,10 @@ const Comments = ({
   const [pendingComments, setPendingComments] = useState([]);
   const currentUser = getCurrentUser();
 
-  // console.log("COMMENTS!!!1!", comments);
+  // Redux biz starts here
+  const { qfeed: questions } = useSelector((state) => state.qfeed.feed);
+  const dispatch = useDispatch();
+  // Redux biz ends here
 
   const uniqueComments = Array.from(new Set(comments.map((a) => a.id))).map(
     (id) => {
@@ -108,7 +113,7 @@ const Comments = ({
 
     let clonedQuestions = [...questions];
     clonedQuestions[targetIndex] = { ...modifiedQ };
-    handleUpdatedQuestions([...clonedQuestions]);
+    dispatch(updateFeed({ name: "qfeed", value: clonedQuestions }));
   };
 
   const postComment = (postid, limit) => {
