@@ -15,6 +15,8 @@ import close from "../assets/nav/close_md.svg";
 //styles import
 import "../styles/mobileSideNav.scss";
 import "../styles/topnav.css";
+import { currentUserThunk } from "../features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function MobileSideNav() {
   const [isQfeed, setQfeed] = useState();
@@ -23,6 +25,9 @@ function MobileSideNav() {
 
   const currentUser = getCurrentUser();
   const location = useLocation();
+
+  const { data: user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setQfeed(location.pathname === "/" || location.pathname === "/qfeed");
@@ -75,6 +80,14 @@ function MobileSideNav() {
           { y: 0, opacity: 1, ease: "power2.inOut", stagger: 0.3 }
         );
     }, 50);
+  });
+
+  useEffect(() => {
+    if (user.username) {
+      // Skip
+    } else {
+      dispatch(currentUserThunk({ username: currentUser?.username }));
+    }
   });
 
   return (
@@ -189,13 +202,14 @@ function MobileSideNav() {
                   <div className="flex mt-3 text-faraday-night">
                     <p className=" mr-2">
                       <span className="font-semibold">
-                        {currentUser?.question_count}{" "}
+                        {user?.profile?.questions ||
+                          currentUser?.question_count}
                       </span>{" "}
                       Questions
                     </p>
                     <p className="">
                       <span className="font-semibold">
-                        {currentUser?.solution_count}{" "}
+                        {user?.profile?.solution || currentUser?.solution_count}
                       </span>{" "}
                       Solution
                     </p>

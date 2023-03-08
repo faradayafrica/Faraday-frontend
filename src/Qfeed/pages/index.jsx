@@ -9,6 +9,8 @@ import NotFound from "../../common/components/NotFound.jsx";
 import QService from "../../common/features/qfeed/QfeedServices.js";
 import { useDispatch } from "react-redux";
 import { updateFeed } from "../../common/features/qfeed/qfeedSlice.js";
+import { currentUserThunk } from "../../common/features/user/userSlice.js";
+import { getCurrentUser } from "../../common/services/authService.js";
 
 const Qfeed = (props) => {
   const dispatch = useDispatch();
@@ -65,8 +67,10 @@ const Qfeed = (props) => {
     dispatch(updateFeed({ name: "qfeed", value: newQuestions }));
   }, [data]);
 
+  const currentUser = getCurrentUser();
   useLayoutEffect(() => {
     document.title = "Faraday";
+    dispatch(currentUserThunk({ username: currentUser?.username }));
   }, []);
 
   return (

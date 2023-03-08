@@ -18,6 +18,7 @@ import ProfileHomeLoader from "../components/ProfileHomeLoader";
 import UserService from "../../common/features/user/userServices";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteQuestionThunk,
   followUserThunk,
   resetProfile,
   updateProfile,
@@ -29,9 +30,6 @@ function Profile({ match, history }) {
   const userEndpoint = `/users/${match.params.username}/`;
 
   const [user, setUser] = useState();
-  // const [questions, setQuestions] = useState();
-  // const [solutions, setSolutions] = useState();
-  // const [bookmarks, setBookmarks] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [pathname, setPathname] = useState(match.params.username);
@@ -183,69 +181,20 @@ function Profile({ match, history }) {
 
   const handleFollow = (user) => {
     dispatch(followUserThunk({ username: user?.profile.username }));
-    // const apiEndpoint =
-    //   process.env.REACT_APP_API_URL +
-    //   `/users/${user?.profile.username}/follow/`;
-    // const clonedUser = { ...user };
-    // try {
-    //   const promise = http.post(apiEndpoint).then((resp) => {
-    //     clonedUser.profile.is_following = !clonedUser.profile.is_following;
-    //     setUser({ ...clonedUser });
-    //   });
-    //   const msg = clonedUser.profile.is_following ? `Unfollowed` : "Followed";
-    //   PromiseToast(
-    //     `${msg} @${user.username}`,
-    //     "An error occurred, Try again",
-    //     promise
-    //   );
-    // } catch (e) {
-    //   console.log(e);
-    // }
   };
 
   const deleteQuestion = async (selectedQuestion) => {
-    const remainingQuestions = questions.filter((question) => {
-      return question.id !== selectedQuestion.id;
-    });
-
-    async function fetchdata() {
-      try {
-        const { data } = await http.get(userEndpoint);
-        setUser(data);
-      } catch (e) {
-        console.log(e.message);
-      }
-    }
-
-    const apiEndpoint =
-      process.env.REACT_APP_API_URL +
-      `/qfeed/que/delete/${selectedQuestion.id}/`;
-
-    try {
-      await http.delete(apiEndpoint);
-      SuccessToast("Question deleted");
-      // setQuestions([...remainingQuestions]);
-      dispatch(
-        updateProfile({
-          name: "userQuestions",
-          value: remainingQuestions,
-        })
-      );
-      fetchdata();
-    } catch (e) {
-      console.warn(e.message);
-      ErrorToast("Couldn't delete question");
-    }
+    dispatch(deleteQuestionThunk({ ques_id: selectedQuestion.id }));
   };
 
   useEffect(() => {
     // Resets userData to an initial state
+    // document.title = `${currentUser?.last_name} ${currentUser?.first_name} Profile`;
     dispatch(resetProfile());
     setPathname(match.params.username);
   }, []);
 
   useLayoutEffect(() => {
-    // document.title = `${currentUser?.last_name} ${currentUser?.first_name} Profile`;
     setLoading(true);
     async function fetchdata() {
       try {
