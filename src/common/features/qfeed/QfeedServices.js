@@ -23,8 +23,14 @@ export default class QService {
   }
 
   static async fetchQuestion(ques_id) {
-    const resp = await axios.get(apiRoutes.fetchQuestions + `${ques_id}/`);
-    return resp.data;
+    const user = getCurrentUser();
+    if (user?.username) {
+      const resp = await http.get(apiRoutes.fetchQuestions + `${ques_id}/`);
+      return resp.data;
+    } else {
+      const resp = await axios.get(apiRoutes.fetchQuestions + `${ques_id}/`);
+      return resp.data;
+    }
   }
 
   static async followUser(username) {
