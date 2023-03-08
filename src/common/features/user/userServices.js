@@ -24,4 +24,9 @@ export default class UserService {
     const resp = await http.get(apiRoutes.userBookmarks + `?page=${pageParam}`);
     return resp;
   }
+
+  static async fetchUserProfile(username) {
+    const resp = await http.get(apiBase + `/users/${username}/`);
+    return resp;
+  }
 }
