@@ -240,6 +240,7 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(voteQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
+      console.log(data.vote_status, data.vote_rank);
 
       if (data) {
         // Updates the qfeed after voting

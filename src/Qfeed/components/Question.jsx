@@ -297,13 +297,13 @@ const Question = (props) => {
             onClick={() => handleLike(question.id)}
             disabled={false || question?.created === "Just now"}
           >
-            {question.liked ? (
+            {question.vote_status === "upvote" ? (
               <img className="h-4 w-4" src={redLove} alt="take back reaction" />
             ) : (
               <img className="h-4 w-4" src={love} alt="react to question" />
             )}
             <span className="ml-1 font-medium text-xs">
-              {question.likes ? question.likes : ""}
+              {question.vote_rank ? question.vote_rank : ""}
             </span>
           </button>
 

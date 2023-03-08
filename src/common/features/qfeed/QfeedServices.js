@@ -48,7 +48,7 @@ export default class QService {
   }
 
   static async voteQuestion(postid, value) {
-    const { data } = await http.post(apiRoutes.vote, {
+    const { data } = await http.post(apiRoutes.vote + `${postid}/${value}/`, {
       postid,
       value,
     });

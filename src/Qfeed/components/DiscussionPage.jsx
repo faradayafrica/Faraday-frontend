@@ -297,7 +297,7 @@ const DiscussionPage = ({ match, history, online }) => {
                       className={loveClasses}
                       onClick={() => handleQuestionLike(match.params.id)}
                     >
-                      {question?.liked ? (
+                      {question?.vote_status === "upvote" ? (
                         <img
                           className="h-[18px] w-[18px]"
                           src={redLove}
@@ -311,7 +311,7 @@ const DiscussionPage = ({ match, history, online }) => {
                         />
                       )}
                       <span className="ml-1 font-medium text-base">
-                        {question?.likes ? question?.likes : ""}
+                        {question?.vote_rank ? question?.vote_rank : ""}
                       </span>
                     </button>
 
@@ -356,7 +356,6 @@ const DiscussionPage = ({ match, history, online }) => {
               <Comments
                 comments={comments}
                 online={online}
-                // thisQuestion={question}
                 questionid={match.params.id}
                 commentLoader={isLoading}
                 questionOwner={question?.user}
