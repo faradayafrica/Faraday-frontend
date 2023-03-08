@@ -6,7 +6,6 @@ import CopyLink from "./CopyLink";
 
 import {
   LoadingToast,
-  PromiseToast,
   SuccessToast,
 } from "../../common/components/CustomToast";
 import http from "../../common/services/httpService";
@@ -17,7 +16,6 @@ import arrow from "../assets/arrow-right.svg";
 import love from "../assets/love.svg";
 import redLove from "../assets/red-love.svg";
 import smiley from "../assets/smiley.svg";
-import share from "../assets/share.svg";
 import link from "../assets/link.svg";
 import mark from "../assets/mark.svg";
 import verify from "../assets/verify.svg";
@@ -34,7 +32,6 @@ import {
 const Question = (props) => {
   const { question } = props;
   const [questionMenu, setQuestionMenu] = useState(false);
-  const [isButtonPannel, setButtonPannel] = useState(false);
   const [isCopyLinkModal, setCopyLinkModal] = useState(false);
   const [isCopied, setCopied] = useState(false);
   const [shortLink, setShortLink] = useState(props.question.short_link);
@@ -49,24 +46,8 @@ const Question = (props) => {
   let loveClasses =
     "hover:bg-danger-highlight h-8 px-2 flex justify-around items-center rounded-lg mr-2";
 
-  if (!isButtonPannel) {
-    smileyClasses += " bg-background ";
-  } else {
-    smileyClasses += " bg-brand-highlight icon-brand";
-  }
-
-  if (!question.liked) {
-    loveClasses += " bg-background ";
-  } else {
-    loveClasses += " bg-danger-highlight text-danger";
-  }
-
   const toggleQuestionMenu = () => {
     setQuestionMenu(!questionMenu);
-  };
-
-  const handleButtonPannel = () => {
-    setButtonPannel(!isButtonPannel);
   };
 
   const handleIsCopied = (value) => {
@@ -105,10 +86,6 @@ const Question = (props) => {
         console.log(e);
       }
     }
-  };
-
-  const hideButtonPannel = () => {
-    setButtonPannel(false);
   };
 
   // This could go 2 levels up the family tree (@Qfeed) so that there's no need to recreate the function @DiscussionPage
@@ -169,7 +146,7 @@ const Question = (props) => {
         />
       </Link>
       <section className=" p-0 w-full">
-        <div className="pr-2 relative" onClick={() => hideButtonPannel()}>
+        <div className="pr-2 relative">
           {/* Profile details */}
           <p className="flex m-0 text-night-secondary mb-1 text-xs sm:text-sm">
             <span className="mr-2 font-semibold text-faraday-night flex items-center">
@@ -181,7 +158,6 @@ const Question = (props) => {
             <span className="mr-2 ">@{question?.user.username} </span>{" "}
             <span>{question?.created}</span>
           </p>
-
           {question.solution && (
             <div className="absolute left-[-45px] bottom-0 ">
               <div
@@ -194,9 +170,8 @@ const Question = (props) => {
               </div>
             </div>
           )}
-
           <div
-            className=" hover:bg-brand-highlight cursor-pointer absolute right-2 top-2 rounded-md"
+            className=" hover:bg-brand-highlight cursor-pointer absolute right-1 top-[-8px] rounded-md"
             onClick={() => {
               setQuestionMenu(!questionMenu);
             }}
@@ -208,7 +183,6 @@ const Question = (props) => {
               alt=""
             />
           </div>
-
           <QuestionMenu
             questionMenu={questionMenu}
             question={question}
@@ -216,7 +190,6 @@ const Question = (props) => {
             onDeleteQuestion={handleQuestionDelete}
             handleSaveQues={handleSaveQues}
           />
-
           <Modal
             icon={info}
             visible={disclaimer}
@@ -226,7 +199,6 @@ const Question = (props) => {
           official account, we can't take responsibility for the comment
           marked as a solution.`}
           />
-
           {question?.created !== "Just now" ? (
             <Link
               to={`/qfeed/${question.id}`}
@@ -381,57 +353,6 @@ const Question = (props) => {
               alt="engage with question"
             />
           </button>
-
-          {isButtonPannel ? (
-            <span
-              onClick={() => hideButtonPannel()}
-              className="ask-shadow bg-white relative right-8 bottom-10 p-2 rounded-full border border-brand-highlight"
-            >
-              {question.liked ? (
-                <button
-                  className=" p-2 rounded-full hover:bg-danger-highlight"
-                  onClick={() => handleLike(question.id)}
-                >
-                  <img
-                    className="h-4 w-4"
-                    src={redLove}
-                    alt="take back reaction"
-                  />
-                </button>
-              ) : (
-                <button
-                  className=" p-2 rounded-full icon-brand-hover hover:bg-brand-highlight"
-                  onClick={() => handleLike(question.id)}
-                >
-                  <img
-                    className="h-[18px] w-[18px]"
-                    src={love}
-                    alt="react to question"
-                  />
-                </button>
-              )}
-
-              {/* Share button */}
-              <button className=" p-2 rounded-full icon-brand-hover hover:bg-brand-highlight mx-2">
-                <img
-                  className="h-[18px] w-[18px]"
-                  src={share}
-                  alt="share this question"
-                />
-              </button>
-
-              {/* Link button */}
-              <button className=" p-2 rounded-full icon-brand-hover hover:bg-brand-highlight">
-                <img
-                  className="h-[18px] w-[18px]"
-                  src={link}
-                  alt="copy question link"
-                />
-              </button>
-            </span>
-          ) : (
-            ""
-          )}
         </div>
 
         {question?.created !== "Just now" ? (

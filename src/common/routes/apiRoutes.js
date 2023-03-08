@@ -13,6 +13,8 @@ const apiRoutes = {
   // Comments
   fetchComments: apiBase + "/qfeed/que/comments/",
   markSolution: apiBase + "/qfeed/que/marksolution/",
+  deleteComment: apiBase + "/qfeed/que/comments/delete/",
+  createcomment: apiBase + "/qfeed/que/create_comment/",
 
   // Notification
   // Profile

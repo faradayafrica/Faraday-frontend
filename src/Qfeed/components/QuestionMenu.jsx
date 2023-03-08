@@ -7,10 +7,7 @@ import follow from "../assets/follow.svg";
 import unfollow from "../assets/unfollow.svg";
 
 import { useDispatch } from "react-redux";
-import {
-  deleteQuestionThunk,
-  followUserThunk,
-} from "../../common/features/qfeed/qfeedSlice";
+import { followUserThunk } from "../../common/features/qfeed/qfeedSlice";
 
 const QuestionMenu = ({
   question,

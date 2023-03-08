@@ -71,4 +71,19 @@ export default class QService {
     });
     return data;
   }
+
+  static async deleteComment(ques_id, commentid) {
+    const { data } = await http.delete(
+      apiRoutes.deleteComment + `${ques_id}/${commentid}/`
+    );
+    return data;
+  }
+
+  static async createComment(postid, content) {
+    const data = await http.post(apiRoutes.createcomment, {
+      postid,
+      content,
+    });
+    return data;
+  }
 }

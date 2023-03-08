@@ -90,6 +90,32 @@ export const markSolutionThunk = createAsyncThunk(
   }
 );
 
+// Delete a comment
+export const deleteCommentThunk = createAsyncThunk(
+  "qfeed/delete-comment",
+  async ({ ques_id, commentid }, { rejectWithValue }) => {
+    try {
+      const response = await QService.deleteComment(ques_id, commentid);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
+// Create a comment
+export const createCommentThunk = createAsyncThunk(
+  "qfeed/create-comment",
+  async ({ postid, content }, { rejectWithValue }) => {
+    try {
+      const response = await QService.createComment(postid, content);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
 const qfeedSlice = createSlice({
   name: "qfeed",
   initialState,
@@ -124,30 +150,38 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(followUserThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      //   console.log(data, "follow");
+      // console.log(data, "follow");
 
       if (data) {
-        const feed = state.feed.qfeed;
-
         // Update Qfeed on home Page
+        const feed = state.feed.qfeed;
         for (let i = 0; i < feed.length; i++) {
-          if (feed[i].user.username === data.profile.username) {
-            feed[i].user.is_following = !feed?.[i]?.user?.is_following;
-            // TODO: Modify with the data from BE rather than toggling the boolean
+          if (feed[i].user.username === data.username) {
+            feed[i].user.is_following = data.is_following;
           }
         }
         state.feed.qfeed = feed;
         state.status = QfeedStates.SUCCESSFUL;
-        // TODO: We can replicate this filter for profile and
-        // other question feed added to the project in the future
+
+        // Update Comments from discussion page
+        const comments = state.thisQuestion.comments;
+        for (let i = 0; i < comments.length; i++) {
+          if (comments[i].user.username === data.username) {
+            comments[i].user.is_following = data.is_following;
+          }
+        }
+        state.thisQuestion.comments = comments;
 
         //Updates opened question on DiscussionPage
-        if (state.thisQuestion.question.user.id === data?.profile?.id) {
+        if (state.thisQuestion.question.user.id === data.id) {
           const cloneThisQuestion = { ...state.thisQuestion.question };
-          cloneThisQuestion.user.is_following =
-            !cloneThisQuestion.user.is_following;
+          cloneThisQuestion.user.is_following = data.is_following;
           state.thisQuestion.question = cloneThisQuestion;
+          console.log(data.is_following);
         }
+
+        // TODO: We can replicate this filter for profile and
+        // other question feed added to the project in the future
       } else {
         state.error = error;
       }
@@ -165,7 +199,7 @@ const qfeedSlice = createSlice({
       console.log(data, state.status, "create que");
 
       if (data) {
-        // Updates the qfeed after voting
+        // Updates the qfeed
         state.feed.qfeed = [data, ...state.feed.qfeed];
         state.thisQuestion.question = {};
         state.status = QfeedStates.SUCCESSFUL;
@@ -176,7 +210,7 @@ const qfeedSlice = createSlice({
       state.status = QfeedStates.FAILED;
     });
 
-    // Extra Reducers for delete action
+    // Extra Reducers for delete question action
     builder.addCase(deleteQuestionThunk.pending, (state) => {
       state.status = QfeedStates.LOADING;
     });
@@ -252,6 +286,64 @@ const qfeedSlice = createSlice({
       }
     });
     builder.addCase(markSolutionThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra Reducers for delete comment action
+    builder.addCase(deleteCommentThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(deleteCommentThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+
+      console.log("Please handle delete comment");
+      // TODO: Handle delete comment
+
+      // Update the comment list
+      // Find the question on Qfeed and decrement it's comment count
+      if (data) {
+        // Update qfeed home after delete
+        // const newFeed = state.feed.qfeed.filter(
+        //   (question) => question.id !== data.queid
+        // );
+        // state.feed.qfeed = newFeed;
+        state.status = QfeedStates.SUCCESSFUL;
+      }
+    });
+    builder.addCase(deleteCommentThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra Reducers for creating a comment
+    builder.addCase(createCommentThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(createCommentThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+      console.log(data, "create comment");
+
+      if (data) {
+        // Add the new comment on the comments feed
+        state.thisQuestion.comments = [data, ...state.thisQuestion.comments];
+
+        // Update comment count on the discussion page
+        state.thisQuestion.question.comments =
+          state.thisQuestion.question.comments + 1;
+
+        // Update comment count on that question on qfeed home
+        const newFeed = state.feed.qfeed;
+        const question = newFeed.find(
+          (q) => q.id === state.thisQuestion.question.id
+        );
+        if (question) {
+          question.comments = question.comments + 1;
+        }
+        state.feed.qfeed = newFeed;
+
+        state.status = QfeedStates.SUCCESSFUL;
+      }
+    });
+    builder.addCase(createCommentThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
     });
   },

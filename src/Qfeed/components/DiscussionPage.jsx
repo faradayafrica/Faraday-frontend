@@ -11,16 +11,13 @@ import redLove from "../assets/red-love.svg";
 import share from "../assets/share.svg";
 import link from "../assets/link.svg";
 import http from "../../common/services/httpService";
-import axios from "axios";
 import ellipses from "../assets/ellipses.svg";
 import arrowRight from "../assets/arrow-right.svg";
 import QuestionMenu from "./QuestionMenu";
-import { ErrorToast, PromiseToast } from "../../common/components/CustomToast";
 import QuestionsLoader from "./QuestionsLoader";
 import { useSelector, useDispatch } from "react-redux";
 import {
   deleteQuestionThunk,
-  fetchCommentsThunk,
   markSolutionThunk,
   updateFeed,
   updateQuestion,
@@ -357,22 +354,17 @@ const DiscussionPage = ({ match, history, online }) => {
 
               {/* Comments here */}
               <Comments
-                online={online}
-                thisQuestion={question}
-                questionid={match.params.id}
                 comments={comments}
+                online={online}
+                // thisQuestion={question}
+                questionid={match.params.id}
                 commentLoader={isLoading}
                 questionOwner={question?.user}
                 onUpdateComments={updateComments}
                 onMarkSolution={handleMarkSolution}
-                fetchThisQuestion={fetchThisQuestion}
                 match={match}
-                // questions={questions}
-                // handleUpdatedQuestions={handleUpdatedQuestions}
-                //from useInfinteQuery
                 error={error}
                 isError={isError}
-                data={data}
                 hasNextPage={hasNextPage}
                 isFetchingNextPage={isFetchingNextPage}
               />
