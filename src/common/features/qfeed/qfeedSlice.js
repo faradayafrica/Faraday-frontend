@@ -16,7 +16,11 @@ const initialState = {
   },
   feed: {
     qfeed: [],
-    profile: [],
+    profile: {
+      userQuestions: [],
+      userSolutions: [],
+      userBookmarks: [],
+    },
   },
   error: "",
   status: "base",
@@ -236,6 +240,7 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(voteQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
+      console.log(data.vote_status, data.vote_rank);
 
       if (data) {
         // Updates the qfeed after voting
@@ -296,17 +301,21 @@ const qfeedSlice = createSlice({
     builder.addCase(deleteCommentThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
 
-      console.log("Please handle delete comment");
-      // TODO: Handle delete comment
-
-      // Update the comment list
-      // Find the question on Qfeed and decrement it's comment count
       if (data) {
-        // Update qfeed home after delete
-        // const newFeed = state.feed.qfeed.filter(
-        //   (question) => question.id !== data.queid
-        // );
-        // state.feed.qfeed = newFeed;
+        // Update the comment list
+        const newCommnets = state.thisQuestion.comments.filter(
+          (comment) => comment.id !== data.commentid
+        );
+        state.thisQuestion.comments = newCommnets;
+
+        // Find the question on Qfeed and decrement it's comment count
+        const newFeed = state.feed.qfeed;
+        const question = newFeed.find((q) => q.id === data.queid);
+        if (question) {
+          question.comments = question.comments - 1;
+        }
+        state.feed.qfeed = newFeed;
+
         state.status = QfeedStates.SUCCESSFUL;
       }
     });
