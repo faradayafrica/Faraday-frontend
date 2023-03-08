@@ -17,6 +17,7 @@ const initialState = {
   feed: {
     qfeed: [],
     profile: {
+      profileData: {},
       userQuestions: [],
       userSolutions: [],
       userBookmarks: [],
@@ -125,6 +126,7 @@ const qfeedSlice = createSlice({
   initialState,
 
   reducers: {
+    // <--------------Qfeed Home Reducers ----------->
     updateFeed: (state, action) => {
       const { name, value } = action.payload;
       state.feed = {
@@ -139,6 +141,20 @@ const qfeedSlice = createSlice({
         [name]: value,
       };
     },
+
+    // <--------------Profile Reducers ----------->
+    updateProfile: (state, action) => {
+      const { name, value } = action.payload;
+      state.feed.profile = {
+        ...state.feed.profile,
+        [name]: value,
+      };
+    },
+
+    resetProfile: (state) => {
+      state.feed.profile = initialState.feed.profile;
+    },
+
     resetStatus: (state) => {
       state.base = QfeedStates.BASE;
     },
@@ -165,7 +181,34 @@ const qfeedSlice = createSlice({
           }
         }
         state.feed.qfeed = feed;
-        state.status = QfeedStates.SUCCESSFUL;
+
+        // Update Profile Question feed
+        const newUserQuestionFeed = state.feed.profile.userQuestions;
+        for (let i = 0; i < newUserQuestionFeed.length; i++) {
+          if (newUserQuestionFeed[i].user.username === data.username) {
+            newUserQuestionFeed[i].user.is_following = data.is_following;
+          }
+        }
+        state.feed.profile.userQuestions = newUserQuestionFeed;
+
+        // Update Profile Bookmark feed
+        const newUserBookmarkFeed = state.feed.profile.userBookmarks;
+        for (let i = 0; i < newUserBookmarkFeed.length; i++) {
+          if (newUserBookmarkFeed[i].user.username === data.username) {
+            newUserBookmarkFeed[i].user.is_following = data.is_following;
+          }
+        }
+        state.feed.profile.userBookmarks = newUserBookmarkFeed;
+
+        // Update Profile Solution feed
+        const newUserSolutionFeed = state.feed.profile.userSolutions;
+        for (let i = 0; i < newUserSolutionFeed.length; i++) {
+          if (newUserSolutionFeed[i].question.user.username === data.username) {
+            newUserSolutionFeed[i].question.user.is_following =
+              data.is_following;
+          }
+        }
+        state.feed.profile.userSolutions = newUserSolutionFeed;
 
         // Update Comments from discussion page
         const comments = state.thisQuestion.comments;
@@ -177,12 +220,16 @@ const qfeedSlice = createSlice({
         state.thisQuestion.comments = comments;
 
         //Updates opened question on DiscussionPage
-        if (state.thisQuestion.question.user.id === data.id) {
+        if (
+          state.thisQuestion.question &&
+          state.thisQuestion?.question?.user?.id === data.id
+        ) {
           const cloneThisQuestion = { ...state.thisQuestion.question };
           cloneThisQuestion.user.is_following = data.is_following;
           state.thisQuestion.question = cloneThisQuestion;
-          console.log(data.is_following);
         }
+
+        state.status = QfeedStates.SUCCESSFUL;
 
         // TODO: We can replicate this filter for profile and
         // other question feed added to the project in the future
@@ -220,6 +267,7 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(deleteQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
+      console.log(data, "delete");
 
       if (data) {
         // Update qfeed home after delete
@@ -227,6 +275,25 @@ const qfeedSlice = createSlice({
           (question) => question.id !== data.queid
         );
         state.feed.qfeed = newFeed;
+
+        // Update Profile Question feed
+        const newUserQuestionFeed = state.feed.profile.userQuestions.filter(
+          (question) => question.id !== data.queid
+        );
+        state.feed.profile.userQuestions = newUserQuestionFeed;
+
+        // Update Profile Bookmark feed
+        const newUserBookmarkFeed = state.feed.profile.userBookmarks.filter(
+          (question) => question.id !== data.queid
+        );
+        state.feed.profile.userBookmarks = newUserBookmarkFeed;
+
+        // Update Profile Solution feed
+        const newUserSolutionFeed = state.feed.profile.userSolutions.filter(
+          (soln) => soln.question.id !== data.queid
+        );
+        state.feed.profile.userSolutions = newUserSolutionFeed;
+
         state.status = QfeedStates.SUCCESSFUL;
       }
     });
@@ -240,14 +307,35 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(voteQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      console.log(data.vote_status, data.vote_rank);
+      // console.log(data, "vote");
 
       if (data) {
-        // Updates the qfeed after voting
+        // Updates the qfeed Home
         const newFeed = state.feed.qfeed.map((question) =>
           question.id === data.id ? data : question
         );
         state.feed.qfeed = newFeed;
+
+        // Updates the profile question feed
+        const newUserQuestionFeed = state.feed.profile.userQuestions.map(
+          (question) => (question.id === data.id ? data : question)
+        );
+        state.feed.profile.userQuestions = newUserQuestionFeed;
+
+        // Updates the profile bookmarks feed
+        const newUserBookmarkFeed = state.feed.profile.userBookmarks.map(
+          (question) => (question.id === data.id ? data : question)
+        );
+        state.feed.profile.userBookmarks = newUserBookmarkFeed;
+
+        // Updates the profile Solution feed
+        const newUserSolutionFeed = state.feed.profile.userSolutions.map(
+          (solution) =>
+            solution.question.id === data.id
+              ? { ...solution, question: data }
+              : solution
+        );
+        state.feed.profile.userSolutions = newUserSolutionFeed;
 
         // Update the discussionPage after voting
         state.thisQuestion.question = data;
@@ -359,5 +447,11 @@ const qfeedSlice = createSlice({
 });
 
 export default qfeedSlice.reducer;
-export const { updateFeed, updateQuestion, resetStatus, resetToast } =
-  qfeedSlice.actions;
+export const {
+  updateFeed,
+  updateQuestion,
+  updateProfile,
+  resetProfile,
+  resetStatus,
+  resetToast,
+} = qfeedSlice.actions;

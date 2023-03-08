@@ -13,44 +13,35 @@ import {
 import UserQuestionSolutionPage from "../components/UserQuestionSolutionPage";
 import NotFound from "../../common/components/NotFound";
 import ProfileHome from "../components/ProfileHome";
-import { useInfiniteQuery, useQueries, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import ProfileHomeLoader from "../components/ProfileHomeLoader";
+import UserService from "../../common/features/user/userServices";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  followUserThunk,
+  resetProfile,
+  updateProfile,
+} from "../../common/features/qfeed/qfeedSlice";
 
 function Profile({ match, history }) {
   const currentUser = getCurrentUser();
 
   const userEndpoint = `/users/${match.params.username}/`;
-  const userQuestionEndpoint = `/users/${match.params.username}/ques/`;
-  const userSolutionEndpoint = `/users/${match.params.username}/solutions/`;
 
   const [user, setUser] = useState();
-  const [questions, setQuestions] = useState();
-  const [solutions, setSolutions] = useState();
-  const [bookmarks, setBookmarks] = useState();
+  // const [questions, setQuestions] = useState();
+  // const [solutions, setSolutions] = useState();
+  // const [bookmarks, setBookmarks] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [pathname, setPathname] = useState(match.params.username);
 
-  const fetchQuestions = async (pageParam) => {
-    const resp = await http.get(
-      process.env.REACT_APP_API_URL + userQuestionEndpoint
-    );
-    return resp;
-  };
-
-  const fetchSolutions = async (pageParam) => {
-    const resp = await http.get(
-      process.env.REACT_APP_API_URL + userSolutionEndpoint
-    );
-    return resp;
-  };
-
-  const fetchBookmarks = async () => {
-    const resp = await http.get(
-      process.env.REACT_APP_API_URL + "qfeed/que/bookmarks/"
-    );
-    return resp;
-  };
+  const dispatch = useDispatch();
+  const {
+    userQuestions: questions,
+    userSolutions: solutions,
+    userBookmarks: bookmarks,
+  } = useSelector((state) => state.qfeed.feed.profile);
 
   // React Query >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   const {
@@ -65,7 +56,8 @@ function Profile({ match, history }) {
     refetch: refetchQuestion,
   } = useInfiniteQuery(
     ["user-questions"],
-    ({ pageParam = 1 }) => fetchQuestions(pageParam),
+    ({ pageParam = 1 }) =>
+      UserService.fetchUserQuestions(match.params.username, pageParam),
     {
       cacheTime: 0,
       getNextPageParam: (lastPage, allPages) => {
@@ -87,7 +79,8 @@ function Profile({ match, history }) {
     refetch: refetchSolution,
   } = useInfiniteQuery(
     ["user-solutions"],
-    ({ pageParam = 1 }) => fetchSolutions(pageParam),
+    ({ pageParam = 1 }) =>
+      UserService.fetchUserSolutions(match.params.username, pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
         const nextPage = allPages?.length + 1;
@@ -108,7 +101,7 @@ function Profile({ match, history }) {
     refetch: refetchBookmark,
   } = useInfiniteQuery({
     queryKey: ["bookmark"],
-    queryFn: ({ pageParam = 1 }) => fetchBookmarks(pageParam),
+    queryFn: ({ pageParam = 1 }) => UserService.fetchUserBookmarks(pageParam),
     getNextPageParam: (lastPage, allPages) => {
       const nextPage = allPages?.length + 1;
       return lastPage?.data?.next ? nextPage : undefined;
@@ -125,13 +118,13 @@ function Profile({ match, history }) {
     isQuestionSuccess &&
       !isQuestionLoading &&
       questionData?.pages.map((page) =>
-        page.data?.results.map((item) => {
+        page?.data?.results.map((item) => {
           // console.log("Question first fetch");
           return newQuestions.push(item);
         })
       );
-    setQuestions(newQuestions);
-  }, [questionData]);
+    dispatch(updateProfile({ name: "userQuestions", value: newQuestions }));
+  }, [questionData, isQuestionSuccess]);
 
   //updates the data from the useInfiniteQuery into the solutions state
   useEffect(() => {
@@ -140,12 +133,12 @@ function Profile({ match, history }) {
     isSolutionSuccess &&
       !isSolutionLoading &&
       solutionData?.pages?.map((page) =>
-        page.data?.results?.map((item) => {
+        page?.data?.results?.map((item) => {
           // console.log("Solution first fetch");
           return newSolutions.push(item);
         })
       );
-    setSolutions(newSolutions);
+    dispatch(updateProfile({ name: "userSolutions", value: newSolutions }));
   }, [solutionData, isSolutionSuccess]);
 
   //updates the data from the useInfiniteQuery into the bookmarks state
@@ -155,12 +148,12 @@ function Profile({ match, history }) {
     isBookmarkSuccess &&
       !isBookmarkLoading &&
       bookmarkData?.pages?.map((page) =>
-        page.data?.results?.[0]?.ques.map((item) => {
+        page?.data?.results?.[0]?.ques.map((item) => {
           // console.log("Bookmark first fetch");
           return newBookmarks.push(item);
         })
       );
-    setBookmarks(newBookmarks);
+    dispatch(updateProfile({ name: "userBookmarks", value: newBookmarks }));
   }, [bookmarkData, isBookmarkSuccess]);
 
   useEffect(() => {
@@ -189,27 +182,25 @@ function Profile({ match, history }) {
   }, [fetchQuestionNextPage, hasQuestionNextPage]);
 
   const handleFollow = (user) => {
-    const apiEndpoint =
-      process.env.REACT_APP_API_URL +
-      `/users/${user?.profile.username}/follow/`;
-
-    const clonedUser = { ...user };
-
-    try {
-      const promise = http.post(apiEndpoint).then((resp) => {
-        clonedUser.profile.is_following = !clonedUser.profile.is_following;
-        setUser({ ...clonedUser });
-      });
-
-      const msg = clonedUser.profile.is_following ? `Unfollowed` : "Followed";
-      PromiseToast(
-        `${msg} @${user.username}`,
-        "An error occurred, Try again",
-        promise
-      );
-    } catch (e) {
-      console.log(e);
-    }
+    dispatch(followUserThunk({ username: user?.profile.username }));
+    // const apiEndpoint =
+    //   process.env.REACT_APP_API_URL +
+    //   `/users/${user?.profile.username}/follow/`;
+    // const clonedUser = { ...user };
+    // try {
+    //   const promise = http.post(apiEndpoint).then((resp) => {
+    //     clonedUser.profile.is_following = !clonedUser.profile.is_following;
+    //     setUser({ ...clonedUser });
+    //   });
+    //   const msg = clonedUser.profile.is_following ? `Unfollowed` : "Followed";
+    //   PromiseToast(
+    //     `${msg} @${user.username}`,
+    //     "An error occurred, Try again",
+    //     promise
+    //   );
+    // } catch (e) {
+    //   console.log(e);
+    // }
   };
 
   const deleteQuestion = async (selectedQuestion) => {
@@ -233,7 +224,13 @@ function Profile({ match, history }) {
     try {
       await http.delete(apiEndpoint);
       SuccessToast("Question deleted");
-      setQuestions([...remainingQuestions]);
+      // setQuestions([...remainingQuestions]);
+      dispatch(
+        updateProfile({
+          name: "userQuestions",
+          value: remainingQuestions,
+        })
+      );
       fetchdata();
     } catch (e) {
       console.warn(e.message);
@@ -242,16 +239,18 @@ function Profile({ match, history }) {
   };
 
   useEffect(() => {
+    // Resets userData to an initial state
+    dispatch(resetProfile());
     setPathname(match.params.username);
-  });
+  }, []);
 
   useLayoutEffect(() => {
     // document.title = `${currentUser?.last_name} ${currentUser?.first_name} Profile`;
     setLoading(true);
     async function fetchdata() {
       try {
-        setQuestions([]);
-        setSolutions([]);
+        // setQuestions([]);
+        // setSolutions([]);
         const { data } = await http.get(userEndpoint);
         setUser(data);
         setLoading(false);
@@ -268,7 +267,8 @@ function Profile({ match, history }) {
   }, [pathname]);
 
   const updateQuestions = (updatedQuestions) => {
-    setQuestions([...updatedQuestions]);
+    // setQuestions([...updatedQuestions]);
+    dispatch(updateProfile({ name: "userQuestions", value: updatedQuestions }));
   };
 
   return (

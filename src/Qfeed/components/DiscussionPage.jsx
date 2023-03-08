@@ -226,7 +226,7 @@ const DiscussionPage = ({ match, history, online }) => {
               className="w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180"
               alt="return"
               onClick={() => {
-                dispatch(updateQuestion({ name: "comments", value: [] }));
+                // dispatch(updateQuestion({ name: "comments", value: [] }));
                 history.goBack();
               }}
             />
