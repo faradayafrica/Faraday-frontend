@@ -63,11 +63,18 @@ export default class QService {
 
   // Comment Services starts here
   static async fetchQuestionComments(postid, pageParam) {
-    const data = await http.get(
-      apiRoutes.fetchComments + `${postid}/?page=${pageParam}`
-    );
-
-    return data;
+    const user = getCurrentUser();
+    if (user?.username) {
+      const data = await http.get(
+        apiRoutes.fetchComments + `${postid}/?page=${pageParam}`
+      );
+      return data;
+    } else {
+      const data = await axios.get(
+        apiRoutes.fetchComments + `${postid}/?page=${pageParam}`
+      );
+      return data;
+    }
   }
 
   static async markSolution(postid, commentid) {

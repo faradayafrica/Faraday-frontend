@@ -82,13 +82,13 @@ function MobileSideNav() {
     }, 50);
   });
 
-  useEffect(() => {
-    if (user.username) {
-      // Skip
-    } else {
-      dispatch(currentUserThunk({ username: currentUser?.username }));
-    }
-  });
+  // useEffect(() => {
+  //   if (currentUser?.username) {
+  //     dispatch(currentUserThunk({ username: currentUser?.username }));
+  //   } else {
+  //     // Skip
+  //   }
+  // });
 
   return (
     <>

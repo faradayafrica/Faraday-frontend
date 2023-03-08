@@ -70,7 +70,10 @@ const Qfeed = (props) => {
   const currentUser = getCurrentUser();
   useLayoutEffect(() => {
     document.title = "Faraday";
-    dispatch(currentUserThunk({ username: currentUser?.username }));
+
+    if (currentUser?.username) {
+      dispatch(currentUserThunk({ username: currentUser?.username }));
+    }
   }, []);
 
   return (
