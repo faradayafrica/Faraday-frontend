@@ -4,23 +4,18 @@ import { saveState, getState } from "../../common/components/StateSaver";
 import Question from "./Question";
 import SecondaryButton from "../../common/components/SecondaryButton";
 import PrimaryButton from "../../common/components/PrimaryButton";
-
-//icon import
+import { useSelector } from "react-redux";
 import ask from "../assets/ask.svg";
-
-//style import
 import "../styles/qfeed.css";
 import QuestionsLoader from "./QuestionsLoader";
+import uuid from "react-uuid";
 
 const TimeLine = (props) => {
-  const [questions, setQuestions] = useState([]);
   const [scrollPosition, setScrollPosition] = useState([]);
 
-  // console.log(props.loader, "loader");
-
-  useEffect(() => {
-    setQuestions(props.questions);
-  }, [props.questions]);
+  // Redux biz starts here
+  const { qfeed: questions } = useSelector((state) => state.qfeed.feed);
+  // Redux biz ends here
 
   // Preserve Scroll position
   useEffect(() => {
@@ -32,6 +27,7 @@ const TimeLine = (props) => {
     }
   }, []);
 
+  // Save scroll position
   useEffect(() => {
     const save = () => {
       setScrollPosition(window.pageYOffset);
@@ -50,16 +46,12 @@ const TimeLine = (props) => {
         {/* The questions */}
 
         <>
-          {questions.length ? (
-            questions.map((question) => (
+          {questions?.length ? (
+            questions?.map((question) => (
               <Question
                 online={props.online}
                 question={question}
-                questions={props.questions}
-                handleUpdatedQuestions={props.handleUpdatedQuestions}
-                onFollowUser={props.onFollowUser}
-                onDeleteQuestion={props.onDeleteQuestion}
-                key={question.id}
+                key={question.id + uuid()}
                 refetch={props.refetch}
                 {...props}
               />
@@ -106,14 +98,14 @@ const TimeLine = (props) => {
         )}
 
         {props.loader ? (
-          !questions.length ? (
+          !questions?.length ? (
             <QuestionsLoader />
           ) : (
             <QuestionsLoader short="true" />
           )
         ) : (
           <>
-            {questions.length > 0 && !props.hasNextPage && (
+            {questions?.length > 0 && !props.hasNextPage && (
               <>
                 <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
                   <p className="text-xs sm:text-base m-0 mb-2 ">
@@ -130,7 +122,7 @@ const TimeLine = (props) => {
           </>
         )}
 
-        {props.loader && questions.length <= 1 ? (
+        {props.loader && questions?.length <= 1 ? (
           <QuestionsLoader />
         ) : (
           // This is suppose to be the loader that shows when a user scrolls to the bottom after localStorage populates the Qfeed

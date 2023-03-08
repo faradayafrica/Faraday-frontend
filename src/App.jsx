@@ -26,17 +26,21 @@ import ForgotPassword from "./Authentication/pages/Login/forgot-password/ForgotP
 import ConfirmAccount from "./Authentication/pages/Login/forgot-password/ConfirmAccount";
 import ResetPassword from "./Authentication/pages/Login/forgot-password/ResetPassword";
 
+import { Provider } from "react-redux";
+import store from "./common/store/index.js";
+import { root_route } from "./rootRoutes.js";
+
 const App = () => {
   const [online, setOnline] = useState(true);
   const [hideOnlineStatus, setHideOnlineStatus] = useState(false);
   const [clearCache, setClearCache] = useState(false);
 
   useEffect(() => {
-    if (window.location.pathname == "/login" && clearCache) {
+    if (window.location.pathname === "/login" && clearCache) {
       window.location.reload(true);
       setClearCache(false);
     }
-  });
+  }, []);
 
   const handleClearCache = () => {
     setClearCache(true);
@@ -137,70 +141,48 @@ const App = () => {
   });
 
   return (
-    <BrowserRouter>
-      <UserProvider>
-        <Toaster position="top-center" reverseOrder={false} />
-        <div className="text-faraday-night max-w-[1024px] p-0 mx-auto flex">
-          <MobileSideNav />
-          <SideNav online={online} hideOnlineStatus={hideOnlineStatus} />
-          <Switch>
-            <Route path="/signup" component={SignUpPage} />
-            <Route path="/confirm-email" component={ConfirmEmail} />
-            <Route path="/update-school-detail" component={AddSchoolDetail} />
-            <Route path="/update-personal-data" component={PersonalData} />
-            <Route path="/terms-and-condition" component={TermsAndCondition} />
-            <Route path="/privacy-policy" component={PrivacyPolicy} />
-            <Route path="/login" component={LoginPage} />
-            <Route
-              path="/login"
-              render={(props) => (
-                <LoginPage clearCache={clearCache} {...props} />
-              )}
-            />
-            <Route
-              path="/logout"
-              render={(props) => (
-                <Logout
-                  handleClearCache={handleClearCache}
-                  clearCache={clearCache}
-                  {...props}
-                />
-              )}
-            />
-            {/* Routes for password recovery starts here */}
-            <Route
-              path="/forgot-password"
-              render={(props) => <ForgotPassword {...props} />}
-            />
-            <Route
-              path="/confirm-account"
-              render={(props) => <ConfirmAccount {...props} />}
-            />
-            <Route
-              path="/reset-password"
-              render={(props) => <ResetPassword {...props} />}
-            />
-            {/* Routes for password recovery ends here */}
-            <Route
-              path="/qfeed"
-              render={(props) => <Qfeed online={online} {...props} />}
-            />
-            <ProtectedRoute path="/notification" component={Notification} />
-            <ProtectedRoute
-              path="/me/:username"
-              render={(props) => <Profile {...props} />}
-            />
-            <Route path="/missing-question" component={MissingQuestion} />
-            <Route path="/not-found" component={NotFound} />
-            <Route
-              path="/"
-              render={(props) => <Qfeed online={online} {...props} />}
-            />
-            <Redirect push to="/not-found" />
-          </Switch>
-        </div>
-      </UserProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <UserProvider>
+          <Toaster position="top-center" reverseOrder={false} />
+          <div className="text-faraday-night max-w-[1024px] p-0 mx-auto flex">
+            <MobileSideNav />
+            <SideNav online={online} hideOnlineStatus={hideOnlineStatus} />
+            <Switch>
+              {root_route.map((route) => (
+                <Route key={route.path} exact {...route} />
+              ))}
+              <Route
+                path="/qfeed"
+                render={(props) => <Qfeed online={online} {...props} />}
+              />
+              <Route
+                path="/logout"
+                render={(props) => (
+                  <Logout
+                    handleClearCache={handleClearCache}
+                    clearCache={clearCache}
+                    {...props}
+                  />
+                )}
+              />
+              <ProtectedRoute path="/notification" component={Notification} />
+              <ProtectedRoute
+                path="/me/:username"
+                render={(props) => <Profile {...props} />}
+              />
+              <Route path="/missing-question" component={MissingQuestion} />
+              <Route path="/not-found" component={NotFound} />
+              <Route
+                path="/"
+                render={(props) => <Qfeed online={online} {...props} />}
+              />
+              <Redirect push to="/not-found" />
+            </Switch>
+          </div>
+        </UserProvider>
+      </BrowserRouter>
+    </Provider>
   );
 };
 

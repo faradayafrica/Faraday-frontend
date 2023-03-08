@@ -5,18 +5,13 @@ import mark from "../../assets/mark.svg";
 import info from "../../assets/info.svg";
 import CommentMenu from "./CommentMenu";
 import Modal from "../../../common/components/Modal";
+import { useSelector } from "react-redux";
 
-const CommentComponent = ({
-  match,
-  comment,
-  questionOwner,
-  currentUser,
-  onDeleteComment,
-  onFollowUser,
-  onMarkSolution,
-}) => {
+const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
   const [commentMenu, setCommentMenu] = useState(false);
   const [disclaimer, setDisclaimer] = useState(false);
+
+  const { question } = useSelector((state) => state.qfeed.thisQuestion);
 
   const toggleCommentMenu = () => {
     setCommentMenu(!commentMenu);
@@ -60,13 +55,11 @@ const CommentComponent = ({
       {commentMenu ? (
         <CommentMenu
           match={match}
-          questionOwner={questionOwner}
+          questionOwner={question.user}
           currentUser={currentUser}
           selectedComment={comment}
           onToggleCommentMenu={toggleCommentMenu}
           onDeleteComment={onDeleteComment}
-          onFollowUser={onFollowUser}
-          onMarkSolution={onMarkSolution}
           is_solution={comment.is_solution}
         />
       ) : (
@@ -95,7 +88,7 @@ const CommentComponent = ({
           <div className=" flex items-start pb-2">
             <div className="text-brand-dark bg-brand-highlight cursor-pointer font-bold text-xs outline outline-1 inline-flex justify-center items-center outline-brand py-1 pr-2 rounded-full">
               <img src={mark} className="h-[18px] w-[18px] mx-1" alt="mark" />
-              Solution marked by @{questionOwner.username}
+              Solution marked by @{question?.user.username}
             </div>
 
             <div

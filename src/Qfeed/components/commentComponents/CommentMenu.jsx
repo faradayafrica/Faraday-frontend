@@ -6,6 +6,11 @@ import mark from "../../assets/mark.svg";
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import Modal from "../../../common/components/Modal";
+import {
+  followUserThunk,
+  markSolutionThunk,
+} from "../../../common/features/qfeed/qfeedSlice";
+import { useDispatch } from "react-redux";
 
 const CommentMenu = ({
   match,
@@ -14,8 +19,7 @@ const CommentMenu = ({
   selectedComment,
   onToggleCommentMenu,
   onDeleteComment,
-  onFollowUser,
-  onMarkSolution,
+  // onFollowUser,
   is_solution,
 }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -23,6 +27,12 @@ const CommentMenu = ({
 
   const comment_menu = useRef();
   const comment_menu_mobile = useRef();
+
+  const dispatch = useDispatch();
+
+  function handleFollow(username) {
+    dispatch(followUserThunk({ username }));
+  }
 
   const handleCommentMenu = () => {
     gsap.fromTo(
@@ -87,7 +97,7 @@ const CommentMenu = ({
             <button
               className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
               onClick={() => {
-                onFollowUser(selectedComment?.user);
+                handleFollow(selectedComment?.user?.username);
                 hideMenu();
               }}
             >
@@ -147,7 +157,12 @@ const CommentMenu = ({
         visible={confirmSolution}
         action={() => {
           setConfirmSolution(false);
-          onMarkSolution(match.params.id, selectedComment.id);
+          dispatch(
+            markSolutionThunk({
+              postid: match.params.id,
+              commentid: selectedComment.id,
+            })
+          );
           hideMenu();
         }}
         cancel={() => {
@@ -186,7 +201,7 @@ const CommentMenu = ({
           <button
             className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
             onClick={() => {
-              onFollowUser(selectedComment?.user);
+              handleFollow(selectedComment?.user?.username);
               hideMenu();
             }}
           >

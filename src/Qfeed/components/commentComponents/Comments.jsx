@@ -10,20 +10,21 @@ import {
 import http from "../../../common/services/httpService";
 import AddComment from "./AddComment";
 import CommentsLoader from "./CommentsLoader";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  createCommentThunk,
+  deleteCommentThunk,
+  updateQuestion,
+} from "../../../common/features/qfeed/qfeedSlice";
 
 const Comments = ({
   match,
   online,
   comments,
   commentLoader,
-  thisQuestion,
-  onUpdateComments,
-  questionOwner,
-  fetchThisQuestion,
-  onMarkSolution,
-  questions,
-  handleUpdatedQuestions,
-  data,
+  // thisQuestion,
+  // onUpdateComments,
+  // questionOwner,
   error,
   isError,
   hasNextPage,
@@ -33,16 +34,26 @@ const Comments = ({
   const [pendingComments, setPendingComments] = useState([]);
   const currentUser = getCurrentUser();
 
-  // console.log("COMMENTS!!!1!", comments);
+  // Redux biz starts here
+  const { question } = useSelector((state) => state.qfeed.thisQuestion);
+  const dispatch = useDispatch();
 
-  const uniqueComments = Array.from(new Set(comments.map((a) => a.id))).map(
+  const uniqueComments = Array.from(new Set(comments?.map((a) => a.id))).map(
     (id) => {
       return comments.find((a) => a.id === id);
     }
   );
 
-  // console.log(questions);
+  function updateComments(value) {
+    dispatch(
+      updateQuestion({
+        name: "comments",
+        value,
+      })
+    );
+  }
 
+  // console.log(questions);
   const pendingContents = pendingComments.map((item) => {
     return {
       content: item.content,
@@ -66,35 +77,6 @@ const Comments = ({
 
   const allComments = [...pendingContents, ...uniqueComments];
 
-  const handleFollow = (user) => {
-    const apiEndpoint =
-      process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
-
-    const clonedQuestions = [...uniqueComments];
-    const userComments = clonedQuestions.filter(
-      (comment) => comment.user.id === user.id
-    );
-
-    try {
-      const promise = http.post(apiEndpoint).then((resp) => {
-        fetchThisQuestion();
-        userComments.map(
-          (question) =>
-            (question.user.is_following = !question.user.is_following)
-        );
-      });
-      const msg = user.is_following ? `Unfollowed` : "Followed";
-
-      PromiseToast(
-        `${msg} ${user.username}`,
-        "An error occurred, Try again",
-        promise
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const apiEndpoint =
     process.env.REACT_APP_API_URL + "/qfeed/que/create_comment/";
 
@@ -102,89 +84,25 @@ const Comments = ({
     setComment(currentTarget.value);
   };
 
-  //Sync all action to the Qfeed to eliminate the need to reload the Qfeed
-  const syncToQfeed = (questions, modifiedQ) => {
-    const targetIndex = questions.findIndex((q) => q.id === thisQuestion.id);
-
-    let clonedQuestions = [...questions];
-    clonedQuestions[targetIndex] = { ...modifiedQ };
-    handleUpdatedQuestions([...clonedQuestions]);
-  };
-
   const postComment = (postid, limit) => {
-    const myQuestion = { ...thisQuestion };
-
-    let content = comment;
-
     if (comment.length > limit || comment.length === 0) {
       ErrorToast("Your comment is too long");
     } else {
-      setComment("");
-      document.getElementById("commentfield").value = "";
-
-      try {
-        const promise = http
-          .post(apiEndpoint, {
-            postid,
-            content,
-          })
-          .then((resp) => {
-            onUpdateComments((prevComments) => [resp.data, ...prevComments]);
-          });
-
-        PromiseToast("comment sent", "An error occurred, Try again", promise);
-        myQuestion.comments += 1;
-      } catch (e) {
-        console.warn(e.message);
-        if (!online) {
-          setPendingComments((prev) => [{ content, postid }, ...prev]);
-          myQuestion.comments += 1;
-          SuccessToast("Comment will be sent when connection is restored");
-
-          var storedComments = JSON.parse(
-            localStorage.getItem("pendingComments")
-          );
-
-          window.localStorage.setItem(
-            "pendingComments",
-            JSON.stringify([...storedComments, { content, postid }])
-          );
-
-          setComment("");
-          document.getElementById("commentfield").value = "";
-        } else {
-          setComment(content);
-          document.getElementById("commentfield").value = content;
-        }
-      }
+      let content = comment;
+      console.log("Before", postid, content);
+      dispatch(createCommentThunk({ postid, content }));
     }
 
-    syncToQfeed(questions, myQuestion);
+    // TODO: Clear the input after comment creation is successful
   };
 
   const deleteComment = async (selectedComment) => {
-    const myQuestion = { ...thisQuestion };
-
-    const oldComments = [...comments];
-    const remainingComments = comments.filter((comment) => {
-      return comment.id !== selectedComment.id;
-    });
-
-    const apiEndpoint =
-      process.env.REACT_APP_API_URL +
-      `/qfeed/que/comments/delete/${thisQuestion.id}/${selectedComment.id}/`;
-
-    onUpdateComments([...remainingComments]);
-
-    try {
-      await http.delete(apiEndpoint);
-      SuccessToast("Comment deleted");
-      myQuestion.comments -= 1;
-    } catch (e) {
-      ErrorToast("Couldn't delete comment");
-      onUpdateComments([...oldComments]);
-    }
-    syncToQfeed(questions, myQuestion);
+    dispatch(
+      deleteCommentThunk({
+        ques_id: question.id,
+        commentid: selectedComment.id,
+      })
+    );
   };
 
   return (
@@ -194,9 +112,8 @@ const Comments = ({
           online={online}
           onChange={handleChange}
           currentUser={currentUser}
-          questionOwner={questionOwner}
           postComment={postComment}
-          questionId={thisQuestion.id}
+          questionId={question.id}
           comment={comment}
         />
       </div>
@@ -211,12 +128,9 @@ const Comments = ({
                 key={comment.id}
                 comment={comment}
                 match={match}
-                questionOwner={questionOwner}
                 currentUser={currentUser}
                 onDeleteComment={deleteComment}
-                onFollowUser={handleFollow}
                 is_solution={true}
-                onMarkSolution={onMarkSolution}
               />
             ))}
 
@@ -228,11 +142,8 @@ const Comments = ({
                 key={comment.id}
                 match={match}
                 comment={comment}
-                questionOwner={questionOwner}
                 currentUser={currentUser}
                 onDeleteComment={deleteComment}
-                onFollowUser={handleFollow}
-                onMarkSolution={onMarkSolution}
               />
             ))}
         </>

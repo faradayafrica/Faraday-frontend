@@ -6,7 +6,6 @@ import CopyLink from "./CopyLink";
 
 import {
   LoadingToast,
-  PromiseToast,
   SuccessToast,
 } from "../../common/components/CustomToast";
 import http from "../../common/services/httpService";
@@ -17,26 +16,29 @@ import arrow from "../assets/arrow-right.svg";
 import love from "../assets/love.svg";
 import redLove from "../assets/red-love.svg";
 import smiley from "../assets/smiley.svg";
-import share from "../assets/share.svg";
 import link from "../assets/link.svg";
 import mark from "../assets/mark.svg";
 import verify from "../assets/verify.svg";
 import info from "../assets/info.svg";
 import Modal from "../../common/components/Modal";
 import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteQuestionThunk,
+  updateFeed,
+  voteQuestionThunk,
+} from "../../common/features/qfeed/qfeedSlice";
 
 const Question = (props) => {
-  const [question, setQuestion] = useState(props.question);
+  const { question } = props;
   const [questionMenu, setQuestionMenu] = useState(false);
-  const [isButtonPannel, setButtonPannel] = useState(false);
-
   const [isCopyLinkModal, setCopyLinkModal] = useState(false);
   const [isCopied, setCopied] = useState(false);
   const [shortLink, setShortLink] = useState(props.question.short_link);
-
   const [disclaimer, setDisclaimer] = useState(false);
 
-  const apiEndpoint = process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
+  const dispatch = useDispatch();
+  const { qfeed: questions } = useSelector((state) => state.qfeed.feed);
 
   let smileyClasses =
     "ml-2 hover:bg-brand-highlight px-2  h-8 flex justify-around items-center rounded-lg";
@@ -44,24 +46,8 @@ const Question = (props) => {
   let loveClasses =
     "hover:bg-danger-highlight h-8 px-2 flex justify-around items-center rounded-lg mr-2";
 
-  if (!isButtonPannel) {
-    smileyClasses += " bg-background ";
-  } else {
-    smileyClasses += " bg-brand-highlight icon-brand";
-  }
-
-  if (!question.liked) {
-    loveClasses += " bg-background ";
-  } else {
-    loveClasses += " bg-danger-highlight text-danger";
-  }
-
   const toggleQuestionMenu = () => {
     setQuestionMenu(!questionMenu);
-  };
-
-  const handleButtonPannel = () => {
-    setButtonPannel(!isButtonPannel);
   };
 
   const handleIsCopied = (value) => {
@@ -75,8 +61,8 @@ const Question = (props) => {
 
   const getShortLink = (id) => {
     const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
-    const questionsClone = [...props.questions];
-    const question_index = props.questions.findIndex(
+    const questionsClone = [...questions];
+    const question_index = questions.findIndex(
       (question) => question.id === id
     );
 
@@ -89,7 +75,7 @@ const Question = (props) => {
           .then((resp) => {
             setShortLink(resp.data.short_url);
             questionsClone[question_index].short_link = resp.data.short_url;
-            props.handleUpdatedQuestions([...questionsClone]);
+            dispatch(updateFeed({ name: "qfeed", value: questionsClone }));
             // sync with B.E
             http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {
               postid: id,
@@ -102,59 +88,12 @@ const Question = (props) => {
     }
   };
 
-  const hideButtonPannel = () => {
-    setButtonPannel(false);
-  };
-
   // This could go 2 levels up the family tree (@Qfeed) so that there's no need to recreate the function @DiscussionPage
   const handleLike = async (postid) => {
-    const oldLikes = question.likes;
-    const oldLiked = question.liked;
-    const updatedQuestion = { ...question };
-
-    const clonedQuestions = [...props.questions];
-    const index = clonedQuestions.findIndex((q) => q.id === question.id);
-
-    hideButtonPannel();
-
-    if (!question.liked) {
-      updatedQuestion.likes = oldLikes + 1;
-      updatedQuestion.liked = !oldLiked;
-      setQuestion({ ...updatedQuestion });
+    if (question.liked) {
+      dispatch(voteQuestionThunk({ postid, value: "downvote" }));
     } else {
-      updatedQuestion.likes = oldLikes - 1;
-      updatedQuestion.liked = !oldLiked;
-      setQuestion({ ...updatedQuestion });
-    }
-
-    try {
-      let likeData;
-
-      if (oldLiked) {
-        const { data } = await http.post(apiEndpoint, {
-          postid,
-          value: "downvote",
-        });
-        // SuccessToast("Question unliked");
-        likeData = data.data;
-      } else {
-        const { data } = await http.post(apiEndpoint, {
-          postid,
-          value: "upvote",
-        });
-        // SuccessToast("Question liked");
-        likeData = data.data;
-      }
-
-      if (index >= -1) {
-        clonedQuestions[index] = { ...likeData };
-      }
-      props.handleUpdatedQuestions(clonedQuestions);
-    } catch (err) {
-      updatedQuestion.liked = oldLiked;
-      updatedQuestion.likes = oldLikes;
-      setQuestion({ ...updatedQuestion });
-      console.warn("error", err.message);
+      dispatch(voteQuestionThunk({ postid }));
     }
   };
 
@@ -188,6 +127,10 @@ const Question = (props) => {
     }
   };
 
+  function handleQuestionDelete(ques_id) {
+    dispatch(deleteQuestionThunk({ ques_id }));
+  }
+
   return (
     <div className=" question-component pl-3 pr-2 pt-3 sm:pt-4 bg-white hover:bg-[#fafafacc] flex justify-start items-start relative">
       <Link
@@ -203,7 +146,7 @@ const Question = (props) => {
         />
       </Link>
       <section className=" p-0 w-full">
-        <div className="pr-2 relative" onClick={() => hideButtonPannel()}>
+        <div className="pr-2 relative">
           {/* Profile details */}
           <p className="flex m-0 text-night-secondary mb-1 text-xs sm:text-sm">
             <span className="mr-2 font-semibold text-faraday-night flex items-center">
@@ -215,7 +158,6 @@ const Question = (props) => {
             <span className="mr-2 ">@{question?.user.username} </span>{" "}
             <span>{question?.created}</span>
           </p>
-
           {question.solution && (
             <div className="absolute left-[-45px] bottom-0 ">
               <div
@@ -228,9 +170,8 @@ const Question = (props) => {
               </div>
             </div>
           )}
-
           <div
-            className=" hover:bg-brand-highlight cursor-pointer absolute right-2 top-2 rounded-md"
+            className=" hover:bg-brand-highlight cursor-pointer absolute right-1 top-[-8px] rounded-md"
             onClick={() => {
               setQuestionMenu(!questionMenu);
             }}
@@ -242,16 +183,13 @@ const Question = (props) => {
               alt=""
             />
           </div>
-
           <QuestionMenu
             questionMenu={questionMenu}
             question={question}
             toggleQuestionMenu={toggleQuestionMenu}
-            onFollowUser={props.onFollowUser}
-            onDeleteQuestion={props.onDeleteQuestion}
+            onDeleteQuestion={handleQuestionDelete}
             handleSaveQues={handleSaveQues}
           />
-
           <Modal
             icon={info}
             visible={disclaimer}
@@ -261,7 +199,6 @@ const Question = (props) => {
           official account, we can't take responsibility for the comment
           marked as a solution.`}
           />
-
           {question?.created !== "Just now" ? (
             <Link
               to={`/qfeed/${question.id}`}
@@ -416,57 +353,6 @@ const Question = (props) => {
               alt="engage with question"
             />
           </button>
-
-          {isButtonPannel ? (
-            <span
-              onClick={() => hideButtonPannel()}
-              className="ask-shadow bg-white relative right-8 bottom-10 p-2 rounded-full border border-brand-highlight"
-            >
-              {question.liked ? (
-                <button
-                  className=" p-2 rounded-full hover:bg-danger-highlight"
-                  onClick={() => handleLike(question.id)}
-                >
-                  <img
-                    className="h-4 w-4"
-                    src={redLove}
-                    alt="take back reaction"
-                  />
-                </button>
-              ) : (
-                <button
-                  className=" p-2 rounded-full icon-brand-hover hover:bg-brand-highlight"
-                  onClick={() => handleLike(question.id)}
-                >
-                  <img
-                    className="h-[18px] w-[18px]"
-                    src={love}
-                    alt="react to question"
-                  />
-                </button>
-              )}
-
-              {/* Share button */}
-              <button className=" p-2 rounded-full icon-brand-hover hover:bg-brand-highlight mx-2">
-                <img
-                  className="h-[18px] w-[18px]"
-                  src={share}
-                  alt="share this question"
-                />
-              </button>
-
-              {/* Link button */}
-              <button className=" p-2 rounded-full icon-brand-hover hover:bg-brand-highlight">
-                <img
-                  className="h-[18px] w-[18px]"
-                  src={link}
-                  alt="copy question link"
-                />
-              </button>
-            </span>
-          ) : (
-            ""
-          )}
         </div>
 
         {question?.created !== "Just now" ? (

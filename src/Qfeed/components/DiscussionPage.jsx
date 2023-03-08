@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import CopyLink from "./CopyLink";
@@ -10,38 +11,36 @@ import redLove from "../assets/red-love.svg";
 import share from "../assets/share.svg";
 import link from "../assets/link.svg";
 import http from "../../common/services/httpService";
-import axios from "axios";
 import ellipses from "../assets/ellipses.svg";
 import arrowRight from "../assets/arrow-right.svg";
 import QuestionMenu from "./QuestionMenu";
-import { ErrorToast, PromiseToast } from "../../common/components/CustomToast";
 import QuestionsLoader from "./QuestionsLoader";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  deleteQuestionThunk,
+  markSolutionThunk,
+  updateFeed,
+  updateQuestion,
+  voteQuestionThunk,
+} from "../../common/features/qfeed/qfeedSlice";
+import { useLayoutEffect } from "react";
+import QService from "../../common/features/qfeed/QfeedServices";
 
-const DiscussionPage = ({
-  match,
-  history,
-  online,
-  questions,
-  handleUpdatedQuestions,
-  onDeleteQuestion,
-}) => {
-  const thisQuestion = questions.filter((q) => q.id === match.params.id)[0];
-  const apiEndpoint =
-    process.env.REACT_APP_API_URL + `/qfeed/que/fetch/${match.params.id}/`;
-
-  const [question, setQuestion] = useState(thisQuestion ? thisQuestion : {});
-  const [comments, setComments] = useState([]);
+const DiscussionPage = ({ match, history, online }) => {
   const [loader, setLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
 
   const [isCopyLinkModal, setCopyLinkModal] = useState(false);
   const [isCopied, setCopied] = useState(false);
-  const [shortLink, setShortLink] = useState(
-    thisQuestion ? thisQuestion.short_link : ""
-  );
+  const [shortLink, setShortLink] = useState();
 
-  // Copy Link associated variables and function are recreated for the timeline on the Question tab
-  //We could use contextAPI to help them share same state and functions in the future
+  // Redux biz starts here
+  const { qfeed: questions } = useSelector((state) => state.qfeed.feed);
+  const { question, comments } = useSelector(
+    (state) => state.qfeed.thisQuestion
+  );
+  const dispatch = useDispatch();
+  // Redux biz ends here
 
   const handleIsCopied = (value) => {
     setCopied(value);
@@ -52,6 +51,7 @@ const DiscussionPage = ({
     setCopied(false);
     console.log("here");
   };
+
   const getShortLink = (id) => {
     const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
     const questionsClone = [...questions];
@@ -68,7 +68,7 @@ const DiscussionPage = ({
           .then((resp) => {
             setShortLink(resp.data.short_url);
             questionsClone[question_index].short_link = resp.data.short_url;
-            handleUpdatedQuestions([...questionsClone]);
+            dispatch(updateFeed({ name: "qfeed", value: questionsClone }));
             // sync with B.E
             http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {
               postid: id,
@@ -81,147 +81,32 @@ const DiscussionPage = ({
     }
   };
 
-  const handleFollow = (user) => {
-    const apiEndpoint =
-      process.env.REACT_APP_API_URL + `/users/${user.username}/follow/`;
-
-    const clonedComments = [...comments];
-    const userComments = clonedComments.filter(
-      (comment) => comment.user.id === user.id
-    );
-
-    try {
-      const promise = http.post(apiEndpoint).then((resp) => {
-        fetchThisQuestion();
-        userComments.map(
-          (question) =>
-            (question.user.is_following = !question.user.is_following)
-        );
-      });
-      const msg = user.is_following ? `Unfollowed` : "Followed";
-
-      PromiseToast(
-        `${msg} @${user.username}`,
-        "An error occurred, Try again",
-        promise
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const handleMarkSolution = (postid, commentid) => {
-    const commentsClone = [...comments];
-    var index = commentsClone.findIndex((comment) => comment.id === commentid);
-
-    try {
-      const apiEndpoint =
-        process.env.REACT_APP_API_URL + "/qfeed/que/marksolution/";
-
-      const promise = http
-        .post(apiEndpoint, {
-          postid: postid,
-          commentid: commentid,
-        })
-        .then((resp) => {
-          for (let i = 0; i < commentsClone.length; i++) {
-            if (i === index) {
-              commentsClone[i].is_solution = resp.data.is_solution;
-            } else {
-              commentsClone[i].is_solution = false;
-            }
-          }
-          setComments(commentsClone);
-
-          // console.log(resp.data);
-          const quesClone = [...questions];
-          var QueIndex = questions.findIndex(
-            (ques) => ques.id === match.params.id
-          );
-          const thisQue = questions.find((que) => que.id === match.params.id);
-
-          if (resp.data.is_solution === true) {
-            thisQue.solution = resp.data;
-            quesClone[QueIndex] = thisQue;
-          } else {
-            thisQue.solution = null;
-            quesClone[QueIndex] = thisQue;
-          }
-
-          handleUpdatedQuestions(quesClone);
-        });
-
-      PromiseToast("Solution updated", "Couldn't update solution", promise);
-    } catch (e) {
-      console.log(e);
-      ErrorToast("Something went wrong, Try again later");
-    }
+    dispatch(markSolutionThunk({ postid, commentid }));
   };
 
   const toggleQuestionMenu = () => {
     setQuestionMenu(!setQuestionMenu);
   };
 
-  const handleQuestionDelete = (question) => {
-    onDeleteQuestion(question);
+  const handleQuestionDelete = (ques_id) => {
+    dispatch(deleteQuestionThunk({ ques_id }));
     history.goBack();
   };
 
   const handleQuestionLike = async (postid) => {
-    const oldLikes = question.likes;
-    const oldLiked = question.liked;
-    const updatedQuestion = { ...question };
-
-    const clonedQuestions = [...questions];
-    var index = clonedQuestions.findIndex((q) => q.id === question.id);
-
-    if (!question.liked) {
-      updatedQuestion.likes = oldLikes + 1;
-      updatedQuestion.liked = !oldLiked;
-      setQuestion({ ...updatedQuestion });
+    if (question.liked) {
+      dispatch(voteQuestionThunk({ postid, value: "downvote" }));
     } else {
-      updatedQuestion.likes = oldLikes - 1;
-      updatedQuestion.liked = !oldLiked;
-      setQuestion({ ...updatedQuestion });
-    }
-
-    try {
-      const apiEndpoint =
-        process.env.REACT_APP_API_URL + "/qfeed/que/vote_que/";
-
-      let likeData;
-
-      if (oldLiked) {
-        const { data } = await http.post(apiEndpoint, {
-          postid,
-          value: "downvote",
-        });
-        likeData = data.data;
-      } else {
-        const { data } = await http.post(apiEndpoint, {
-          postid,
-          value: "upvote",
-        });
-        likeData = data.data;
-      }
-
-      if (index >= 0) {
-        clonedQuestions[index] = { ...likeData };
-      }
-      handleUpdatedQuestions(clonedQuestions);
-    } catch (err) {
-      updatedQuestion.liked = oldLiked;
-      updatedQuestion.likes = oldLikes;
-      setQuestion({ ...updatedQuestion });
-      console.warn("error", err.message);
+      dispatch(voteQuestionThunk({ postid }));
     }
   };
 
   const retry = async () => {
     setLoader(true);
     try {
-      const { data } = await http.get(apiEndpoint);
-      setQuestion(data);
+      const { data } = await QService.fetchQuestion(match.params.id);
+      dispatch(updateQuestion({ name: "question", value: data }));
     } catch (err) {
       setLoader(false);
     }
@@ -229,34 +114,31 @@ const DiscussionPage = ({
     refetch();
   };
 
-  const updateComments = (newComments) => {
-    setComments(newComments);
-  };
-
   const fetchThisQuestion = async () => {
     try {
-      await axios.get(apiEndpoint).then((resp) => setQuestion(resp.data.data));
+      const { data } = await QService.fetchQuestion(match.params.id);
+      dispatch(updateQuestion({ name: "question", value: data }));
     } catch (ex) {
       setLoader(false);
       if (ex.response.status == 404) {
         history.replace("/missing-question");
       } else {
-        console.log("Problem");
+        // console.log("Problem");
       }
       setLoader(false);
     }
   };
 
   useEffect(async () => {
-    await fetchThisQuestion();
+    if (question.user) {
+      // Skip
+    } else {
+      fetchThisQuestion();
+    }
   }, []);
 
-  const fetchComments = async (pageParam) => {
-    const resp = await axios.get(
-      process.env.REACT_APP_API_URL +
-        `/qfeed/que/comments/${match.params.id}/?page=${pageParam}`
-    );
-    return resp;
+  const updateComments = (newComments) => {
+    dispatch(updateQuestion({ name: "comments", value: newComments }));
   };
 
   const {
@@ -271,7 +153,8 @@ const DiscussionPage = ({
     refetch,
   } = useInfiniteQuery(
     ["comments"],
-    ({ pageParam = 1 }) => fetchComments(pageParam),
+    ({ pageParam = 1 }) =>
+      QService.fetchQuestionComments(match.params.id, pageParam),
     {
       cacheTime: 0,
       getNextPageParam: (lastPage, allPages) => {
@@ -281,6 +164,7 @@ const DiscussionPage = ({
     }
   );
 
+  // Next page fetch from the useInfinite Query
   useEffect(() => {
     let fetching = false;
     const handleScroll = async (e) => {
@@ -300,18 +184,20 @@ const DiscussionPage = ({
     };
   }, [fetchNextPage, hasNextPage]);
 
+  // Update comments on the store
   useEffect(() => {
     !comments.length &&
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     const newComments = [];
 
     isSuccess &&
-      data?.pages.map((page) =>
-        page.data?.results.map((item) => newComments.push(item))
+      data?.pages?.map((page) =>
+        page?.data?.results.map((item) => newComments.push(item))
       );
-    setComments(newComments);
+    dispatch(updateQuestion({ name: "comments", value: newComments }));
   }, [data]);
 
+  // Dynamic classes
   let loveClasses =
     "hover:bg-danger-highlight h-[40px] px-3 flex justify-around items-center rounded-lg";
 
@@ -320,6 +206,14 @@ const DiscussionPage = ({
   } else {
     loveClasses += " bg-danger-highlight text-danger";
   }
+
+  // Initialize the state of the Discussion feed when navigating from the Qfeen home
+  useLayoutEffect(() => {
+    const thisQuestion = questions?.find((q) => q.id === match.params.id);
+    const value = thisQuestion ? thisQuestion : {};
+    dispatch(updateQuestion({ name: "question", value }));
+    setShortLink(thisQuestion ? thisQuestion.short_link : "");
+  }, []);
 
   return (
     <>
@@ -332,6 +226,7 @@ const DiscussionPage = ({
               className="w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180"
               alt="return"
               onClick={() => {
+                dispatch(updateQuestion({ name: "comments", value: [] }));
                 history.goBack();
               }}
             />
@@ -380,7 +275,6 @@ const DiscussionPage = ({
                   questionMenu={questionMenu}
                   question={question}
                   toggleQuestionMenu={toggleQuestionMenu}
-                  onFollowUser={handleFollow}
                   onDeleteQuestion={handleQuestionDelete}
                 />
 
@@ -460,22 +354,17 @@ const DiscussionPage = ({
 
               {/* Comments here */}
               <Comments
-                online={online}
-                thisQuestion={question}
-                questionid={match.params.id}
                 comments={comments}
+                online={online}
+                // thisQuestion={question}
+                questionid={match.params.id}
                 commentLoader={isLoading}
                 questionOwner={question?.user}
                 onUpdateComments={updateComments}
                 onMarkSolution={handleMarkSolution}
-                fetchThisQuestion={fetchThisQuestion}
                 match={match}
-                questions={questions}
-                handleUpdatedQuestions={handleUpdatedQuestions}
-                //from useInfinteQuery
                 error={error}
                 isError={isError}
-                data={data}
                 hasNextPage={hasNextPage}
                 isFetchingNextPage={isFetchingNextPage}
               />

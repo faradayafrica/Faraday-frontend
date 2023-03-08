@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import PrimaryButton from "../../../common/components/PrimaryButton";
+import { useSelector } from "react-redux";
 
 const AddComment = ({
   online,
@@ -11,6 +12,8 @@ const AddComment = ({
   comment,
 }) => {
   const LIMIT = 450;
+
+  const { question } = useSelector((state) => state.qfeed.thisQuestion);
 
   let inputClasses =
     "focus:bg-gradient-to-t from-background to-white mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-outline border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-sm ";
@@ -48,7 +51,7 @@ const AddComment = ({
       </Link>
       <label className="block w-full m-0 relative bottom-2 ">
         <span className=" ml-2 text-xs text-brand">
-          Replying @{questionOwner.username}
+          Replying @{question.user.username}
         </span>
         <textarea
           type="text"
