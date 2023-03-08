@@ -118,7 +118,6 @@ const QuestionMenu = ({
                     hideMenu();
                   }}
                 >
-                  {console.log(question.user, "check from menu")}
                   {question?.user.is_following ? (
                     <>
                       <img className="mr-2" src={unfollow} alt="unfollow" />{" "}

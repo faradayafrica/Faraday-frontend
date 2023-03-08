@@ -170,7 +170,7 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(followUserThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      console.log(data, "follow");
+      // console.log(data, "follow");
 
       if (data) {
         // Update Qfeed on home Page
@@ -287,14 +287,35 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(voteQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      console.log(data.vote_status, data.vote_rank);
+      // console.log(data, "vote");
 
       if (data) {
-        // Updates the qfeed after voting
+        // Updates the qfeed Home
         const newFeed = state.feed.qfeed.map((question) =>
           question.id === data.id ? data : question
         );
         state.feed.qfeed = newFeed;
+
+        // Updates the profile question feed
+        const newUserQuestionFeed = state.feed.profile.userQuestions.map(
+          (question) => (question.id === data.id ? data : question)
+        );
+        state.feed.profile.userQuestions = newUserQuestionFeed;
+
+        // Updates the profile bookmarks feed
+        const newUserBookmarkFeed = state.feed.profile.userBookmarks.map(
+          (question) => (question.id === data.id ? data : question)
+        );
+        state.feed.profile.userBookmarks = newUserBookmarkFeed;
+
+        // Updates the profile Solution feed
+        const newUserSolutionFeed = state.feed.profile.userSolutions.map(
+          (solution) =>
+            solution.question.id === data.id
+              ? { ...solution, question: data }
+              : solution
+        );
+        state.feed.profile.userSolutions = newUserSolutionFeed;
 
         // Update the discussionPage after voting
         state.thisQuestion.question = data;
