@@ -267,6 +267,7 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(deleteQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
+      console.log(data, "delete");
 
       if (data) {
         // Update qfeed home after delete
@@ -274,6 +275,25 @@ const qfeedSlice = createSlice({
           (question) => question.id !== data.queid
         );
         state.feed.qfeed = newFeed;
+
+        // Update Profile Question feed
+        const newUserQuestionFeed = state.feed.profile.userQuestions.filter(
+          (question) => question.id !== data.queid
+        );
+        state.feed.profile.userQuestions = newUserQuestionFeed;
+
+        // Update Profile Bookmark feed
+        const newUserBookmarkFeed = state.feed.profile.userBookmarks.filter(
+          (question) => question.id !== data.queid
+        );
+        state.feed.profile.userBookmarks = newUserBookmarkFeed;
+
+        // Update Profile Solution feed
+        const newUserSolutionFeed = state.feed.profile.userSolutions.filter(
+          (soln) => soln.question.id !== data.queid
+        );
+        state.feed.profile.userSolutions = newUserSolutionFeed;
+
         state.status = QfeedStates.SUCCESSFUL;
       }
     });
