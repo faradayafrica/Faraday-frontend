@@ -27,6 +27,7 @@ const ProfileHome = ({
 
   const history = useHistory();
 
+  console.log(questions, "question");
   console.log(solutions, "solutions");
 
   console.log(bookmarks, "bookmarks");
