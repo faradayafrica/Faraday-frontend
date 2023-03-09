@@ -134,6 +134,8 @@ export const createCommentThunk = createAsyncThunk(
   }
 );
 
+// <--------------------Profile Thunk------------------------------>
+
 const qfeedSlice = createSlice({
   name: "qfeed",
   initialState,
@@ -186,7 +188,7 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(followUserThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      // console.log(data, "follow");
+      console.log(data, "follow");
 
       if (data) {
         // Update Qfeed on home Page
@@ -197,6 +199,16 @@ const qfeedSlice = createSlice({
           }
         }
         state.feed.qfeed = feed;
+
+        // Update the profile data
+        if (
+          state.feed.profile.profileData &&
+          state.feed.profile.profileData?.username === data.username
+        ) {
+          const cloneThisProfile = { ...state.feed.profile.profileData };
+          cloneThisProfile.profile.is_following = data.is_following;
+          state.feed.profile.profileData = cloneThisProfile;
+        }
 
         // Update Profile Question feed
         const newUserQuestionFeed = state.feed.profile.userQuestions;
@@ -246,9 +258,6 @@ const qfeedSlice = createSlice({
         }
 
         state.status = QfeedStates.SUCCESSFUL;
-
-        // TODO: We can replicate this filter for profile and
-        // other question feed added to the project in the future
       } else {
         state.error = error;
       }

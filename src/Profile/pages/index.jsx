@@ -29,13 +29,14 @@ function Profile({ match, history }) {
 
   const userEndpoint = `/users/${match.params.username}/`;
 
-  const [user, setUser] = useState();
+  // const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [pathname, setPathname] = useState(match.params.username);
 
   const dispatch = useDispatch();
   const {
+    profileData: user,
     userQuestions: questions,
     userSolutions: solutions,
     userBookmarks: bookmarks,
@@ -201,7 +202,9 @@ function Profile({ match, history }) {
         // setQuestions([]);
         // setSolutions([]);
         const { data } = await http.get(userEndpoint);
-        setUser(data);
+        // setUser(data);
+        dispatch(updateProfile({ name: "profileData", value: data }));
+
         setLoading(false);
       } catch (e) {
         console.log(e);

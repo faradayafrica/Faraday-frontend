@@ -255,7 +255,7 @@ const DiscussionPage = ({ match, history }) => {
                   <span className="">@{question?.user.username}</span>
                 </p>
                 <p className="m-0 text-night-secondary text-sm sm:text-base">
-                  Published {moment(question?.created, "YYYYMMDD").fromNow()}
+                  Published {moment(question?.created).fromNow()}
                 </p>
 
                 <div

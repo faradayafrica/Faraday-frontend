@@ -157,7 +157,7 @@ const Question = (props) => {
               )}
             </span>
             <span className="mr-2 ">@{question?.user.username} </span>{" "}
-            <span>{moment(question?.created, "YYYYMMDD").fromNow()}</span>
+            <span>{moment(question?.created).fromNow()}</span>
           </p>
           {question.solution && (
             <div className="absolute left-[-45px] bottom-0 ">
@@ -253,7 +253,7 @@ const Question = (props) => {
                           : question?.solution.user.username}
                       </p>
                       <p className="text-xs pl-1 m-0">
-                        {question?.solution.created}
+                        {moment(question?.solution.created).fromNow()}
                       </p>
                     </div>
 

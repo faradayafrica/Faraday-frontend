@@ -27,11 +27,6 @@ const ProfileHome = ({
 
   const history = useHistory();
 
-  console.log(questions, "question");
-  console.log(solutions, "solutions");
-
-  console.log(bookmarks, "bookmarks");
-
   return (
     <>
       <div className="min-h-[70px] sm:min-h-[20px] bg-brand-highlight"> </div>

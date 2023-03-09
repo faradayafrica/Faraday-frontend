@@ -76,7 +76,7 @@ const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
             @{comment?.user?.username}
           </span>
           <span className="mr-2 text-night-secondary">
-            {moment(comment?.created, "YYYYMMDD").fromNow()}
+            {moment(comment?.created).fromNow()}
           </span>
         </p>
         <div className="text-sm sm:text-base m-0 mb-2 text-faraday-night">
