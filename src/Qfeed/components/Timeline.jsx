@@ -49,7 +49,6 @@ const TimeLine = (props) => {
           {questions?.length ? (
             questions?.map((question) => (
               <Question
-                online={props.online}
                 question={question}
                 key={question.id + uuid()}
                 refetch={props.refetch}

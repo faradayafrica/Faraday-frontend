@@ -5,6 +5,7 @@ import CopyLink from "./CopyLink";
 import SecondaryButton from "../../common/components/SecondaryButton";
 import Comments from "./commentComponents/Comments";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 import love from "../assets/love.svg";
 import redLove from "../assets/red-love.svg";
@@ -26,7 +27,7 @@ import {
 import { useLayoutEffect } from "react";
 import QService from "../../common/features/qfeed/QfeedServices";
 
-const DiscussionPage = ({ match, history, online }) => {
+const DiscussionPage = ({ match, history }) => {
   const [loader, setLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
 
@@ -254,7 +255,7 @@ const DiscussionPage = ({ match, history, online }) => {
                   <span className="">@{question?.user.username}</span>
                 </p>
                 <p className="m-0 text-night-secondary text-sm sm:text-base">
-                  Published {question?.created}
+                  Published {moment(question?.created, "YYYYMMDD").fromNow()}
                 </p>
 
                 <div
@@ -355,7 +356,6 @@ const DiscussionPage = ({ match, history, online }) => {
               {/* Comments here */}
               <Comments
                 comments={comments}
-                online={online}
                 questionid={match.params.id}
                 commentLoader={isLoading}
                 questionOwner={question?.user}

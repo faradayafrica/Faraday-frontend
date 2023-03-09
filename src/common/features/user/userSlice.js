@@ -10,6 +10,10 @@ export const userStates = {
 
 const initialState = {
   data: {},
+  onlineStatus: {
+    online: true,
+    visible: false,
+  },
   error: "",
   status: "base",
   toast: "",
@@ -32,7 +36,18 @@ const userSlice = createSlice({
   name: "user",
   initialState,
 
-  reducers: {},
+  reducers: {
+    updateOnline: (state, action) => {
+      console.log(action.payload);
+      const { name, value } = action.payload;
+
+      state.onlineStatus = {
+        ...state.onlineStatus,
+        [name]: value,
+      };
+      state.online = value;
+    },
+  },
 
   extraReducers: (builder) => {
     // Extra Reducers for feting current User
@@ -55,4 +70,4 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-// export const {} = userSlice.actions;
+export const { updateOnline } = userSlice.actions;

@@ -19,12 +19,8 @@ import {
 
 const Comments = ({
   match,
-  online,
   comments,
   commentLoader,
-  // thisQuestion,
-  // onUpdateComments,
-  // questionOwner,
   error,
   isError,
   hasNextPage,
@@ -109,7 +105,6 @@ const Comments = ({
     <div className="bg-white">
       <div className=" pl-3 pr-2">
         <AddComment
-          online={online}
           onChange={handleChange}
           currentUser={currentUser}
           postComment={postComment}

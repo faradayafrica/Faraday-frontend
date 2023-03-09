@@ -7,7 +7,10 @@ import follow from "../assets/follow.svg";
 import unfollow from "../assets/unfollow.svg";
 
 import { useDispatch } from "react-redux";
-import { followUserThunk } from "../../common/features/qfeed/qfeedSlice";
+import {
+  closeQuestionThunk,
+  followUserThunk,
+} from "../../common/features/qfeed/qfeedSlice";
 
 const QuestionMenu = ({
   question,
@@ -28,6 +31,10 @@ const QuestionMenu = ({
 
   function handleFollow(username) {
     dispatch(followUserThunk({ username }));
+  }
+
+  function handleCloseQuestion(postid) {
+    dispatch(closeQuestionThunk({ postid }));
   }
 
   // Gsap animation
@@ -84,8 +91,22 @@ const QuestionMenu = ({
               {question.bookmarked ? "Unsave" : "Save"} question
             </button>
 
+            {/* TODO: Handle the Bookmark action with redux(QfeedSlice) and sync all feed on the redux store */}
+            {/* TODO: Add the bookmark for mobile view too, the code is below */}
+
             {question.user.username === currentUser.username ? (
               <>
+                <button
+                  className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
+                  onClick={() => {
+                    handleCloseQuestion(question?.id);
+                    hideMenu();
+                  }}
+                >
+                  {question.is_closed ? "Open" : "Close"} question
+                </button>
+                {/* TODO: Add the Close question for mobile view too, the code is below */}
+
                 {!confirmDelete ? (
                   <button
                     className="px-4 py-3 hover:bg-danger-highlight rounded-lg w-full text-left flex"
@@ -151,6 +172,15 @@ const QuestionMenu = ({
 
               {question.user.username === currentUser.username ? (
                 <>
+                  <button
+                    className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
+                    onClick={() => {
+                      handleCloseQuestion(question?.id);
+                      hideMenu();
+                    }}
+                  >
+                    {question.is_closed ? "Open" : "Close"} question
+                  </button>
                   {!confirmDelete ? (
                     <button
                       className="px-4 py-3 hover:bg-danger-highlight rounded-lg w-full text-left flex"

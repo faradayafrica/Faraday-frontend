@@ -6,6 +6,7 @@ import info from "../../assets/info.svg";
 import CommentMenu from "./CommentMenu";
 import Modal from "../../../common/components/Modal";
 import { useSelector } from "react-redux";
+import moment from "moment/moment";
 
 const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
   const [commentMenu, setCommentMenu] = useState(false);
@@ -74,7 +75,9 @@ const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
           <span className="mr-2 text-night-secondary">
             @{comment?.user?.username}
           </span>
-          <span className="mr-2 text-night-secondary">{comment?.created}</span>
+          <span className="mr-2 text-night-secondary">
+            {moment(comment?.created, "YYYYMMDD").fromNow()}
+          </span>
         </p>
         <div className="text-sm sm:text-base m-0 mb-2 text-faraday-night">
           {comment?.content.split("\n").map((item, idx) => (

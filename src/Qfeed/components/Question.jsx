@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import QuestionMenu from "./QuestionMenu";
 import CopyLink from "./CopyLink";
+import moment from "moment";
 // import ReactMarkdown from "react-markdown";
 
 import {
@@ -156,7 +157,7 @@ const Question = (props) => {
               )}
             </span>
             <span className="mr-2 ">@{question?.user.username} </span>{" "}
-            <span>{question?.created}</span>
+            <span>{moment(question?.created, "YYYYMMDD").fromNow()}</span>
           </p>
           {question.solution && (
             <div className="absolute left-[-45px] bottom-0 ">

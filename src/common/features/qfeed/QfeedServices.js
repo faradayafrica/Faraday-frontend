@@ -54,20 +54,32 @@ export default class QService {
   }
 
   static async voteQuestion(postid, value) {
-    const { data } = await http.post(apiRoutes.vote + `${postid}/${value}/`, {
-      postid,
-      value,
-    });
+    const { data } = await http.post(apiRoutes.vote + `${postid}/${value}/`);
+    return data;
+  }
+
+  static async closeQuestion(postid) {
+    const value = "markclosed";
+    const { data } = await http.post(
+      apiBase + `/qfeed/que/${postid}/${value}/`
+    );
     return data;
   }
 
   // Comment Services starts here
   static async fetchQuestionComments(postid, pageParam) {
-    const data = await http.get(
-      apiRoutes.fetchComments + `${postid}/?page=${pageParam}`
-    );
-
-    return data;
+    const user = getCurrentUser();
+    if (user?.username) {
+      const data = await http.get(
+        apiRoutes.fetchComments + `${postid}/?page=${pageParam}`
+      );
+      return data;
+    } else {
+      const data = await axios.get(
+        apiRoutes.fetchComments + `${postid}/?page=${pageParam}`
+      );
+      return data;
+    }
   }
 
   static async markSolution(postid, commentid) {
