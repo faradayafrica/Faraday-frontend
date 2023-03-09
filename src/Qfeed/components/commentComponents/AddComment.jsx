@@ -3,9 +3,7 @@ import PrimaryButton from "../../../common/components/PrimaryButton";
 import { useSelector } from "react-redux";
 
 const AddComment = ({
-  online,
   currentUser,
-  questionOwner,
   onChange,
   postComment,
   questionId,
@@ -14,6 +12,7 @@ const AddComment = ({
   const LIMIT = 450;
 
   const { question } = useSelector((state) => state.qfeed.thisQuestion);
+  const { online } = useSelector((state) => state.user.onlineStatus);
 
   let inputClasses =
     "focus:bg-gradient-to-t from-background to-white mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-outline border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-sm ";

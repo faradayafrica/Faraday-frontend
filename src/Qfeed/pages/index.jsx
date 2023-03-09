@@ -12,9 +12,8 @@ import { updateFeed } from "../../common/features/qfeed/qfeedSlice.js";
 import { currentUserThunk } from "../../common/features/user/userSlice.js";
 import { getCurrentUser } from "../../common/services/authService.js";
 
-const Qfeed = (props) => {
+const Qfeed = () => {
   const dispatch = useDispatch();
-  const { online } = props;
 
   const {
     data,
@@ -83,19 +82,18 @@ const Qfeed = (props) => {
         <Switch>
           <Route
             path="/qfeed/post"
-            render={(props) => <PostPage online={online} {...props} />}
+            render={(props) => <PostPage {...props} />}
           />
 
           <Route
             path="/qfeed/:id"
-            render={(props) => <DiscussionPage online={online} {...props} />}
+            render={(props) => <DiscussionPage {...props} />}
           />
 
           <Route
             path="/"
             render={(props) => (
               <TimeLine
-                online={online}
                 refetch={refetch}
                 loader={isLoading}
                 isError={isError}

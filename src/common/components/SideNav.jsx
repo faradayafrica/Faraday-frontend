@@ -7,8 +7,10 @@ import PrimaryButton from "./PrimaryButton";
 import PostComponent from "../../Qfeed/components/PostComponent";
 import closeImg from "../../Qfeed/assets/close.svg";
 import { ErrorToast, SuccessToast } from "./CustomToast";
+import { useDispatch, useSelector } from "react-redux";
+import { updateOnline } from "../features/user/userSlice";
 
-function SideNav({ history, online, hideOnlineStatus }) {
+function SideNav({ history }) {
   const currentUser = getCurrentUser();
   const [hidePost, setHidePost] = useState(true);
   const [links, setLinks] = useState([
@@ -104,6 +106,9 @@ function SideNav({ history, online, hideOnlineStatus }) {
     },
   ]);
 
+  const { online, visible } = useSelector((state) => state.user.onlineStatus);
+  const dispatch = useDispatch();
+
   // console.log(currentUser);
 
   const handleLink = (item) => {
@@ -149,9 +154,48 @@ function SideNav({ history, online, hideOnlineStatus }) {
     }
   }, []);
 
+  useEffect(() => {
+    window.addEventListener("online", () => {
+      dispatch(updateOnline({ name: "online", value: true }));
+    });
+
+    window.addEventListener("offline", () => {
+      dispatch(updateOnline({ name: "visible", value: true }));
+      dispatch(updateOnline({ name: "online", value: false }));
+    });
+  }, []);
+
+  useEffect(() => {
+    if (online) {
+      setTimeout(() => {
+        dispatch(updateOnline({ name: "visible", value: false }));
+      }, 3000);
+    }
+  }, [online]);
+
+  useEffect(() => {
+    let lastScrollTop = 0;
+
+    if (document.getElementById("timeline") !== null) {
+      window.addEventListener(
+        "scroll",
+        (e) => {
+          let st = e.target.documentElement.scrollTop;
+          if (st > lastScrollTop) {
+            document.getElementById("topnav").classList.add("hide-up"); // downscroll code
+          } else {
+            document.getElementById("topnav").classList.remove("hide-up"); // upscroll code
+          }
+          lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+        },
+        false
+      );
+    }
+  });
+
   return (
     <div className="bg-whit">
-      {hideOnlineStatus ? (
+      {visible ? (
         <>
           {online && (
             <div className="w-full fixed bottom-0 left-0 z-50 bg-brand text-white text-[12px] text-center py-1">

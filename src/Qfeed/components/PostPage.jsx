@@ -1,7 +1,7 @@
 import PostComponent from "./PostComponent";
-import { SuccessToast, ErrorToast } from "../../common/components/CustomToast";
+import { ErrorToast } from "../../common/components/CustomToast";
 import { getCurrentUser } from "../../common/services/authService";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createQuestionThunk } from "../../common/features/qfeed/qfeedSlice";
 
 const PostPage = (props) => {

@@ -26,7 +26,7 @@ import {
 import { useLayoutEffect } from "react";
 import QService from "../../common/features/qfeed/QfeedServices";
 
-const DiscussionPage = ({ match, history, online }) => {
+const DiscussionPage = ({ match, history }) => {
   const [loader, setLoader] = useState(true);
   const [questionMenu, setQuestionMenu] = useState(false);
 
@@ -355,7 +355,6 @@ const DiscussionPage = ({ match, history, online }) => {
               {/* Comments here */}
               <Comments
                 comments={comments}
-                online={online}
                 questionid={match.params.id}
                 commentLoader={isLoading}
                 questionOwner={question?.user}
