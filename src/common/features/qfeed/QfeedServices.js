@@ -54,10 +54,15 @@ export default class QService {
   }
 
   static async voteQuestion(postid, value) {
-    const { data } = await http.post(apiRoutes.vote + `${postid}/${value}/`, {
-      postid,
-      value,
-    });
+    const { data } = await http.post(apiRoutes.vote + `${postid}/${value}/`);
+    return data;
+  }
+
+  static async closeQuestion(postid) {
+    const value = "markclosed";
+    const { data } = await http.post(
+      apiBase + `/qfeed/que/${postid}/${value}/`
+    );
     return data;
   }
 

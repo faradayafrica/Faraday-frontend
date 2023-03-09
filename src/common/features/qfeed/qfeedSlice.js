@@ -80,6 +80,19 @@ export const voteQuestionThunk = createAsyncThunk(
   }
 );
 
+// Close/Open a question
+export const closeQuestionThunk = createAsyncThunk(
+  "qfeed/close-question",
+  async ({ postid }, { rejectWithValue }) => {
+    try {
+      const response = await QService.closeQuestion(postid);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
 // <--------------------Comment Thunk------------------------------>
 
 // Mark a comment as Solution
@@ -134,6 +147,7 @@ const qfeedSlice = createSlice({
         [name]: value,
       };
     },
+
     updateQuestion: (state, action) => {
       const { name, value } = action.payload;
       state.thisQuestion = {
@@ -158,13 +172,15 @@ const qfeedSlice = createSlice({
     resetStatus: (state) => {
       state.base = QfeedStates.BASE;
     },
+
     resetToast: (state) => {
       state.base = "";
     },
   },
 
-  // Extra Reducers for follow action
   extraReducers: (builder) => {
+    // <--------------------Question Actions------------------------------>
+    // Extra Reducers for follow action
     builder.addCase(followUserThunk.pending, (state) => {
       state.status = QfeedStates.LOADING;
     });
@@ -343,6 +359,51 @@ const qfeedSlice = createSlice({
       }
     });
     builder.addCase(voteQuestionThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra Reducers to close a question
+    builder.addCase(closeQuestionThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(closeQuestionThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+      console.log(data, "close q");
+
+      if (data) {
+        // Updates the qfeed Home
+        const newFeed = state.feed.qfeed.map((question) =>
+          question.id === data.id ? data : question
+        );
+        state.feed.qfeed = newFeed;
+
+        // Updates the profile question feed
+        const newUserQuestionFeed = state.feed.profile.userQuestions.map(
+          (question) => (question.id === data.id ? data : question)
+        );
+        state.feed.profile.userQuestions = newUserQuestionFeed;
+
+        // Updates the profile bookmarks feed
+        const newUserBookmarkFeed = state.feed.profile.userBookmarks.map(
+          (question) => (question.id === data.id ? data : question)
+        );
+        state.feed.profile.userBookmarks = newUserBookmarkFeed;
+
+        // Updates the profile Solution feed
+        const newUserSolutionFeed = state.feed.profile.userSolutions.map(
+          (solution) =>
+            solution.question.id === data.id
+              ? { ...solution, question: data }
+              : solution
+        );
+        state.feed.profile.userSolutions = newUserSolutionFeed;
+
+        // Update the discussionPage after voting
+        state.thisQuestion.question = data;
+        state.status = QfeedStates.SUCCESSFUL;
+      }
+    });
+    builder.addCase(closeQuestionThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
     });
 

@@ -5,6 +5,7 @@ import CopyLink from "./CopyLink";
 import SecondaryButton from "../../common/components/SecondaryButton";
 import Comments from "./commentComponents/Comments";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 import love from "../assets/love.svg";
 import redLove from "../assets/red-love.svg";
@@ -254,7 +255,7 @@ const DiscussionPage = ({ match, history }) => {
                   <span className="">@{question?.user.username}</span>
                 </p>
                 <p className="m-0 text-night-secondary text-sm sm:text-base">
-                  Published {question?.created}
+                  Published {moment(question?.created, "YYYYMMDD").fromNow()}
                 </p>
 
                 <div
