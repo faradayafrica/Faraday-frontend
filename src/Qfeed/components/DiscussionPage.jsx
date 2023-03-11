@@ -92,7 +92,9 @@ const DiscussionPage = ({ match, history }) => {
 
   const handleQuestionDelete = (ques_id) => {
     dispatch(deleteQuestionThunk({ ques_id }));
-    history.goBack();
+    setTimeout(() => {
+      history.goBack();
+    }, 500);
   };
 
   const handleQuestionLike = async (postid) => {

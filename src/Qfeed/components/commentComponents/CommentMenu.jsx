@@ -19,7 +19,6 @@ const CommentMenu = ({
   selectedComment,
   onToggleCommentMenu,
   onDeleteComment,
-  // onFollowUser,
   is_solution,
 }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -65,6 +64,10 @@ const CommentMenu = ({
     }, 200);
   }, []);
 
+  useEffect(() => {
+    console.log("State changed");
+  }, [confirmDelete, confirmSolution]);
+
   return (
     <>
       <div className="fixed bottom-0 left-0 z-10 bg-transparent h-screen  w-full sm:hidden">
@@ -92,6 +95,8 @@ const CommentMenu = ({
           ) : (
             <></>
           )}
+
+          {console.log(confirmSolution, "mark")}
 
           {selectedComment?.user.username !== currentUser.username ? (
             <button

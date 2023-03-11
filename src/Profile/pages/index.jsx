@@ -202,8 +202,7 @@ function Profile({ match, history }) {
         // setQuestions([]);
         // setSolutions([]);
         const { data } = await http.get(userEndpoint);
-        // setUser(data);
-        dispatch(updateProfile({ name: "profileData", value: data }));
+        dispatch(updateProfile({ name: "profileData", value: data.data }));
 
         setLoading(false);
       } catch (e) {

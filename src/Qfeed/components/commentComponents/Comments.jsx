@@ -115,32 +115,33 @@ const Comments = ({
 
       {comments.length ? (
         <>
-          {/* Solution here */}
-          {uniqueComments
-            .filter((comment) => comment.is_solution === true)
-            .map((comment) => (
-              <CommentComponent
-                key={comment.id}
-                comment={comment}
-                match={match}
-                currentUser={currentUser}
-                onDeleteComment={deleteComment}
-                is_solution={true}
-              />
-            ))}
-
-          {/* The rest of the comments */}
-          {allComments
-            .filter((comment) => comment.is_solution !== true)
-            .map((comment) => (
-              <CommentComponent
-                key={comment.id}
-                match={match}
-                comment={comment}
-                currentUser={currentUser}
-                onDeleteComment={deleteComment}
-              />
-            ))}
+          <div className="">
+            {/* Solution here */}
+            {uniqueComments
+              .filter((comment) => comment.is_solution === true)
+              .map((comment) => (
+                <CommentComponent
+                  key={comment.id}
+                  comment={comment}
+                  match={match}
+                  currentUser={currentUser}
+                  onDeleteComment={deleteComment}
+                  is_solution={true}
+                />
+              ))}
+            {/* The rest of the comments */}
+            {allComments
+              .filter((comment) => comment.is_solution !== true)
+              .map((comment) => (
+                <CommentComponent
+                  key={comment.id}
+                  match={match}
+                  comment={comment}
+                  currentUser={currentUser}
+                  onDeleteComment={deleteComment}
+                />
+              ))}
+          </div>
         </>
       ) : (
         <>
