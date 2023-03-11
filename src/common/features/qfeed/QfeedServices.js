@@ -66,7 +66,7 @@ export default class QService {
     return data;
   }
 
-  // Comment Services starts here
+  // <--------------Comment Services starts here--------------->
   static async fetchQuestionComments(postid, pageParam) {
     const user = getCurrentUser();
     if (user?.username) {
@@ -83,10 +83,9 @@ export default class QService {
   }
 
   static async markSolution(postid, commentid) {
-    const data = await http.post(apiRoutes.markSolution, {
-      postid,
-      commentid,
-    });
+    const { data } = await http.post(
+      apiBase + `/qfeed/que/marksolution/${postid}/${commentid}/`
+    );
     return data;
   }
 
@@ -98,10 +97,40 @@ export default class QService {
   }
 
   static async createComment(postid, content) {
-    const data = await http.post(apiRoutes.createcomment, {
+    const { data } = await http.post(apiRoutes.createcomment, {
       postid,
       content,
     });
     return data;
+  }
+
+  static async fetchSecondComments(commentid) {
+    const user = getCurrentUser();
+    if (user?.username) {
+      const { data } = await http.get(
+        apiBase + `/qfeed/comments/${commentid}/replies/`
+      );
+      return data;
+    } else {
+      const { data } = await axios.get(
+        apiBase + `/qfeed/comments/${commentid}/replies/`
+      );
+      return data;
+    }
+  }
+
+  static async fetchThirdComments(commentid) {
+    const user = getCurrentUser();
+    if (user?.username) {
+      const { data } = await http.get(
+        apiBase + `/qfeed/reply/${commentid}/replies/`
+      );
+      return data;
+    } else {
+      const { data } = await axios.get(
+        apiBase + `/qfeed/reply/${commentid}/replies/`
+      );
+      return data;
+    }
   }
 }

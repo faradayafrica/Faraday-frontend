@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { findTargetComment } from "./commonActions";
 import QService from "./QfeedServices";
 
 export const QfeedStates = {
@@ -26,6 +27,7 @@ const initialState = {
   error: "",
   status: "base",
   toast: "",
+  check: "", // Used for debugging only
 };
 
 // Follow a user
@@ -134,6 +136,32 @@ export const createCommentThunk = createAsyncThunk(
   }
 );
 
+// Create a second lvl comment
+export const fetchSecondLevelCommentThunk = createAsyncThunk(
+  "qfeed/fetch-second-comment",
+  async ({ commentid }, { rejectWithValue }) => {
+    try {
+      const response = await QService.fetchSecondComments(commentid);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
+// Create a third level comment
+export const fetchThirdLevelCommentThunk = createAsyncThunk(
+  "qfeed/fetch-third-comment",
+  async ({ commentid }, { rejectWithValue }) => {
+    try {
+      const response = await QService.fetchThirdComments(commentid);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
 const qfeedSlice = createSlice({
   name: "qfeed",
   initialState,
@@ -154,6 +182,55 @@ const qfeedSlice = createSlice({
         ...state.thisQuestion,
         [name]: value,
       };
+    },
+    // <----------Comments Home Reducers ----------->
+    hideSecondReply: (state, action) => {
+      const { commentid } = action.payload;
+
+      const targetIndex = state.thisQuestion.comments.findIndex(
+        (comment) => comment.id === commentid
+      );
+      // value = comment id
+      if (state.thisQuestion.comments[targetIndex].replies) {
+        state.thisQuestion.comments[targetIndex].replies = {
+          ...state.thisQuestion.comments[targetIndex].replies,
+          showReply: false,
+        };
+      }
+    },
+
+    hideThirdReply: (state, action) => {
+      const { replyid } = action.payload;
+      // value = reply parent id
+
+      const targetComment = findTargetComment(
+        state.thisQuestion.comments,
+        replyid
+      );
+
+      const targetCommentIndex = state.thisQuestion.comments.findIndex(
+        (comment) => comment.id === targetComment.id
+      );
+
+      const replyTarget = state.thisQuestion.comments[
+        targetCommentIndex
+      ].replies.data.findIndex((reply) => reply.id === replyid);
+
+      // value = {id: , }
+      if (
+        state.thisQuestion.comments[targetCommentIndex].replies.data[
+          replyTarget
+        ]
+      ) {
+        state.thisQuestion.comments[targetCommentIndex].replies.data[
+          replyTarget
+        ].replies = {
+          ...state.thisQuestion.comments[targetCommentIndex].replies.data[
+            replyTarget.replies
+          ],
+          showReply: false,
+        };
+      }
     },
 
     // <--------------Profile Reducers ----------->
@@ -197,6 +274,16 @@ const qfeedSlice = createSlice({
           }
         }
         state.feed.qfeed = feed;
+
+        // Update the profile data
+        if (
+          state.feed.profile.profileData &&
+          state.feed.profile.profileData?.username === data.username
+        ) {
+          const cloneThisProfile = { ...state.feed.profile.profileData };
+          cloneThisProfile.profile.is_following = data.is_following;
+          state.feed.profile.profileData = cloneThisProfile;
+        }
 
         // Update Profile Question feed
         const newUserQuestionFeed = state.feed.profile.userQuestions;
@@ -246,9 +333,6 @@ const qfeedSlice = createSlice({
         }
 
         state.status = QfeedStates.SUCCESSFUL;
-
-        // TODO: We can replicate this filter for profile and
-        // other question feed added to the project in the future
       } else {
         state.error = error;
       }
@@ -263,7 +347,7 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(createQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      console.log(data, state.status, "create que");
+      // console.log(data, state.status, "create que");
 
       if (data) {
         // Updates the qfeed
@@ -283,7 +367,7 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(deleteQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      console.log(data, "delete");
+      // console.log(data, "delete");
 
       if (data) {
         // Update qfeed home after delete
@@ -368,7 +452,7 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(closeQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      console.log(data, "close q");
+      // console.log(data, "close q");
 
       if (data) {
         // Updates the qfeed Home
@@ -415,6 +499,7 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(markSolutionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
+      // console.log(data, "mark soln");
 
       if (data) {
         // Updates the solution from the comments array
@@ -478,7 +563,7 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(createCommentThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      console.log(data, "create comment");
+      // console.log(data, "create comment");
 
       if (data) {
         // Add the new comment on the comments feed
@@ -504,6 +589,80 @@ const qfeedSlice = createSlice({
     builder.addCase(createCommentThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
     });
+
+    // Extra reducer for fetching the Second comment Level
+    builder.addCase(fetchSecondLevelCommentThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(fetchSecondLevelCommentThunk.fulfilled, (state, action) => {
+      const data = action.payload;
+      const parent_id = data.results?.[0].parent_id; // Get the parent id
+      // console.log(data, "second lvl comment");
+
+      const newCommentReplies = state.thisQuestion.comments.map((comment) =>
+        comment.id === parent_id
+          ? {
+              ...comment,
+              replies: { next: data.next, data: data.results, showReply: true },
+            }
+          : {
+              ...comment,
+              replies: { next: "", data: [], showReply: false },
+            }
+      );
+      state.thisQuestion.comments = newCommentReplies;
+
+      // state.thisQuestion.comments;
+      state.status = QfeedStates.SUCCESSFUL;
+    });
+    builder.addCase(fetchSecondLevelCommentThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra reducer for fetching the Third comment Level
+    builder.addCase(fetchThirdLevelCommentThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(fetchThirdLevelCommentThunk.fulfilled, (state, action) => {
+      const data = action.payload;
+      const parent_id = data?.results?.[0]?.parent_id; // Get the parent id
+      // console.log(data, "third lvl comment");
+
+      let targetComment = findTargetComment(
+        state.thisQuestion.comments,
+        parent_id
+      );
+
+      // Modify the mother/target comment to have the grandchildren comments
+      if (data.results.length > 0) {
+        const targetCommentReply = targetComment.replies.data.map((reply) =>
+          reply.id === parent_id
+            ? {
+                ...reply,
+                replies: {
+                  next: data.next,
+                  data: data.results,
+                  showReply: true,
+                },
+              }
+            : reply
+        );
+        targetComment.replies.data = targetCommentReply;
+
+        // Find the index of the comment to be replaced
+        const index = state.thisQuestion.comments.findIndex(
+          (comment) => comment.id === targetComment.id
+        );
+
+        // Replace the old target comment by the modified target comment
+        state.thisQuestion.comments[index] = targetComment;
+      }
+
+      state.status = QfeedStates.SUCCESSFUL;
+    });
+    builder.addCase(fetchThirdLevelCommentThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
   },
 });
 
@@ -513,6 +672,8 @@ export const {
   updateQuestion,
   updateProfile,
   resetProfile,
+  hideSecondReply,
+  hideThirdReply,
   resetStatus,
   resetToast,
 } = qfeedSlice.actions;

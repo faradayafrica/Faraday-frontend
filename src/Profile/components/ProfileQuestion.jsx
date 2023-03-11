@@ -1,6 +1,7 @@
 import verify from "../../Qfeed/assets/verify.svg";
 
 import { useHistory } from "react-router-dom";
+import moment from "moment";
 
 const ProfileQuestion = ({ question, type }) => {
   const history = useHistory();
@@ -28,7 +29,7 @@ const ProfileQuestion = ({ question, type }) => {
             ? question?.user.username.substring(0, 8) + "..."
             : question?.user.username}
         </span>
-        <span className="ml-1">{question?.created}</span>
+        <span className="ml-1"> {moment(question?.created).fromNow()}</span>
       </div>
       <h3 className="text-base sm:text-lg font-semibold m-0 mb-1 px-2">
         {question?.title}

@@ -92,7 +92,9 @@ const DiscussionPage = ({ match, history }) => {
 
   const handleQuestionDelete = (ques_id) => {
     dispatch(deleteQuestionThunk({ ques_id }));
-    history.goBack();
+    setTimeout(() => {
+      history.goBack();
+    }, 500);
   };
 
   const handleQuestionLike = async (postid) => {
@@ -255,7 +257,7 @@ const DiscussionPage = ({ match, history }) => {
                   <span className="">@{question?.user.username}</span>
                 </p>
                 <p className="m-0 text-night-secondary text-sm sm:text-base">
-                  Published {moment(question?.created, "YYYYMMDD").fromNow()}
+                  Published {moment(question?.created).fromNow()}
                 </p>
 
                 <div

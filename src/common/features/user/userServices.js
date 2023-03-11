@@ -26,7 +26,7 @@ export default class UserService {
   }
 
   static async fetchUserProfile(username) {
-    const resp = await http.get(apiBase + `/users/${username}/`);
-    return resp;
+    const { data } = await http.get(apiBase + `/users/${username}/`);
+    return data;
   }
 }
