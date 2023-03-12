@@ -123,7 +123,10 @@ const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
                     className="show-replies"
                   >
                     <img src={hide} alt="hide" />{" "}
-                    <span>Hide replies ({comment.reply_count})</span>
+                    <span className="desktop">
+                      Hide replies ({comment.reply_count})
+                    </span>
+                    <span className="mobile">{comment.reply_count}</span>
                   </div>
                 ) : (
                   <div
@@ -134,8 +137,11 @@ const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
                     }}
                     className="show-replies"
                   >
-                    <img src={show} alt="show" />{" "}
-                    <span>Show replies ({comment.reply_count})</span>
+                    <img src={show} alt="show" />
+                    <span className="desktop">
+                      Show replies ({comment.reply_count})
+                    </span>
+                    <span className="mobile">{comment.reply_count}</span>
                   </div>
                 )}{" "}
               </>

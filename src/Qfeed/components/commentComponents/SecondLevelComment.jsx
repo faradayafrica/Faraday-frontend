@@ -83,7 +83,10 @@ export default function SecondLevelComment({ reply }) {
                     className="show-replies"
                   >
                     <img src={hide} alt="hide" />{" "}
-                    <span>Hide replies ({reply.sub_count})</span>
+                    <span className="desktop">
+                      Hide replies ({reply.sub_count})
+                    </span>
+                    <span className="mobile">{reply.sub_count}</span>
                   </div>
                 ) : (
                   <div
@@ -95,7 +98,10 @@ export default function SecondLevelComment({ reply }) {
                     className="show-replies"
                   >
                     <img src={show} alt="show" />{" "}
-                    <span>Show replies ({reply.sub_count})</span>
+                    <span className="desktop">
+                      Show replies ({reply.sub_count})
+                    </span>
+                    <span className="mobile">{reply.sub_count}</span>
                   </div>
                 )}{" "}
               </>
