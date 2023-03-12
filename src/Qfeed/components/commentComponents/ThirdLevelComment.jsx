@@ -1,5 +1,9 @@
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import ReplyMenu from "./ReplyMenu";
+
+import ellipses from "../../assets/ellipses.svg";
 
 import upvote from "../../assets/upvote.svg";
 import downvote from "../../assets/downvote.svg";
@@ -7,8 +11,20 @@ import upvoteActive from "../../assets/upvote-active.svg";
 import downvoteActive from "../../assets/downvote-active.svg";
 
 import replyImg from "../../assets/reply.svg";
+import { useState } from "react";
 
 export default function ThirdLevelComment({ reply }) {
+  const [replyMenu, setReplyMenu] = useState(false);
+  const dispatch = useDispatch();
+
+  const toggleReplyMenu = () => {
+    setReplyMenu(!replyMenu);
+  };
+
+  const onDeleteReply = () => {
+    console.log("Handle delete for 3rd level reply");
+  };
+
   return (
     <div className="">
       <div className="content-wrapper">
@@ -31,6 +47,28 @@ export default function ThirdLevelComment({ reply }) {
             </p>
             <p className="username">@{reply.by_user.username}</p>
             <p className="time">{moment(reply?.created).fromNow()} </p>
+
+            {/* Reply menu */}
+            <div
+              className=" cursor-pointer absolute right-[-6px] top-2 rounded-md"
+              onClick={() => {
+                toggleReplyMenu();
+              }}
+            >
+              <img
+                src={ellipses}
+                className="w-6 h-6 rounded-full m-1 "
+                style={{ objectFit: "cover" }}
+                alt=""
+              />
+            </div>
+            {replyMenu && (
+              <ReplyMenu
+                selectedComment={reply}
+                onToggleReplyMenu={toggleReplyMenu}
+                onDeleteComment={onDeleteReply}
+              />
+            )}
           </div>
           <p className="content"> {reply.content}</p>
 

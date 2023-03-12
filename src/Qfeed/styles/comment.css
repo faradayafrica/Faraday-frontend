@@ -15,6 +15,27 @@
   border: 1px solid #05b851;
 }
 
+@media only screen and (max-width: 30em) {
+  .comment-wrapper {
+    margin: 0 0;
+    padding: 0 1rem 0 2rem;
+    margin-bottom: 0.3rem;
+    transition: 0.3s all ease;
+  }
+
+  .comment-wrapper:first-child {
+    margin-top: 0 !important;
+  }
+
+  .comment-wrapper.solution {
+    background-color: #f2fff5;
+    border-radius: 0px;
+    border: none;
+    border-top: 1px solid #05b851;
+    border-bottom: 1px solid #05b851;
+  }
+}
+
 .comment-wrapper .content-wrapper {
   border-left: 1px solid #cfd9de;
 
@@ -86,6 +107,22 @@
   color: #6c757d;
 }
 
+@media only screen and (max-width: 30em) {
+  .comment-wrapper .content-wrapper .user .author {
+    max-width: 6rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .comment-wrapper .content-wrapper .user .time {
+    max-width: 3rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-right: 2rem;
+  }
+}
+
 .comment-wrapper .content-wrapper .content {
   font-style: normal;
   font-weight: 400;
@@ -125,7 +162,28 @@
   align-items: center;
 }
 
-.comment-wrapper .content-wrapper .action-bar .show-replies > img {
+.comment-wrapper .content-wrapper .action-bar .show-replies > span {
+  display: flex;
+  align-items: center;
+}
+
+.comment-wrapper .content-wrapper .action-bar .show-replies > span.mobile {
+  font-weight: bold;
+  display: none;
+}
+
+@media only screen and (max-width: 30em) {
+  .comment-wrapper .content-wrapper .action-bar .show-replies > span {
+    display: none;
+  }
+
+  .comment-wrapper .content-wrapper .action-bar .show-replies > span.mobile {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.comment-wrapper .content-wrapper .action-bar .show-replies img {
   height: 20px;
   width: 20px;
   object-fit: contain;

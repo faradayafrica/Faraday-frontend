@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment/moment";
 import SecondLevelComment from "./SecondLevelComment";
 import {
+  createSecondLevelCommentThunk,
   fetchSecondLevelCommentThunk,
   hideSecondReply,
 } from "../../../common/features/qfeed/qfeedSlice";
@@ -24,16 +25,43 @@ import replyImg from "../../assets/reply.svg";
 import hide from "../../assets/hide.svg";
 import show from "../../assets/show.svg";
 import "../../styles/comment.css";
+import AddReply from "./AddReply";
+import { ErrorToast } from "../../../common/components/CustomToast";
+import { diagnoses } from "joi-browser";
 
-const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
+const CommentComponent = ({ match, comment, onDeleteComment }) => {
   const [commentMenu, setCommentMenu] = useState(false);
   const [disclaimer, setDisclaimer] = useState(false);
+
+  const [showAddReply, setShowAddReply] = useState(false);
+  const [newReply, setNewReply] = useState("");
 
   const { question, check } = useSelector((state) => state.qfeed.thisQuestion);
   const dispatch = useDispatch();
 
   const toggleCommentMenu = () => {
     setCommentMenu(!commentMenu);
+  };
+
+  const postReply = (limit) => {
+    if (newReply.length > limit || newReply.length === 0) {
+      ErrorToast("Your comment is too long");
+    } else {
+      let content = newReply;
+      console.log("Handle Add 2nd level reply", comment.id);
+      dispatch(
+        createSecondLevelCommentThunk({
+          commentid: comment.id,
+          content,
+        })
+      );
+    }
+
+    // TODO: Clear the input after comment creation is successful
+  };
+
+  const handleChange = ({ currentTarget }) => {
+    setNewReply(currentTarget.value);
   };
 
   return (
@@ -76,7 +104,7 @@ const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
               <CommentMenu
                 match={match}
                 questionOwner={question.user}
-                currentUser={currentUser}
+                // currentUser={currentUser}
                 selectedComment={comment}
                 onToggleCommentMenu={toggleCommentMenu}
                 onDeleteComment={onDeleteComment}
@@ -102,7 +130,10 @@ const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
                 )}
               </div>
               {/* The add comment button */}
-              <div className="reply">
+              <div
+                className="reply"
+                onClick={() => setShowAddReply(!showAddReply)}
+              >
                 <img src={replyImg} alt="reply" />
                 <span>Reply</span>
               </div>
@@ -123,7 +154,10 @@ const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
                     className="show-replies"
                   >
                     <img src={hide} alt="hide" />{" "}
-                    <span>Hide replies ({comment.reply_count})</span>
+                    <span className="desktop">
+                      Hide replies ({comment.reply_count})
+                    </span>
+                    <span className="mobile">{comment.reply_count}</span>
                   </div>
                 ) : (
                   <div
@@ -134,8 +168,11 @@ const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
                     }}
                     className="show-replies"
                   >
-                    <img src={show} alt="show" />{" "}
-                    <span>Show replies ({comment.reply_count})</span>
+                    <img src={show} alt="show" />
+                    <span className="desktop">
+                      Show replies ({comment.reply_count})
+                    </span>
+                    <span className="mobile">{comment.reply_count}</span>
                   </div>
                 )}{" "}
               </>
@@ -144,10 +181,19 @@ const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
             )}
           </div>
 
+          {showAddReply && (
+            <AddReply
+              parentComment={comment}
+              reply={newReply}
+              postReply={postReply}
+              onChange={handleChange}
+            />
+          )}
+
           {comment.replies?.showReply && (
             <div className="children">
               {comment.replies.data.map((reply) => (
-                <SecondLevelComment key={uuid()} reply={reply} />
+                <SecondLevelComment key={uuid()} reply={reply} match={match} />
               ))}
             </div>
           )}

@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import uuid from "react-uuid";
 import {
+  createThirdLevelCommentThunk,
   fetchThirdLevelCommentThunk,
   hideSecondReply,
   hideThirdReply,
@@ -8,6 +10,8 @@ import {
 import ThirdLevelComment from "./ThirdLevelComment";
 import moment from "moment";
 import { Link } from "react-router-dom";
+
+import ellipses from "../../assets/ellipses.svg";
 
 import upvote from "../../assets/upvote.svg";
 import downvote from "../../assets/downvote.svg";
@@ -18,10 +22,45 @@ import replyImg from "../../assets/reply.svg";
 
 import hide from "../../assets/hide.svg";
 import show from "../../assets/show.svg";
+import ReplyMenu from "./ReplyMenu";
+import { ErrorToast } from "../../../common/components/CustomToast";
+import AddReply from "./AddReply";
 
 export default function SecondLevelComment({ reply }) {
+  const [replyMenu, setReplyMenu] = useState(false);
+
+  const [showAddReply, setShowAddReply] = useState(false);
+  const [newReply, setNewReply] = useState("");
+
   const dispatch = useDispatch();
   const { check } = useSelector((state) => state.qfeed);
+
+  const toggleReplyMenu = () => {
+    setReplyMenu(!replyMenu);
+  };
+
+  const onDeleteReply = () => {
+    console.log("Handle delete for 2nd level reply");
+  };
+
+  const postReply = (limit) => {
+    if (newReply.length > limit || newReply.length === 0) {
+      ErrorToast("Your comment is too long");
+    } else {
+      let content = newReply;
+      console.log("Handle Add 2nd level reply", reply.id);
+      dispatch(
+        createThirdLevelCommentThunk({
+          commentid: reply.id,
+          content,
+        })
+      );
+    }
+  };
+
+  const handleChange = ({ currentTarget }) => {
+    setNewReply(currentTarget.value);
+  };
 
   return (
     <div className="">
@@ -45,6 +84,28 @@ export default function SecondLevelComment({ reply }) {
             </p>
             <p className="username">@{reply.by_user.username}</p>
             <p className="time">{moment(reply?.created).fromNow()} </p>
+
+            {/* Reply menu */}
+            <div
+              className=" cursor-pointer absolute right-[-6px] top-2 rounded-md"
+              onClick={() => {
+                toggleReplyMenu();
+              }}
+            >
+              <img
+                src={ellipses}
+                className="w-6 h-6 rounded-full m-1 "
+                style={{ objectFit: "cover" }}
+                alt=""
+              />
+            </div>
+            {replyMenu && (
+              <ReplyMenu
+                selectedComment={reply}
+                onToggleReplyMenu={toggleReplyMenu}
+                onDeleteComment={onDeleteReply}
+              />
+            )}
           </div>
           <p className="content"> {reply.content}</p>
 
@@ -64,7 +125,10 @@ export default function SecondLevelComment({ reply }) {
                 )}
               </div>
               {/* The add reply button */}
-              <div className="reply">
+              <div
+                className="reply"
+                onClick={() => setShowAddReply(!showAddReply)}
+              >
                 <img src={replyImg} alt="reply" />
                 <span>Reply</span>
               </div>
@@ -83,7 +147,10 @@ export default function SecondLevelComment({ reply }) {
                     className="show-replies"
                   >
                     <img src={hide} alt="hide" />{" "}
-                    <span>Hide replies ({reply.sub_count})</span>
+                    <span className="desktop">
+                      Hide replies ({reply.sub_count})
+                    </span>
+                    <span className="mobile">{reply.sub_count}</span>
                   </div>
                 ) : (
                   <div
@@ -95,7 +162,10 @@ export default function SecondLevelComment({ reply }) {
                     className="show-replies"
                   >
                     <img src={show} alt="show" />{" "}
-                    <span>Show replies ({reply.sub_count})</span>
+                    <span className="desktop">
+                      Show replies ({reply.sub_count})
+                    </span>
+                    <span className="mobile">{reply.sub_count}</span>
                   </div>
                 )}{" "}
               </>
@@ -104,6 +174,17 @@ export default function SecondLevelComment({ reply }) {
             )}
           </div>
 
+          {/* Input field to add a reply */}
+          {showAddReply && (
+            <AddReply
+              parentComment={reply}
+              reply={newReply}
+              postReply={postReply}
+              onChange={handleChange}
+            />
+          )}
+
+          {/* Render replies here */}
           {reply.replies?.showReply && (
             <div className="children">
               {reply.replies.data.map((reply) => (
@@ -114,7 +195,7 @@ export default function SecondLevelComment({ reply }) {
         </div>
       </div>
 
-      {/* {console.log(check, "check")} */}
+      {/* {check && console.log(check, "check")} */}
     </div>
   );
 }
