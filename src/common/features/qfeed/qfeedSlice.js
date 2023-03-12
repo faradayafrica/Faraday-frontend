@@ -263,7 +263,6 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(followUserThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      // console.log(data, "follow");
 
       if (data) {
         // Update Qfeed on home Page
@@ -313,15 +312,6 @@ const qfeedSlice = createSlice({
         }
         state.feed.profile.userSolutions = newUserSolutionFeed;
 
-        // Update Comments from discussion page
-        const comments = state.thisQuestion.comments;
-        for (let i = 0; i < comments.length; i++) {
-          if (comments[i].user.username === data.username) {
-            comments[i].user.is_following = data.is_following;
-          }
-        }
-        state.thisQuestion.comments = comments;
-
         //Updates opened question on DiscussionPage
         if (
           state.thisQuestion.question &&
@@ -331,6 +321,26 @@ const qfeedSlice = createSlice({
           cloneThisQuestion.user.is_following = data.is_following;
           state.thisQuestion.question = cloneThisQuestion;
         }
+
+        // Update All level of replies
+        const _comments = state.thisQuestion.comments;
+        for (let parent of state.thisQuestion.comments) {
+          parent.user.is_following = data.is_following; // Updates 1st level comment
+          for (let child of parent.replies.data) {
+            if (child.by_user) {
+              child.by_user.is_following = data.is_following; // Updates 2nd level reply
+            }
+
+            if (child.replies) {
+              for (let grandchild of child?.replies?.data) {
+                if (grandchild.by_user) {
+                  grandchild.by_user.is_following = data.is_following; // Updates 3rd level reply
+                }
+              }
+            }
+          }
+        }
+        state.thisQuestion.comments = _comments;
 
         state.status = QfeedStates.SUCCESSFUL;
       } else {

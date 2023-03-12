@@ -76,7 +76,7 @@ const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
               <CommentMenu
                 match={match}
                 questionOwner={question.user}
-                currentUser={currentUser}
+                // currentUser={currentUser}
                 selectedComment={comment}
                 onToggleCommentMenu={toggleCommentMenu}
                 onDeleteComment={onDeleteComment}
@@ -153,7 +153,7 @@ const CommentComponent = ({ match, comment, currentUser, onDeleteComment }) => {
           {comment.replies?.showReply && (
             <div className="children">
               {comment.replies.data.map((reply) => (
-                <SecondLevelComment key={uuid()} reply={reply} />
+                <SecondLevelComment key={uuid()} reply={reply} match={match} />
               ))}
             </div>
           )}
