@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import uuid from "react-uuid";
 import {
+  createThirdLevelCommentThunk,
   fetchThirdLevelCommentThunk,
   hideSecondReply,
   hideThirdReply,
@@ -22,12 +23,17 @@ import replyImg from "../../assets/reply.svg";
 import hide from "../../assets/hide.svg";
 import show from "../../assets/show.svg";
 import ReplyMenu from "./ReplyMenu";
+import { ErrorToast } from "../../../common/components/CustomToast";
+import AddReply from "./AddReply";
 
 export default function SecondLevelComment({ reply }) {
+  const [replyMenu, setReplyMenu] = useState(false);
+
+  const [showAddReply, setShowAddReply] = useState(false);
+  const [newReply, setNewReply] = useState("");
+
   const dispatch = useDispatch();
   const { check } = useSelector((state) => state.qfeed);
-
-  const [replyMenu, setReplyMenu] = useState(false);
 
   const toggleReplyMenu = () => {
     setReplyMenu(!replyMenu);
@@ -35,6 +41,25 @@ export default function SecondLevelComment({ reply }) {
 
   const onDeleteReply = () => {
     console.log("Handle delete for 2nd level reply");
+  };
+
+  const postReply = (limit) => {
+    if (newReply.length > limit || newReply.length === 0) {
+      ErrorToast("Your comment is too long");
+    } else {
+      let content = newReply;
+      console.log("Handle Add 2nd level reply", reply.id);
+      dispatch(
+        createThirdLevelCommentThunk({
+          commentid: reply.id,
+          content,
+        })
+      );
+    }
+  };
+
+  const handleChange = ({ currentTarget }) => {
+    setNewReply(currentTarget.value);
   };
 
   return (
@@ -100,7 +125,10 @@ export default function SecondLevelComment({ reply }) {
                 )}
               </div>
               {/* The add reply button */}
-              <div className="reply">
+              <div
+                className="reply"
+                onClick={() => setShowAddReply(!showAddReply)}
+              >
                 <img src={replyImg} alt="reply" />
                 <span>Reply</span>
               </div>
@@ -146,6 +174,17 @@ export default function SecondLevelComment({ reply }) {
             )}
           </div>
 
+          {/* Input field to add a reply */}
+          {showAddReply && (
+            <AddReply
+              parentComment={reply}
+              reply={newReply}
+              postReply={postReply}
+              onChange={handleChange}
+            />
+          )}
+
+          {/* Render replies here */}
           {reply.replies?.showReply && (
             <div className="children">
               {reply.replies.data.map((reply) => (
@@ -156,7 +195,7 @@ export default function SecondLevelComment({ reply }) {
         </div>
       </div>
 
-      {check && console.log(check, "check")}
+      {/* {check && console.log(check, "check")} */}
     </div>
   );
 }

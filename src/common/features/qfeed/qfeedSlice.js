@@ -136,7 +136,7 @@ export const createCommentThunk = createAsyncThunk(
   }
 );
 
-// Create a second lvl comment
+// Fetch a second lvl comment
 export const fetchSecondLevelCommentThunk = createAsyncThunk(
   "qfeed/fetch-second-comment",
   async ({ commentid }, { rejectWithValue }) => {
@@ -149,7 +149,7 @@ export const fetchSecondLevelCommentThunk = createAsyncThunk(
   }
 );
 
-// Create a third level comment
+// Fetch a third level comment
 export const fetchThirdLevelCommentThunk = createAsyncThunk(
   "qfeed/fetch-third-comment",
   async ({ commentid }, { rejectWithValue }) => {
@@ -161,6 +161,45 @@ export const fetchThirdLevelCommentThunk = createAsyncThunk(
     }
   }
 );
+
+// Create a second lvl comment
+export const createSecondLevelCommentThunk = createAsyncThunk(
+  "qfeed/create-second-comment",
+  async ({ commentid, content }, { rejectWithValue }) => {
+    try {
+      const response = await QService.createSecondComments(commentid, content);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
+// Create a third level comment
+export const createThirdLevelCommentThunk = createAsyncThunk(
+  "qfeed/create-third-comment",
+  async ({ commentid, content }, { rejectWithValue }) => {
+    try {
+      const response = await QService.createThirdComments(commentid, content);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
+// Create a third level comment
+// export const deleteSecondLevelCommentThunk = createAsyncThunk(
+//   "qfeed/delete-third-comment",
+//   async ({ commentid }, { rejectWithValue }) => {
+//     try {
+//       const response = await QService.deleteReply(commentid);
+//       return response;
+//     } catch (error) {
+//       return rejectWithValue(error.toString());
+//     }
+//   }
+// );
 
 const qfeedSlice = createSlice({
   name: "qfeed",
@@ -326,15 +365,17 @@ const qfeedSlice = createSlice({
         const _comments = state.thisQuestion.comments;
         for (let parent of state.thisQuestion.comments) {
           parent.user.is_following = data.is_following; // Updates 1st level comment
-          for (let child of parent.replies.data) {
-            if (child.by_user) {
-              child.by_user.is_following = data.is_following; // Updates 2nd level reply
-            }
+          if (parent.replies) {
+            for (let child of parent?.replies?.data) {
+              if (child.by_user) {
+                child.by_user.is_following = data.is_following; // Updates 2nd level reply
+              }
 
-            if (child.replies) {
-              for (let grandchild of child?.replies?.data) {
-                if (grandchild.by_user) {
-                  grandchild.by_user.is_following = data.is_following; // Updates 3rd level reply
+              if (child.replies) {
+                for (let grandchild of child?.replies?.data) {
+                  if (grandchild.by_user) {
+                    grandchild.by_user.is_following = data.is_following; // Updates 3rd level reply
+                  }
                 }
               }
             }
@@ -548,7 +589,7 @@ const qfeedSlice = createSlice({
       if (data) {
         // Update the comment list
         const newCommnets = state.thisQuestion.comments.filter(
-          (comment) => comment.id !== data.commentid
+          (comment) => comment.id !== data.id
         );
         state.thisQuestion.comments = newCommnets;
 
@@ -671,6 +712,62 @@ const qfeedSlice = createSlice({
       state.status = QfeedStates.SUCCESSFUL;
     });
     builder.addCase(fetchThirdLevelCommentThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra Reducers for create 2nd level reply action
+    builder.addCase(createSecondLevelCommentThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(
+      createSecondLevelCommentThunk.fulfilled,
+      (state, action) => {
+        const { data, message: error } = action.payload;
+
+        const _comments = state.thisQuestion.comments;
+
+        for (let parent of _comments) {
+          if (parent.id === data.parent_id) {
+            if (parent.replies) {
+              parent.replies.data = [data, ...parent.replies.data];
+            } else {
+              parent.replies = { data: [data], next: null, showReply: true }; // Previews the newly added reply
+            }
+            parent.reply_count = parent.reply_count + 1;
+          }
+        }
+      }
+    );
+    builder.addCase(createSecondLevelCommentThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra Reducers for create 3rd level reply action
+    builder.addCase(createThirdLevelCommentThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(createThirdLevelCommentThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+      console.log(data, "3rd Level create");
+
+      const _comments = state.thisQuestion.comments;
+
+      for (let parent of _comments) {
+        if (parent.replies) {
+          for (let child of parent.replies.data) {
+            if (child.id === data.parent_id) {
+              if (child.replies) {
+                child.replies.data = [data, ...child.replies.data];
+              } else {
+                child.replies = { data: [data], next: null, showReply: true }; // Previews the newly added reply`
+              }
+              child.sub_count = child.sub_count + 1;
+            }
+          }
+        }
+      }
+    });
+    builder.addCase(createThirdLevelCommentThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
     });
   },

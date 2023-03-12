@@ -108,7 +108,7 @@ export default class QService {
     const user = getCurrentUser();
     if (user?.username) {
       const { data } = await http.get(
-        apiBase + `/qfeed/comments/${commentid}/replies/`
+        apiBase + `/qfeed/comments/${commentid}/replies/` // || `qfeed/comments/reply/${commentid}/`
       );
       return data;
     } else {
@@ -117,6 +117,16 @@ export default class QService {
       );
       return data;
     }
+  }
+
+  static async createSecondComments(commentid, content) {
+    const { data } = await http.post(
+      apiBase + `qfeed/comments/reply/${commentid}/`,
+      {
+        content,
+      }
+    );
+    return data;
   }
 
   static async fetchThirdComments(commentid) {
@@ -132,5 +142,19 @@ export default class QService {
       );
       return data;
     }
+  }
+
+  static async createThirdComments(commentid, content) {
+    const { data } = await http.post(apiBase + `qfeed/reply/${commentid}/`, {
+      content,
+    });
+    return data;
+  }
+
+  static async deleteReply(replyid) {
+    const { data } = await http.delete(
+      apiRoutes.deleteComment + `reply/${replyid}/delete/`
+    );
+    return data;
   }
 }
