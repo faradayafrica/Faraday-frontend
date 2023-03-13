@@ -234,6 +234,7 @@ const qfeedSlice = createSlice({
         state.thisQuestion.comments[targetIndex].replies = {
           ...state.thisQuestion.comments[targetIndex].replies,
           showReply: false,
+          data: [],
         };
       }
     },
@@ -268,6 +269,7 @@ const qfeedSlice = createSlice({
             replyTarget.replies
           ],
           showReply: false,
+          data: [],
         };
       }
     },
@@ -731,7 +733,7 @@ const qfeedSlice = createSlice({
             if (parent.replies) {
               parent.replies.data = [data, ...parent.replies.data];
             } else {
-              parent.replies = { data: [data], next: null, showReply: true }; // Previews the newly added reply
+              parent.replies = { data: [data], next: null, showReply: false }; // Previews the newly added reply
             }
             parent.reply_count = parent.reply_count + 1;
           }
@@ -759,7 +761,7 @@ const qfeedSlice = createSlice({
               if (child.replies) {
                 child.replies.data = [data, ...child.replies.data];
               } else {
-                child.replies = { data: [data], next: null, showReply: true }; // Previews the newly added reply`
+                child.replies = { data: [data], next: null, showReply: false }; // Previews the newly added reply`
               }
               child.sub_count = child.sub_count + 1;
             }

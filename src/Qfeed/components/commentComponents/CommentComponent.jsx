@@ -190,13 +190,13 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
             />
           )}
 
-          {comment.replies?.showReply && (
-            <div className="children">
-              {comment.replies.data.map((reply) => (
-                <SecondLevelComment key={uuid()} reply={reply} match={match} />
-              ))}
-            </div>
-          )}
+          {/* {comment.replies?.showReply && ( */}
+          <div className="children">
+            {comment?.replies?.data?.map((reply) => (
+              <SecondLevelComment key={uuid()} reply={reply} match={match} />
+            ))}
+          </div>
+          {/* )} */}
         </div>
       </div>
 
