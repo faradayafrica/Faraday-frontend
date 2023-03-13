@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import QuestionMenu from "./QuestionMenu";
 import CopyLink from "./CopyLink";
 import moment from "moment";
@@ -37,6 +37,8 @@ const Question = (props) => {
   const [isCopied, setCopied] = useState(false);
   const [shortLink, setShortLink] = useState(props.question.short_link);
   const [disclaimer, setDisclaimer] = useState(false);
+
+  const history = useHistory();
 
   const dispatch = useDispatch();
   const { qfeed: questions } = useSelector((state) => state.qfeed.feed);
@@ -100,6 +102,13 @@ const Question = (props) => {
 
   const handleSaveQues = async (question) => {
     const url = process.env.REACT_APP_API_URL + `/qfeed/que/bookmark/`;
+
+    const token = localStorage.getItem("token");
+    if (token === null || token === undefined) {
+      // navigate("/login");
+      return history.push("/login");
+    }
+
     LoadingToast("Loading");
 
     try {
@@ -133,55 +142,55 @@ const Question = (props) => {
   }
 
   return (
-    <div className=" question-component pl-3 pr-2 pt-3 sm:pt-4 bg-white hover:bg-[#fafafacc] flex justify-start items-start relative">
+    <div className=' question-component pl-3 pr-2 pt-3 sm:pt-4 bg-white hover:bg-[#fafafacc] flex justify-start items-start relative'>
       <Link
         to={`/me/${question?.user.username}`}
         style={{ textDecoration: "none" }}
-        className="w-14 mr-2 cursor-pointer"
+        className='w-14 mr-2 cursor-pointer'
       >
         <img
           src={question?.user.profile_pic}
-          className="w-12 h-12 rounded-full bg-background2"
+          className='w-12 h-12 rounded-full bg-background2'
           style={{ objectFit: "cover" }}
-          alt=""
+          alt=''
         />
       </Link>
-      <section className=" p-0 w-full">
-        <div className="pr-2 relative">
+      <section className=' p-0 w-full'>
+        <div className='pr-2 relative'>
           {/* Profile details */}
-          <p className="flex m-0 text-night-secondary mb-1 text-xs sm:text-sm">
-            <span className="mr-2 font-semibold text-faraday-night flex items-center">
+          <p className='flex m-0 text-night-secondary mb-1 text-xs sm:text-sm'>
+            <span className='mr-2 font-semibold text-faraday-night flex items-center'>
               {question?.user.firstname} {question?.user.lastname}{" "}
               {question?.user.account_verified && (
-                <img src={verify} className="h-5 w-5 ml-1" alt="" />
+                <img src={verify} className='h-5 w-5 ml-1' alt='' />
               )}
             </span>
-            <span className="mr-2 ">@{question?.user.username} </span>{" "}
-            <span>{moment(question?.created).fromNow()}</span>
+            <span className='mr-2 '>@{question?.user.username} </span>{" "}
+            <span>{moment(question?.created, "YYYYMMDD").fromNow()}</span>
           </p>
           {question.solution && (
-            <div className="absolute left-[-45px] bottom-0 ">
+            <div className='absolute left-[-45px] bottom-0 '>
               <div
                 onClick={() => {
                   setDisclaimer(true);
                 }}
-                className="ml-1 py-1 rounded-full opacity-80 inline-flex bg-background justify-center items-center cursor-pointer"
+                className='ml-1 py-1 rounded-full opacity-80 inline-flex bg-background justify-center items-center cursor-pointer'
               >
-                <img src={info} className="h-5 w-5 mx-1" alt="disclaimer" />
+                <img src={info} className='h-5 w-5 mx-1' alt='disclaimer' />
               </div>
             </div>
           )}
           <div
-            className=" hover:bg-brand-highlight cursor-pointer absolute right-1 top-[-8px] rounded-md"
+            className=' hover:bg-brand-highlight cursor-pointer absolute right-1 top-[-8px] rounded-md'
             onClick={() => {
               setQuestionMenu(!questionMenu);
             }}
           >
             <img
               src={ellipses}
-              className="w-6 h-6 rounded-full m-1 "
+              className='w-6 h-6 rounded-full m-1 '
               style={{ objectFit: "cover" }}
-              alt=""
+              alt=''
             />
           </div>
           <QuestionMenu
@@ -204,17 +213,17 @@ const Question = (props) => {
             <Link
               to={`/qfeed/${question.id}`}
               style={{ textDecoration: "none" }}
-              className=" text-faraday-night hover:text-faraday-night"
+              className=' text-faraday-night hover:text-faraday-night'
             >
               {/* Question head */}
-              <h3 className="text-base sm:text-lg font-semibold m-0 mb-1">
+              <h3 className='text-base sm:text-lg font-semibold m-0 mb-1'>
                 {question?.title}
               </h3>
 
               {/* Question body without a selected solution --optional */}
-              <div className="text-sm sm:text-base m-0 mb-2">
+              <div className='text-sm sm:text-base m-0 mb-2'>
                 {question?.content.split("\n").map((item, idx) => (
-                  <p className="mb-1" key={idx}>
+                  <p className='mb-1' key={idx}>
                     {item}
                   </p>
                 ))}
@@ -223,18 +232,18 @@ const Question = (props) => {
               {/* Question body if there's a solution --optional */}
               {question.solution ? (
                 <>
-                  <div className="bg-[#F1FBEF77] rounded-lg p-[12px] relative">
+                  <div className='bg-[#F1FBEF77] rounded-lg p-[12px] relative'>
                     <img
                       src={mark}
-                      className="h-4 w-4 absolute right-3 top-3"
+                      className='h-4 w-4 absolute right-3 top-3'
                     />
-                    <div className="flex item-center text-night-secondary">
+                    <div className='flex item-center text-night-secondary'>
                       <img
                         src={question?.solution.user.profile_pic}
-                        className="h-4 w-4 rounded-full bg-background2"
+                        className='h-4 w-4 rounded-full bg-background2'
                       />
 
-                      <p className="text-xs pl-1 m-0">
+                      <p className='text-xs pl-1 m-0'>
                         {question?.solution.user.firstname.concat(
                           question?.solution.user.lastname
                         ).length > 15
@@ -245,33 +254,33 @@ const Question = (props) => {
                             " " +
                             question?.solution.user.lastname}
                       </p>
-                      <p className="text-xs pl-1 m-0">
+                      <p className='text-xs pl-1 m-0'>
                         @
                         {question?.solution.user.username > 15
                           ? question?.solution.user.username.substring(0, 15) +
                             "..."
                           : question?.solution.user.username}
                       </p>
-                      <p className="text-xs pl-1 m-0">
-                        {moment(question?.solution.created).fromNow()}
+                      <p className='text-xs pl-1 m-0'>
+                        {question?.solution.created}
                       </p>
                     </div>
 
-                    <div className="text-sm sm:text-base m-0 mt-2">
+                    <div className='text-sm sm:text-base m-0 mt-2'>
                       {/* <ReactMarkdown children={question?.solution.content} /> */}
                       {question?.solution.content
                         .split("\n")
                         .map((item, idx) => (
-                          <p className="mb-1" key={idx}>
+                          <p className='mb-1' key={idx}>
                             {item}
                           </p>
                         ))}
                     </div>
                   </div>
-                  <div className="text-xs mb-2 text-brand-dark">
+                  <div className='text-xs mb-2 text-brand-dark'>
                     {" "}
                     Solution selected by{" "}
-                    <span className="font-bold">@{question.user.username}</span>
+                    <span className='font-bold'>@{question.user.username}</span>
                   </div>
                 </>
               ) : (
@@ -280,18 +289,18 @@ const Question = (props) => {
             </Link>
           ) : (
             <>
-              <h3 className="text-base sm:text-lg font-semibold m-0 mb-1">
+              <h3 className='text-base sm:text-lg font-semibold m-0 mb-1'>
                 {question?.title}
               </h3>
               {/* Question body --optional */}
-              <p className="text-sm sm:text-base m-0 mb-2">
+              <p className='text-sm sm:text-base m-0 mb-2'>
                 {question?.content}
               </p>
             </>
           )}
         </div>
 
-        <div className=" flex items-center h-12">
+        <div className=' flex items-center h-12'>
           {/* Temporary Fix */}
           <button
             className={loveClasses}
@@ -299,11 +308,11 @@ const Question = (props) => {
             disabled={false || question?.created === "Just now"}
           >
             {question.vote_status === "upvote" ? (
-              <img className="h-4 w-4" src={redLove} alt="take back reaction" />
+              <img className='h-4 w-4' src={redLove} alt='take back reaction' />
             ) : (
-              <img className="h-4 w-4" src={love} alt="react to question" />
+              <img className='h-4 w-4' src={love} alt='react to question' />
             )}
-            <span className="ml-1 font-medium text-xs">
+            <span className='ml-1 font-medium text-xs'>
               {question.vote_rank ? question.vote_rank : ""}
             </span>
           </button>
@@ -313,12 +322,12 @@ const Question = (props) => {
               handleCopyLinkModal();
               getShortLink(question.id);
             }}
-            className=" p-2 rounded-lg bg-background m-4 icon-brand-hover hover:bg-brand-highlight"
+            className=' p-2 rounded-lg bg-background m-4 icon-brand-hover hover:bg-brand-highlight'
           >
             <img
-              className="h-[18px] w-[18px]"
+              className='h-[18px] w-[18px]'
               src={link}
-              alt="copy question link"
+              alt='copy question link'
             />
           </button>
 
@@ -331,14 +340,14 @@ const Question = (props) => {
             >
               {question.liked ? (
                 <img
-                  className="h-4 w-4"
+                  className='h-4 w-4'
                   src={redLove}
-                  alt="take back reaction"
+                  alt='take back reaction'
                 />
               ) : (
-                <img className="h-4 w-4" src={love} alt="react to question" />
+                <img className='h-4 w-4' src={love} alt='react to question' />
               )}
-              <span className="ml-1 font-medium text-sm">{question.likes}</span>
+              <span className='ml-1 font-medium text-sm'>{question.likes}</span>
             </button>
           ) : (
             ""
@@ -349,28 +358,28 @@ const Question = (props) => {
             className={smileyClasses}
           >
             <img
-              className="h-4 w-4  opacity-40"
+              className='h-4 w-4  opacity-40'
               src={smiley}
-              alt="engage with question"
+              alt='engage with question'
             />
           </button>
         </div>
 
         {question?.created !== "Just now" ? (
           <Link to={`/qfeed/${question.id}`} style={{ textDecoration: "none" }}>
-            <div className="comment text-base sm:text-lg font-semibold  py-[14px] px-2 text-faraday-night flex justify-between">
+            <div className='comment text-base sm:text-lg font-semibold  py-[14px] px-2 text-faraday-night flex justify-between'>
               {question.comments === 0 ? "Leave a comment" : ""}{" "}
               {question.comments === 1 ? `${question.comments} comment` : ""}{" "}
               {question.comments > 1 ? `${question.comments} comments` : ""}{" "}
-              <img className="mr-2" src={arrow} alt="" />
+              <img className='mr-2' src={arrow} alt='' />
             </div>
           </Link>
         ) : (
-          <div className="comment text-base sm:text-lg font-semibold  py-[14px] px-2 text-faraday-night flex justify-between">
+          <div className='comment text-base sm:text-lg font-semibold  py-[14px] px-2 text-faraday-night flex justify-between'>
             {question.comments === 0 ? "Leave a comment" : ""}{" "}
             {question.comments === 1 ? `${question.comments} comment` : ""}{" "}
             {question.comments > 1 ? `${question.comments} comments` : ""}{" "}
-            <img className="mr-2" src={arrow} alt="" />
+            <img className='mr-2' src={arrow} alt='' />
           </div>
         )}
 
