@@ -11,15 +11,19 @@ import {
   closeQuestionThunk,
   followUserThunk,
 } from "../../common/features/qfeed/qfeedSlice";
+import { handleSaveQues } from "../utils";
+import { useHistory } from "react-router-dom";
 
 const QuestionMenu = ({
   question,
   questionMenu,
+  setQuestionMenu,
   toggleQuestionMenu,
   onDeleteQuestion,
-  handleSaveQues,
+  refetch,
 }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const history = useHistory();
 
   const currentUser = getCurrentUser();
 
@@ -69,6 +73,8 @@ const QuestionMenu = ({
     }, 200);
   }, [questionMenu]);
 
+  const token = localStorage.getItem("token");
+
   return (
     <>
       {questionMenu ? (
@@ -86,7 +92,11 @@ const QuestionMenu = ({
           >
             <button
               className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
-              onClick={() => handleSaveQues(question)}
+              onClick={() => {
+                token === null || token === undefined
+                  ? history.push("/login")
+                  : handleSaveQues(question, setQuestionMenu, refetch);
+              }}
             >
               <BookmarkIcon />
               {question.bookmarked ? "Unsave" : "Save"} question
@@ -170,6 +180,18 @@ const QuestionMenu = ({
               className='z-50 absolute bottom-0 ask-shadow bg-white rounded-t-3xl w-full '
             >
               <div className='w-12 h-2 rounded-full mt-2 mb-4 mx-auto  bg-background2'></div>
+
+              <button
+                className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
+                onClick={() => {
+                  token === null || token === undefined
+                    ? history.push("/login")
+                    : handleSaveQues(question, setQuestionMenu, refetch);
+                }}
+              >
+                <BookmarkIcon />
+                {question.bookmarked ? "Unsave" : "Save"} question
+              </button>
 
               {question.user.username === currentUser.username ? (
                 <>

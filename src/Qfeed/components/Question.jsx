@@ -8,6 +8,7 @@ import moment from "moment";
 import {
   LoadingToast,
   SuccessToast,
+  ErrorToast,
 } from "../../common/components/CustomToast";
 import http from "../../common/services/httpService";
 
@@ -100,43 +101,6 @@ const Question = (props) => {
     }
   };
 
-  const handleSaveQues = async (question) => {
-    const url = process.env.REACT_APP_API_URL + `/qfeed/que/bookmark/`;
-
-    const token = localStorage.getItem("token");
-    if (token === null || token === undefined) {
-      // navigate("/login");
-      return history.push("/login");
-    }
-
-    LoadingToast("Loading");
-
-    try {
-      if (question.bookmarked === false) {
-        await http.post(url, {
-          queid: question.id,
-          value: "bookmark",
-        });
-
-        toast.dismiss();
-        SuccessToast("Bookmark Added");
-      } else {
-        await http.post(url, {
-          queid: question.id,
-          value: "unbookmark",
-        });
-
-        toast.dismiss();
-        SuccessToast("Bookmark Removed");
-      }
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setQuestionMenu(false);
-      props.refetch();
-    }
-  };
-
   function handleQuestionDelete(ques_id) {
     dispatch(deleteQuestionThunk({ ques_id }));
   }
@@ -195,10 +159,11 @@ const Question = (props) => {
           </div>
           <QuestionMenu
             questionMenu={questionMenu}
+            setQuestionMenu={setQuestionMenu}
             question={question}
             toggleQuestionMenu={toggleQuestionMenu}
             onDeleteQuestion={handleQuestionDelete}
-            handleSaveQues={handleSaveQues}
+            refetch={props.refetch}
           />
           <Modal
             icon={info}
