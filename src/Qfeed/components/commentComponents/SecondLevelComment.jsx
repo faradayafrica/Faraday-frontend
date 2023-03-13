@@ -185,13 +185,11 @@ export default function SecondLevelComment({ reply }) {
           )}
 
           {/* Render replies here */}
-          {reply.replies?.showReply && (
-            <div className="children">
-              {reply.replies.data.map((reply) => (
-                <ThirdLevelComment key={uuid()} reply={reply} />
-              ))}
-            </div>
-          )}
+          <div className="children">
+            {reply?.replies?.data.map((reply) => (
+              <ThirdLevelComment key={uuid()} reply={reply} />
+            ))}
+          </div>
         </div>
       </div>
 

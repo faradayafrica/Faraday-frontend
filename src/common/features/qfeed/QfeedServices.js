@@ -121,7 +121,7 @@ export default class QService {
 
   static async createSecondComments(commentid, content) {
     const { data } = await http.post(
-      apiBase + `qfeed/comments/reply/${commentid}/`,
+      apiBase + `/qfeed/comments/reply/${commentid}/`,
       {
         content,
       }
@@ -145,7 +145,7 @@ export default class QService {
   }
 
   static async createThirdComments(commentid, content) {
-    const { data } = await http.post(apiBase + `qfeed/reply/${commentid}/`, {
+    const { data } = await http.post(apiBase + `/qfeed/reply/${commentid}/`, {
       content,
     });
     return data;
