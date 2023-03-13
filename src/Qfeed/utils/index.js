@@ -17,12 +17,12 @@ export const handleSaveQues = async (question, setQuestionMenu, refetch) => {
       await http.post(url);
 
       toast.dismiss();
-      SuccessToast("Bookmark Added");
+      SuccessToast("Added to your Bookmarks");
     } else {
       await http.post(url);
 
       toast.dismiss();
-      SuccessToast("Bookmark Removed");
+      SuccessToast("Removed from your Bookmarks");
     }
   } catch (e) {
     console.log(e);
