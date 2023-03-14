@@ -9,6 +9,7 @@ const apiRoutes = {
   deleteQuestion: apiBase + "/qfeed/que/delete/",
   vote: apiBase + "/qfeed/que/vote/",
   postQuestion: apiBase + "/qfeed/que/create_que/",
+  markBookmark: apiBase + "/qfeed/que/bookmark/",
 
   // Comments
   fetchComments: apiBase + "/qfeed/que/comments/",

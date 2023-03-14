@@ -4,12 +4,6 @@ import QuestionMenu from "./QuestionMenu";
 import CopyLink from "./CopyLink";
 import moment from "moment";
 // import ReactMarkdown from "react-markdown";
-
-import {
-  LoadingToast,
-  SuccessToast,
-  ErrorToast,
-} from "../../common/components/CustomToast";
 import http from "../../common/services/httpService";
 
 //icon import
@@ -159,11 +153,9 @@ const Question = (props) => {
           </div>
           <QuestionMenu
             questionMenu={questionMenu}
-            setQuestionMenu={setQuestionMenu}
             question={question}
             toggleQuestionMenu={toggleQuestionMenu}
             onDeleteQuestion={handleQuestionDelete}
-            refetch={props.refetch}
           />
           <Modal
             icon={info}
