@@ -10,17 +10,16 @@ import { useDispatch } from "react-redux";
 import {
   closeQuestionThunk,
   followUserThunk,
+  markBookmarkThunk,
 } from "../../common/features/qfeed/qfeedSlice";
-import { handleSaveQues } from "../utils";
+// import { handleSaveQues } from "../utils";
 import { useHistory } from "react-router-dom";
 
 const QuestionMenu = ({
   question,
   questionMenu,
-  setQuestionMenu,
   toggleQuestionMenu,
   onDeleteQuestion,
-  refetch,
 }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const history = useHistory();
@@ -39,6 +38,10 @@ const QuestionMenu = ({
 
   function handleCloseQuestion(postid) {
     dispatch(closeQuestionThunk({ postid }));
+  }
+
+  function handleSaveQues(questionId) {
+    dispatch(markBookmarkThunk({ questionId }));
   }
 
   // Gsap animation
@@ -95,7 +98,7 @@ const QuestionMenu = ({
               onClick={() => {
                 token === null || token === undefined
                   ? history.push("/login")
-                  : handleSaveQues(question, setQuestionMenu, refetch);
+                  : handleSaveQues(question.id);
               }}
             >
               <BookmarkIcon />
@@ -186,7 +189,7 @@ const QuestionMenu = ({
                 onClick={() => {
                   token === null || token === undefined
                     ? history.push("/login")
-                    : handleSaveQues(question, setQuestionMenu, refetch);
+                    : handleSaveQues(question.id);
                 }}
               >
                 <BookmarkIcon />

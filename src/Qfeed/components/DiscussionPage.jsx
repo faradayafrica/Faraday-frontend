@@ -276,7 +276,6 @@ const DiscussionPage = ({ match, history }) => {
 
                 <QuestionMenu
                   questionMenu={questionMenu}
-                  setQuestionMenu={setQuestionMenu}
                   question={question}
                   toggleQuestionMenu={toggleQuestionMenu}
                   onDeleteQuestion={handleQuestionDelete}
