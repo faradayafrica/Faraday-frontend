@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import uuid from "react-uuid";
 import {
   createThirdLevelCommentThunk,
+  deleteSecondLevelCommentThunk,
   fetchThirdLevelCommentThunk,
   hideSecondReply,
   hideThirdReply,
+  QfeedStates,
 } from "../../../common/features/qfeed/qfeedSlice";
 import ThirdLevelComment from "./ThirdLevelComment";
 import moment from "moment";
@@ -29,17 +31,22 @@ import AddReply from "./AddReply";
 export default function SecondLevelComment({ reply }) {
   const [replyMenu, setReplyMenu] = useState(false);
 
+  const [hideReplies, setHideReplies] = useState();
   const [showAddReply, setShowAddReply] = useState(false);
   const [newReply, setNewReply] = useState("");
 
   const dispatch = useDispatch();
   const { check } = useSelector((state) => state.qfeed);
+  const { reply2Status: status } = useSelector(
+    (state) => state.qfeed.thisQuestion
+  );
 
   const toggleReplyMenu = () => {
     setReplyMenu(!replyMenu);
   };
 
   const onDeleteReply = () => {
+    dispatch(deleteSecondLevelCommentThunk({ replyid: reply.id }));
     console.log("Handle delete for 2nd level reply");
   };
 
@@ -143,8 +150,7 @@ export default function SecondLevelComment({ reply }) {
                   <div
                     onClick={() => {
                       dispatch(hideThirdReply({ replyid: reply.id }));
-                      console.log("Handle hide 3rd lvl reply");
-                      // TODO: Handle hide 3rd lvl reply
+                      setHideReplies(false);
                     }}
                     className="show-replies"
                   >
@@ -160,6 +166,7 @@ export default function SecondLevelComment({ reply }) {
                       dispatch(
                         fetchThirdLevelCommentThunk({ commentid: reply?.id })
                       );
+                      setHideReplies(true);
                     }}
                     className="show-replies"
                   >
@@ -187,11 +194,15 @@ export default function SecondLevelComment({ reply }) {
           )}
 
           {/* Render replies here */}
-          <div className="children">
-            {reply?.replies?.data.map((reply) => (
-              <ThirdLevelComment key={uuid()} reply={reply} />
-            ))}
-          </div>
+          {status === QfeedStates.LOADING && hideReplies ? (
+            <div className="text-brand"> Loading... </div>
+          ) : (
+            <div className="children">
+              {reply?.replies?.data.map((reply) => (
+                <ThirdLevelComment key={uuid()} reply={reply} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

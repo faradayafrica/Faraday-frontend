@@ -11,6 +11,7 @@ import {
   createSecondLevelCommentThunk,
   fetchSecondLevelCommentThunk,
   hideSecondReply,
+  QfeedStates,
 } from "../../../common/features/qfeed/qfeedSlice";
 import uuid from "react-uuid";
 
@@ -26,17 +27,20 @@ import show from "../../assets/show.svg";
 import "../../styles/comment.css";
 import AddReply from "./AddReply";
 import { ErrorToast } from "../../../common/components/CustomToast";
-import Quill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 const CommentComponent = ({ match, comment, onDeleteComment }) => {
   const [commentMenu, setCommentMenu] = useState(false);
   const [disclaimer, setDisclaimer] = useState(false);
 
+  const [hideReplies, setHideReplies] = useState();
   const [showAddReply, setShowAddReply] = useState(false);
   const [newReply, setNewReply] = useState("");
 
   const { question, check } = useSelector((state) => state.qfeed.thisQuestion);
+  const { replyStatus: status } = useSelector(
+    (state) => state.qfeed.thisQuestion
+  );
   const dispatch = useDispatch();
 
   const toggleCommentMenu = () => {
@@ -152,6 +156,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
                           commentid: comment.id,
                         })
                       );
+                      setHideReplies(false);
                     }}
                     className="show-replies"
                   >
@@ -167,6 +172,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
                       dispatch(
                         fetchSecondLevelCommentThunk({ commentid: comment?.id })
                       );
+                      setHideReplies(true);
                     }}
                     className="show-replies"
                   >
@@ -191,13 +197,17 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               onChange={handleChange}
             />
           )}
-
           {/* {comment.replies?.showReply && ( */}
-          <div className="children">
-            {comment?.replies?.data?.map((reply) => (
-              <SecondLevelComment key={uuid()} reply={reply} match={match} />
-            ))}
-          </div>
+          {status === QfeedStates.LOADING && hideReplies ? (
+            <div className="text-brand"> Loading... </div>
+          ) : (
+            <div className="children">
+              {comment?.replies?.data?.map((reply) => (
+                <SecondLevelComment key={uuid()} reply={reply} match={match} />
+              ))}
+            </div>
+          )}
+
           {/* )} */}
         </div>
       </div>

@@ -112,6 +112,7 @@ export default class QService {
       const { data } = await http.get(
         apiBase + `/qfeed/comments/${commentid}/replies/` // || `qfeed/comments/reply/${commentid}/`
       );
+
       return data;
     } else {
       const { data } = await axios.get(
@@ -155,7 +156,7 @@ export default class QService {
 
   static async deleteReply(replyid) {
     const { data } = await http.delete(
-      apiRoutes.deleteComment + `reply/${replyid}/delete/`
+      apiBase + `/qfeed/reply/${replyid}/delete/`
     );
     return data;
   }

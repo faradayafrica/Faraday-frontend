@@ -14,6 +14,8 @@ const initialState = {
     question: {},
     comments: [],
     shortLink: "",
+    replyStatus: "base",
+    reply2Status: "base",
   },
   feed: {
     qfeed: [],
@@ -200,6 +202,19 @@ export const createThirdLevelCommentThunk = createAsyncThunk(
 //     }
 //   }
 // );
+
+// Delete a Second level comment
+export const deleteSecondLevelCommentThunk = createAsyncThunk(
+  "qfeed/delete-second-comment",
+  async ({ replyid }, { rejectWithValue }) => {
+    try {
+      const response = await QService.deleteReply(replyid);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
 
 const qfeedSlice = createSlice({
   name: "qfeed",
@@ -645,7 +660,7 @@ const qfeedSlice = createSlice({
 
     // Extra reducer for fetching the Second comment Level
     builder.addCase(fetchSecondLevelCommentThunk.pending, (state) => {
-      state.status = QfeedStates.LOADING;
+      state.thisQuestion.replyStatus = QfeedStates.LOADING;
     });
     builder.addCase(fetchSecondLevelCommentThunk.fulfilled, (state, action) => {
       const data = action.payload;
@@ -666,20 +681,20 @@ const qfeedSlice = createSlice({
       state.thisQuestion.comments = newCommentReplies;
 
       // state.thisQuestion.comments;
-      state.status = QfeedStates.SUCCESSFUL;
+      state.thisQuestion.replyStatus = QfeedStates.SUCCESSFUL;
     });
     builder.addCase(fetchSecondLevelCommentThunk.rejected, (state) => {
-      state.status = QfeedStates.FAILED;
+      state.thisQuestion.replyStatus = QfeedStates.FAILED;
     });
 
     // Extra reducer for fetching the Third comment Level
     builder.addCase(fetchThirdLevelCommentThunk.pending, (state) => {
-      state.status = QfeedStates.LOADING;
+      state.thisQuestion.reply2Status = QfeedStates.LOADING;
     });
     builder.addCase(fetchThirdLevelCommentThunk.fulfilled, (state, action) => {
       const data = action.payload;
       const parent_id = data?.results?.[0]?.parent_id; // Get the parent id
-      // console.log(data, "third lvl comment");
+      console.log(data, "third lvl comment");
 
       let targetComment = findTargetComment(
         state.thisQuestion.comments,
@@ -711,10 +726,10 @@ const qfeedSlice = createSlice({
         state.thisQuestion.comments[index] = targetComment;
       }
 
-      state.status = QfeedStates.SUCCESSFUL;
+      state.thisQuestion.reply2Status = QfeedStates.SUCCESSFUL;
     });
     builder.addCase(fetchThirdLevelCommentThunk.rejected, (state) => {
-      state.status = QfeedStates.FAILED;
+      state.thisQuestion.reply2Status = QfeedStates.FAILED;
     });
 
     // Extra Reducers for create 2nd level reply action
@@ -770,6 +785,42 @@ const qfeedSlice = createSlice({
       }
     });
     builder.addCase(createThirdLevelCommentThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra Reducers for delete 2nd level reply action
+    builder.addCase(deleteSecondLevelCommentThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(
+      deleteSecondLevelCommentThunk.fulfilled,
+      (state, action) => {
+        const { data, message: error } = action.payload;
+        console.log(data, "3rd Level delete");
+
+        const _comments = state.thisQuestion.comments;
+
+        // for (let parent of _comments) {
+        //   if (parent.replies) {
+        //     for (let child of parent.replies.data) {
+        //       if (child.id === data.parent_id) {
+        //         if (child.replies) {
+        //           child.replies.data = [data, ...child.replies.data];
+        //         } else {
+        //           child.replies = {
+        //             data: [data],
+        //             next: null,
+        //             showReply: false,
+        //           }; // Previews the newly added reply`
+        //         }
+        //         child.sub_count = child.sub_count + 1;
+        //       }
+        //     }
+        //   }
+        // }
+      }
+    );
+    builder.addCase(deleteSecondLevelCommentThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
     });
   },
