@@ -193,9 +193,9 @@ function Profile({ match, history }) {
     // document.title = `${currentUser?.last_name} ${currentUser?.first_name} Profile`;
     dispatch(resetProfile());
     setPathname(match.params.username);
-  }, []);
+  }, [match.params.username]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setLoading(true);
     async function fetchdata() {
       try {
@@ -215,6 +215,7 @@ function Profile({ match, history }) {
     fetchdata();
     refetchQuestion();
     refetchSolution();
+    refetchBookmark();
   }, [pathname]);
 
   const updateQuestions = (updatedQuestions) => {
@@ -223,7 +224,7 @@ function Profile({ match, history }) {
   };
 
   return (
-    <div className="w-full route-wrapper profile-wrapper text-faraday-night">
+    <div className='w-full route-wrapper profile-wrapper text-faraday-night'>
       {loading ? (
         <ProfileHomeLoader />
       ) : error ? (
@@ -231,7 +232,7 @@ function Profile({ match, history }) {
       ) : (
         <Switch>
           <Route
-            path="/me/:username/qfeed"
+            path='/me/:username/qfeed'
             render={(props) => (
               <UserQuestionSolutionPage
                 user={user}
@@ -251,7 +252,7 @@ function Profile({ match, history }) {
           />
 
           <Route
-            path="/"
+            path='/'
             render={(props) => (
               // <>
               //   {console.log(user, "<<<<<<")}
@@ -274,8 +275,8 @@ function Profile({ match, history }) {
               />
             )}
           />
-          <Route path="/not-found" component={NotFound} />
-          <Redirect push to="/not-found" />
+          <Route path='/not-found' component={NotFound} />
+          <Redirect push to='/not-found' />
         </Switch>
       )}
     </div>

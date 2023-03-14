@@ -174,4 +174,9 @@ export default class QService {
     );
     return data;
   }
+
+  static async markBookmark(questionId) {
+    const { data } = await http.post(apiRoutes.markBookmark + `${questionId}/`);
+    return data;
+  }
 }

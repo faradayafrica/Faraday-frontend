@@ -1,4 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-hot-toast";
+import {
+  ErrorToast,
+  LoadingToast,
+  SuccessToast,
+} from "../../components/CustomToast";
 import { findTargetComment } from "./commonActions";
 import QService from "./QfeedServices";
 
@@ -90,6 +96,21 @@ export const closeQuestionThunk = createAsyncThunk(
   async ({ postid }, { rejectWithValue }) => {
     try {
       const response = await QService.closeQuestion(postid);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
+// <----------------------Bookmark Thunk--------------------------->
+
+// Save and Unsave as bookmark
+export const markBookmarkThunk = createAsyncThunk(
+  "qfeed/mark-bookmark",
+  async ({ questionId }, { rejectWithValue }) => {
+    try {
+      const response = await QService.markBookmark(questionId);
       return response;
     } catch (error) {
       return rejectWithValue(error.toString());
@@ -803,6 +824,7 @@ const qfeedSlice = createSlice({
       state.status = QfeedStates.FAILED;
     });
 
+
     // Extra Reducers for delete 2nd level reply action
     builder.addCase(deleteReplyThunk.pending, (state) => {
       state.status = QfeedStates.LOADING;
@@ -917,6 +939,60 @@ const qfeedSlice = createSlice({
       state.status = QfeedStates.SUCCESSFUL;
     });
     builder.addCase(voteCommentThunk.rejected, (state) => {
+
+    // Extra Reducers for bookmark
+    builder.addCase(markBookmarkThunk.pending, (state) => {
+      LoadingToast("Loading");
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(markBookmarkThunk.fulfilled, (state, action) => {
+      toast.dismiss();
+
+      const { data, message: error } = action.payload;
+
+      if (data.bookmarked) {
+        SuccessToast("Added to your Bookmarks");
+      } else {
+        SuccessToast("Removed from your Bookmarks");
+      }
+
+      if (data) {
+        // Update Qfeed on home Page
+        const feed = state.feed.qfeed;
+        for (let i = 0; i < feed.length; i++) {
+          if (feed[i].id === data.id) {
+            feed[i].bookmarked = data.bookmarked;
+          }
+        }
+        state.feed.qfeed = feed;
+
+        // Update Profile Question feed
+        const newUserQuestionFeed = state.feed.profile.userQuestions;
+        for (let i = 0; i < newUserQuestionFeed.length; i++) {
+          if (newUserQuestionFeed[i].id === data.id) {
+            newUserQuestionFeed[i].bookmarked = data.bookmarked;
+          }
+        }
+        state.feed.profile.userQuestions = newUserQuestionFeed;
+
+        // Update Profile Bookmark feed
+        const newUserBookmarkFeed = state.feed.profile.userBookmarks;
+        for (let i = 0; i < newUserBookmarkFeed.length; i++) {
+          if (newUserBookmarkFeed[i].id === data.id) {
+            newUserBookmarkFeed[i].bookmarked = data.bookmarked;
+          }
+        }
+        state.feed.profile.userBookmarks = newUserBookmarkFeed;
+
+        state.status = QfeedStates.SUCCESSFUL;
+      } else {
+        state.error = error;
+      }
+    });
+    builder.addCase(markBookmarkThunk.rejected, (state) => {
+      toast.dismiss();
+      ErrorToast("Something went wrong!");
+
       state.status = QfeedStates.FAILED;
     });
   },
