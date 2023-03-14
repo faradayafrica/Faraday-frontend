@@ -70,7 +70,9 @@ export default function ThirdLevelComment({ reply }) {
               />
             )}
           </div>
-          <p className="content"> {reply.content}</p>
+
+          {/* Render the content */}
+          <div dangerouslySetInnerHTML={{ __html: reply.content }} />
 
           <div className="action-bar">
             <div className="left">
@@ -88,10 +90,10 @@ export default function ThirdLevelComment({ reply }) {
                 )}
               </div>
               {/* The add reply button */}
-              <div className="reply">
+              {/* <div className="reply">
                 <img src={replyImg} alt="reply" />
                 <span>Reply</span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

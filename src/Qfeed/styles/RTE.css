@@ -51,7 +51,7 @@
 
 .RTE .quill .ql-toolbar .ql-formats {
   border-right: 1px solid #cfd9de;
-  padding-right: 0.875rem;
+  padding-right: 0.5rem;
 }
 
 .RTE .quill .ql-toolbar .ql-formats > * {

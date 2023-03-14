@@ -60,8 +60,8 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
     // TODO: Clear the input after comment creation is successful
   };
 
-  const handleChange = ({ currentTarget }) => {
-    setNewReply(currentTarget.value);
+  const handleChange = (value) => {
+    setNewReply(value);
   };
 
   return (

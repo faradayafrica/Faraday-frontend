@@ -46,7 +46,6 @@ const AddComment = ({
         {!question.is_closed ? (
           <div>
             <RTF value={comment} onChange={onChange} />
-            {console.log(comment)}
             {comment.length > 0 && (
               <div className="m-0 mt-2 ml-2 pb-2 float-right">
                 <PrimaryButton
