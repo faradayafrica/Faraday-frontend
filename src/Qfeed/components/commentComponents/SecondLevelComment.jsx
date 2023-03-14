@@ -58,8 +58,8 @@ export default function SecondLevelComment({ reply }) {
     }
   };
 
-  const handleChange = ({ currentTarget }) => {
-    setNewReply(currentTarget.value);
+  const handleChange = (value) => {
+    setNewReply(value);
   };
 
   return (
@@ -107,7 +107,9 @@ export default function SecondLevelComment({ reply }) {
               />
             )}
           </div>
-          <p className="content"> {reply.content}</p>
+
+          {/* Render the content */}
+          <div dangerouslySetInnerHTML={{ __html: reply.content }} />
 
           <div className="action-bar">
             <div className="left">

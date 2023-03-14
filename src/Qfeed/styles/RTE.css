@@ -1,0 +1,73 @@
+.add-comment {
+  box-sizing: border-box;
+  padding: 0.8rem;
+}
+
+.add-comment .profile-img {
+  min-height: auto;
+  min-width: 40px;
+  margin-right: 0.5rem;
+}
+
+.add-comment .profile-img > img {
+  top: 0.5rem;
+  left: -1.3rem;
+
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+
+  border-radius: 100px;
+  border: 1px solid #cfd9de;
+}
+
+.add-comment .RTE-wrapper {
+  box-sizing: border-box;
+  /* background-color: blue; */
+  width: 100%;
+  flex-grow: 1;
+}
+
+.RTE {
+  /* background-color: red; */
+}
+
+.RTE .quill {
+  border: 1px solid #cfd9de;
+  border-radius: 8px;
+}
+
+.RTE .quill > * {
+  border: none;
+}
+
+.RTE .quill .ql-editor {
+  overflow-x: hidden;
+}
+
+.RTE .quill .ql-toolbar {
+  overflow-x: hidden !important;
+}
+
+.RTE .quill .ql-toolbar .ql-formats {
+  border-right: 1px solid #cfd9de;
+  padding-right: 0.5rem;
+}
+
+.RTE .quill .ql-toolbar .ql-formats > * {
+  margin-right: 0.25rem;
+}
+
+.ql-toolbar .ql-active {
+  background-color: var(--dark) !important;
+  color: white !important;
+  border-radius: 4px;
+}
+
+.ql-toolbar .ql-active svg .ql-fill {
+  fill: white !important;
+}
+
+.ql-toolbar .ql-active svg .ql-stroke {
+  stroke: white !important;
+}

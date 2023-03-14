@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ellipses from "../../assets/ellipses.svg";
-import mark from "../../assets/mark.svg";
 import info from "../../assets/info.svg";
 import CommentMenu from "./CommentMenu";
 import Modal from "../../../common/components/Modal";
@@ -27,7 +26,8 @@ import show from "../../assets/show.svg";
 import "../../styles/comment.css";
 import AddReply from "./AddReply";
 import { ErrorToast } from "../../../common/components/CustomToast";
-import { diagnoses } from "joi-browser";
+import Quill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const CommentComponent = ({ match, comment, onDeleteComment }) => {
   const [commentMenu, setCommentMenu] = useState(false);
@@ -60,8 +60,8 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
     // TODO: Clear the input after comment creation is successful
   };
 
-  const handleChange = ({ currentTarget }) => {
-    setNewReply(currentTarget.value);
+  const handleChange = (value) => {
+    setNewReply(value);
   };
 
   return (
@@ -112,7 +112,9 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               />
             )}
           </div>
-          <p className="content"> {comment.content}</p>
+
+          {/* Render the content */}
+          <div dangerouslySetInnerHTML={{ __html: comment.content }} />
 
           <div className="action-bar">
             <div className="left">

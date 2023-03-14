@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PrimaryButton from "../../../common/components/PrimaryButton";
 import { getCurrentUser } from "../../../common/services/authService";
+import RTF from "../RTE";
 
 export default function AddReply({
   parentComment,
@@ -52,26 +53,19 @@ export default function AddReply({
         <div className="offset flex justify-start align-bottom flex-col">
           <div className="content">
             {" "}
-            <div className="w-full">
-              <textarea
-                type="text"
-                name="comment"
-                rows="3"
-                id="commentfield"
-                className={inputClasses}
-                placeholder={`Reply to @${
-                  parentComment?.user?.username ||
-                  parentComment?.by_user?.username
-                }`}
-                onChange={onChange}
-                disabled={thisQuestion.is_closed}
-              />
+            <div className="RTE-wrapper">
+              <RTF value={reply} onChange={onChange} />
+
+              {reply.length > 0 && (
+                <div className="m-0 mt-2 ml-2 pb-2 float-right">
+                  <PrimaryButton
+                    cta="Submit"
+                    action={() => postReply(LIMIT)}
+                    variant="small"
+                  />
+                </div>
+              )}
             </div>
-            {reply.length > 0 && (
-              <div className="m-0 ml-2 pb-2 float-right">
-                <PrimaryButton cta="Send" action={() => postReply(LIMIT)} />
-              </div>
-            )}
           </div>
         </div>
       </div>

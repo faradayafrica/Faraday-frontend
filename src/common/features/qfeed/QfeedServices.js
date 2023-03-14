@@ -97,10 +97,12 @@ export default class QService {
   }
 
   static async createComment(postid, content) {
-    const { data } = await http.post(apiRoutes.createcomment, {
-      postid,
-      content,
-    });
+    const { data } = await http.post(
+      apiBase + `/qfeed//que/create_comment/${postid}/`,
+      {
+        content,
+      }
+    );
     return data;
   }
 

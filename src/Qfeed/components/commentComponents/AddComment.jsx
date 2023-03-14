@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import PrimaryButton from "../../../common/components/PrimaryButton";
 import { useSelector } from "react-redux";
+import RTF from "../RTE";
+import "../../styles/RTE.css";
 
 const AddComment = ({
   currentUser,
@@ -13,14 +15,6 @@ const AddComment = ({
 
   const { question } = useSelector((state) => state.qfeed.thisQuestion);
   // const { online } = useSelector((state) => state.user.onlineStatus);
-
-  let inputClasses =
-    "focus:bg-gradient-to-t from-background to-white mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-outline border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-sm ";
-
-  inputClasses +=
-    comment.length > LIMIT
-      ? "focus:bg-gradient-to-t from-danger-highlight to-white focus:border-danger border-danger"
-      : "";
 
   if (!currentUser.username) {
     return (
@@ -35,11 +29,11 @@ const AddComment = ({
   }
 
   return (
-    <div className=" pt-3 flex justify-start border-background2 border-b-[1px] pr-2 bg-white">
+    <div className="add-comment flex justify-start border-b-[1px] border-background2 ">
       <Link
         to={`/me/${currentUser?.username}`}
         style={{ textDecoration: "none" }}
-        className="w-14 mr-2 cursor-pointer"
+        className="profile-img"
       >
         <img
           src={currentUser?.profile_pic}
@@ -48,26 +42,31 @@ const AddComment = ({
           style={{ objectFit: "cover" }}
         />
       </Link>
-      <label className="block w-full m-0 relative bottom-2 ">
-        {question.is_closed ? (
-          <span className=" ml-2 text-xs text-danger">
-            @{question.user.username} has closed this question
-          </span>
+      <div className="RTE-wrapper">
+        {!question.is_closed ? (
+          <div>
+            <RTF value={comment} onChange={onChange} />
+            {comment.length > 0 && (
+              <div className="m-0 mt-2 ml-2 pb-2 float-right">
+                <PrimaryButton
+                  cta="Submit"
+                  action={() => postComment(questionId, LIMIT)}
+                  variant="small"
+                />
+              </div>
+            )}
+
+            <span className=" text-xs text-night-secondary">
+              Replying @{question.user.username}
+            </span>
+          </div>
         ) : (
-          <span className=" ml-2 text-xs text-brand">
-            Replying @{question.user.username}
-          </span>
+          <div className="h-[100%] flex py-3 ">
+            <span className=" ml-2 text-xs text-danger">
+              @{question.user.username} has closed this question
+            </span>
+          </div>
         )}
-        <textarea
-          type="text"
-          name="comment"
-          rows="3"
-          id="commentfield"
-          className={inputClasses}
-          placeholder="Contribute to this discussion"
-          onChange={onChange}
-          disabled={question.is_closed}
-        />
 
         {comment.length > LIMIT ? (
           <span className="text-danger text-xs ">
@@ -76,17 +75,7 @@ const AddComment = ({
         ) : (
           ""
         )}
-        {comment.length > 0 ? (
-          <div className="m-0 ml-2 pb-2 float-right">
-            <PrimaryButton
-              cta="Post"
-              action={() => postComment(questionId, LIMIT)}
-            />
-          </div>
-        ) : (
-          ""
-        )}
-      </label>
+      </div>
     </div>
   );
 };
