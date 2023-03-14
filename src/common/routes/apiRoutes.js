@@ -20,7 +20,7 @@ const apiRoutes = {
   // Notification
   // Profile
 
-  userBookmarks: apiBase + "qfeed/que/bookmarks/",
+  userBookmarks: apiBase + "/qfeed/que/bookmarks/",
 };
 
 export default apiRoutes;
