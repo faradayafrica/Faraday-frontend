@@ -42,13 +42,6 @@ function Profile({ match, history }) {
     userBookmarks: bookmarks,
   } = useSelector((state) => state.qfeed.feed.profile);
 
-  console.log({
-    user,
-    questions,
-    solutions,
-    bookmarks,
-  });
-
   // React Query >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   const {
     data: questionData,

@@ -802,7 +802,6 @@ const qfeedSlice = createSlice({
     builder.addCase(markBookmarkThunk.fulfilled, (state, action) => {
       toast.dismiss();
 
-      console.log(state.feed.qfeed, action, "saveBookmarkThunk");
       const { data, message: error } = action.payload;
 
       if (data.bookmarked) {
