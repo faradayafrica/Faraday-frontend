@@ -12,6 +12,7 @@ import downvoteActive from "../../assets/downvote-active.svg";
 
 import replyImg from "../../assets/reply.svg";
 import { useState } from "react";
+import { deleteReplyThunk } from "../../../common/features/qfeed/qfeedSlice";
 
 export default function ThirdLevelComment({ reply }) {
   const [replyMenu, setReplyMenu] = useState(false);
@@ -22,6 +23,7 @@ export default function ThirdLevelComment({ reply }) {
   };
 
   const onDeleteReply = () => {
+    dispatch(deleteReplyThunk({ replyid: reply.id }));
     console.log("Handle delete for 3rd level reply");
   };
 

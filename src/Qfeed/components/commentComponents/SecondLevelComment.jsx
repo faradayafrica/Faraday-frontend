@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import uuid from "react-uuid";
 import {
   createThirdLevelCommentThunk,
-  deleteSecondLevelCommentThunk,
+  deleteReplyThunk,
   fetchThirdLevelCommentThunk,
-  hideSecondReply,
   hideThirdReply,
   QfeedStates,
 } from "../../../common/features/qfeed/qfeedSlice";
@@ -46,8 +45,7 @@ export default function SecondLevelComment({ reply }) {
   };
 
   const onDeleteReply = () => {
-    dispatch(deleteSecondLevelCommentThunk({ replyid: reply.id }));
-    console.log("Handle delete for 2nd level reply");
+    dispatch(deleteReplyThunk({ replyid: reply.id }));
   };
 
   const postReply = (limit) => {
@@ -149,8 +147,10 @@ export default function SecondLevelComment({ reply }) {
                 {reply?.replies?.showReply ? (
                   <div
                     onClick={() => {
-                      dispatch(hideThirdReply({ replyid: reply.id }));
                       setHideReplies(false);
+                      setTimeout(() => {
+                        dispatch(hideThirdReply({ replyid: reply.id }));
+                      }, 200);
                     }}
                     className="show-replies"
                   >
@@ -163,10 +163,10 @@ export default function SecondLevelComment({ reply }) {
                 ) : (
                   <div
                     onClick={() => {
+                      setHideReplies(true);
                       dispatch(
                         fetchThirdLevelCommentThunk({ commentid: reply?.id })
                       );
-                      setHideReplies(true);
                     }}
                     className="show-replies"
                   >
@@ -193,8 +193,9 @@ export default function SecondLevelComment({ reply }) {
             />
           )}
 
+          {console.log(status, reply.replies)}
           {/* Render replies here */}
-          {status === QfeedStates.LOADING && hideReplies ? (
+          {status === QfeedStates.LOADING && reply.id ? (
             <div className="text-brand"> Loading... </div>
           ) : (
             <div className="children">

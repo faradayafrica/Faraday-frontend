@@ -191,7 +191,7 @@ export const createThirdLevelCommentThunk = createAsyncThunk(
 );
 
 // Create a third level comment
-// export const deleteSecondLevelCommentThunk = createAsyncThunk(
+// export const deleteReplyThunk = createAsyncThunk(
 //   "qfeed/delete-third-comment",
 //   async ({ commentid }, { rejectWithValue }) => {
 //     try {
@@ -204,7 +204,7 @@ export const createThirdLevelCommentThunk = createAsyncThunk(
 // );
 
 // Delete a Second level comment
-export const deleteSecondLevelCommentThunk = createAsyncThunk(
+export const deleteReplyThunk = createAsyncThunk(
   "qfeed/delete-second-comment",
   async ({ replyid }, { rejectWithValue }) => {
     try {
@@ -694,7 +694,7 @@ const qfeedSlice = createSlice({
     builder.addCase(fetchThirdLevelCommentThunk.fulfilled, (state, action) => {
       const data = action.payload;
       const parent_id = data?.results?.[0]?.parent_id; // Get the parent id
-      console.log(data, "third lvl comment");
+      // console.log(data, "third lvl comment");
 
       let targetComment = findTargetComment(
         state.thisQuestion.comments,
@@ -789,38 +789,47 @@ const qfeedSlice = createSlice({
     });
 
     // Extra Reducers for delete 2nd level reply action
-    builder.addCase(deleteSecondLevelCommentThunk.pending, (state) => {
+    builder.addCase(deleteReplyThunk.pending, (state) => {
       state.status = QfeedStates.LOADING;
     });
-    builder.addCase(
-      deleteSecondLevelCommentThunk.fulfilled,
-      (state, action) => {
-        const { data, message: error } = action.payload;
-        console.log(data, "3rd Level delete");
+    builder.addCase(deleteReplyThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+      console.log(data, "3rd Level delete");
 
-        const _comments = state.thisQuestion.comments;
+      const _comments = state.thisQuestion.comments;
 
-        // for (let parent of _comments) {
-        //   if (parent.replies) {
-        //     for (let child of parent.replies.data) {
-        //       if (child.id === data.parent_id) {
-        //         if (child.replies) {
-        //           child.replies.data = [data, ...child.replies.data];
-        //         } else {
-        //           child.replies = {
-        //             data: [data],
-        //             next: null,
-        //             showReply: false,
-        //           }; // Previews the newly added reply`
-        //         }
-        //         child.sub_count = child.sub_count + 1;
-        //       }
-        //     }
-        //   }
-        // }
+      for (let parent of _comments) {
+        if (parent.replies) {
+          // Targeted comment
+
+          // Find the index of the reply to remove
+          let index = parent?.replies?.data.findIndex(
+            (reply) => reply.id === data.id
+          );
+
+          // Use the splice() method to remove the object from the array
+          if (index !== -1) {
+            parent?.replies?.data.splice(index, 1);
+          }
+
+          parent.replies.data.filter((reply) => reply.id !== data.id);
+          for (let child of parent.replies.data) {
+            if (child.replies) {
+              // Find the index of the reply to remove
+              let index = child?.replies?.data.findIndex(
+                (reply) => reply.id === data.id
+              );
+
+              // Use the splice() method to remove the object from the array
+              if (index !== -1) {
+                child?.replies?.data.splice(index, 1);
+              }
+            }
+          }
+        }
       }
-    );
-    builder.addCase(deleteSecondLevelCommentThunk.rejected, (state) => {
+    });
+    builder.addCase(deleteReplyThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
     });
   },

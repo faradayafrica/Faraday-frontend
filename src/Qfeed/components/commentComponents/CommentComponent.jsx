@@ -34,6 +34,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
   const [disclaimer, setDisclaimer] = useState(false);
 
   const [hideReplies, setHideReplies] = useState();
+  const [a, setA] = useState();
   const [showAddReply, setShowAddReply] = useState(false);
   const [newReply, setNewReply] = useState("");
 
@@ -203,7 +204,13 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
           ) : (
             <div className="children">
               {comment?.replies?.data?.map((reply) => (
-                <SecondLevelComment key={uuid()} reply={reply} match={match} />
+                <SecondLevelComment
+                  key={uuid()}
+                  reply={reply}
+                  match={match}
+                  setHideReply={setA}
+                  hideReply={a}
+                />
               ))}
             </div>
           )}
