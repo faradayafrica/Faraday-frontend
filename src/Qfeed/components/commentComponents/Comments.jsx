@@ -73,19 +73,15 @@ const Comments = ({
 
   const allComments = [...pendingContents, ...uniqueComments];
 
-  const apiEndpoint =
-    process.env.REACT_APP_API_URL + "/qfeed/que/create_comment/";
-
-  const handleChange = ({ currentTarget }) => {
-    setComment(currentTarget.value);
-  };
+  function handleChange(value) {
+    setComment(value);
+  }
 
   const postComment = (postid, limit) => {
     if (comment.length > limit || comment.length === 0) {
       ErrorToast("Your comment is too long");
     } else {
       let content = comment;
-      console.log("Before", postid, content);
       dispatch(createCommentThunk({ postid, content }));
     }
 
@@ -103,7 +99,7 @@ const Comments = ({
 
   return (
     <div className="bg-white">
-      <div className=" pl-3 pr-2">
+      <div className="">
         <AddComment
           onChange={handleChange}
           currentUser={currentUser}
