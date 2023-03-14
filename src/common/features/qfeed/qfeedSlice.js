@@ -190,25 +190,25 @@ export const createThirdLevelCommentThunk = createAsyncThunk(
   }
 );
 
-// Create a third level comment
-// export const deleteReplyThunk = createAsyncThunk(
-//   "qfeed/delete-third-comment",
-//   async ({ commentid }, { rejectWithValue }) => {
-//     try {
-//       const response = await QService.deleteReply(commentid);
-//       return response;
-//     } catch (error) {
-//       return rejectWithValue(error.toString());
-//     }
-//   }
-// );
-
 // Delete a Second level comment
 export const deleteReplyThunk = createAsyncThunk(
   "qfeed/delete-second-comment",
   async ({ replyid }, { rejectWithValue }) => {
     try {
       const response = await QService.deleteReply(replyid);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
+// Vote reply
+export const voteReplyThunk = createAsyncThunk(
+  "qfeed/vote-reply",
+  async ({ replyid, value = "upvote" }, { rejectWithValue }) => {
+    try {
+      const response = await QService.voteReply(replyid, value);
       return response;
     } catch (error) {
       return rejectWithValue(error.toString());
@@ -830,6 +830,51 @@ const qfeedSlice = createSlice({
       }
     });
     builder.addCase(deleteReplyThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra Reducers for vote reply action
+    builder.addCase(voteReplyThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(voteReplyThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+      console.log(data, "Reply vote");
+
+      const _comments = state.thisQuestion.comments;
+
+      for (let parent of _comments) {
+        if (parent.replies) {
+          // Targeted comment
+
+          // Find the index of the reply to update
+          let index = parent?.replies?.data.findIndex(
+            (reply) => reply.id === data.id
+          );
+
+          // Use the splice() method to remove the object from the array
+          if (index !== -1) {
+            parent?.replies?.data.splice(index, 1, { ...data });
+          }
+
+          parent.replies.data.filter((reply) => reply.id !== data.id);
+          for (let child of parent.replies.data) {
+            if (child.replies) {
+              // Find the index of the reply to remove
+              let index = child?.replies?.data.findIndex(
+                (reply) => reply.id === data.id
+              );
+
+              // Use the splice() method to remove the object from the array
+              if (index !== -1) {
+                child?.replies?.data.splice(index, 1, { ...data });
+              }
+            }
+          }
+        }
+      }
+    });
+    builder.addCase(voteReplyThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
     });
   },

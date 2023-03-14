@@ -160,4 +160,11 @@ export default class QService {
     );
     return data;
   }
+
+  static async voteReply(replyid, value) {
+    const { data } = await http.post(
+      apiBase + `/qfeed/reply/vote/${replyid}/${value}/`
+    );
+    return data;
+  }
 }

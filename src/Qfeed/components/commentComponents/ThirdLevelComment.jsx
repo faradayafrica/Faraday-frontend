@@ -12,7 +12,10 @@ import downvoteActive from "../../assets/downvote-active.svg";
 
 import replyImg from "../../assets/reply.svg";
 import { useState } from "react";
-import { deleteReplyThunk } from "../../../common/features/qfeed/qfeedSlice";
+import {
+  deleteReplyThunk,
+  voteReplyThunk,
+} from "../../../common/features/qfeed/qfeedSlice";
 
 export default function ThirdLevelComment({ reply }) {
   const [replyMenu, setReplyMenu] = useState(false);
@@ -79,17 +82,31 @@ export default function ThirdLevelComment({ reply }) {
           <div className="action-bar">
             <div className="left">
               <div className="vote">
-                {reply.vote_status === "upvote" ? (
-                  <img src={upvoteActive} alt="helpful" />
-                ) : (
-                  <img src={upvote} alt="helpful" />
-                )}
+                <div
+                  onClick={() => {
+                    dispatch(voteReplyThunk({ replyid: reply.id }));
+                  }}
+                >
+                  {reply.vote_status === "upvote" ? (
+                    <img src={upvoteActive} alt="helpful" />
+                  ) : (
+                    <img src={upvote} alt="helpful" />
+                  )}
+                </div>
                 <span className="count">{reply.vote_rank}</span>
-                {reply.vote_status === "downvote" ? (
-                  <img src={downvoteActive} alt="not helpful" />
-                ) : (
-                  <img src={downvote} alt="not helpful" />
-                )}
+                <div
+                  onClick={() => {
+                    dispatch(
+                      voteReplyThunk({ replyid: reply.id, value: "downvote" })
+                    );
+                  }}
+                >
+                  {reply.vote_status === "downvote" ? (
+                    <img src={downvoteActive} alt="not helpful" />
+                  ) : (
+                    <img src={downvote} alt="not helpful" />
+                  )}
+                </div>
               </div>
               {/* The add reply button */}
               {/* <div className="reply">
