@@ -138,6 +138,19 @@ export const createCommentThunk = createAsyncThunk(
   }
 );
 
+// Vote reply
+export const voteCommentThunk = createAsyncThunk(
+  "qfeed/vote-comment",
+  async ({ commentid, value = "upvote" }, { rejectWithValue }) => {
+    try {
+      const response = await QService.voteComment(commentid, value);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
 // Fetch a second lvl comment
 export const fetchSecondLevelCommentThunk = createAsyncThunk(
   "qfeed/fetch-second-comment",
@@ -753,6 +766,7 @@ const qfeedSlice = createSlice({
             parent.reply_count = parent.reply_count + 1;
           }
         }
+        state.status = QfeedStates.SUCCESSFUL;
       }
     );
     builder.addCase(createSecondLevelCommentThunk.rejected, (state) => {
@@ -783,6 +797,7 @@ const qfeedSlice = createSlice({
           }
         }
       }
+      state.status = QfeedStates.SUCCESSFUL;
     });
     builder.addCase(createThirdLevelCommentThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
@@ -828,6 +843,7 @@ const qfeedSlice = createSlice({
           }
         }
       }
+      state.status = QfeedStates.SUCCESSFUL;
     });
     builder.addCase(deleteReplyThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
@@ -839,7 +855,7 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(voteReplyThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      console.log(data, "Reply vote");
+      // console.log(data, "Reply vote");
 
       const _comments = state.thisQuestion.comments;
 
@@ -873,8 +889,34 @@ const qfeedSlice = createSlice({
           }
         }
       }
+
+      state.status = QfeedStates.SUCCESSFUL;
     });
     builder.addCase(voteReplyThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra Reducers for vote comment action
+    builder.addCase(voteCommentThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(voteCommentThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+      console.log(data, "Reply comment");
+
+      const _comments = state.thisQuestion.comments;
+
+      // Find the index of the comment to update
+      let index = _comments.findIndex((comment) => comment.id === data.id);
+
+      // Use the splice() method to remove the object from the array
+      if (index !== -1) {
+        _comments.splice(index, 1, { ...data });
+      }
+
+      state.status = QfeedStates.SUCCESSFUL;
+    });
+    builder.addCase(voteCommentThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
     });
   },

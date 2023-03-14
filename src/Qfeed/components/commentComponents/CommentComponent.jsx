@@ -12,6 +12,7 @@ import {
   fetchSecondLevelCommentThunk,
   hideSecondReply,
   QfeedStates,
+  voteCommentThunk,
 } from "../../../common/features/qfeed/qfeedSlice";
 import uuid from "react-uuid";
 
@@ -124,17 +125,34 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
           <div className="action-bar">
             <div className="left">
               <div className="vote">
-                {comment.vote_status === "upvote" ? (
-                  <img src={upvoteActive} alt="helpful" />
-                ) : (
-                  <img src={upvote} alt="helpful" />
-                )}
+                <div
+                  onClick={() =>
+                    dispatch(voteCommentThunk({ commentid: comment.id }))
+                  }
+                >
+                  {comment.vote_status === "upvote" ? (
+                    <img src={upvoteActive} alt="helpful" />
+                  ) : (
+                    <img src={upvote} alt="helpful" />
+                  )}
+                </div>
                 <span className="count">{comment.vote_rank}</span>
-                {comment.vote_status === "downvote" ? (
-                  <img src={downvoteActive} alt="not helpful" />
-                ) : (
-                  <img src={downvote} alt="not helpful" />
-                )}
+                <div
+                  onClick={() =>
+                    dispatch(
+                      voteCommentThunk({
+                        commentid: comment.id,
+                        value: "downvote",
+                      })
+                    )
+                  }
+                >
+                  {comment.vote_status === "downvote" ? (
+                    <img src={downvoteActive} alt="not helpful" />
+                  ) : (
+                    <img src={downvote} alt="not helpful" />
+                  )}
+                </div>
               </div>
               {/* The add comment button */}
               <div

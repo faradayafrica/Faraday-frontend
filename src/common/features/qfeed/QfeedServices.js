@@ -106,6 +106,13 @@ export default class QService {
     return data;
   }
 
+  static async voteComment(commentid, value) {
+    const { data } = await http.post(
+      apiBase + `/qfeed/comments/vote/${commentid}/${value}/`
+    );
+    return data;
+  }
+
   static async fetchSecondComments(commentid) {
     const user = getCurrentUser();
     if (user?.username) {
