@@ -20,6 +20,8 @@ const initialState = {
     question: {},
     comments: [],
     shortLink: "",
+    replyStatus: "base",
+    reply2Status: "base",
   },
   feed: {
     qfeed: [],
@@ -157,6 +159,19 @@ export const createCommentThunk = createAsyncThunk(
   }
 );
 
+// Vote reply
+export const voteCommentThunk = createAsyncThunk(
+  "qfeed/vote-comment",
+  async ({ commentid, value = "upvote" }, { rejectWithValue }) => {
+    try {
+      const response = await QService.voteComment(commentid, value);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
 // Fetch a second lvl comment
 export const fetchSecondLevelCommentThunk = createAsyncThunk(
   "qfeed/fetch-second-comment",
@@ -209,18 +224,31 @@ export const createThirdLevelCommentThunk = createAsyncThunk(
   }
 );
 
-// Create a third level comment
-// export const deleteSecondLevelCommentThunk = createAsyncThunk(
-//   "qfeed/delete-third-comment",
-//   async ({ commentid }, { rejectWithValue }) => {
-//     try {
-//       const response = await QService.deleteReply(commentid);
-//       return response;
-//     } catch (error) {
-//       return rejectWithValue(error.toString());
-//     }
-//   }
-// );
+// Delete a Second level comment
+export const deleteReplyThunk = createAsyncThunk(
+  "qfeed/delete-second-comment",
+  async ({ replyid }, { rejectWithValue }) => {
+    try {
+      const response = await QService.deleteReply(replyid);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
+// Vote reply
+export const voteReplyThunk = createAsyncThunk(
+  "qfeed/vote-reply",
+  async ({ replyid, value = "upvote" }, { rejectWithValue }) => {
+    try {
+      const response = await QService.voteReply(replyid, value);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
 
 const qfeedSlice = createSlice({
   name: "qfeed",
@@ -666,7 +694,7 @@ const qfeedSlice = createSlice({
 
     // Extra reducer for fetching the Second comment Level
     builder.addCase(fetchSecondLevelCommentThunk.pending, (state) => {
-      state.status = QfeedStates.LOADING;
+      state.thisQuestion.replyStatus = QfeedStates.LOADING;
     });
     builder.addCase(fetchSecondLevelCommentThunk.fulfilled, (state, action) => {
       const data = action.payload;
@@ -687,15 +715,15 @@ const qfeedSlice = createSlice({
       state.thisQuestion.comments = newCommentReplies;
 
       // state.thisQuestion.comments;
-      state.status = QfeedStates.SUCCESSFUL;
+      state.thisQuestion.replyStatus = QfeedStates.SUCCESSFUL;
     });
     builder.addCase(fetchSecondLevelCommentThunk.rejected, (state) => {
-      state.status = QfeedStates.FAILED;
+      state.thisQuestion.replyStatus = QfeedStates.FAILED;
     });
 
     // Extra reducer for fetching the Third comment Level
     builder.addCase(fetchThirdLevelCommentThunk.pending, (state) => {
-      state.status = QfeedStates.LOADING;
+      state.thisQuestion.reply2Status = QfeedStates.LOADING;
     });
     builder.addCase(fetchThirdLevelCommentThunk.fulfilled, (state, action) => {
       const data = action.payload;
@@ -732,10 +760,10 @@ const qfeedSlice = createSlice({
         state.thisQuestion.comments[index] = targetComment;
       }
 
-      state.status = QfeedStates.SUCCESSFUL;
+      state.thisQuestion.reply2Status = QfeedStates.SUCCESSFUL;
     });
     builder.addCase(fetchThirdLevelCommentThunk.rejected, (state) => {
-      state.status = QfeedStates.FAILED;
+      state.thisQuestion.reply2Status = QfeedStates.FAILED;
     });
 
     // Extra Reducers for create 2nd level reply action
@@ -759,6 +787,7 @@ const qfeedSlice = createSlice({
             parent.reply_count = parent.reply_count + 1;
           }
         }
+        state.status = QfeedStates.SUCCESSFUL;
       }
     );
     builder.addCase(createSecondLevelCommentThunk.rejected, (state) => {
@@ -789,10 +818,127 @@ const qfeedSlice = createSlice({
           }
         }
       }
+      state.status = QfeedStates.SUCCESSFUL;
     });
     builder.addCase(createThirdLevelCommentThunk.rejected, (state) => {
       state.status = QfeedStates.FAILED;
     });
+
+
+    // Extra Reducers for delete 2nd level reply action
+    builder.addCase(deleteReplyThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(deleteReplyThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+      console.log(data, "3rd Level delete");
+
+      const _comments = state.thisQuestion.comments;
+
+      for (let parent of _comments) {
+        if (parent.replies) {
+          // Targeted comment
+
+          // Find the index of the reply to remove
+          let index = parent?.replies?.data.findIndex(
+            (reply) => reply.id === data.id
+          );
+
+          // Use the splice() method to remove the object from the array
+          if (index !== -1) {
+            parent?.replies?.data.splice(index, 1);
+          }
+
+          parent.replies.data.filter((reply) => reply.id !== data.id);
+          for (let child of parent.replies.data) {
+            if (child.replies) {
+              // Find the index of the reply to remove
+              let index = child?.replies?.data.findIndex(
+                (reply) => reply.id === data.id
+              );
+
+              // Use the splice() method to remove the object from the array
+              if (index !== -1) {
+                child?.replies?.data.splice(index, 1);
+              }
+            }
+          }
+        }
+      }
+      state.status = QfeedStates.SUCCESSFUL;
+    });
+    builder.addCase(deleteReplyThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra Reducers for vote reply action
+    builder.addCase(voteReplyThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(voteReplyThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+      // console.log(data, "Reply vote");
+
+      const _comments = state.thisQuestion.comments;
+
+      for (let parent of _comments) {
+        if (parent.replies) {
+          // Targeted comment
+
+          // Find the index of the reply to update
+          let index = parent?.replies?.data.findIndex(
+            (reply) => reply.id === data.id
+          );
+
+          // Use the splice() method to remove the object from the array
+          if (index !== -1) {
+            parent?.replies?.data.splice(index, 1, { ...data });
+          }
+
+          parent.replies.data.filter((reply) => reply.id !== data.id);
+          for (let child of parent.replies.data) {
+            if (child.replies) {
+              // Find the index of the reply to remove
+              let index = child?.replies?.data.findIndex(
+                (reply) => reply.id === data.id
+              );
+
+              // Use the splice() method to remove the object from the array
+              if (index !== -1) {
+                child?.replies?.data.splice(index, 1, { ...data });
+              }
+            }
+          }
+        }
+      }
+
+      state.status = QfeedStates.SUCCESSFUL;
+    });
+    builder.addCase(voteReplyThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra Reducers for vote comment action
+    builder.addCase(voteCommentThunk.pending, (state) => {
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(voteCommentThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+      console.log(data, "Reply comment");
+
+      const _comments = state.thisQuestion.comments;
+
+      // Find the index of the comment to update
+      let index = _comments.findIndex((comment) => comment.id === data.id);
+
+      // Use the splice() method to remove the object from the array
+      if (index !== -1) {
+        _comments.splice(index, 1, { ...data });
+      }
+
+      state.status = QfeedStates.SUCCESSFUL;
+    });
+    builder.addCase(voteCommentThunk.rejected, (state) => {
 
     // Extra Reducers for bookmark
     builder.addCase(markBookmarkThunk.pending, (state) => {
@@ -846,6 +992,7 @@ const qfeedSlice = createSlice({
     builder.addCase(markBookmarkThunk.rejected, (state) => {
       toast.dismiss();
       ErrorToast("Something went wrong!");
+
       state.status = QfeedStates.FAILED;
     });
   },
