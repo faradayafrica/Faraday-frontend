@@ -19,6 +19,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchSchoolThunk } from "../../../common/features/auth/univastSlice";
 import { UnivastStates } from "../../../common/features/auth/univastSlice";
 
+const filterData = (query, lists) =>
+  query === ""
+    ? lists
+    : lists.filter((data) =>
+        data.name
+          .toLowerCase()
+          .replace(/\s+/g, "")
+          .includes(query.toLowerCase().replace(/\s+/g, ""))
+      );
+
 const AddSchoolDetail = () => {
   const [schoolCode, setSchoolCode] = useState(null);
   const [facultySel, setFaultySel] = useState(null);
@@ -27,6 +37,11 @@ const AddSchoolDetail = () => {
   const [departmentValue, setDepartmentValue] = useState("");
   const [levelValue, setLevelValue] = useState("");
   const [redirect, setRedirect] = useState(false);
+
+  const [schoolQuery, setSchoolQuery] = useState("");
+  const [facultyQuery, setFacultyQuery] = useState("");
+  const [departmentQuery, setDepartmentQuery] = useState("");
+  const [levelQuery, setLevelQuery] = useState("");
 
   const [schoolsData, setSchoolsData] = useState([]);
 
@@ -41,6 +56,8 @@ const AddSchoolDetail = () => {
     }
   }, [allSchools]);
 
+  // console.log(schoolsData, "schoolsData");
+
   const {
     register,
     handleSubmit,
@@ -52,9 +69,18 @@ const AddSchoolDetail = () => {
   const getSchoolInfo = (data, label, event) => {
     if (label === "School") {
       setSchoolCode(data.code);
+      setFacultyQuery("");
+      setFaultySel("");
+      setFacultyValue("");
+
+      setDepartmentQuery("");
+      setDepartmentValue("");
     }
     if (label === "Faculty") {
       setFaultySel(data.name);
+
+      setDepartmentQuery("");
+      setDepartmentValue("");
     }
 
     // TODO: Keyboard navigate doesn't work, and this is suppose to be for it
@@ -67,26 +93,6 @@ const AddSchoolDetail = () => {
       }
     }
   };
-
-  // console.log(values, faculty, "values");
-
-  // const {
-  //   data: schoolsData,
-  //   isLoading: schoolsLoading,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ["schoolsData"],
-  //   queryFn: () =>
-  //     fetch("https://univast.faraday.africa/academia/schools/NG", {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Api-Key ${process.env.REACT_APP_UNIVAST_KEY}`,
-  //       },
-  //     })
-  //       .then((res) => res.json())
-  //       .then((data) => data.data),
-  //   refetchOnWindowFocus: false,
-  // });
 
   const {
     data: facultiesData,
@@ -126,6 +132,11 @@ const AddSchoolDetail = () => {
     enabled: !!schoolCode && !!facultySel,
     refetchOnWindowFocus: false,
   });
+
+  const filteredSchoolData = filterData(schoolQuery, schoolsData);
+  const filteredFacultyData = filterData(facultyQuery, facultiesData);
+  const filteredDepartmentData = filterData(departmentQuery, departmentData);
+  const filteredLevelData = filterData(levelQuery, getLevel());
 
   // console.log(facultiesData, "facultiesData");
 
@@ -170,21 +181,21 @@ const AddSchoolDetail = () => {
   };
 
   return (
-    <div className="login-page">
-      {redirect && <Redirect to="/update-personal-data" />}
+    <div className='login-page'>
+      {redirect && <Redirect to='/update-personal-data' />}
       {/* the spinner */}
-      <div id="spinnerContainer" className="spinner-container vanish">
+      <div id='spinnerContainer' className='spinner-container vanish'>
         <Myspinner />
       </div>
-      <div className="progress-container mx-auto mt-3">
-        <div className="progress progress-50"></div>
+      <div className='progress-container mx-auto mt-3'>
+        <div className='progress progress-50'></div>
       </div>
-      <div className="form-container">
-        <div className="logo-container">
-          <img className="logo mx-auto" src={faraday} alt="faraday" />
+      <div className='form-container'>
+        <div className='logo-container'>
+          <img className='logo mx-auto' src={faraday} alt='faraday' />
         </div>
-        <h3 className="form-title ">We're almost done</h3>
-        <p className="mx-3 extra-info text-md">
+        <h3 className='form-title '>We're almost done</h3>
+        <p className='mx-3 extra-info text-md'>
           We just need your academic information.
         </p>
         {/* 
@@ -205,39 +216,41 @@ const AddSchoolDetail = () => {
        </form> */}
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          {console.log(schoolsData, "***********")}
           <Select
             signup
-            lists={schoolsData}
+            lists={filteredSchoolData}
             loading={status !== UnivastStates.SUCCESSFUL}
             value={schoolValue}
             setValue={setSchoolValue}
             label={"School"}
             optionClick={getSchoolInfo}
+            setQuery={setSchoolQuery}
           />
           <Select
             signup
-            lists={facultiesData}
+            lists={filteredFacultyData}
             loading={facultyLoading}
             value={facultyValue}
             setValue={setFacultyValue}
             optionClick={getSchoolInfo}
             label={"Faculty"}
             loadingMsg={schoolValue ? "Loading.." : "Please select a school"}
+            setQuery={setFacultyQuery}
           />
           <Select
             signup
-            lists={departmentData}
+            lists={filteredDepartmentData}
             loading={departmentLoading}
             value={departmentValue}
             setValue={setDepartmentValue}
             optionClick={getSchoolInfo}
             label={"Department"}
             loadingMsg={facultyValue ? "Loading.." : "Please select a faculty"}
+            setQuery={setDepartmentQuery}
           />
           <Select
             signup
-            lists={getLevel()}
+            lists={filteredLevelData}
             loading={false}
             value={levelValue}
             setValue={setLevelValue}
@@ -246,11 +259,12 @@ const AddSchoolDetail = () => {
             loadingMsg={
               departmentValue ? "Loading.." : "Please select a department"
             }
+            setQuery={setLevelQuery}
           />
 
-          <div className="mt-3">
+          <div className='mt-3'>
             <PrimaryButton
-              cta="Next"
+              cta='Next'
               // disabled={validate()}
               wide
             />
