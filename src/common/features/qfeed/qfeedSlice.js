@@ -824,7 +824,6 @@ const qfeedSlice = createSlice({
       state.status = QfeedStates.FAILED;
     });
 
-
     // Extra Reducers for delete 2nd level reply action
     builder.addCase(deleteReplyThunk.pending, (state) => {
       state.status = QfeedStates.LOADING;
@@ -939,6 +938,8 @@ const qfeedSlice = createSlice({
       state.status = QfeedStates.SUCCESSFUL;
     });
     builder.addCase(voteCommentThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
 
     // Extra Reducers for bookmark
     builder.addCase(markBookmarkThunk.pending, (state) => {
