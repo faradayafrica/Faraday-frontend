@@ -22,8 +22,13 @@ export default function RTF({ value, onChange }) {
   };
 
   return (
-    <div className="RTE">
-      <ReactQuill modules={modules} value={value} onChange={onChange} />
+    <div style={{ marginBottom: ".5rem" }} className="RTE">
+      <ReactQuill
+        modules={modules}
+        value={value}
+        onChange={onChange}
+        // placeholder="Type something here..."
+      />
     </div>
   );
 }
