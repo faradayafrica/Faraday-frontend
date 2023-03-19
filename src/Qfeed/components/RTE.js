@@ -2,7 +2,7 @@ import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-export default function RTF({ value, onChange }) {
+export default function RTF({ value, onChange, placeholder }) {
   const modules = {
     toolbar: [
       [
@@ -27,7 +27,7 @@ export default function RTF({ value, onChange }) {
         modules={modules}
         value={value}
         onChange={onChange}
-        // placeholder="Type something here..."
+        placeholder={placeholder}
       />
     </div>
   );

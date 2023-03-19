@@ -210,7 +210,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
 
           {showAddReply && (
             <AddReply
-              parentComment={comment}
+              parentCommentAuthor={comment?.user?.username}
               reply={newReply}
               postReply={postReply}
               onChange={handleChange}

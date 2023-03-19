@@ -612,10 +612,10 @@ const qfeedSlice = createSlice({
       const { data, message: error } = action.payload;
       // console.log(data, "close q");
       toast.dismiss();
-      if (data.isClosed) {
-        SuccessToast("Question opened");
-      } else {
+      if (data.is_closed) {
         SuccessToast("Question closed");
+      } else {
+        SuccessToast("Question opened");
       }
 
       // TODO: confirm that this works

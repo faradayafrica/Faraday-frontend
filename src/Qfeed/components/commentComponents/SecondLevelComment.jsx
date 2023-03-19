@@ -69,8 +69,6 @@ export default function SecondLevelComment({ reply }) {
     setNewReply(value);
   };
 
-  console.log(reply, "REPLY OOOOOO");
-
   return (
     <div className="">
       <div className="content-wrapper">
@@ -238,7 +236,7 @@ export default function SecondLevelComment({ reply }) {
           {/* Input field to add a reply */}
           {showAddReply && (
             <AddReply
-              parentComment={reply}
+              parentCommentAuthor={reply?.by_user?.username}
               reply={newReply}
               postReply={postReply}
               onChange={handleChange}

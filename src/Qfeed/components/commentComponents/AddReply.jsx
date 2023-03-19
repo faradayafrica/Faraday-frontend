@@ -5,7 +5,7 @@ import { getCurrentUser } from "../../../common/services/authService";
 import RTF from "../RTE";
 
 export default function AddReply({
-  parentComment,
+  parentCommentAuthor,
   reply,
   postReply,
   onChange,
@@ -36,8 +36,8 @@ export default function AddReply({
   }
 
   return (
-    <>
-      <div className="content-wrapper">
+    <div className="reply-box">
+      <div className="content-wrapper ">
         <Link
           to={`/me/${currentUser.username}`}
           style={{ textDecoration: "none" }}
@@ -54,10 +54,13 @@ export default function AddReply({
           <div className="content">
             {" "}
             <div className="RTE-wrapper">
-              <RTF value={reply} onChange={onChange} />
-
+              <RTF
+                value={reply}
+                onChange={onChange}
+                placeholder={`Reply to @${parentCommentAuthor}`}
+              />
               {reply.length > 0 && (
-                <div className="m-0 mt-2 ml-2 pb-2 float-right">
+                <div className="m-0 pb-2 float-right">
                   <PrimaryButton
                     cta="Submit"
                     action={() => postReply(LIMIT)}
@@ -69,6 +72,6 @@ export default function AddReply({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

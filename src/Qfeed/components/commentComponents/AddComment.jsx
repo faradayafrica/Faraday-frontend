@@ -30,7 +30,7 @@ const AddComment = ({
 
   return (
     <div className="add-comment flex justify-start border-b-[1px] border-background2 ">
-      <Link
+      {/* <Link
         to={`/me/${currentUser?.username}`}
         style={{ textDecoration: "none" }}
         className="profile-img"
@@ -41,13 +41,17 @@ const AddComment = ({
           className="w-12 h-12 rounded-full mr-2 bg-background2 float-left"
           style={{ objectFit: "cover" }}
         />
-      </Link>
+      </Link> */}
       <div className="RTE-wrapper">
         {!question.is_closed ? (
-          <div>
-            <RTF value={comment} onChange={onChange} />
+          <>
+            <RTF
+              value={comment}
+              onChange={onChange}
+              placeholder={`Reply to @${question.user.username}`}
+            />
             {comment.length > 0 && (
-              <div className="m-0 mt-2 ml-2 pb-2 float-right">
+              <div className="m-0 pb-2 float-right">
                 <PrimaryButton
                   cta="Submit"
                   action={() => postComment(questionId, LIMIT)}
@@ -55,11 +59,7 @@ const AddComment = ({
                 />
               </div>
             )}
-
-            <span className=" text-xs text-night-secondary">
-              Replying @{question.user.username}
-            </span>
-          </div>
+          </>
         ) : (
           <div className="h-[100%] flex py-3 ">
             <span className=" ml-2 text-xs text-danger">
