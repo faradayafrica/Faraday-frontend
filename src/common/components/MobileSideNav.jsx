@@ -17,6 +17,7 @@ import "../styles/mobileSideNav.scss";
 import "../styles/topnav.css";
 import { currentUserThunk } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import PrimaryButton from "./PrimaryButton";
 
 function MobileSideNav() {
   const [isQfeed, setQfeed] = useState();
@@ -96,12 +97,12 @@ function MobileSideNav() {
         {/* Hamburger */}
         <div className="w-full fixed top-0 left-0 z-40 p-2">
           {/* fixed top nav for mobile */}
-          <div
-            ref={app}
-            id="topnav"
-            className="ask-shadow nav-container rounded-xl bg-white flex justify-between"
-          >
-            {currentUser.username ? (
+          {currentUser.username ? (
+            <div
+              ref={app}
+              id="topnav"
+              className="ask-shadow nav-container rounded-xl bg-white flex justify-between"
+            >
               <>
                 <img
                   className="p-3 rounded-xl cursor-pointer  "
@@ -125,10 +126,15 @@ function MobileSideNav() {
                   />
                 </Link>
               </>
-            ) : (
-              <p className="font-bold m-0 p-3">Faraday Guest Mode</p>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="p-2 rounded-lg border bg-background  text-center flex justify-between justify-items-center">
+              <p className="font-bold m-0 my-auto">Faraday Guest Mode</p>
+              <Link to={`/login`} style={{ textDecoration: "none" }}>
+                <PrimaryButton>Login</PrimaryButton>
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* fixed bottom nav for mobile */}

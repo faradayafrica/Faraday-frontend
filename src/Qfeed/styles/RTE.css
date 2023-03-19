@@ -1,3 +1,35 @@
+@media only screen and (max-width: 30em) {
+  .reply-box {
+    background-color: white !important;
+    padding: 1rem;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 10000;
+    width: 100vw;
+    /* border: 1px solid rgb(241 242 246 / 1); */
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    box-shadow: 2px 3px 39px rgba(108, 117, 125, 0.1),
+      8px 8px 61px rgba(5, 184, 81, 0.12);
+  }
+
+  .reply-box .content-wrapper {
+    padding: 0;
+    margin: 0;
+    border: none;
+  }
+
+  .reply-box .content-wrapper .profile-img {
+    display: none;
+    border: none;
+  }
+
+  .reply-box .content-wrapper .offset {
+    margin: 0;
+  }
+}
+
 .add-comment {
   box-sizing: border-box;
   padding: 0.8rem;
@@ -33,7 +65,7 @@
 }
 
 .RTE .quill {
-  border: 1px solid #cfd9de;
+  border: 1px solid rgb(241 242 246 / 1);
   border-radius: 8px;
 }
 
@@ -43,6 +75,7 @@
 
 .RTE .quill .ql-editor {
   overflow-x: hidden;
+  margin-top: 0.5rem;
 }
 
 .RTE .quill .ql-toolbar {
@@ -58,8 +91,18 @@
   margin-right: 0.25rem;
 }
 
+.ql-snow .ql-stroke,
+.ql-snow.ql-toolbar button:hover:not(.ql-active),
+.ql-snow .ql-toolbar button:hover:not(.ql-active) {
+  fill: none;
+  stroke: #6c757d !important;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.4;
+}
+
 .ql-toolbar .ql-active {
-  background-color: var(--dark) !important;
+  background-color: #6c757d !important;
   color: white !important;
   border-radius: 4px;
 }

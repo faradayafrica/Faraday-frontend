@@ -6,6 +6,7 @@ import {
   deleteReplyThunk,
   fetchThirdLevelCommentThunk,
   hideThirdReply,
+  optimisticReplyVote,
   QfeedStates,
   voteReplyThunk,
 } from "../../../common/features/qfeed/qfeedSlice";
@@ -122,7 +123,22 @@ export default function SecondLevelComment({ reply }) {
               <div className="vote">
                 <div
                   onClick={() => {
-                    console.log("Upvote this reply");
+                    dispatch(
+                      optimisticReplyVote({
+                        replyid: reply.id,
+                        value: {
+                          rank:
+                            reply.vote_status === null
+                              ? reply.vote_rank + 1
+                              : reply.vote_status === "upvote"
+                              ? reply.vote_rank - 1
+                              : reply.vote_status === "downvote" &&
+                                reply.vote_rank + 2,
+                          status:
+                            reply.vote_status === "upvote" ? null : "upvote",
+                        },
+                      })
+                    );
                     dispatch(voteReplyThunk({ replyid: reply.id }));
                   }}
                 >
@@ -134,11 +150,29 @@ export default function SecondLevelComment({ reply }) {
                 </div>
                 <span className="count">{reply.vote_rank}</span>
                 <div
-                  onClick={() =>
+                  onClick={() => {
+                    dispatch(
+                      optimisticReplyVote({
+                        replyid: reply.id,
+                        value: {
+                          rank:
+                            reply.vote_status === null
+                              ? reply.vote_rank - 1
+                              : reply.vote_status === "downvote"
+                              ? reply.vote_rank + 1
+                              : reply.vote_status === "upvote" &&
+                                reply.vote_rank - 2,
+                          status:
+                            reply.vote_status === "downvote"
+                              ? null
+                              : "downvote",
+                        },
+                      })
+                    );
                     dispatch(
                       voteReplyThunk({ replyid: reply.id, value: "downvote" })
-                    )
-                  }
+                    );
+                  }}
                 >
                   {reply.vote_status === "downvote" ? (
                     <img src={downvoteActive} alt="not helpful" />
@@ -202,7 +236,7 @@ export default function SecondLevelComment({ reply }) {
           {/* Input field to add a reply */}
           {showAddReply && (
             <AddReply
-              parentComment={reply}
+              parentCommentAuthor={reply?.by_user?.username}
               reply={newReply}
               postReply={postReply}
               onChange={handleChange}

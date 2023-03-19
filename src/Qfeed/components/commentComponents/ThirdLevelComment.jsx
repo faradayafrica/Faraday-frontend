@@ -14,6 +14,7 @@ import replyImg from "../../assets/reply.svg";
 import { useState } from "react";
 import {
   deleteReplyThunk,
+  optimisticReplyVote,
   voteReplyThunk,
 } from "../../../common/features/qfeed/qfeedSlice";
 
@@ -84,6 +85,22 @@ export default function ThirdLevelComment({ reply }) {
               <div className="vote">
                 <div
                   onClick={() => {
+                    dispatch(
+                      optimisticReplyVote({
+                        replyid: reply.id,
+                        value: {
+                          rank:
+                            reply.vote_status === null
+                              ? reply.vote_rank + 1
+                              : reply.vote_status === "upvote"
+                              ? reply.vote_rank - 1
+                              : reply.vote_status === "downvote" &&
+                                reply.vote_rank + 2,
+                          status:
+                            reply.vote_status === "upvote" ? null : "upvote",
+                        },
+                      })
+                    );
                     dispatch(voteReplyThunk({ replyid: reply.id }));
                   }}
                 >
@@ -96,6 +113,24 @@ export default function ThirdLevelComment({ reply }) {
                 <span className="count">{reply.vote_rank}</span>
                 <div
                   onClick={() => {
+                    dispatch(
+                      optimisticReplyVote({
+                        replyid: reply.id,
+                        value: {
+                          rank:
+                            reply.vote_status === null
+                              ? reply.vote_rank - 1
+                              : reply.vote_status === "downvote"
+                              ? reply.vote_rank + 1
+                              : reply.vote_status === "upvote" &&
+                                reply.vote_rank - 2,
+                          status:
+                            reply.vote_status === "downvote"
+                              ? null
+                              : "downvote",
+                        },
+                      })
+                    );
                     dispatch(
                       voteReplyThunk({ replyid: reply.id, value: "downvote" })
                     );
