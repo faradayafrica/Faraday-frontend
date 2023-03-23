@@ -97,7 +97,12 @@ const DiscussionPage = ({ match, history }) => {
     }, 500);
   };
 
+  const token = localStorage.getItem("token");
+
   const handleQuestionLike = async (postid) => {
+    if (token === null || token === undefined) {
+      return history.push(`/login?redirect=${window.origin}/qfeed/${postid}`);
+    }
     if (question.liked) {
       dispatch(voteQuestionThunk({ postid, value: "downvote" }));
     } else {
