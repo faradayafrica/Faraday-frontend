@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ellipses from "../../assets/ellipses.svg";
-import mark from "../../assets/mark.svg";
 import info from "../../assets/info.svg";
 import CommentMenu from "./CommentMenu";
 import Modal from "../../../common/components/Modal";
@@ -12,6 +11,8 @@ import {
   createSecondLevelCommentThunk,
   fetchSecondLevelCommentThunk,
   hideSecondReply,
+  QfeedStates,
+  voteCommentThunk,
 } from "../../../common/features/qfeed/qfeedSlice";
 import uuid from "react-uuid";
 
@@ -27,16 +28,21 @@ import show from "../../assets/show.svg";
 import "../../styles/comment.css";
 import AddReply from "./AddReply";
 import { ErrorToast } from "../../../common/components/CustomToast";
-import { diagnoses } from "joi-browser";
+import "react-quill/dist/quill.snow.css";
 
 const CommentComponent = ({ match, comment, onDeleteComment }) => {
   const [commentMenu, setCommentMenu] = useState(false);
   const [disclaimer, setDisclaimer] = useState(false);
 
+  const [hideReplies, setHideReplies] = useState();
+  const [a, setA] = useState();
   const [showAddReply, setShowAddReply] = useState(false);
   const [newReply, setNewReply] = useState("");
 
   const { question, check } = useSelector((state) => state.qfeed.thisQuestion);
+  const { replyStatus: status } = useSelector(
+    (state) => state.qfeed.thisQuestion
+  );
   const dispatch = useDispatch();
 
   const toggleCommentMenu = () => {
@@ -60,8 +66,8 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
     // TODO: Clear the input after comment creation is successful
   };
 
-  const handleChange = ({ currentTarget }) => {
-    setNewReply(currentTarget.value);
+  const handleChange = (value) => {
+    setNewReply(value);
   };
 
   const token = localStorage.getItem("token");
@@ -118,22 +124,41 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               />
             )}
           </div>
-          <p className='content'> {comment.content}</p>
 
-          <div className='action-bar'>
-            <div className='left'>
-              <div className='vote'>
-                {comment.vote_status === "upvote" ? (
-                  <img src={upvoteActive} alt='helpful' />
-                ) : (
-                  <img src={upvote} alt='helpful' />
-                )}
-                <span className='count'>{comment.vote_rank}</span>
-                {comment.vote_status === "downvote" ? (
-                  <img src={downvoteActive} alt='not helpful' />
-                ) : (
-                  <img src={downvote} alt='not helpful' />
-                )}
+          {/* Render the content */}
+          <div dangerouslySetInnerHTML={{ __html: comment.content }} />
+
+          <div className="action-bar">
+            <div className="left">
+              <div className="vote">
+                <div
+                  onClick={() =>
+                    dispatch(voteCommentThunk({ commentid: comment.id }))
+                  }
+                >
+                  {comment.vote_status === "upvote" ? (
+                    <img src={upvoteActive} alt="helpful" />
+                  ) : (
+                    <img src={upvote} alt="helpful" />
+                  )}
+                </div>
+                <span className="count">{comment.vote_rank}</span>
+                <div
+                  onClick={() =>
+                    dispatch(
+                      voteCommentThunk({
+                        commentid: comment.id,
+                        value: "downvote",
+                      })
+                    )
+                  }
+                >
+                  {comment.vote_status === "downvote" ? (
+                    <img src={downvoteActive} alt="not helpful" />
+                  ) : (
+                    <img src={downvote} alt="not helpful" />
+                  )}
+                </div>
               </div>
               {/* The add comment button */}
               <div
@@ -156,6 +181,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
                           commentid: comment.id,
                         })
                       );
+                      setHideReplies(false);
                     }}
                     className='show-replies'
                   >
@@ -171,6 +197,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
                       dispatch(
                         fetchSecondLevelCommentThunk({ commentid: comment?.id })
                       );
+                      setHideReplies(true);
                     }}
                     className='show-replies'
                   >
@@ -189,19 +216,29 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
 
           {showAddReply && (
             <AddReply
-              parentComment={comment}
+              parentCommentAuthor={comment?.user?.username}
               reply={newReply}
               postReply={postReply}
               onChange={handleChange}
             />
           )}
-
           {/* {comment.replies?.showReply && ( */}
-          <div className='children'>
-            {comment?.replies?.data?.map((reply) => (
-              <SecondLevelComment key={uuid()} reply={reply} match={match} />
-            ))}
-          </div>
+          {status === QfeedStates.LOADING && hideReplies ? (
+            <div className="text-brand"> Loading... </div>
+          ) : (
+            <div className="children">
+              {comment?.replies?.data?.map((reply) => (
+                <SecondLevelComment
+                  key={uuid()}
+                  reply={reply}
+                  match={match}
+                  setHideReply={setA}
+                  hideReply={a}
+                />
+              ))}
+            </div>
+          )}
+
           {/* )} */}
         </div>
       </div>

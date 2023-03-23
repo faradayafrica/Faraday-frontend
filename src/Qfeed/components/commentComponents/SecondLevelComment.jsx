@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import uuid from "react-uuid";
 import {
   createThirdLevelCommentThunk,
+  deleteReplyThunk,
   fetchThirdLevelCommentThunk,
-  hideSecondReply,
   hideThirdReply,
+  optimisticReplyVote,
+  QfeedStates,
+  voteReplyThunk,
 } from "../../../common/features/qfeed/qfeedSlice";
 import ThirdLevelComment from "./ThirdLevelComment";
 import moment from "moment";
@@ -29,18 +32,22 @@ import AddReply from "./AddReply";
 export default function SecondLevelComment({ reply }) {
   const [replyMenu, setReplyMenu] = useState(false);
 
+  const [hideReplies, setHideReplies] = useState();
   const [showAddReply, setShowAddReply] = useState(false);
   const [newReply, setNewReply] = useState("");
 
   const dispatch = useDispatch();
   const { check } = useSelector((state) => state.qfeed);
+  const { reply2Status: status } = useSelector(
+    (state) => state.qfeed.thisQuestion
+  );
 
   const toggleReplyMenu = () => {
     setReplyMenu(!replyMenu);
   };
 
   const onDeleteReply = () => {
-    console.log("Handle delete for 2nd level reply");
+    dispatch(deleteReplyThunk({ replyid: reply.id }));
   };
 
   const postReply = (limit) => {
@@ -58,8 +65,8 @@ export default function SecondLevelComment({ reply }) {
     }
   };
 
-  const handleChange = ({ currentTarget }) => {
-    setNewReply(currentTarget.value);
+  const handleChange = (value) => {
+    setNewReply(value);
   };
 
   return (
@@ -107,22 +114,72 @@ export default function SecondLevelComment({ reply }) {
               />
             )}
           </div>
-          <p className="content"> {reply.content}</p>
+
+          {/* Render the content */}
+          <div dangerouslySetInnerHTML={{ __html: reply.content }} />
 
           <div className="action-bar">
             <div className="left">
               <div className="vote">
-                {reply.vote_status === "upvote" ? (
-                  <img src={upvoteActive} alt="helpful" />
-                ) : (
-                  <img src={upvote} alt="helpful" />
-                )}
+                <div
+                  onClick={() => {
+                    dispatch(
+                      optimisticReplyVote({
+                        replyid: reply.id,
+                        value: {
+                          rank:
+                            reply.vote_status === null
+                              ? reply.vote_rank + 1
+                              : reply.vote_status === "upvote"
+                              ? reply.vote_rank - 1
+                              : reply.vote_status === "downvote" &&
+                                reply.vote_rank + 2,
+                          status:
+                            reply.vote_status === "upvote" ? null : "upvote",
+                        },
+                      })
+                    );
+                    dispatch(voteReplyThunk({ replyid: reply.id }));
+                  }}
+                >
+                  {reply.vote_status === "upvote" ? (
+                    <img src={upvoteActive} alt="helpful" />
+                  ) : (
+                    <img src={upvote} alt="helpful" />
+                  )}
+                </div>
                 <span className="count">{reply.vote_rank}</span>
-                {reply.vote_status === "downvote" ? (
-                  <img src={downvoteActive} alt="not helpful" />
-                ) : (
-                  <img src={downvote} alt="not helpful" />
-                )}
+                <div
+                  onClick={() => {
+                    dispatch(
+                      optimisticReplyVote({
+                        replyid: reply.id,
+                        value: {
+                          rank:
+                            reply.vote_status === null
+                              ? reply.vote_rank - 1
+                              : reply.vote_status === "downvote"
+                              ? reply.vote_rank + 1
+                              : reply.vote_status === "upvote" &&
+                                reply.vote_rank - 2,
+                          status:
+                            reply.vote_status === "downvote"
+                              ? null
+                              : "downvote",
+                        },
+                      })
+                    );
+                    dispatch(
+                      voteReplyThunk({ replyid: reply.id, value: "downvote" })
+                    );
+                  }}
+                >
+                  {reply.vote_status === "downvote" ? (
+                    <img src={downvoteActive} alt="not helpful" />
+                  ) : (
+                    <img src={downvote} alt="not helpful" />
+                  )}
+                </div>
               </div>
               {/* The add reply button */}
               <div
@@ -140,9 +197,10 @@ export default function SecondLevelComment({ reply }) {
                 {reply?.replies?.showReply ? (
                   <div
                     onClick={() => {
-                      dispatch(hideThirdReply({ replyid: reply.id }));
-                      console.log("Handle hide 3rd lvl reply");
-                      // TODO: Handle hide 3rd lvl reply
+                      setHideReplies(false);
+                      setTimeout(() => {
+                        dispatch(hideThirdReply({ replyid: reply.id }));
+                      }, 200);
                     }}
                     className="show-replies"
                   >
@@ -155,6 +213,7 @@ export default function SecondLevelComment({ reply }) {
                 ) : (
                   <div
                     onClick={() => {
+                      setHideReplies(true);
                       dispatch(
                         fetchThirdLevelCommentThunk({ commentid: reply?.id })
                       );
@@ -177,19 +236,24 @@ export default function SecondLevelComment({ reply }) {
           {/* Input field to add a reply */}
           {showAddReply && (
             <AddReply
-              parentComment={reply}
+              parentCommentAuthor={reply?.by_user?.username}
               reply={newReply}
               postReply={postReply}
               onChange={handleChange}
             />
           )}
 
+          {console.log(status, reply.replies)}
           {/* Render replies here */}
-          <div className="children">
-            {reply?.replies?.data.map((reply) => (
-              <ThirdLevelComment key={uuid()} reply={reply} />
-            ))}
-          </div>
+          {status === QfeedStates.LOADING && reply.id ? (
+            <div className="text-brand"> Loading... </div>
+          ) : (
+            <div className="children">
+              {reply?.replies?.data.map((reply) => (
+                <ThirdLevelComment key={uuid()} reply={reply} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

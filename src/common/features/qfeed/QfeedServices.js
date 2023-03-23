@@ -97,10 +97,19 @@ export default class QService {
   }
 
   static async createComment(postid, content) {
-    const { data } = await http.post(apiRoutes.createcomment, {
-      postid,
-      content,
-    });
+    const { data } = await http.post(
+      apiBase + `/qfeed//que/create_comment/${postid}/`,
+      {
+        content,
+      }
+    );
+    return data;
+  }
+
+  static async voteComment(commentid, value) {
+    const { data } = await http.post(
+      apiBase + `/qfeed/comments/vote/${commentid}/${value}/`
+    );
     return data;
   }
 
@@ -110,6 +119,7 @@ export default class QService {
       const { data } = await http.get(
         apiBase + `/qfeed/comments/${commentid}/replies/` // || `qfeed/comments/reply/${commentid}/`
       );
+
       return data;
     } else {
       const { data } = await axios.get(
@@ -153,7 +163,14 @@ export default class QService {
 
   static async deleteReply(replyid) {
     const { data } = await http.delete(
-      apiRoutes.deleteComment + `reply/${replyid}/delete/`
+      apiBase + `/qfeed/reply/${replyid}/delete/`
+    );
+    return data;
+  }
+
+  static async voteReply(replyid, value) {
+    const { data } = await http.post(
+      apiBase + `/qfeed/reply/vote/${replyid}/${value}/`
     );
     return data;
   }

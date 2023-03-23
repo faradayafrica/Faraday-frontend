@@ -12,6 +12,11 @@ import downvoteActive from "../../assets/downvote-active.svg";
 
 import replyImg from "../../assets/reply.svg";
 import { useState } from "react";
+import {
+  deleteReplyThunk,
+  optimisticReplyVote,
+  voteReplyThunk,
+} from "../../../common/features/qfeed/qfeedSlice";
 
 export default function ThirdLevelComment({ reply }) {
   const [replyMenu, setReplyMenu] = useState(false);
@@ -22,6 +27,7 @@ export default function ThirdLevelComment({ reply }) {
   };
 
   const onDeleteReply = () => {
+    dispatch(deleteReplyThunk({ replyid: reply.id }));
     console.log("Handle delete for 3rd level reply");
   };
 
@@ -70,28 +76,78 @@ export default function ThirdLevelComment({ reply }) {
               />
             )}
           </div>
-          <p className="content"> {reply.content}</p>
+
+          {/* Render the content */}
+          <div dangerouslySetInnerHTML={{ __html: reply.content }} />
 
           <div className="action-bar">
             <div className="left">
               <div className="vote">
-                {reply.vote_status === "upvote" ? (
-                  <img src={upvoteActive} alt="helpful" />
-                ) : (
-                  <img src={upvote} alt="helpful" />
-                )}
+                <div
+                  onClick={() => {
+                    dispatch(
+                      optimisticReplyVote({
+                        replyid: reply.id,
+                        value: {
+                          rank:
+                            reply.vote_status === null
+                              ? reply.vote_rank + 1
+                              : reply.vote_status === "upvote"
+                              ? reply.vote_rank - 1
+                              : reply.vote_status === "downvote" &&
+                                reply.vote_rank + 2,
+                          status:
+                            reply.vote_status === "upvote" ? null : "upvote",
+                        },
+                      })
+                    );
+                    dispatch(voteReplyThunk({ replyid: reply.id }));
+                  }}
+                >
+                  {reply.vote_status === "upvote" ? (
+                    <img src={upvoteActive} alt="helpful" />
+                  ) : (
+                    <img src={upvote} alt="helpful" />
+                  )}
+                </div>
                 <span className="count">{reply.vote_rank}</span>
-                {reply.vote_status === "downvote" ? (
-                  <img src={downvoteActive} alt="not helpful" />
-                ) : (
-                  <img src={downvote} alt="not helpful" />
-                )}
+                <div
+                  onClick={() => {
+                    dispatch(
+                      optimisticReplyVote({
+                        replyid: reply.id,
+                        value: {
+                          rank:
+                            reply.vote_status === null
+                              ? reply.vote_rank - 1
+                              : reply.vote_status === "downvote"
+                              ? reply.vote_rank + 1
+                              : reply.vote_status === "upvote" &&
+                                reply.vote_rank - 2,
+                          status:
+                            reply.vote_status === "downvote"
+                              ? null
+                              : "downvote",
+                        },
+                      })
+                    );
+                    dispatch(
+                      voteReplyThunk({ replyid: reply.id, value: "downvote" })
+                    );
+                  }}
+                >
+                  {reply.vote_status === "downvote" ? (
+                    <img src={downvoteActive} alt="not helpful" />
+                  ) : (
+                    <img src={downvote} alt="not helpful" />
+                  )}
+                </div>
               </div>
               {/* The add reply button */}
-              <div className="reply">
+              {/* <div className="reply">
                 <img src={replyImg} alt="reply" />
                 <span>Reply</span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
