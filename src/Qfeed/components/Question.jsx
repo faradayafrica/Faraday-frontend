@@ -86,8 +86,16 @@ const Question = (props) => {
     }
   };
 
+  const token = localStorage.getItem("token");
+
   // This could go 2 levels up the family tree (@Qfeed) so that there's no need to recreate the function @DiscussionPage
   const handleLike = async (postid) => {
+    if (token === null || token === undefined) {
+      return history.push(
+        `/login?redirect=${window.origin}/qfeed/${postid}`
+      );
+    }
+
     if (question.liked) {
       dispatch(voteQuestionThunk({ postid, value: "downvote" }));
     } else {
@@ -102,7 +110,7 @@ const Question = (props) => {
   return (
     <div className=' question-component pl-3 pr-2 pt-3 sm:pt-4 bg-white hover:bg-[#fafafacc] flex justify-start items-start relative'>
       <Link
-        to={`/me/${question?.user.username}`}
+        to={token === null || token === undefined ? `/login?redirect=${window.origin}/qfeed/${question.id}` : `/me/${question?.user.username}`}
         style={{ textDecoration: "none" }}
         className='w-14 mr-2 cursor-pointer'
       >

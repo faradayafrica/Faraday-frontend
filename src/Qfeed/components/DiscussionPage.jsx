@@ -97,7 +97,12 @@ const DiscussionPage = ({ match, history }) => {
     }, 500);
   };
 
+  const token = localStorage.getItem("token");
+
   const handleQuestionLike = async (postid) => {
+    if (token === null || token === undefined) {
+      return history.push(`/login?redirect=${window.origin}/qfeed/${postid}`);
+    }
     if (question.liked) {
       dispatch(voteQuestionThunk({ postid, value: "downvote" }));
     } else {
@@ -239,7 +244,11 @@ const DiscussionPage = ({ match, history }) => {
             <div className=' py-3 relative'>
               <div className='pl-3 pr-2'>
                 <Link
-                  to={`/me/${question?.user.username}`}
+                  to={
+                    token === null || token === undefined
+                      ? `/login?redirect=${window.origin}/qfeed/${question.id}`
+                      : `/me/${question?.user.username}`
+                  }
                   style={{ textDecoration: "none" }}
                   className='w-14 mr-2 cursor-pointer float-left'
                 >

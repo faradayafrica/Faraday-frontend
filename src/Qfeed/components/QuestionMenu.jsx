@@ -97,7 +97,9 @@ const QuestionMenu = ({
               className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
               onClick={() => {
                 token === null || token === undefined
-                  ? history.push("/login")
+                  ? history.push(
+                      `/login?redirect=${window.origin}/qfeed/${question.id}`
+                    )
                   : handleSaveQues(question.id);
               }}
             >
@@ -149,7 +151,11 @@ const QuestionMenu = ({
                 <button
                   className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
                   onClick={() => {
-                    handleFollow(question?.user?.username);
+                    token === null || token === undefined
+                      ? history.push(
+                          `/login?redirect=${window.origin}/qfeed/${question.id}`
+                        )
+                      : handleFollow(question?.user?.username);
                     hideMenu();
                   }}
                 >
@@ -188,7 +194,9 @@ const QuestionMenu = ({
                 className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
                 onClick={() => {
                   token === null || token === undefined
-                    ? history.push("/login")
+                    ? history.push(
+                        `/login?redirect=${window.origin}/qfeed/${question.id}`
+                      )
                     : handleSaveQues(question.id);
                 }}
               >
@@ -235,7 +243,11 @@ const QuestionMenu = ({
                   <button
                     className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
                     onClick={() => {
-                      handleFollow(question?.user?.username);
+                      token === null || token === undefined
+                        ? history.push(
+                            `/login?redirect=${window.origin}/qfeed/${question.id}`
+                          )
+                        : handleFollow(question?.user?.username);
                       hideMenu();
                     }}
                   >
