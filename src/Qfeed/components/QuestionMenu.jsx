@@ -190,7 +190,9 @@ const QuestionMenu = ({
                 className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
                 onClick={() => {
                   token === null || token === undefined
-                    ? history.push("/login")
+                    ? history.push(
+                        `/login?redirect=${window.origin}/qfeed/${question.id}`
+                      )
                     : handleSaveQues(question.id);
                 }}
               >
