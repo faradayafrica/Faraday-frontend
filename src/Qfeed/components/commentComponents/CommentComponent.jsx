@@ -64,40 +64,46 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
     setNewReply(currentTarget.value);
   };
 
+  const token = localStorage.getItem("token");
+
   return (
     <div className={`comment-wrapper ${comment.is_solution && "solution"} `}>
-      <div className="content-wrapper">
+      <div className='content-wrapper'>
         <Link
-          to={`/me/${comment?.user?.username}`}
+          to={
+            token === null || token === undefined
+              ? `/login?redirect=${window.origin}/qfeed/${comment.id}`
+              : `/me/${comment?.user.username}`
+          }
           style={{ textDecoration: "none" }}
-          className="profile-img"
+          className='profile-img'
         >
           <img
             src={comment?.user?.profile_pic}
             style={{ objectFit: "cover" }}
-            alt=""
+            alt=''
           />
         </Link>
 
-        <div className="offset">
-          <div className="user">
-            <p className="author">
+        <div className='offset'>
+          <div className='user'>
+            <p className='author'>
               {comment.user.firstname} {comment.user.lastname}
             </p>
-            <p className="username">@{comment.user.username}</p>
-            <p className="time">{moment(comment?.created).fromNow()} </p>
+            <p className='username'>@{comment.user.username}</p>
+            <p className='time'>{moment(comment?.created).fromNow()} </p>
 
             <div
-              className=" cursor-pointer absolute right-[-6px] top-2 rounded-md"
+              className=' cursor-pointer absolute right-[-6px] top-2 rounded-md'
               onClick={() => {
                 toggleCommentMenu(comment);
               }}
             >
               <img
                 src={ellipses}
-                className="w-6 h-6 rounded-full m-1 "
+                className='w-6 h-6 rounded-full m-1 '
                 style={{ objectFit: "cover" }}
-                alt=""
+                alt=''
               />
             </div>
             {commentMenu && (
@@ -112,29 +118,29 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               />
             )}
           </div>
-          <p className="content"> {comment.content}</p>
+          <p className='content'> {comment.content}</p>
 
-          <div className="action-bar">
-            <div className="left">
-              <div className="vote">
+          <div className='action-bar'>
+            <div className='left'>
+              <div className='vote'>
                 {comment.vote_status === "upvote" ? (
-                  <img src={upvoteActive} alt="helpful" />
+                  <img src={upvoteActive} alt='helpful' />
                 ) : (
-                  <img src={upvote} alt="helpful" />
+                  <img src={upvote} alt='helpful' />
                 )}
-                <span className="count">{comment.vote_rank}</span>
+                <span className='count'>{comment.vote_rank}</span>
                 {comment.vote_status === "downvote" ? (
-                  <img src={downvoteActive} alt="not helpful" />
+                  <img src={downvoteActive} alt='not helpful' />
                 ) : (
-                  <img src={downvote} alt="not helpful" />
+                  <img src={downvote} alt='not helpful' />
                 )}
               </div>
               {/* The add comment button */}
               <div
-                className="reply"
+                className='reply'
                 onClick={() => setShowAddReply(!showAddReply)}
               >
-                <img src={replyImg} alt="reply" />
+                <img src={replyImg} alt='reply' />
                 <span>Reply</span>
               </div>
             </div>
@@ -151,13 +157,13 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
                         })
                       );
                     }}
-                    className="show-replies"
+                    className='show-replies'
                   >
-                    <img src={hide} alt="hide" />{" "}
-                    <span className="desktop">
+                    <img src={hide} alt='hide' />{" "}
+                    <span className='desktop'>
                       Hide replies ({comment.reply_count})
                     </span>
-                    <span className="mobile">{comment.reply_count}</span>
+                    <span className='mobile'>{comment.reply_count}</span>
                   </div>
                 ) : (
                   <div
@@ -166,13 +172,13 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
                         fetchSecondLevelCommentThunk({ commentid: comment?.id })
                       );
                     }}
-                    className="show-replies"
+                    className='show-replies'
                   >
-                    <img src={show} alt="show" />
-                    <span className="desktop">
+                    <img src={show} alt='show' />
+                    <span className='desktop'>
                       Show replies ({comment.reply_count})
                     </span>
-                    <span className="mobile">{comment.reply_count}</span>
+                    <span className='mobile'>{comment.reply_count}</span>
                   </div>
                 )}{" "}
               </>
@@ -191,7 +197,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
           )}
 
           {/* {comment.replies?.showReply && ( */}
-          <div className="children">
+          <div className='children'>
             {comment?.replies?.data?.map((reply) => (
               <SecondLevelComment key={uuid()} reply={reply} match={match} />
             ))}
