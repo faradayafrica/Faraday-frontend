@@ -19,6 +19,7 @@ const initialState = {
   thisQuestion: {
     question: {},
     comments: [],
+    newComment: "",
     shortLink: "",
     replyStatus: "base",
     reply2Status: "base",
@@ -271,6 +272,12 @@ const qfeedSlice = createSlice({
         [name]: value,
       };
     },
+
+    onChangeComment: (state, action) => {
+      const { content } = action.payload;
+      state.thisQuestion.newComment = content;
+    },
+
     // <----------Comments Home Reducers ----------->
     hideSecondReply: (state, action) => {
       const { commentid } = action.payload;
@@ -382,7 +389,9 @@ const qfeedSlice = createSlice({
     },
 
     resetStatus: (state) => {
-      state.base = QfeedStates.BASE;
+      state.status = QfeedStates.BASE;
+      state.thisQuestion.replyStatus = QfeedStates.BASE;
+      state.thisQuestion.reply2Status = QfeedStates.BASE;
     },
 
     resetToast: (state) => {
@@ -762,6 +771,7 @@ const qfeedSlice = createSlice({
         state.feed.qfeed = newFeed;
 
         state.status = QfeedStates.SUCCESSFUL;
+        state.thisQuestion.newComment = "";
       }
     });
     builder.addCase(createCommentThunk.rejected, (state) => {
@@ -1109,6 +1119,7 @@ export default qfeedSlice.reducer;
 export const {
   updateFeed,
   updateQuestion,
+  onChangeComment,
   updateProfile,
   resetProfile,
   hideSecondReply,

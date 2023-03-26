@@ -9,11 +9,14 @@ const AddComment = ({
   onChange,
   postComment,
   questionId,
-  comment,
+  // comment,
 }) => {
   const LIMIT = 450;
 
   const { question } = useSelector((state) => state.qfeed.thisQuestion);
+  const { newComment: comment } = useSelector(
+    (state) => state.qfeed.thisQuestion
+  );
   // const { online } = useSelector((state) => state.user.onlineStatus);
 
   if (!currentUser.username) {

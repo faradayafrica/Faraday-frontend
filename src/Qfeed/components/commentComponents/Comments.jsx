@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   createCommentThunk,
   deleteCommentThunk,
+  onChangeComment,
   updateQuestion,
 } from "../../../common/features/qfeed/qfeedSlice";
 
@@ -26,12 +27,14 @@ const Comments = ({
   hasNextPage,
   isFetchingNextPage,
 }) => {
-  const [comment, setComment] = useState("");
   const [pendingComments, setPendingComments] = useState([]);
   const currentUser = getCurrentUser();
 
   // Redux biz starts here
   const { question } = useSelector((state) => state.qfeed.thisQuestion);
+  const { newComment: comment } = useSelector(
+    (state) => state.qfeed.thisQuestion
+  );
   const dispatch = useDispatch();
 
   const uniqueComments = Array.from(new Set(comments?.map((a) => a.id))).map(
@@ -74,7 +77,7 @@ const Comments = ({
   const allComments = [...pendingContents, ...uniqueComments];
 
   function handleChange(value) {
-    setComment(value);
+    dispatch(onChangeComment({ content: value }));
   }
 
   const postComment = (postid, limit) => {

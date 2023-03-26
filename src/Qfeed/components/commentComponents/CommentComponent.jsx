@@ -74,7 +74,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
 
   return (
     <div className={`comment-wrapper ${comment.is_solution && "solution"} `}>
-      <div className='content-wrapper'>
+      <div className="content-wrapper">
         <Link
           to={
             token === null || token === undefined
@@ -82,34 +82,34 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               : `/me/${comment?.user.username}`
           }
           style={{ textDecoration: "none" }}
-          className='profile-img'
+          className="profile-img"
         >
           <img
             src={comment?.user?.profile_pic}
             style={{ objectFit: "cover" }}
-            alt=''
+            alt=""
           />
         </Link>
 
-        <div className='offset'>
-          <div className='user'>
-            <p className='author'>
+        <div className="offset">
+          <div className="user">
+            <p className="author">
               {comment.user.firstname} {comment.user.lastname}
             </p>
-            <p className='username'>@{comment.user.username}</p>
-            <p className='time'>{moment(comment?.created).fromNow()} </p>
+            <p className="username">@{comment.user.username}</p>
+            <p className="time">{moment(comment?.created).fromNow()} </p>
 
             <div
-              className=' cursor-pointer absolute right-[-6px] top-2 rounded-md'
+              className=" cursor-pointer absolute right-[-6px] top-2 rounded-md"
               onClick={() => {
                 toggleCommentMenu(comment);
               }}
             >
               <img
                 src={ellipses}
-                className='w-6 h-6 rounded-full m-1 '
+                className="w-6 h-6 rounded-full m-1 "
                 style={{ objectFit: "cover" }}
-                alt=''
+                alt=""
               />
             </div>
             {commentMenu && (
@@ -162,10 +162,10 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               </div>
               {/* The add comment button */}
               <div
-                className='reply'
+                className="reply"
                 onClick={() => setShowAddReply(!showAddReply)}
               >
-                <img src={replyImg} alt='reply' />
+                <img src={replyImg} alt="reply" />
                 <span>Reply</span>
               </div>
             </div>
@@ -183,13 +183,13 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
                       );
                       setHideReplies(false);
                     }}
-                    className='show-replies'
+                    className="show-replies"
                   >
-                    <img src={hide} alt='hide' />{" "}
-                    <span className='desktop'>
+                    <img src={hide} alt="hide" />{" "}
+                    <span className="desktop">
                       Hide replies ({comment.reply_count})
                     </span>
-                    <span className='mobile'>{comment.reply_count}</span>
+                    <span className="mobile">{comment.reply_count}</span>
                   </div>
                 ) : (
                   <div
@@ -199,13 +199,13 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
                       );
                       setHideReplies(true);
                     }}
-                    className='show-replies'
+                    className="show-replies"
                   >
-                    <img src={show} alt='show' />
-                    <span className='desktop'>
+                    <img src={show} alt="show" />
+                    <span className="desktop">
                       Show replies ({comment.reply_count})
                     </span>
-                    <span className='mobile'>{comment.reply_count}</span>
+                    <span className="mobile">{comment.reply_count}</span>
                   </div>
                 )}{" "}
               </>
@@ -220,6 +220,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               reply={newReply}
               postReply={postReply}
               onChange={handleChange}
+              close={() => setShowAddReply(false)}
             />
           )}
           {/* {comment.replies?.showReply && ( */}
