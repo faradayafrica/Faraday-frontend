@@ -191,9 +191,9 @@ export const fetchSecondLevelCommentThunk = createAsyncThunk(
 // Fetch a third level comment
 export const fetchThirdLevelCommentThunk = createAsyncThunk(
   "qfeed/fetch-third-comment",
-  async ({ commentid }, { rejectWithValue }) => {
+  async ({ commentid, url }, { rejectWithValue }) => {
     try {
-      const response = await QService.fetchThirdComments(commentid);
+      const response = await QService.fetchThirdComments(commentid, url);
       return response;
     } catch (error) {
       return rejectWithValue(error.toString());
@@ -297,37 +297,21 @@ const qfeedSlice = createSlice({
     },
 
     hideThirdReply: (state, action) => {
-      const { replyid } = action.payload;
-      // value = reply parent id
+      const { replyid, value } = action.payload;
 
-      const targetComment = findTargetComment(
-        state.thisQuestion.comments,
-        replyid
-      );
+      const _comments = state.thisQuestion.comments;
 
-      const targetCommentIndex = state.thisQuestion.comments.findIndex(
-        (comment) => comment.id === targetComment.id
-      );
-
-      const replyTarget = state.thisQuestion.comments[
-        targetCommentIndex
-      ].replies.data.findIndex((reply) => reply.id === replyid);
-
-      // value = {id: , }
-      if (
-        state.thisQuestion.comments[targetCommentIndex].replies.data[
-          replyTarget
-        ]
-      ) {
-        state.thisQuestion.comments[targetCommentIndex].replies.data[
-          replyTarget
-        ].replies = {
-          ...state.thisQuestion.comments[targetCommentIndex].replies.data[
-            replyTarget.replies
-          ],
-          showReply: false,
-          data: [],
-        };
+      for (let parent of _comments) {
+        if (parent.replies) {
+          for (let child of parent.replies.data) {
+            if (child.id === replyid) {
+              console.log(child, "<=========== Na me");
+              if (child.replies) {
+                child.replies.showReply = value;
+              }
+            }
+          }
+        }
       }
     },
 
@@ -803,21 +787,9 @@ const qfeedSlice = createSlice({
           parent.replies.next = data.next;
           parent.replies.showReply = true;
         } else {
-          parent.replies = { next: "", data: [], showReply: false };
+          parent.replies = { next: null, data: [], showReply: false };
         }
       }
-
-      // const newCommentReplies = state.thisQuestion.comments.map((comment) =>
-      //   comment.id === parent_id
-      //     ? {
-      //         ...comment,
-      //         replies: { next: data.next, data: data.results, showReply: true },
-      //       }
-      //     : {
-      //         ...comment,
-      //         replies: { next: "", data: [], showReply: false },
-      //       }
-      // );
       state.thisQuestion.replyStatus = QfeedStates.SUCCESSFUL;
     });
     builder.addCase(fetchSecondLevelCommentThunk.rejected, (state) => {
@@ -831,37 +803,62 @@ const qfeedSlice = createSlice({
     builder.addCase(fetchThirdLevelCommentThunk.fulfilled, (state, action) => {
       const data = action.payload;
       const parent_id = data?.results?.[0]?.parent_id; // Get the parent id
-      // console.log(data, "third lvl comment");
+      console.log(data, "<======== 3rd");
 
-      let targetComment = findTargetComment(
-        state.thisQuestion.comments,
-        parent_id
-      );
+      const _comments = state.thisQuestion.comments;
 
-      // Modify the mother/target comment to have the grandchildren comments
-      if (data.results.length > 0) {
-        const targetCommentReply = targetComment.replies.data.map((reply) =>
-          reply.id === parent_id
-            ? {
-                ...reply,
-                replies: {
-                  next: data.next,
-                  data: data.results,
-                  showReply: true,
-                },
+      for (let parent of _comments) {
+        if (parent.replies) {
+          for (let child of parent.replies.data) {
+            if (child.id === parent_id) {
+              console.log(child, "<=========== Na me");
+              if (child.replies) {
+                child.replies.data.push(...data.results);
+              } else {
+                child.replies = {
+                  data: [...data.results],
+                };
               }
-            : reply
-        );
-        targetComment.replies.data = targetCommentReply;
-
-        // Find the index of the comment to be replaced
-        const index = state.thisQuestion.comments.findIndex(
-          (comment) => comment.id === targetComment.id
-        );
-
-        // Replace the old target comment by the modified target comment
-        state.thisQuestion.comments[index] = targetComment;
+              child.replies.next = data.next;
+              child.replies.showReply = true;
+            } else {
+              child.replies = { next: null, data: [], showReply: false };
+            }
+          }
+        }
       }
+
+      state.thisQuestion.replyStatus = QfeedStates.SUCCESSFUL;
+
+      // let targetComment = findTargetComment(
+      //   state.thisQuestion.comments,
+      //   parent_id
+      // );
+
+      // // Modify the mother/target comment to have the grandchildren comments
+      // if (data.results.length > 0) {
+      //   const targetCommentReply = targetComment.replies.data.map((reply) =>
+      //     reply.id === parent_id
+      //       ? {
+      //           ...reply,
+      //           replies: {
+      //             next: data.next,
+      //             data: data.results,
+      //             showReply: true,
+      //           },
+      //         }
+      //       : reply
+      //   );
+      //   targetComment.replies.data = targetCommentReply;
+
+      //   // Find the index of the comment to be replaced
+      //   const index = state.thisQuestion.comments.findIndex(
+      //     (comment) => comment.id === targetComment.id
+      //   );
+
+      // Replace the old target comment by the modified target comment
+      //   state.thisQuestion.comments[index] = targetComment;
+      // }
 
       state.thisQuestion.reply2Status = QfeedStates.SUCCESSFUL;
     });

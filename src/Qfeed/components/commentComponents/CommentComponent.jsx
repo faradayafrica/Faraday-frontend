@@ -35,7 +35,6 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
   const [disclaimer, setDisclaimer] = useState(false);
 
   const [showReplies, setShowReplies] = useState(false);
-  // const [a, setA] = useState();
   const [showAddReply, setShowAddReply] = useState(false);
   const [newReply, setNewReply] = useState("");
 
@@ -254,7 +253,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
                 <div
                   className="text-brand my-2 py-2 font-medium cursor-pointer"
                   onClick={() => {
-                    console.log("Fetch more");
+                    setShowReplies(true);
                     dispatch(
                       fetchSecondLevelCommentThunk({
                         url: comment?.replies?.next,
@@ -273,8 +272,6 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
           ) : (
             ""
           )}
-
-          {/* )} */}
         </div>
       </div>
 

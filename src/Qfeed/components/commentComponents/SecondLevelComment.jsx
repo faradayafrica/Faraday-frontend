@@ -32,7 +32,7 @@ import AddReply from "./AddReply";
 export default function SecondLevelComment({ reply }) {
   const [replyMenu, setReplyMenu] = useState(false);
 
-  const [hideReplies, setHideReplies] = useState(true);
+  const [showReplies, setShowReplies] = useState(false);
   const [showAddReply, setShowAddReply] = useState(false);
   const [newReply, setNewReply] = useState("");
 
@@ -70,6 +70,10 @@ export default function SecondLevelComment({ reply }) {
   };
 
   useEffect(() => {
+    if (status === QfeedStates.SUCCESSFUL) {
+      // this prevents multiple comments showing the loading state
+      setShowReplies(false);
+    }
     if (status === QfeedStates.SENT) {
       setNewReply("");
     }
@@ -198,38 +202,16 @@ export default function SecondLevelComment({ reply }) {
             </div>
 
             {/* Hide replies section */}
-            {hideReplies ? (
-              <button
-                onClick={() => {
-                  setHideReplies(false);
-                  setTimeout(() => {
-                    dispatch(
-                      fetchThirdLevelCommentThunk({ commentid: reply?.id })
-                    );
-                  }, 400);
-                }}
-              >
-                Show
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  setHideReplies(true);
-                }}
-              >
-                Hide
-              </button>
-            )}
-            {/* {reply?.sub_count ? (
+            {reply?.sub_count ? (
               <>
                 {reply?.replies?.showReply ? (
                   <div
                     onClick={() => {
-                      setHideReplies(true);
-                      console.log("hide");
-                      // setTimeout(() => {
-                      //   dispatch(hideThirdReply({ replyid: reply.id }));
-                      // }, 200);
+                      setShowReplies(false);
+                      console.log("hide it");
+                      dispatch(
+                        hideThirdReply({ replyid: reply.id, value: false })
+                      );
                     }}
                     className="show-replies"
                   >
@@ -242,14 +224,23 @@ export default function SecondLevelComment({ reply }) {
                 ) : (
                   <div
                     onClick={() => {
-                      setHideReplies(false);
-                      console.log("show");
-                      if (reply.replies.data) {
-                        console.log("Already fetched");
+                      setShowReplies(true);
+                      if (reply?.replies?.data?.length > 0) {
+                        console.log("E dey b4");
+                        dispatch(
+                          hideThirdReply({
+                            replyid: reply.id,
+                            value: true,
+                          })
+                        );
+                      } else {
+                        console.log("fetch new");
+                        dispatch(
+                          fetchThirdLevelCommentThunk({
+                            commentid: reply?.id,
+                          })
+                        );
                       }
-                      dispatch(
-                        fetchThirdLevelCommentThunk({ commentid: reply?.id })
-                      );
                     }}
                     className="show-replies"
                   >
@@ -263,7 +254,7 @@ export default function SecondLevelComment({ reply }) {
               </>
             ) : (
               ""
-            )} */}
+            )}
           </div>
 
           {/* Input field to add a reply */}
@@ -277,23 +268,35 @@ export default function SecondLevelComment({ reply }) {
           )}
 
           {/* Render replies here */}
-          {hideReplies ? (
-            ""
-          ) : status === QfeedStates.LOADING ? (
+          {reply?.replies?.showReply && (
+            <div className="children">
+              {reply?.replies?.data?.map((reply) => (
+                <ThirdLevelComment key={uuid()} reply={reply} />
+              ))}
+              {console.log(reply?.replies, "<=================== Look")}
+              {reply?.replies?.next && (
+                <div
+                  className="text-brand my-2 py-2 font-medium cursor-pointer"
+                  onClick={() => {
+                    setShowReplies(true);
+                    dispatch(
+                      fetchThirdLevelCommentThunk({
+                        url: reply?.replies?.next,
+                      })
+                    );
+                  }}
+                >
+                  Load more
+                </div>
+              )}
+            </div>
+          )}
+
+          {status === QfeedStates.LOADING && showReplies ? (
             <div className="text-brand"> Loading... </div>
           ) : (
             ""
           )}
-
-          {/* {!hideReplies && status === QfeedStates.LOADING ? (
-            <div className="text-brand"> Loading... </div>
-          ) : (
-            <div className="children">
-              {reply?.replies?.data.map((reply) => (
-                <ThirdLevelComment key={uuid()} reply={reply} />
-              ))}
-            </div>
-          )} */}
         </div>
       </div>
 
