@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import uuid from "react-uuid";
 import {
@@ -32,12 +32,12 @@ import AddReply from "./AddReply";
 export default function SecondLevelComment({ reply }) {
   const [replyMenu, setReplyMenu] = useState(false);
 
-  const [hideReplies, setHideReplies] = useState();
+  const [hideReplies, setHideReplies] = useState(true);
   const [showAddReply, setShowAddReply] = useState(false);
   const [newReply, setNewReply] = useState("");
 
   const dispatch = useDispatch();
-  const { check } = useSelector((state) => state.qfeed);
+  // const { check } = useSelector((state) => state.qfeed);
   const { reply2Status: status } = useSelector(
     (state) => state.qfeed.thisQuestion
   );
@@ -69,6 +69,12 @@ export default function SecondLevelComment({ reply }) {
     setNewReply(value);
   };
 
+  useEffect(() => {
+    if (status === QfeedStates.SENT) {
+      setNewReply("");
+    }
+  }, [status]);
+
   return (
     <div className="">
       <div className="content-wrapper">
@@ -87,9 +93,9 @@ export default function SecondLevelComment({ reply }) {
         <div className="offset">
           <div className="user">
             <p className="author">
-              {reply.by_user.firstname} {reply.by_user.lastname}
+              {reply?.by_user?.firstname} {reply?.by_user?.lastname}
             </p>
-            <p className="username">@{reply.by_user.username}</p>
+            <p className="username">@{reply?.by_user?.username}</p>
             <p className="time">{moment(reply?.created).fromNow()} </p>
 
             {/* Reply menu */}
@@ -192,15 +198,38 @@ export default function SecondLevelComment({ reply }) {
             </div>
 
             {/* Hide replies section */}
-            {reply?.sub_count ? (
+            {hideReplies ? (
+              <button
+                onClick={() => {
+                  setHideReplies(false);
+                  setTimeout(() => {
+                    dispatch(
+                      fetchThirdLevelCommentThunk({ commentid: reply?.id })
+                    );
+                  }, 400);
+                }}
+              >
+                Show
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setHideReplies(true);
+                }}
+              >
+                Hide
+              </button>
+            )}
+            {/* {reply?.sub_count ? (
               <>
                 {reply?.replies?.showReply ? (
                   <div
                     onClick={() => {
-                      setHideReplies(false);
-                      setTimeout(() => {
-                        dispatch(hideThirdReply({ replyid: reply.id }));
-                      }, 200);
+                      setHideReplies(true);
+                      console.log("hide");
+                      // setTimeout(() => {
+                      //   dispatch(hideThirdReply({ replyid: reply.id }));
+                      // }, 200);
                     }}
                     className="show-replies"
                   >
@@ -213,7 +242,11 @@ export default function SecondLevelComment({ reply }) {
                 ) : (
                   <div
                     onClick={() => {
-                      setHideReplies(true);
+                      setHideReplies(false);
+                      console.log("show");
+                      if (reply.replies.data) {
+                        console.log("Already fetched");
+                      }
                       dispatch(
                         fetchThirdLevelCommentThunk({ commentid: reply?.id })
                       );
@@ -230,7 +263,7 @@ export default function SecondLevelComment({ reply }) {
               </>
             ) : (
               ""
-            )}
+            )} */}
           </div>
 
           {/* Input field to add a reply */}
@@ -243,9 +276,16 @@ export default function SecondLevelComment({ reply }) {
             />
           )}
 
-          {console.log(status, reply.replies)}
           {/* Render replies here */}
-          {status === QfeedStates.LOADING && reply.id ? (
+          {hideReplies ? (
+            ""
+          ) : status === QfeedStates.LOADING ? (
+            <div className="text-brand"> Loading... </div>
+          ) : (
+            ""
+          )}
+
+          {/* {!hideReplies && status === QfeedStates.LOADING ? (
             <div className="text-brand"> Loading... </div>
           ) : (
             <div className="children">
@@ -253,7 +293,7 @@ export default function SecondLevelComment({ reply }) {
                 <ThirdLevelComment key={uuid()} reply={reply} />
               ))}
             </div>
-          )}
+          )} */}
         </div>
       </div>
 
