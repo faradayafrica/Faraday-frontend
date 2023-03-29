@@ -295,7 +295,7 @@ const DiscussionPage = ({ match, history }) => {
                 </h3>
 
                 <div className='text-sm sm:text-base m-0 mb-2 '>
-                  {question?.content.split("\n").map((item, idx) => (
+                  {question?.content?.split("\n").map((item, idx) => (
                     <p className='mb-1' key={idx}>
                       {item}
                     </p>

@@ -101,8 +101,8 @@ const Comments = ({
   };
 
   return (
-    <div className="bg-white">
-      <div className="">
+    <div className='bg-white'>
+      <div className=''>
         <AddComment
           onChange={handleChange}
           currentUser={currentUser}
@@ -114,7 +114,7 @@ const Comments = ({
 
       {comments.length ? (
         <>
-          <div className="">
+          <div className=''>
             {/* Solution here */}
             {uniqueComments
               .filter((comment) => comment.is_solution === true)
@@ -145,9 +145,9 @@ const Comments = ({
       ) : (
         <>
           {!commentLoader && (
-            <div className="p-3 bg-white">
-              <div className="p-3 rounded-lg border bg-background  text-center">
-                <p className="text-xs sm:text-base m-0 ">
+            <div className='p-3 bg-white'>
+              <div className='p-3 rounded-lg border bg-background  text-center'>
+                <p className='text-xs sm:text-base m-0 '>
                   {isError
                     ? error.message
                     : "No comments yet! Be the first to comment on this question"}
@@ -174,18 +174,18 @@ const Comments = ({
         <>
           {comments.length > 0 && !hasNextPage && (
             <>
-              <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
-                <p className="text-xs sm:text-base m-0 ">
+              <div className='p-3 m-3 mr-1 rounded-lg border bg-background  text-center'>
+                <p className='text-xs sm:text-base m-0 '>
                   No more comment to fetch
                 </p>
               </div>
-              <div className="h-[65px] w-full sm:hidden"></div>
+              <div className='h-[65px] w-full sm:hidden'></div>
             </>
           )}
         </>
       )}
 
-      <div className="h-4"></div>
+      <div className='h-4'></div>
     </div>
   );
 };
