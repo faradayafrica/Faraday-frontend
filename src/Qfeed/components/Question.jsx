@@ -117,12 +117,12 @@ const Question = (props) => {
     dispatch(deleteQuestionThunk({ ques_id }));
   }
 
+
   function handleEcho(ques_id) {
     dispatch(echoQuestionThunk({ ques_id }));
   }
 
   console.log(question, "question");
-
   if (question.type === "echo") {
     return (
       <QuestionComponent

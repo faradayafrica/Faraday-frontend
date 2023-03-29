@@ -118,18 +118,15 @@ export default class QService {
     return data;
   }
 
-  static async fetchSecondComments(commentid) {
+  static async fetchSecondComments(commentid, url) {
+    const urlEndPoint =
+      url || apiBase + `/qfeed/comments/${commentid}/replies/`; // || `qfeed/comments/reply/${commentid}/`
     const user = getCurrentUser();
     if (user?.username) {
-      const { data } = await http.get(
-        apiBase + `/qfeed/comments/${commentid}/replies/` // || `qfeed/comments/reply/${commentid}/`
-      );
-
+      const { data } = await http.get(urlEndPoint);
       return data;
     } else {
-      const { data } = await axios.get(
-        apiBase + `/qfeed/comments/${commentid}/replies/`
-      );
+      const { data } = await axios.get(urlEndPoint);
       return data;
     }
   }
@@ -144,17 +141,14 @@ export default class QService {
     return data;
   }
 
-  static async fetchThirdComments(commentid) {
+  static async fetchThirdComments(commentid, url) {
+    const urlEndPoint = url || apiBase + `/qfeed/reply/${commentid}/replies/`;
     const user = getCurrentUser();
     if (user?.username) {
-      const { data } = await http.get(
-        apiBase + `/qfeed/reply/${commentid}/replies/`
-      );
+      const { data } = await http.get(urlEndPoint);
       return data;
     } else {
-      const { data } = await axios.get(
-        apiBase + `/qfeed/reply/${commentid}/replies/`
-      );
+      const { data } = await axios.get(urlEndPoint);
       return data;
     }
   }

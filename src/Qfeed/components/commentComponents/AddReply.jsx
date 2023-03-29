@@ -9,6 +9,7 @@ export default function AddReply({
   reply,
   postReply,
   onChange,
+  close,
 }) {
   const currentUser = getCurrentUser();
   const LIMIT = 450;
@@ -36,42 +37,54 @@ export default function AddReply({
   }
 
   return (
-    <div className="reply-box">
-      <div className="content-wrapper ">
-        <Link
-          to={`/me/${currentUser.username}`}
-          style={{ textDecoration: "none" }}
-          className="profile-img"
-        >
-          <img
-            src={currentUser?.profile_pic}
-            style={{ objectFit: "cover" }}
-            alt=""
-          />
-        </Link>
+    <>
+      <div
+        className="fixed top-0 right-0 h-screen w-full left-0 z-20 bg-[#00000022] RTE-overlay"
+        onClick={() => {
+          close();
+        }}
+      ></div>
+      <div className="reply-box">
+        {/* <button onClick={close}>close</button> */}
+        <div className="text-brand mb-2 text-xs RTE-overlay">
+          To @{parentCommentAuthor}
+        </div>
+        <div className="content-wrapper ">
+          <Link
+            to={`/me/${currentUser.username}`}
+            style={{ textDecoration: "none" }}
+            className="profile-img"
+          >
+            <img
+              src={currentUser?.profile_pic}
+              style={{ objectFit: "cover" }}
+              alt=""
+            />
+          </Link>
 
-        <div className="offset flex justify-start align-bottom flex-col">
-          <div className="content">
-            {" "}
-            <div className="RTE-wrapper">
-              <RTF
-                value={reply}
-                onChange={onChange}
-                placeholder={`Reply to @${parentCommentAuthor}`}
-              />
-              {reply.length > 0 && (
-                <div className="m-0 pb-2 float-right">
-                  <PrimaryButton
-                    cta="Submit"
-                    action={() => postReply(LIMIT)}
-                    variant="small"
-                  />
-                </div>
-              )}
+          <div className="offset flex justify-start align-bottom flex-col">
+            <div className="content">
+              {" "}
+              <div className="RTE-wrapper">
+                <RTF
+                  value={reply}
+                  onChange={onChange}
+                  placeholder={"Leave a comment"}
+                />
+                {reply.length > 0 && (
+                  <div className="m-0 pb-2 float-right">
+                    <PrimaryButton
+                      cta="Submit"
+                      action={() => postReply(LIMIT)}
+                      variant="small"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ellipses from "../../assets/ellipses.svg";
 import info from "../../assets/info.svg";
@@ -34,8 +34,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
   const [commentMenu, setCommentMenu] = useState(false);
   const [disclaimer, setDisclaimer] = useState(false);
 
-  const [hideReplies, setHideReplies] = useState();
-  const [a, setA] = useState();
+  const [showReplies, setShowReplies] = useState(false);
   const [showAddReply, setShowAddReply] = useState(false);
   const [newReply, setNewReply] = useState("");
 
@@ -54,7 +53,6 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
       ErrorToast("Your comment is too long");
     } else {
       let content = newReply;
-      console.log("Handle Add 2nd level reply", comment.id);
       dispatch(
         createSecondLevelCommentThunk({
           commentid: comment.id,
@@ -62,8 +60,6 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
         })
       );
     }
-
-    // TODO: Clear the input after comment creation is successful
   };
 
   const handleChange = (value) => {
@@ -72,9 +68,19 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
 
   const token = localStorage.getItem("token");
 
+  useEffect(() => {
+    if (status === QfeedStates.SUCCESSFUL) {
+      // this prevents multiple comments showing the loading state
+      setShowReplies(false);
+    }
+    if (status === QfeedStates.SENT) {
+      setNewReply("");
+    }
+  }, [status]);
+
   return (
     <div className={`comment-wrapper ${comment.is_solution && "solution"} `}>
-      <div className='content-wrapper'>
+      <div className="content-wrapper">
         <Link
           to={
             token === null || token === undefined
@@ -82,41 +88,40 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               : `/me/${comment?.user.username}`
           }
           style={{ textDecoration: "none" }}
-          className='profile-img'
+          className="profile-img"
         >
           <img
             src={comment?.user?.profile_pic}
             style={{ objectFit: "cover" }}
-            alt=''
+            alt=""
           />
         </Link>
 
-        <div className='offset'>
-          <div className='user'>
-            <p className='author'>
+        <div className="offset">
+          <div className="user">
+            <p className="author">
               {comment.user.firstname} {comment.user.lastname}
             </p>
-            <p className='username'>@{comment.user.username}</p>
-            <p className='time'>{moment(comment?.created).fromNow()} </p>
+            <p className="username">@{comment.user.username}</p>
+            <p className="time">{moment(comment?.created).fromNow()} </p>
 
             <div
-              className=' cursor-pointer absolute right-[-6px] top-2 rounded-md'
+              className=" cursor-pointer absolute right-[-6px] top-2 rounded-md"
               onClick={() => {
                 toggleCommentMenu(comment);
               }}
             >
               <img
                 src={ellipses}
-                className='w-6 h-6 rounded-full m-1 '
+                className="w-6 h-6 rounded-full m-1 "
                 style={{ objectFit: "cover" }}
-                alt=''
+                alt=""
               />
             </div>
             {commentMenu && (
               <CommentMenu
                 match={match}
                 questionOwner={question.user}
-                // currentUser={currentUser}
                 selectedComment={comment}
                 onToggleCommentMenu={toggleCommentMenu}
                 onDeleteComment={onDeleteComment}
@@ -162,10 +167,10 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               </div>
               {/* The add comment button */}
               <div
-                className='reply'
+                className="reply"
                 onClick={() => setShowAddReply(!showAddReply)}
               >
-                <img src={replyImg} alt='reply' />
+                <img src={replyImg} alt="reply" />
                 <span>Reply</span>
               </div>
             </div>
@@ -176,36 +181,50 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
                 {comment?.replies?.showReply ? (
                   <div
                     onClick={() => {
+                      setShowReplies(false);
+
                       dispatch(
                         hideSecondReply({
                           commentid: comment.id,
+                          value: false,
                         })
                       );
-                      setHideReplies(false);
                     }}
-                    className='show-replies'
+                    className="show-replies"
                   >
-                    <img src={hide} alt='hide' />{" "}
-                    <span className='desktop'>
+                    <img src={hide} alt="hide" />{" "}
+                    <span className="desktop">
                       Hide replies ({comment.reply_count})
                     </span>
-                    <span className='mobile'>{comment.reply_count}</span>
+                    <span className="mobile">{comment.reply_count}</span>
                   </div>
                 ) : (
                   <div
                     onClick={() => {
-                      dispatch(
-                        fetchSecondLevelCommentThunk({ commentid: comment?.id })
-                      );
-                      setHideReplies(true);
+                      // check if data exists, if it does don't do another fetch, just set showReply to true
+                      if (comment?.replies?.data?.length > 0) {
+                        dispatch(
+                          hideSecondReply({
+                            commentid: comment.id,
+                            value: true,
+                          })
+                        );
+                      } else {
+                        dispatch(
+                          fetchSecondLevelCommentThunk({
+                            commentid: comment?.id,
+                          })
+                        );
+                      }
+                      setShowReplies(true);
                     }}
-                    className='show-replies'
+                    className="show-replies"
                   >
-                    <img src={show} alt='show' />
-                    <span className='desktop'>
+                    <img src={show} alt="show" />
+                    <span className="desktop">
                       Show replies ({comment.reply_count})
                     </span>
-                    <span className='mobile'>{comment.reply_count}</span>
+                    <span className="mobile">{comment.reply_count}</span>
                   </div>
                 )}{" "}
               </>
@@ -220,26 +239,39 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               reply={newReply}
               postReply={postReply}
               onChange={handleChange}
+              close={() => setShowAddReply(false)}
             />
           )}
-          {/* {comment.replies?.showReply && ( */}
-          {status === QfeedStates.LOADING && hideReplies ? (
-            <div className="text-brand"> Loading... </div>
-          ) : (
+
+          {comment?.replies?.showReply && (
             <div className="children">
               {comment?.replies?.data?.map((reply) => (
-                <SecondLevelComment
-                  key={uuid()}
-                  reply={reply}
-                  match={match}
-                  setHideReply={setA}
-                  hideReply={a}
-                />
+                <SecondLevelComment key={uuid()} reply={reply} match={match} />
               ))}
+
+              {comment?.replies?.next && (
+                <div
+                  className="text-brand my-2 py-2 font-medium cursor-pointer"
+                  onClick={() => {
+                    setShowReplies(true);
+                    dispatch(
+                      fetchSecondLevelCommentThunk({
+                        url: comment?.replies?.next,
+                      })
+                    );
+                  }}
+                >
+                  Load more
+                </div>
+              )}
             </div>
           )}
 
-          {/* )} */}
+          {status === QfeedStates.LOADING && showReplies ? (
+            <div className="text-brand"> Loading... </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
 
@@ -252,8 +284,6 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
           official account, we can't take responsibility for the comment
           marked as a solution.`}
       />
-
-      {/* {console.log(check, "check")} */}
     </div>
   );
 };
