@@ -95,7 +95,7 @@ function MobileSideNav() {
     <>
       <div className="mobile-sidenav">
         {/* Hamburger */}
-        <div className="w-full fixed top-0 left-0 z-40 p-2">
+        <div className="w-full fixed top-0 left-0 z-[1000] p-2">
           {/* fixed top nav for mobile */}
           {currentUser.username ? (
             <div

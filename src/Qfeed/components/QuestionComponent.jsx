@@ -42,7 +42,7 @@ function QuestionComponent({
 }) {
   return (
     <div
-      className={`question-component pl-3 pr-2 py-3 sm:pt-4 bg-white hover:bg-[#fafafacc] relative ${
+      className={`question-component px-3 py-3 sm:pt-4 bg-white hover:bg-[#fafafacc] relative ${
         Boolean(question.has_solution) ? "border-r-4 border-green-600" : ""
       }`}
       id='container__questions'
@@ -185,7 +185,7 @@ function QuestionComponent({
                 className='text-faraday-night hover:text-faraday-night flex items-center gap-2'
               >
                 <img src={replyImg} alt='reply' />
-                <span className='hidden sm:block'>
+                <span className=''>
                   {question.comment_count === 0
                     ? "Reply"
                     : `${question.comment_count}`}
@@ -280,12 +280,19 @@ function PinnedQuestion({ question }) {
         <span className='mr-2 '>@{question?.user.username} </span>{" "}
         <span>{moment(question?.created, "YYYYMMDD").fromNow()}</span>
       </p>
+      <Link
+                to={`/qfeed/${question.id}`}
+                style={{ textDecoration: "none" }}
+                className={`text-faraday-night hover:text-faraday-night `}
+              >
 
       <h3 className='text-lg font-semibold m-0 mb-1 md:text-xl'>
         {question?.title}
       </h3>
       {/* Question body --optional */}
       <p className='text-sm sm:text-base m-0 mb-2'>{question?.content}</p>
+              </Link>
+
     </div>
   );
 }

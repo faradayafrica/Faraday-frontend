@@ -176,7 +176,7 @@ const QuestionMenu = ({
           </div>
 
           {/* Same menu but for Mobile mode */}
-          <div className='fixed bottom-0 left-0 z-20 h-screen  w-full sm:hidden'>
+          <div className='fixed bottom-0 left-0 z-[100] h-screen  w-full sm:hidden'>
             <div
               className='fixed top-0 right-0 h-screen w-full left-0 z-20 bg-[#00000022] sm:hidden'
               onClick={() => {
@@ -186,7 +186,7 @@ const QuestionMenu = ({
 
             <div
               ref={question_menu_mobile}
-              className='z-50 absolute bottom-0 ask-shadow bg-white rounded-t-3xl w-full '
+              className='z-[100] absolute bottom-0 ask-shadow bg-white rounded-t-3xl w-full '
             >
               <div className='w-12 h-2 rounded-full mt-2 mb-4 mx-auto  bg-background2'></div>
 

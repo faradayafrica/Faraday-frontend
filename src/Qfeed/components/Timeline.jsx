@@ -39,7 +39,7 @@ const TimeLine = (props) => {
   }, [window.pageYOffset]);
 
   console.log(
-    questions.filter((ques) => ques.type === "pen"),
+    questions.filter((ques) => ques.type === "echo"),
     "ANNNNNNI"
   );
 
