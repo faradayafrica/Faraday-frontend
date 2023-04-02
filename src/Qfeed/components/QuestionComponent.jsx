@@ -33,7 +33,7 @@ function QuestionComponent({
   handleQuestionDelete,
 }) {
   return (
-    <div id='container__questions' className=' bg-white hover:bg-[#fafafacc]'>
+    <div id='container__questions' className=' bg-white'>
       {type === "echo" && (
         <div className='flex items-center gap-2 text-sm border-b-2 border-[#f5f5f5] py-1 px-3'>
           <BroadCastIcon />{" "}
@@ -123,13 +123,15 @@ function QuestionComponent({
                   </h3>
 
                   {/* Question body without a selected solution --optional */}
-                  <div className='text-sm sm:text-base m-0 mb-2'>
-                    {question?.content?.split("\n").map((item, idx) => (
-                      <p className='mb-1' key={idx}>
-                        {item}
-                      </p>
-                    ))}
-                  </div>
+                  {question && question?.content && (
+                    <div className='text-sm sm:text-base m-0 mb-2'>
+                      {question?.content?.split("\n").map((item, idx) => (
+                        <p className='mb-1' key={idx}>
+                          {item}
+                        </p>
+                      ))}
+                    </div>
+                  )}
                 </Link>
               ) : (
                 <>
