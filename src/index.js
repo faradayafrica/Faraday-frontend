@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./common/styles/index.css";
 import App from "./App";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
 import store from "./common/store/index.js";
 
