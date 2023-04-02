@@ -95,7 +95,7 @@ const TimeLine = (props) => {
         </Link>
 
         {props.isError ? (
-          <div className='p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center'>
+          <div className='p-3  rounded-lg border bg-background m-3 text-center'>
             <>
               <p className='text-sm sm:text-base '>Something went wrong</p>
               <SecondaryButton cta='Retry' action={props.refetch} />

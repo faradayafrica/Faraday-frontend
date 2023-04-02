@@ -386,7 +386,7 @@ const DiscussionPage = ({ match, history }) => {
               {loader ? (
                 <QuestionsLoader type='discussion' />
               ) : (
-                <div className='p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center'>
+                <div className='p-3  rounded-lg border bg-background m-3 text-center'>
                   <>
                     <p className='text-xs sm:text-sm '>
                       Couldn't fetch this question at this time, try again later
