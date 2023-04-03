@@ -294,13 +294,15 @@ const DiscussionPage = ({ match, history }) => {
                   {question?.title}
                 </h3>
 
-                <div className='text-sm sm:text-base m-0 mb-2 '>
-                  {question?.content?.split("\n").map((item, idx) => (
-                    <p className='mb-1' key={idx}>
-                      {item}
-                    </p>
-                  ))}
-                </div>
+                {question && question?.content && (
+                  <div className='text-sm sm:text-base m-0 mb-2'>
+                    {question?.content?.split("\n").map((item, idx) => (
+                      <p className='mb-1' key={idx}>
+                        {item}
+                      </p>
+                    ))}
+                  </div>
+                )}
 
                 {/* Engagement buttons  */}
                 <div className='mt-3 py-2 border-background2 border-t-[1px] border-b-[1px]'>
@@ -384,7 +386,7 @@ const DiscussionPage = ({ match, history }) => {
               {loader ? (
                 <QuestionsLoader type='discussion' />
               ) : (
-                <div className='p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center'>
+                <div className='p-3  rounded-lg border bg-background m-3 text-center'>
                   <>
                     <p className='text-xs sm:text-sm '>
                       Couldn't fetch this question at this time, try again later

@@ -217,7 +217,7 @@ function SideNav({ history }) {
       >
         <div className="position-fixed d-flex flex-column justify-content-between h-100">
           <div>
-            <nav className="row my-3 ml-1 menu-nav pb-4">
+            <nav className="flex flex-wrap my-3 ml-1 menu-nav pb-4">
               <img className=" navlink-brand " src={faraday} alt="faraday" />
             </nav>
             {links?.map((link) => (

@@ -38,10 +38,10 @@ const TimeLine = (props) => {
     return () => document.removeEventListener("scroll", save);
   }, [window.pageYOffset]);
 
-  console.log(
-    questions.filter((ques) => ques.type === "echo"),
-    "ANNNNNNI"
-  );
+  // console.log(
+  //   questions.filter((ques) => ques.type === "pen"),
+  //   "ANNNNNNI"
+  // );
 
   return (
     <div className='relative'>
@@ -95,7 +95,7 @@ const TimeLine = (props) => {
         </Link>
 
         {props.isError ? (
-          <div className='p-3 border-brand-highlight rounded-lg border bg-background m-3 text-center'>
+          <div className='p-3  rounded-lg border bg-background m-3 text-center'>
             <>
               <p className='text-sm sm:text-base '>Something went wrong</p>
               <SecondaryButton cta='Retry' action={props.refetch} />
