@@ -93,6 +93,10 @@
 .RTE .quill {
   border: 1px solid rgb(241 242 246 / 1);
   border-radius: 8px;
+
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column-reverse;
 }
 
 .RTE .quill > * {
@@ -120,12 +124,13 @@
 }
 
 .RTE .quill .ql-toolbar .ql-formats {
-  border-right: 1px solid #cfd9de;
+  /* border-right: 1px solid #cfd9de; */
   padding-right: 0.5rem;
+  margin: 0.2rem 0;
 }
 
 .RTE .quill .ql-toolbar .ql-formats > * {
-  margin-right: 0.25rem;
+  margin: 0 0.25rem;
 }
 
 .ql-snow .ql-stroke,

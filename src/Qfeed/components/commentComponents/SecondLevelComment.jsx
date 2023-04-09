@@ -268,6 +268,7 @@ export default function SecondLevelComment({ reply }) {
               reply={newReply}
               postReply={postReply}
               onChange={handleChange}
+              close={() => setShowAddReply(false)}
             />
           )}
 

@@ -96,33 +96,6 @@ const QuestionsLoader = ({ type, short }) => {
           </div>
 
           <CommentsLoader />
-
-          {/* <div className='mt-2'>
-            <div className='w-full  py-1 flex  animate-pulse'>
-              <div>
-                <div className='w-12 h-12 mr-2 bg-background2 rounded-full float-left'></div>
-              </div>
-              <div className='w-full'>
-                <div className=' h-24 rounded-xl  bg-background2 mt-2'></div>
-              </div>
-            </div>
-            <div className='w-full  py-1 flex  animate-pulse'>
-              <div>
-                <div className='w-12 h-12 mr-2 bg-background2 rounded-full float-left'></div>
-              </div>
-              <div className='w-full'>
-                <div className=' h-24 rounded-xl  bg-background2 mt-2'></div>
-              </div>
-            </div>
-            <div className='w-full  py-1 flex  animate-pulse'>
-              <div>
-                <div className='w-12 h-12 mr-2 bg-background2 rounded-full float-left'></div>
-              </div>
-              <div className='w-full'>
-                <div className=' h-24 rounded-xl  bg-background2 mt-2'></div>
-              </div>
-            </div>
-          </div> */}
         </div>
       </>
     );
