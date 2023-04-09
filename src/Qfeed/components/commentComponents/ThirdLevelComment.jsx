@@ -78,7 +78,10 @@ export default function ThirdLevelComment({ reply }) {
           </div>
 
           {/* Render the content */}
-          <div dangerouslySetInnerHTML={{ __html: reply.content }} />
+          <div
+            className="mb-4"
+            dangerouslySetInnerHTML={{ __html: reply.content }}
+          />
 
           <div className="action-bar">
             <div className="left">

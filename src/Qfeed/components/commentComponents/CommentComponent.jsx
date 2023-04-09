@@ -29,6 +29,7 @@ import "../../styles/comment.css";
 import AddReply from "./AddReply";
 import { ErrorToast } from "../../../common/components/CustomToast";
 import "react-quill/dist/quill.snow.css";
+import LazyReply from "./LazyReply";
 
 const CommentComponent = ({ match, comment, onDeleteComment }) => {
   const [commentMenu, setCommentMenu] = useState(false);
@@ -131,7 +132,10 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
           </div>
 
           {/* Render the content */}
-          <div dangerouslySetInnerHTML={{ __html: comment.content }} />
+          <div
+            className="mb-4"
+            dangerouslySetInnerHTML={{ __html: comment.content }}
+          />
 
           <div className="action-bar">
             <div className="left">
@@ -250,28 +254,30 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               ))}
 
               {comment?.replies?.next && (
-                <div
-                  className="text-brand my-2 py-2 font-medium cursor-pointer"
-                  onClick={() => {
-                    setShowReplies(true);
-                    dispatch(
-                      fetchSecondLevelCommentThunk({
-                        url: comment?.replies?.next,
-                      })
-                    );
-                  }}
-                >
-                  Load more
-                </div>
+                <>
+                  {status === QfeedStates.LOADING ? (
+                    ""
+                  ) : (
+                    <div
+                      className="text-faraday-night my-2 py-2 font-semibold cursor-pointer"
+                      onClick={() => {
+                        setShowReplies(true);
+                        dispatch(
+                          fetchSecondLevelCommentThunk({
+                            url: comment?.replies?.next,
+                          })
+                        );
+                      }}
+                    >
+                      Load more
+                    </div>
+                  )}
+                </>
               )}
             </div>
           )}
 
-          {status === QfeedStates.LOADING && showReplies ? (
-            <div className="text-brand"> Loading... </div>
-          ) : (
-            ""
-          )}
+          {status === QfeedStates.LOADING && showReplies ? <LazyReply /> : ""}
         </div>
       </div>
 

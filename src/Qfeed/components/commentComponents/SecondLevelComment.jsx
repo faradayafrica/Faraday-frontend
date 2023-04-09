@@ -28,6 +28,7 @@ import show from "../../assets/show.svg";
 import ReplyMenu from "./ReplyMenu";
 import { ErrorToast } from "../../../common/components/CustomToast";
 import AddReply from "./AddReply";
+import LazyReply from "./LazyReply";
 
 export default function SecondLevelComment({ reply }) {
   const [replyMenu, setReplyMenu] = useState(false);
@@ -126,7 +127,10 @@ export default function SecondLevelComment({ reply }) {
           </div>
 
           {/* Render the content */}
-          <div dangerouslySetInnerHTML={{ __html: reply.content }} />
+          <div
+            className="mb-4"
+            dangerouslySetInnerHTML={{ __html: reply.content }}
+          />
 
           <div className="action-bar">
             <div className="left">
@@ -273,30 +277,38 @@ export default function SecondLevelComment({ reply }) {
               {reply?.replies?.data?.map((reply) => (
                 <ThirdLevelComment key={uuid()} reply={reply} />
               ))}
-              {console.log(reply?.replies, "<=================== Look")}
+
               {reply?.replies?.next && (
-                <div
-                  className="text-brand my-2 py-2 font-medium cursor-pointer"
-                  onClick={() => {
-                    setShowReplies(true);
-                    dispatch(
-                      fetchThirdLevelCommentThunk({
-                        url: reply?.replies?.next,
-                      })
-                    );
-                  }}
-                >
-                  Load more
-                </div>
+                <>
+                  {status === QfeedStates.LOADING ? (
+                    ""
+                  ) : (
+                    <div
+                      className="text-brand my-2 py-2 font-medium cursor-pointer"
+                      onClick={() => {
+                        setShowReplies(true);
+                        dispatch(
+                          fetchThirdLevelCommentThunk({
+                            url: reply?.replies?.next,
+                          })
+                        );
+                      }}
+                    >
+                      Load more
+                    </div>
+                  )}
+                </>
               )}
             </div>
           )}
 
-          {status === QfeedStates.LOADING && showReplies ? (
-            <div className="text-brand"> Loading... </div>
-          ) : (
-            ""
+          {console.log(
+            status === QfeedStates.LOADING,
+            showReplies,
+            "<=================== Look"
           )}
+
+          {status === QfeedStates.LOADING && showReplies ? <LazyReply /> : ""}
         </div>
       </div>
 
