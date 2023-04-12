@@ -1171,7 +1171,7 @@ const qfeedSlice = createSlice({
           }
         }
         state.feed.profile.userQuestions = newUserQuestionFeed;
-        state.thisQuestion.question = newUserQuestionFeed;
+        state.thisQuestion.question = structuredClone(data);
 
         // Update Profile Bookmark feed
         const newUserBookmarkFeed = state.feed.profile.userBookmarks;
