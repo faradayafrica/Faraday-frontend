@@ -142,6 +142,27 @@ const Question = (props) => {
       />
     );
   }
+  if (question.type === "pen") {
+    return (
+      <QuestionComponent
+        type={"pen"}
+        user={question.user}
+        question={question.original}
+        setQuestionMenu={setQuestionMenu}
+        handleLike={handleLike}
+        handleEcho={handleEcho}
+        handleCopyLinkModal={handleCopyLinkModal}
+        getShortLink={getShortLink}
+        isCopyLinkModal={isCopyLinkModal}
+        isCopied={isCopied}
+        shortLink={shortLink}
+        handleIsCopied={handleIsCopied}
+        questionMenu={questionMenu}
+        toggleQuestionMenu={toggleQuestionMenu}
+        handleQuestionDelete={handleQuestionDelete}
+      />
+    );
+  }
 
   return (
     <QuestionComponent

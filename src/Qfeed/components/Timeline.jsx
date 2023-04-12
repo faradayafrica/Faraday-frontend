@@ -38,10 +38,11 @@ const TimeLine = (props) => {
     return () => document.removeEventListener("scroll", save);
   }, [window.pageYOffset]);
 
-  // console.log(
-  //   questions.filter((ques) => ques.type === "pen"),
-  //   "ANNNNNNI"
-  // );
+  console.log(
+    questions,
+    questions.filter((ques) => ques.type === "pen"),
+    "ANNNNNNI"
+  );
 
   return (
     <div className='relative'>

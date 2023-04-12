@@ -32,6 +32,7 @@ function QuestionComponent({
   toggleQuestionMenu,
   handleQuestionDelete,
 }) {
+  // console.log(question, type);
   return (
     <div id='container__questions' className=' bg-white'>
       {type === "echo" && (
@@ -72,7 +73,7 @@ function QuestionComponent({
             />
           </Link>
           <section className=' p-0 w-full'>
-            <div className=' pr-2 relative'>
+            <div className='relative'>
               <div className='flex items-center justify-between'>
                 {/* Profile details */}
                 <p className='flex m-0 text-night-secondary mb-1 text-xs sm:text-sm'>
@@ -87,12 +88,12 @@ function QuestionComponent({
                 </p>
 
                 <button
-                  className=' hover:bg-brand-highlight cursor-pointer absolute right-1 top-[-8px] rounded-md'
+                  className=' hover:bg-brand-highlight cursor-pointer top-[-8px] rounded-md'
                   onClick={() => {
                     setQuestionMenu(!questionMenu);
                   }}
                 >
-                  <EllipsesIcon className='w-6 h-6 rounded-full m-1 ' />
+                  <EllipsesIcon className='w-6 h-6 rounded-full' />
                 </button>
 
                 <QuestionMenu
