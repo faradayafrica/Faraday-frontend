@@ -92,7 +92,7 @@ const QuestionMenu = ({
 
           <div
             ref={question_menu}
-            className="absolute top-5 z-30 right-4 ask-shadow border bg-white rounded-xl p-1 mx-auto w-72 hidden sm:block opacity-0"
+            className="absolute top-5 z-50 right-4 ask-shadow border bg-white rounded-xl p-1 mx-auto w-72 hidden sm:block opacity-0"
           >
             <button
               className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
