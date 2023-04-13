@@ -1,23 +1,7 @@
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import QuestionMenu from "./QuestionMenu";
-import CopyLink from "./CopyLink";
-import moment from "moment";
+import { useHistory } from "react-router-dom";
 // import ReactMarkdown from "react-markdown";
 import http from "../../common/services/httpService";
-
-//icon import
-import ellipses from "../assets/ellipses.svg";
-import arrow from "../assets/arrow-right.svg";
-import love from "../assets/love.svg";
-import redLove from "../assets/red-love.svg";
-import smiley from "../assets/smiley.svg";
-import link from "../assets/link.svg";
-import mark from "../assets/mark.svg";
-import verify from "../assets/verify.svg";
-import info from "../assets/info.svg";
-import Modal from "../../common/components/Modal";
-import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteQuestionThunk,
