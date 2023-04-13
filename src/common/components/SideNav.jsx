@@ -213,9 +213,9 @@ function SideNav({ history }) {
       )}
       <div
         style={{ minWidth: "180px" }}
-        className=" px-2 bg-whte sidenav-container active"
+        className=" px-2 bg-whte sidenav-container active h-full"
       >
-        <div className="position-fixed d-flex flex-column justify-content-between h-100">
+        <div className="sticky top-6 mt-6 d-flex flex-column justify-content-between h-100">
           <div>
             <nav className="flex flex-wrap my-3 ml-1 menu-nav pb-4">
               <img className=" navlink-brand " src={faraday} alt="faraday" />

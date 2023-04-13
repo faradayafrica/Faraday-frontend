@@ -99,7 +99,8 @@
   justify-content: flex-start;
 }
 
-.comment-wrapper .content-wrapper .user .author {
+.comment-wrapper .content-wrapper .user .author,
+.author {
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
@@ -117,7 +118,9 @@
 }
 
 @media only screen and (max-width: 30em) {
-  .comment-wrapper .content-wrapper .user .author {
+  .comment-wrapper .content-wrapper .user .author,
+  .author,
+  .shorten {
     max-width: 6rem;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -237,7 +240,7 @@
 
 /* Style the RT-format here */
 .render {
-  margin-top: 0.875rem;
+  margin-top: 0.5rem;
 }
 
 .render pre,
