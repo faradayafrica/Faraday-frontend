@@ -1094,6 +1094,8 @@ form {
   border-top-right-radius: 8px !important;
   border-bottom-left-radius: 4px !important;
   border-bottom-right-radius: 4px !important;
+  width: 100%;
+  padding-left: 12px;
 }
 
 .form-control input:not(:placeholder-shown) {
