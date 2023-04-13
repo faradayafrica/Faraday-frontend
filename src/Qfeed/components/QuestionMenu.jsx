@@ -14,6 +14,8 @@ import {
 } from "../../common/features/qfeed/qfeedSlice";
 // import { handleSaveQues } from "../utils";
 import { useHistory } from "react-router-dom";
+import { ReactComponent as OpenQuesIcon } from "../assets/lock-off.svg";
+import { ReactComponent as CloseQuesIcon } from "../assets/lock-on.svg";
 
 const QuestionMenu = ({
   question,
@@ -113,13 +115,23 @@ const QuestionMenu = ({
             {question.user.username === currentUser.username ? (
               <>
                 <button
-                  className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
+                  className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex gap-2'
                   onClick={() => {
                     handleCloseQuestion(question?.id);
                     hideMenu();
                   }}
                 >
-                  {question.is_closed ? "Open" : "Close"} question
+                  {question.is_closed ? (
+                    <>
+                      <OpenQuesIcon /> Open
+                    </>
+                  ) : (
+                    <>
+                      <CloseQuesIcon />
+                      Close
+                    </>
+                  )}{" "}
+                  question
                 </button>
                 {/* TODO: Add the Close question for mobile view too, the code is below */}
 
