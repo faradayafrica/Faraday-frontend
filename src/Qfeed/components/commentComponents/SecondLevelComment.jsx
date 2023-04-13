@@ -127,7 +127,7 @@ export default function SecondLevelComment({ reply }) {
 
           {/* Render the content */}
           <div
-            className="mb-4"
+            className="mb-4 render"
             dangerouslySetInnerHTML={{ __html: reply.content }}
           />
 

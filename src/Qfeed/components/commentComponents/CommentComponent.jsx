@@ -135,7 +135,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
 
           {/* Render the content */}
           <div
-            className="mb-4"
+            className="mb-4 render"
             dangerouslySetInnerHTML={{ __html: comment.content }}
           />
 

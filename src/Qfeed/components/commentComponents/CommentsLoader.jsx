@@ -26,7 +26,7 @@ const CommentsLoader = ({ short }) => {
   return (
     <div ref={el}>
       {!short ? (
-        <div style={{ margin: 0 }} className={`comment-wrapper`}>
+        <div style={{ margin: 0 }} className={`comment-wrapper bg-white px-3`}>
           <div className="offset">
             <LazyReply />
             <LazyReply />
@@ -35,7 +35,7 @@ const CommentsLoader = ({ short }) => {
           </div>
         </div>
       ) : (
-        <div style={{ margin: 0 }} className={`comment-wrapper`}>
+        <div style={{ margin: 0 }} className={`comment-wrapper bg-white px-3`}>
           <div className="offset">
             <LazyReply />
             <LazyReply />

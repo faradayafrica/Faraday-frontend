@@ -42,6 +42,7 @@ const QuestionMenu = ({
 
   function handleSaveQues(questionId) {
     dispatch(markBookmarkThunk({ questionId }));
+    toggleQuestionMenu();
   }
 
   // Gsap animation
@@ -83,7 +84,7 @@ const QuestionMenu = ({
       {questionMenu ? (
         <>
           <div
-            className='fixed top-0 right-0 h-screen w-full left-0 z-20 bg-[#00000022] hidden sm:block'
+            className="fixed top-0 right-0 h-screen w-full left-0 z-20 bg-[#00000022] hidden sm:block"
             onClick={() => {
               hideMenu();
             }}
@@ -91,10 +92,10 @@ const QuestionMenu = ({
 
           <div
             ref={question_menu}
-            className='absolute top-5 z-30 right-4 ask-shadow border bg-white rounded-xl p-1 mx-auto w-72 hidden sm:block opacity-0'
+            className="absolute top-5 z-30 right-4 ask-shadow border bg-white rounded-xl p-1 mx-auto w-72 hidden sm:block opacity-0"
           >
             <button
-              className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
+              className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
               onClick={() => {
                 token === null || token === undefined
                   ? history.push(
@@ -113,7 +114,7 @@ const QuestionMenu = ({
             {question.user.username === currentUser.username ? (
               <>
                 <button
-                  className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
+                  className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                   onClick={() => {
                     handleCloseQuestion(question?.id);
                     hideMenu();
@@ -125,23 +126,23 @@ const QuestionMenu = ({
 
                 {!confirmDelete ? (
                   <button
-                    className='px-4 py-3 hover:bg-danger-highlight rounded-lg w-full text-left flex'
+                    className="px-4 py-3 hover:bg-danger-highlight rounded-lg w-full text-left flex"
                     onClick={() => {
                       setConfirmDelete(true);
                     }}
                   >
-                    <img className='mr-2' src={trashDefault} alt='trash' />
+                    <img className="mr-2" src={trashDefault} alt="trash" />
                     Delete question
                   </button>
                 ) : (
                   <button
-                    className='px-4 py-3 text-danger hover:bg-danger-highlight rounded-lg w-full text-left flex'
+                    className="px-4 py-3 text-danger hover:bg-danger-highlight rounded-lg w-full text-left flex"
                     onClick={() => {
                       onDeleteQuestion(question.id);
                       hideMenu();
                     }}
                   >
-                    <img className='mr-2' src={trash} alt='trash' />
+                    <img className="mr-2" src={trash} alt="trash" />
                     Confirm delete
                   </button>
                 )}
@@ -149,7 +150,7 @@ const QuestionMenu = ({
             ) : (
               <>
                 <button
-                  className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
+                  className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                   onClick={() => {
                     token === null || token === undefined
                       ? history.push(
@@ -161,12 +162,12 @@ const QuestionMenu = ({
                 >
                   {question?.user.is_following ? (
                     <>
-                      <img className='mr-2' src={unfollow} alt='unfollow' />{" "}
+                      <img className="mr-2" src={unfollow} alt="unfollow" />{" "}
                       Unfollow
                     </>
                   ) : (
                     <>
-                      <img className='mr-2' src={follow} alt='follow' /> Follow
+                      <img className="mr-2" src={follow} alt="follow" /> Follow
                     </>
                   )}{" "}
                   @{question?.user.username}
@@ -176,9 +177,9 @@ const QuestionMenu = ({
           </div>
 
           {/* Same menu but for Mobile mode */}
-          <div className='fixed bottom-0 left-0 z-[100] h-screen  w-full sm:hidden'>
+          <div className="fixed bottom-0 left-0 z-[100] h-screen  w-full sm:hidden">
             <div
-              className='fixed top-0 right-0 h-screen w-full left-0 z-20 bg-[#00000022] sm:hidden'
+              className="fixed top-0 right-0 h-screen w-full left-0 z-20 bg-[#00000022] sm:hidden"
               onClick={() => {
                 hideMenu();
               }}
@@ -186,12 +187,12 @@ const QuestionMenu = ({
 
             <div
               ref={question_menu_mobile}
-              className='z-[100] absolute bottom-0 ask-shadow bg-white rounded-t-3xl w-full '
+              className="z-[100] absolute bottom-0 ask-shadow bg-white rounded-t-3xl w-full "
             >
-              <div className='w-12 h-2 rounded-full mt-2 mb-4 mx-auto  bg-background2'></div>
+              <div className="w-12 h-2 rounded-full mt-2 mb-4 mx-auto  bg-background2"></div>
 
               <button
-                className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
+                className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                 onClick={() => {
                   token === null || token === undefined
                     ? history.push(
@@ -207,7 +208,7 @@ const QuestionMenu = ({
               {question.user.username === currentUser.username ? (
                 <>
                   <button
-                    className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
+                    className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                     onClick={() => {
                       handleCloseQuestion(question?.id);
                       hideMenu();
@@ -217,23 +218,23 @@ const QuestionMenu = ({
                   </button>
                   {!confirmDelete ? (
                     <button
-                      className='px-4 py-3 hover:bg-danger-highlight rounded-lg w-full text-left flex'
+                      className="px-4 py-3 hover:bg-danger-highlight rounded-lg w-full text-left flex"
                       onClick={() => {
                         setConfirmDelete(true);
                       }}
                     >
-                      <img className='mr-2' src={trashDefault} alt='trash' />
+                      <img className="mr-2" src={trashDefault} alt="trash" />
                       Delete question
                     </button>
                   ) : (
                     <button
-                      className='px-4 py-3 text-danger hover:bg-danger-highlight rounded-lg w-full text-left flex'
+                      className="px-4 py-3 text-danger hover:bg-danger-highlight rounded-lg w-full text-left flex"
                       onClick={() => {
                         onDeleteQuestion(question.id);
                         hideMenu();
                       }}
                     >
-                      <img className='mr-2' src={trash} alt='trash' />
+                      <img className="mr-2" src={trash} alt="trash" />
                       Confirm delete
                     </button>
                   )}
@@ -241,7 +242,7 @@ const QuestionMenu = ({
               ) : (
                 <>
                   <button
-                    className='px-4 py-3 hover:bg-background rounded-lg w-full text-left flex'
+                    className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"
                     onClick={() => {
                       token === null || token === undefined
                         ? history.push(
@@ -253,12 +254,12 @@ const QuestionMenu = ({
                   >
                     {question?.user.is_following ? (
                       <>
-                        <img className='mr-2' src={unfollow} alt='unfollow' />{" "}
+                        <img className="mr-2" src={unfollow} alt="unfollow" />{" "}
                         Unfollow
                       </>
                     ) : (
                       <>
-                        <img className='mr-2' src={follow} alt='follow' />{" "}
+                        <img className="mr-2" src={follow} alt="follow" />{" "}
                         Follow
                       </>
                     )}{" "}
@@ -279,17 +280,17 @@ export default QuestionMenu;
 const BookmarkIcon = () => {
   return (
     <svg
-      xmlns='http://www.w3.org/2000/svg'
-      fill='none'
-      viewBox='0 0 24 24'
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke='currentColor'
-      className='w-6 h-6 mr-2'
+      stroke="currentColor"
+      className="w-6 h-6 mr-2"
     >
       <path
-        strokeLinecap='round'
-        strokeLinejoin='round'
-        d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z'
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
       />
     </svg>
   );

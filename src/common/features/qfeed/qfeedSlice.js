@@ -689,7 +689,7 @@ const qfeedSlice = createSlice({
     builder.addCase(echoQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
 
-      console.log({ data, state });
+      // console.log({ data, state });
 
       if (data) {
         const feed = state.feed.qfeed;
@@ -728,7 +728,9 @@ const qfeedSlice = createSlice({
         // state.feed.profile.userSolutions = newUserSolutionFeed;
 
         // Update the discussionPage after voting
-        state.thisQuestion.question = data;
+        // state.thisQuestion.question = data; // This is giving an unwanted effect on the Discussion page.
+        state.thisQuestion.question.share_count++;
+        state.thisQuestion.question.type = "echo";
         state.status = QfeedStates.SUCCESSFUL;
       }
     });
