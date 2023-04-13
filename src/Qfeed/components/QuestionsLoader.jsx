@@ -110,7 +110,7 @@ const QuestionsLoader = ({ type, short }) => {
     <div ref={el} className="mt-4 bg-background">
       {!short ? (
         <>
-          {Array(3)
+          {Array(6)
             .fill(null)
             .map((_, ind) => (
               <div className="bg-white mb-2 py-5 px-3" key={uuid()}>
@@ -138,7 +138,7 @@ const QuestionsLoader = ({ type, short }) => {
         </>
       ) : (
         <>
-          <div className="bg-white mb-2 py-5 px-3">
+          <div className="bg-white py-5 px-3 relative top-[-.5rem]">
             <div className=" animate-pulse">
               <div className="flex">
                 <div className="w-11 mr-2 cursor-pointer  ">
@@ -150,10 +150,6 @@ const QuestionsLoader = ({ type, short }) => {
                 </div>
               </div>
               <div className="h-2 mt-4 w-full rounded-l-md bg-slate-300 mb-[6px]"></div>
-              <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
-              <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
-              <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
-              <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
               <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
               <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
               <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>

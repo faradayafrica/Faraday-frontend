@@ -31,8 +31,8 @@
 
 html {
   scroll-behavior: smooth;
-  /* background-color: var(--background2); */
-  background-color: #32b994;
+  background-color: var(--background2);
+  /* background-color: #32b994;  */
 }
 
 .txt {

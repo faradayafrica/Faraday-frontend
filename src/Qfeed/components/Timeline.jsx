@@ -105,37 +105,30 @@ const TimeLine = (props) => {
           ""
         )}
 
+        {props.isFetchingNextPage && props.hasNextPage ? (
+          <>
+            <QuestionsLoader short={true} />
+          </>
+        ) : null}
+
         {props.loader ? (
-          !questions?.length ? (
+          !questions.length ? (
             <QuestionsLoader />
           ) : (
-            <QuestionsLoader short="true" />
+            <QuestionsLoader short={true} />
           )
         ) : (
           <>
-            {questions?.length > 0 && !props.hasNextPage && (
-              <>
-                <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
-                  <p className="text-xs sm:text-base m-0 mb-2 ">
-                    No more questions to fetch
+            {questions.length > 0 && !props.hasNextPage && (
+              <div className="bg-white py-2 mt-2">
+                <div className="p-3 m-3 rounded-lg border bg-background  text-center">
+                  <p className="text-xs sm:text-base m-0 ">
+                    You're at the bottom of the feed
                   </p>
-
-                  <Link to="/qfeed/post">
-                    <PrimaryButton cta="Ask a question" />
-                  </Link>
                 </div>
                 <div className="h-[65px] w-full sm:hidden"></div>
-              </>
+              </div>
             )}
-          </>
-        )}
-
-        {props.loader && questions?.length <= 1 ? (
-          <QuestionsLoader />
-        ) : (
-          // This is suppose to be the loader that shows when a user scrolls to the bottom after localStorage populates the Qfeed
-          <>
-            <div className="h-24"></div>
           </>
         )}
       </div>
