@@ -25,16 +25,6 @@ import {
   updateFeed,
   voteQuestionThunk,
 } from "../../common/features/qfeed/qfeedSlice";
-
-import upvote from "../assets/upvote.svg";
-import downvote from "../assets/downvote.svg";
-import upvoteActive from "../assets/upvote-active.svg";
-import downvoteActive from "../assets/downvote-active.svg";
-import { ReactComponent as ShareIcon } from "../assets/share.svg";
-import { ReactComponent as BroadCastIcon } from "../assets/broadcast.svg";
-import { ReactComponent as EllipsesIcon } from "../assets/ellipses.svg";
-
-import replyImg from "../assets/reply.svg";
 import QuestionComponent from "./QuestionComponent";
 
 const Question = (props) => {
