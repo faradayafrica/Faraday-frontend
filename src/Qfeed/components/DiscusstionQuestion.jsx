@@ -9,6 +9,7 @@ import downvote from "../assets/downvote.svg";
 import upvoteActive from "../assets/upvote-active.svg";
 import downvoteActive from "../assets/downvote-active.svg";
 import replyImg from "../assets/reply.svg";
+import verify from "../assets/verify.svg";
 
 import { ReactComponent as ShareIcon } from "../assets/share.svg";
 import { ReactComponent as BroadCastIcon } from "../assets/broadcast.svg";
@@ -72,10 +73,13 @@ const DiscussionQuestion = ({
           alt=""
         />
       </Link>
-      <p className="m-0 text-night-secondary text-sm">
-        <span className="font-semibold text-faraday-night mr-1">
-          {question?.user.firstname} {question?.user.lastname}
-        </span>{" "}
+      <p className="m-0 text-night-secondary text-sm flex">
+        <span className="font-semibold text-faraday-night mr-1 flex">
+          {question?.user.firstname} {question?.user.lastname}{" "}
+          {question?.user.account_verified && (
+            <img src={verify} className="h-5 w-5 ml-1" alt="" />
+          )}
+        </span>
         <span className="">@{question?.user.username}</span>
       </p>
       <p className="m-0 text-night-secondary text-sm  flex align-middle ">

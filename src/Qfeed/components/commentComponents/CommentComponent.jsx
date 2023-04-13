@@ -21,6 +21,7 @@ import upvote from "../../assets/upvote.svg";
 import downvote from "../../assets/downvote.svg";
 import upvoteActive from "../../assets/upvote-active.svg";
 import downvoteActive from "../../assets/downvote-active.svg";
+import verify from "../../assets/verify.svg";
 
 import replyImg from "../../assets/reply.svg";
 
@@ -102,8 +103,13 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
 
         <div className="offset">
           <div className="user">
+            <p className="author" style={{ margin: 0 }}>
+              {comment.user.firstname} {comment.user.lastname}{" "}
+            </p>
             <p className="author">
-              {comment.user.firstname} {comment.user.lastname}
+              {question?.user.account_verified && (
+                <img src={verify} className="h-5 w-5 ml-1" alt="" />
+              )}
             </p>
             <p className="username">@{comment.user.username}</p>
             <p className="time">{moment(comment?.created).fromNow()} </p>

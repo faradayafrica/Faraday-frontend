@@ -20,6 +20,7 @@ import upvote from "../../assets/upvote.svg";
 import downvote from "../../assets/downvote.svg";
 import upvoteActive from "../../assets/upvote-active.svg";
 import downvoteActive from "../../assets/downvote-active.svg";
+import verify from "../../assets/verify.svg";
 
 import replyImg from "../../assets/reply.svg";
 
@@ -96,9 +97,15 @@ export default function SecondLevelComment({ reply }) {
 
         <div className="offset">
           <div className="user">
-            <p className="author">
-              {reply?.by_user?.firstname} {reply?.by_user?.lastname}
+            <p className="author" style={{ margin: 0 }}>
+              {reply?.by_user?.firstname} {reply?.by_user?.lastname}{" "}
             </p>
+            <p className="author">
+              {reply?.by_user.account_verified && (
+                <img src={verify} className="h-5 w-5 ml-1" alt="" />
+              )}
+            </p>
+
             <p className="username">@{reply?.by_user?.username}</p>
             <p className="time">{moment(reply?.created).fromNow()} </p>
 
