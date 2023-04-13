@@ -126,7 +126,8 @@
     text-overflow: ellipsis;
     overflow: hidden;
   }
-  .comment-wrapper .content-wrapper .user .time {
+  .comment-wrapper .content-wrapper .user .time,
+  .shorten-time {
     max-width: 3rem;
     white-space: nowrap;
     text-overflow: ellipsis;

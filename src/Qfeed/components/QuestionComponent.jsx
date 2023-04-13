@@ -100,7 +100,7 @@ function QuestionComponent({
                       )}
                     </span>
                     <span className="mr-1 ">@{question?.user.username} </span>{" "}
-                    <span>
+                    <span className="shorten-time">
                       {moment(question?.created, "YYYYMMDD").fromNow()}
                     </span>
                   </p>
