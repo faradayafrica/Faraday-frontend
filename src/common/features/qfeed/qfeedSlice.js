@@ -374,6 +374,23 @@ const qfeedSlice = createSlice({
       }
     },
 
+    optimisticCommentVote: (state, action) => {
+      const { commentid, value } = action.payload;
+
+      const _comments = state.thisQuestion.comments;
+
+      let index = _comments.findIndex((comment) => comment.id === commentid);
+
+      // Use the splice() method to replace the object from the array
+      if (index !== -1) {
+        _comments.splice(index, 1, {
+          ..._comments[index],
+          vote_rank: value.rank,
+          vote_status: value.status,
+        });
+      }
+    },
+
     // <--------------Profile Reducers ----------->
     updateProfile: (state, action) => {
       const { name, value } = action.payload;
@@ -672,7 +689,7 @@ const qfeedSlice = createSlice({
     builder.addCase(echoQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
 
-      console.log({ data, state });
+      // console.log({ data, state });
 
       if (data) {
         const feed = state.feed.qfeed;
@@ -711,7 +728,9 @@ const qfeedSlice = createSlice({
         // state.feed.profile.userSolutions = newUserSolutionFeed;
 
         // Update the discussionPage after voting
-        state.thisQuestion.question = data;
+        // state.thisQuestion.question = data; // This is giving an unwanted effect on the Discussion page.
+        state.thisQuestion.question.share_count++;
+        state.thisQuestion.question.type = "echo";
         state.status = QfeedStates.SUCCESSFUL;
       }
     });
@@ -1205,6 +1224,7 @@ export const {
   resetProfile,
   hideSecondReply,
   hideThirdReply,
+  optimisticCommentVote,
   optimisticReplyVote,
   resetStatus,
   resetToast,

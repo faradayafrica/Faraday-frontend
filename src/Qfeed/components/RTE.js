@@ -1,34 +1,35 @@
 import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import PrimaryButton from "../../common/components/PrimaryButton";
 
-export default function RTF({ value, onChange, placeholder }) {
+export default function RTE({ value, onChange, placeholder, submit }) {
   const modules = {
     toolbar: [
-      [
-        "bold",
-        "italic",
-        //   "underline",
-        //   "strike"
-      ], // basic text formatting
-      [{ list: "ordered" }, { list: "bullet" }], // numbered and bullet lists
-      //   [{ indent: "-1" }, { indent: "+1" }], // left and right indentation
-      //   [{ align: [] }], // text alignment
-      ["link"], // insert links
-      // Commented out the following line to disable inserting images and videos
-      // ['image', 'video'],  // insert images and videos
-      //   ["clean"], // remove formatting
+      ["bold", "italic", "link"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["code-block"],
     ],
   };
 
+  const sendComment = () => {
+    console.log("Submit");
+    submit();
+  };
+
   return (
-    <div style={{ marginBottom: ".5rem" }} className="RTE">
+    <div style={{ marginBottom: ".5rem" }} className="RTE relative">
       <ReactQuill
         modules={modules}
+        theme="snow"
         value={value}
         onChange={onChange}
         placeholder={placeholder}
       />
+
+      <div className="absolute bottom-2 right-2">
+        <PrimaryButton cta="Submit" action={sendComment} variant="small" />
+      </div>
     </div>
   );
 }

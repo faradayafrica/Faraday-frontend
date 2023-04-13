@@ -11,6 +11,7 @@ import {
   createSecondLevelCommentThunk,
   fetchSecondLevelCommentThunk,
   hideSecondReply,
+  optimisticCommentVote,
   QfeedStates,
   voteCommentThunk,
 } from "../../../common/features/qfeed/qfeedSlice";
@@ -20,6 +21,7 @@ import upvote from "../../assets/upvote.svg";
 import downvote from "../../assets/downvote.svg";
 import upvoteActive from "../../assets/upvote-active.svg";
 import downvoteActive from "../../assets/downvote-active.svg";
+import verify from "../../assets/verify.svg";
 
 import replyImg from "../../assets/reply.svg";
 
@@ -29,6 +31,7 @@ import "../../styles/comment.css";
 import AddReply from "./AddReply";
 import { ErrorToast } from "../../../common/components/CustomToast";
 import "react-quill/dist/quill.snow.css";
+import LazyReply from "./LazyReply";
 
 const CommentComponent = ({ match, comment, onDeleteComment }) => {
   const [commentMenu, setCommentMenu] = useState(false);
@@ -75,6 +78,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
     }
     if (status === QfeedStates.SENT) {
       setNewReply("");
+      setShowAddReply(false);
     }
   }, [status]);
 
@@ -99,8 +103,13 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
 
         <div className="offset">
           <div className="user">
+            <p className="author" style={{ margin: 0 }}>
+              {comment.user.firstname} {comment.user.lastname}{" "}
+            </p>
             <p className="author">
-              {comment.user.firstname} {comment.user.lastname}
+              {question?.user.account_verified && (
+                <img src={verify} className="h-5 w-5 ml-1" alt="" />
+              )}
             </p>
             <p className="username">@{comment.user.username}</p>
             <p className="time">{moment(comment?.created).fromNow()} </p>
@@ -131,15 +140,34 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
           </div>
 
           {/* Render the content */}
-          <div dangerouslySetInnerHTML={{ __html: comment.content }} />
+          <div
+            className="mb-4 render"
+            dangerouslySetInnerHTML={{ __html: comment.content }}
+          />
 
           <div className="action-bar">
             <div className="left">
               <div className="vote">
                 <div
-                  onClick={() =>
-                    dispatch(voteCommentThunk({ commentid: comment.id }))
-                  }
+                  onClick={() => {
+                    dispatch(
+                      optimisticCommentVote({
+                        commentid: comment.id,
+                        value: {
+                          rank:
+                            comment.vote_status === null
+                              ? comment.vote_rank + 1
+                              : comment.vote_status === "upvote"
+                              ? comment.vote_rank - 1
+                              : comment.vote_status === "downvote" &&
+                                comment.vote_rank + 2,
+                          status:
+                            comment.vote_status === "upvote" ? null : "upvote",
+                        },
+                      })
+                    );
+                    dispatch(voteCommentThunk({ commentid: comment.id }));
+                  }}
                 >
                   {comment.vote_status === "upvote" ? (
                     <img src={upvoteActive} alt="helpful" />
@@ -149,14 +177,32 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
                 </div>
                 <span className="count">{comment.vote_rank}</span>
                 <div
-                  onClick={() =>
+                  onClick={() => {
+                    dispatch(
+                      optimisticCommentVote({
+                        commentid: comment.id,
+                        value: {
+                          rank:
+                            comment.vote_status === null
+                              ? comment.vote_rank - 1
+                              : comment.vote_status === "downvote"
+                              ? comment.vote_rank + 1
+                              : comment.vote_status === "upvote" &&
+                                comment.vote_rank - 2,
+                          status:
+                            comment.vote_status === "downvote"
+                              ? null
+                              : "downvote",
+                        },
+                      })
+                    );
                     dispatch(
                       voteCommentThunk({
                         commentid: comment.id,
                         value: "downvote",
                       })
-                    )
-                  }
+                    );
+                  }}
                 >
                   {comment.vote_status === "downvote" ? (
                     <img src={downvoteActive} alt="not helpful" />
@@ -250,28 +296,30 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               ))}
 
               {comment?.replies?.next && (
-                <div
-                  className="text-brand my-2 py-2 font-medium cursor-pointer"
-                  onClick={() => {
-                    setShowReplies(true);
-                    dispatch(
-                      fetchSecondLevelCommentThunk({
-                        url: comment?.replies?.next,
-                      })
-                    );
-                  }}
-                >
-                  Load more
-                </div>
+                <>
+                  {status === QfeedStates.LOADING ? (
+                    ""
+                  ) : (
+                    <div
+                      className="text-faraday-night my-2 py-2 font-semibold cursor-pointer"
+                      onClick={() => {
+                        setShowReplies(true);
+                        dispatch(
+                          fetchSecondLevelCommentThunk({
+                            url: comment?.replies?.next,
+                          })
+                        );
+                      }}
+                    >
+                      Load more
+                    </div>
+                  )}
+                </>
               )}
             </div>
           )}
 
-          {status === QfeedStates.LOADING && showReplies ? (
-            <div className="text-brand"> Loading... </div>
-          ) : (
-            ""
-          )}
+          {status === QfeedStates.LOADING && showReplies ? <LazyReply /> : ""}
         </div>
       </div>
 

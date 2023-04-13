@@ -20,6 +20,7 @@ import upvote from "../../assets/upvote.svg";
 import downvote from "../../assets/downvote.svg";
 import upvoteActive from "../../assets/upvote-active.svg";
 import downvoteActive from "../../assets/downvote-active.svg";
+import verify from "../../assets/verify.svg";
 
 import replyImg from "../../assets/reply.svg";
 
@@ -28,6 +29,7 @@ import show from "../../assets/show.svg";
 import ReplyMenu from "./ReplyMenu";
 import { ErrorToast } from "../../../common/components/CustomToast";
 import AddReply from "./AddReply";
+import LazyReply from "./LazyReply";
 
 export default function SecondLevelComment({ reply }) {
   const [replyMenu, setReplyMenu] = useState(false);
@@ -55,7 +57,6 @@ export default function SecondLevelComment({ reply }) {
       ErrorToast("Your comment is too long");
     } else {
       let content = newReply;
-      console.log("Handle Add 2nd level reply", reply.id);
       dispatch(
         createThirdLevelCommentThunk({
           commentid: reply.id,
@@ -72,10 +73,10 @@ export default function SecondLevelComment({ reply }) {
   useEffect(() => {
     if (status === QfeedStates.SUCCESSFUL) {
       // this prevents multiple comments showing the loading state
-      setShowReplies(false);
     }
     if (status === QfeedStates.SENT) {
       setNewReply("");
+      setShowAddReply(false);
     }
   }, [status]);
 
@@ -96,9 +97,15 @@ export default function SecondLevelComment({ reply }) {
 
         <div className="offset">
           <div className="user">
-            <p className="author">
-              {reply?.by_user?.firstname} {reply?.by_user?.lastname}
+            <p className="author" style={{ margin: 0 }}>
+              {reply?.by_user?.firstname} {reply?.by_user?.lastname}{" "}
             </p>
+            <p className="author">
+              {reply?.by_user.account_verified && (
+                <img src={verify} className="h-5 w-5 ml-1" alt="" />
+              )}
+            </p>
+
             <p className="username">@{reply?.by_user?.username}</p>
             <p className="time">{moment(reply?.created).fromNow()} </p>
 
@@ -126,7 +133,10 @@ export default function SecondLevelComment({ reply }) {
           </div>
 
           {/* Render the content */}
-          <div dangerouslySetInnerHTML={{ __html: reply.content }} />
+          <div
+            className="mb-4 render"
+            dangerouslySetInnerHTML={{ __html: reply.content }}
+          />
 
           <div className="action-bar">
             <div className="left">
@@ -208,7 +218,6 @@ export default function SecondLevelComment({ reply }) {
                   <div
                     onClick={() => {
                       setShowReplies(false);
-                      console.log("hide it");
                       dispatch(
                         hideThirdReply({ replyid: reply.id, value: false })
                       );
@@ -226,7 +235,6 @@ export default function SecondLevelComment({ reply }) {
                     onClick={() => {
                       setShowReplies(true);
                       if (reply?.replies?.data?.length > 0) {
-                        console.log("E dey b4");
                         dispatch(
                           hideThirdReply({
                             replyid: reply.id,
@@ -234,7 +242,6 @@ export default function SecondLevelComment({ reply }) {
                           })
                         );
                       } else {
-                        console.log("fetch new");
                         dispatch(
                           fetchThirdLevelCommentThunk({
                             commentid: reply?.id,
@@ -264,6 +271,7 @@ export default function SecondLevelComment({ reply }) {
               reply={newReply}
               postReply={postReply}
               onChange={handleChange}
+              close={() => setShowAddReply(false)}
             />
           )}
 
@@ -273,30 +281,32 @@ export default function SecondLevelComment({ reply }) {
               {reply?.replies?.data?.map((reply) => (
                 <ThirdLevelComment key={uuid()} reply={reply} />
               ))}
-              {console.log(reply?.replies, "<=================== Look")}
+
               {reply?.replies?.next && (
-                <div
-                  className="text-brand my-2 py-2 font-medium cursor-pointer"
-                  onClick={() => {
-                    setShowReplies(true);
-                    dispatch(
-                      fetchThirdLevelCommentThunk({
-                        url: reply?.replies?.next,
-                      })
-                    );
-                  }}
-                >
-                  Load more
-                </div>
+                <>
+                  {status === QfeedStates.LOADING ? (
+                    ""
+                  ) : (
+                    <div
+                      className="text-brand my-2 py-2 font-medium cursor-pointer"
+                      onClick={() => {
+                        setShowReplies(true);
+                        dispatch(
+                          fetchThirdLevelCommentThunk({
+                            url: reply?.replies?.next,
+                          })
+                        );
+                      }}
+                    >
+                      Load more
+                    </div>
+                  )}
+                </>
               )}
             </div>
           )}
 
-          {status === QfeedStates.LOADING && showReplies ? (
-            <div className="text-brand"> Loading... </div>
-          ) : (
-            ""
-          )}
+          {status === QfeedStates.LOADING && showReplies ? <LazyReply /> : ""}
         </div>
       </div>
 
