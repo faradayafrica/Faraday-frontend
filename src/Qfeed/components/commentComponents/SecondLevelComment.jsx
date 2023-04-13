@@ -56,7 +56,6 @@ export default function SecondLevelComment({ reply }) {
       ErrorToast("Your comment is too long");
     } else {
       let content = newReply;
-      console.log("Handle Add 2nd level reply", reply.id);
       dispatch(
         createThirdLevelCommentThunk({
           commentid: reply.id,
@@ -73,10 +72,10 @@ export default function SecondLevelComment({ reply }) {
   useEffect(() => {
     if (status === QfeedStates.SUCCESSFUL) {
       // this prevents multiple comments showing the loading state
-      setShowReplies(false);
     }
     if (status === QfeedStates.SENT) {
       setNewReply("");
+      setShowAddReply(false);
     }
   }, [status]);
 
@@ -212,7 +211,6 @@ export default function SecondLevelComment({ reply }) {
                   <div
                     onClick={() => {
                       setShowReplies(false);
-                      console.log("hide it");
                       dispatch(
                         hideThirdReply({ replyid: reply.id, value: false })
                       );
@@ -230,7 +228,6 @@ export default function SecondLevelComment({ reply }) {
                     onClick={() => {
                       setShowReplies(true);
                       if (reply?.replies?.data?.length > 0) {
-                        console.log("E dey b4");
                         dispatch(
                           hideThirdReply({
                             replyid: reply.id,
@@ -238,7 +235,6 @@ export default function SecondLevelComment({ reply }) {
                           })
                         );
                       } else {
-                        console.log("fetch new");
                         dispatch(
                           fetchThirdLevelCommentThunk({
                             commentid: reply?.id,
@@ -301,12 +297,6 @@ export default function SecondLevelComment({ reply }) {
                 </>
               )}
             </div>
-          )}
-
-          {console.log(
-            status === QfeedStates.LOADING,
-            showReplies,
-            "<=================== Look"
           )}
 
           {status === QfeedStates.LOADING && showReplies ? <LazyReply /> : ""}

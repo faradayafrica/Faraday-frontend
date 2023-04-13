@@ -11,6 +11,7 @@ import {
   createSecondLevelCommentThunk,
   fetchSecondLevelCommentThunk,
   hideSecondReply,
+  optimisticCommentVote,
   QfeedStates,
   voteCommentThunk,
 } from "../../../common/features/qfeed/qfeedSlice";
@@ -76,6 +77,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
     }
     if (status === QfeedStates.SENT) {
       setNewReply("");
+      setShowAddReply(false);
     }
   }, [status]);
 
@@ -141,9 +143,25 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
             <div className="left">
               <div className="vote">
                 <div
-                  onClick={() =>
-                    dispatch(voteCommentThunk({ commentid: comment.id }))
-                  }
+                  onClick={() => {
+                    dispatch(
+                      optimisticCommentVote({
+                        commentid: comment.id,
+                        value: {
+                          rank:
+                            comment.vote_status === null
+                              ? comment.vote_rank + 1
+                              : comment.vote_status === "upvote"
+                              ? comment.vote_rank - 1
+                              : comment.vote_status === "downvote" &&
+                                comment.vote_rank + 2,
+                          status:
+                            comment.vote_status === "upvote" ? null : "upvote",
+                        },
+                      })
+                    );
+                    dispatch(voteCommentThunk({ commentid: comment.id }));
+                  }}
                 >
                   {comment.vote_status === "upvote" ? (
                     <img src={upvoteActive} alt="helpful" />
@@ -153,14 +171,32 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
                 </div>
                 <span className="count">{comment.vote_rank}</span>
                 <div
-                  onClick={() =>
+                  onClick={() => {
+                    dispatch(
+                      optimisticCommentVote({
+                        commentid: comment.id,
+                        value: {
+                          rank:
+                            comment.vote_status === null
+                              ? comment.vote_rank - 1
+                              : comment.vote_status === "downvote"
+                              ? comment.vote_rank + 1
+                              : comment.vote_status === "upvote" &&
+                                comment.vote_rank - 2,
+                          status:
+                            comment.vote_status === "downvote"
+                              ? null
+                              : "downvote",
+                        },
+                      })
+                    );
                     dispatch(
                       voteCommentThunk({
                         commentid: comment.id,
                         value: "downvote",
                       })
-                    )
-                  }
+                    );
+                  }}
                 >
                   {comment.vote_status === "downvote" ? (
                     <img src={downvoteActive} alt="not helpful" />

@@ -374,6 +374,23 @@ const qfeedSlice = createSlice({
       }
     },
 
+    optimisticCommentVote: (state, action) => {
+      const { commentid, value } = action.payload;
+
+      const _comments = state.thisQuestion.comments;
+
+      let index = _comments.findIndex((comment) => comment.id === commentid);
+
+      // Use the splice() method to replace the object from the array
+      if (index !== -1) {
+        _comments.splice(index, 1, {
+          ..._comments[index],
+          vote_rank: value.rank,
+          vote_status: value.status,
+        });
+      }
+    },
+
     // <--------------Profile Reducers ----------->
     updateProfile: (state, action) => {
       const { name, value } = action.payload;
@@ -1204,6 +1221,7 @@ export const {
   resetProfile,
   hideSecondReply,
   hideThirdReply,
+  optimisticCommentVote,
   optimisticReplyVote,
   resetStatus,
   resetToast,
