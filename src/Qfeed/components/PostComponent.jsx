@@ -17,9 +17,9 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
       ? "focus:bg-gradient-to-t from-danger-highlight to-white focus:border-danger border-danger "
       : "";
 
-  useEffect(() => {
-    console.log(editorRef);
-  }, []);
+  function handleChange(value) {
+    setContent(value);
+  }
 
   return (
     <>
@@ -87,10 +87,8 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
           <QuestionRTE
             ref={editorRef}
             value={content}
-            onChange={(value) => {
-              setContent(value);
-            }}
             placeholder="Give more context here. You can elaborate more, give examples or share what you've tried..."
+            onChange={handleChange}
           />
         </label>
       </div>
