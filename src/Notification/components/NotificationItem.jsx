@@ -84,7 +84,7 @@ const NotificationItem = ({
 
           <div className="">
             <img
-              src={que.user.profile_pic}
+              src={que?.user.profile_pic}
               className="w-8 h-8 rounded-full  bg-background2"
               style={{ objectFit: "cover" }}
               alt=""

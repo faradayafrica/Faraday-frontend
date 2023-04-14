@@ -17,6 +17,7 @@ import { root_route } from "./rootRoutes.js";
 
 const App = () => {
   const [clearCache, setClearCache] = useState(false);
+  // const location = useLocation();
 
   useEffect(() => {
     if (window.location.pathname === "/login" && clearCache) {

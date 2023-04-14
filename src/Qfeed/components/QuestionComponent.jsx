@@ -32,6 +32,7 @@ function QuestionComponent({
   toggleQuestionMenu,
   handleQuestionDelete,
 }) {
+  // console.log(question, type);
   return (
     <div className="relative">
       <QuestionMenu

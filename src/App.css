@@ -1094,8 +1094,59 @@ form {
   border-top-right-radius: 8px !important;
   border-bottom-left-radius: 4px !important;
   border-bottom-right-radius: 4px !important;
+  color: #495057;
+  display: block;
+  font-size: 1rem;
+  font-weight: 400;
+  height: calc(1.5em + 0.75rem + 2px);
+  line-height: 1.5;
+  padding: 0.375rem 0.75rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   width: 100%;
-  padding-left: 12px;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}
+.alert {
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1.25rem;
+  position: relative;
+}
+.alert {
+  color: #536471 !important;
+  color: var(--text2-black) !important;
+  font-size: 14px !important;
+  padding: 5px !important;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}
+.dialog-arrow {
+  border-radius: 6px;
+  height: 20px;
+  left: 10px;
+  position: absolute;
+  top: -8px;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  width: 20px;
+}
+.alert > * {
+  opacity: 1;
+}
+
+.alert-body {
+  position: relative;
+  /* top: -1rem; */
+  z-index: 10000 !important;
 }
 
 .form-control input:not(:placeholder-shown) {
