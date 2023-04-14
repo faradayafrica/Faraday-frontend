@@ -107,7 +107,7 @@ const CommentComponent = ({ match, comment, onDeleteComment }) => {
               {comment.user.firstname} {comment.user.lastname}{" "}
             </p>
             <p className="author">
-              {question?.user.account_verified && (
+              {comment?.user.account_verified && (
                 <img src={verify} className="h-5 w-5 ml-1" alt="" />
               )}
             </p>
