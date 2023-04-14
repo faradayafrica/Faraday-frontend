@@ -30,18 +30,18 @@ class LoginPage extends Form {
     }
 
     return (
-      <div className='login-page'>
+      <div className="login-page">
         {/* the spinner */}
-        <div id='spinnerContainer' className='spinner-container vanish'>
+        <div id="spinnerContainer" className="spinner-container vanish">
           <Myspinner />
         </div>
-        <div className='form-container'>
-          <div className='logo-container '>
-            <img className='logo mx-auto' src={faraday} alt='faraday' />
+        <div className="form-container">
+          <div className="logo-container ">
+            <img className="logo mx-auto" src={faraday} alt="faraday" />
           </div>
-          <h3 className='form-title'>Welcome back</h3>{" "}
-          <p className='font-medium text-brand'>
-            to <span className='font-bold'>Beta</span>
+          <h3 className="form-title">Welcome back</h3>{" "}
+          <p className="font-medium text-brand">
+            to <span className="font-bold">Beta</span>
           </p>
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
@@ -52,8 +52,8 @@ class LoginPage extends Form {
               this.state.showPassword ? "" : "password"
             )}
             {this.renderButton("Login")}
-            <Link to='/forgot-password' style={{ textDecoration: "none" }}>
-              <p className='text-sm mt-2 mb-0 text-night-secondary'>
+            <Link to="/forgot-password" style={{ textDecoration: "none" }}>
+              <p className="text-sm mt-2 mb-0 text-night-secondary">
                 forgot password
               </p>
             </Link>

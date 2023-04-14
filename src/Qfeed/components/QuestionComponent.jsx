@@ -47,8 +47,8 @@ function QuestionComponent({
         style={{ marginBottom: ".3rem" }}
       >
         {type === "echo" && (
-          <div className="flex items-center gap-2 text-sm border-b-2 border-[#f5f5f5] py-1 px-3">
-            <BroadCastIcon />{" "}
+          <div className="flex items-center gap-2 border-b-[1px] border-[#f5f5f5] py-1 px-3 text-xs">
+            <BroadCastIcon className="w-3 h-3" />
             <span>
               echoed by{" "}
               <Link
@@ -74,28 +74,34 @@ function QuestionComponent({
                   : `/me/${question?.user.username}`
               }
               style={{ textDecoration: "none" }}
-              className="w-14 mr-2 cursor-pointer hidden md:block"
+              className="w-10 mr-2 cursor-pointer hidden md:block"
             >
               <img
                 src={question?.user.profile_pic}
-                className="w-12 h-12 rounded-full bg-background2"
-                style={{ objectFit: "cover" }}
+                className="w-10 h-10 rounded-full bg-background2"
+                style={{ objectFit: "cover", border: "1px solid #cfd9de" }}
                 alt=""
               />
             </Link>
             <section className=" p-0 w-full">
               <div className=" pr-2 relative">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between ">
                   {/* Profile details */}
-                  <p className="flex m-0 text-night-secondary mb-1 text-xs sm:text-sm">
-                    <span className="mr-2 font-semibold text-faraday-night flex items-center text-sm">
-                      {question?.user.firstname} {question?.user.lastname}{" "}
+                  <p className="flex m-0 text-night-secondary mb-1 text-xs sm:text-sm flex-wrap">
+                    <span className=" font-semibold text-faraday-night shorten">
+                      {question?.user.firstname} {question?.user.lastname}
+                    </span>
+                    <span className="mr-1">
                       {question?.user.account_verified && (
-                        <img src={verify} className="h-5 w-5 ml-1" alt="" />
+                        <img
+                          src={verify}
+                          className="h-[14px] w-[14px] sm:h-5 sm:w-5 ml-1"
+                          alt=""
+                        />
                       )}
                     </span>
-                    <span className="mr-2 ">@{question?.user.username} </span>{" "}
-                    <span>
+                    <span className="mr-1 ">@{question?.user.username} </span>{" "}
+                    <span className="shorten-time">
                       {moment(question?.created, "YYYYMMDD").fromNow()}
                     </span>
                   </p>
@@ -126,30 +132,32 @@ function QuestionComponent({
                     className={`text-faraday-night hover:text-faraday-night `}
                   >
                     {/* Question head */}
-                    <h3 className="text-lg font-semibold m-0 mb-1 md:text-xl">
+                    <h3 className="text-base font-semibold m-0 mb-1 md:text-lg">
                       {question?.title}
                     </h3>
 
                     {/* Question body without a selected solution --optional */}
                     {question && question?.content && (
-                      <div className="text-sm sm:text-base m-0 mb-2">
-                        {question?.content?.split("\n").map((item, idx) => (
-                          <p className="mb-1" key={idx}>
-                            {item}
-                          </p>
-                        ))}
-                      </div>
+                      <div
+                        className="mb-4 text-sm text-faraday-night render"
+                        style={{ marginTop: 0 }}
+                        dangerouslySetInnerHTML={{ __html: question.content }}
+                      />
                     )}
                   </Link>
                 ) : (
                   <>
-                    <h3 className="text-lg font-semibold m-0 mb-1 md:text-xl">
+                    <h3 className="text-base font-semibold m-0 mb-1 md:text-lg">
                       {question?.title}
                     </h3>
                     {/* Question body --optional */}
-                    <p className="text-sm sm:text-base m-0 mb-2">
-                      {question?.content}
-                    </p>
+                    {question && question?.content && (
+                      <div
+                        className="mb-4 text-sm text-faraday-night render"
+                        style={{ marginTop: 0 }}
+                        dangerouslySetInnerHTML={{ __html: question.content }}
+                      />
+                    )}
                   </>
                 )}
               </div>
@@ -160,7 +168,7 @@ function QuestionComponent({
                 </>
               ) : null}
 
-              <div className="action-bar mt-3">
+              <div className="action-bar mt-5">
                 <div className="flex justify-between items-center max-w-lg mx-auto">
                   <button
                     disabled={type === "echo" || type === "pen" ? true : false}

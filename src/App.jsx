@@ -86,17 +86,17 @@ const App = () => {
   return (
     <BrowserRouter>
       <UserProvider>
-        <Toaster position='top-center' reverseOrder={false} />
-        <div className='text-faraday-night max-w-[1024px] p-0 mx-auto flex'>
+        <Toaster position="top-center" reverseOrder={false} />
+        <div className="text-faraday-night max-w-[1024px] p-0 mx-auto flex bg-white">
           <MobileSideNav />
           <SideNav />
           <Switch>
             {root_route.map((route) => (
               <Route key={route.path} exact {...route} />
             ))}
-            <Route path='/qfeed' render={(props) => <Qfeed {...props} />} />
+            <Route path="/qfeed" render={(props) => <Qfeed {...props} />} />
             <Route
-              path='/logout'
+              path="/logout"
               render={(props) => (
                 <Logout
                   handleClearCache={handleClearCache}
@@ -105,15 +105,15 @@ const App = () => {
                 />
               )}
             />
-            <ProtectedRoute path='/notification' component={Notification} />
+            <ProtectedRoute path="/notification" component={Notification} />
             <ProtectedRoute
-              path='/me/:username'
+              path="/me/:username"
               render={(props) => <Profile {...props} />}
             />
-            <Route path='/missing-question' component={MissingQuestion} />
-            <Route path='/not-found' component={NotFound} />
-            <Route path='/' render={(props) => <Qfeed {...props} />} />
-            <Redirect push to='/not-found' />
+            <Route path="/missing-question" component={MissingQuestion} />
+            <Route path="/not-found" component={NotFound} />
+            <Route path="/" render={(props) => <Qfeed {...props} />} />
+            <Redirect push to="/not-found" />
           </Switch>
         </div>
       </UserProvider>

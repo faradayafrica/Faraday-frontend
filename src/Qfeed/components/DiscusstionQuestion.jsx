@@ -73,9 +73,11 @@ const DiscussionQuestion = ({
           alt=""
         />
       </Link>
-      <p className="m-0 text-night-secondary text-sm flex">
-        <span className="font-semibold text-faraday-night mr-1 flex">
+      <p className="m-0 text-night-secondary text-sm flex flex-wrap">
+        <span className=" text-faraday-night  author" style={{ margin: 0 }}>
           {question?.user.firstname} {question?.user.lastname}{" "}
+        </span>
+        <span className="mr-1 min-w-4">
           {question?.user.account_verified && (
             <img src={verify} className="h-5 w-5 ml-1" alt="" />
           )}
@@ -84,7 +86,7 @@ const DiscussionQuestion = ({
       </p>
       <p className="m-0 text-night-secondary text-sm  flex align-middle ">
         {/* <img src={love} className="h-4 w-4 object-fill" alt="" /> */}
-        <span className="h-4">{question?.user?.department}</span>
+        <span className="min-h-4">{question?.user?.department}</span>
       </p>
 
       <div

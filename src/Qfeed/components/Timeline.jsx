@@ -45,17 +45,17 @@ const TimeLine = (props) => {
   // );
 
   return (
-    <div className='relative'>
-      <div className='bg-background ' id='timeline'>
-        <div className='min-h-[70px] sm:min-h-[0px] bg-transparent'> </div>
-        <h1 className='text-center md:!text-left text-2xl sm:text-2xl m-3 font-bold'>
+    <div className="relative">
+      <div className="bg-background " id="timeline">
+        <div className="min-h-[70px] sm:min-h-[0px] bg-transparent"> </div>
+        <h1 className="text-center md:!text-left text-2xl sm:text-2xl m-3 font-bold">
           Question Feed
         </h1>
         {/* The questions */}
 
         <>
           {questions?.length ? (
-            <div className='space-y-1 sm:space-y-0 bg-background'>
+            <div className="space-y-1 sm:space-y-0 bg-background">
               {questions?.map((question) => (
                 <Question
                   question={question}
@@ -68,16 +68,16 @@ const TimeLine = (props) => {
           ) : (
             <>
               {!props.loader && (
-                <div className='p-3 bg-white'>
-                  <div className='p-3 rounded-lg border bg-background  text-center'>
-                    <p className='text-xs sm:text-base m-0  mb-2'>
+                <div className="p-3 bg-white">
+                  <div className="p-3 rounded-lg border bg-background  text-center">
+                    <p className="text-xs sm:text-base m-0  mb-2">
                       {props.isError
                         ? props.error.message
                         : "No questions yet! Be the first to ask the first question"}
                     </p>
 
-                    <Link to='/qfeed/post'>
-                      <PrimaryButton cta='Ask a question' />
+                    <Link to="/qfeed/post">
+                      <PrimaryButton cta="Ask a question" />
                     </Link>
                   </div>
                 </div>
@@ -88,55 +88,48 @@ const TimeLine = (props) => {
 
         {/* Fixed CTA on the timeline for mobile */}
         <Link
-          to='/qfeed/post'
-          className='sm:hidden fixed right-6 bottom-20 h-16 w-16 z-50'
+          to="/qfeed/post"
+          className="sm:hidden fixed right-6 bottom-20 h-16 w-16 z-50"
         >
           {" "}
-          <img className='ask-shadow rounded-full' src={ask} alt='' />
+          <img className="ask-shadow rounded-full" src={ask} alt="" />
         </Link>
 
         {props.isError ? (
-          <div className='p-3  rounded-lg border bg-background m-3 text-center'>
+          <div className="p-3  rounded-lg border bg-background m-3 text-center">
             <>
-              <p className='text-sm sm:text-base '>Something went wrong</p>
-              <SecondaryButton cta='Retry' action={props.refetch} />
+              <p className="text-sm sm:text-base ">Something went wrong</p>
+              <SecondaryButton cta="Retry" action={props.refetch} />
             </>
           </div>
         ) : (
           ""
         )}
 
+        {props.isFetchingNextPage && props.hasNextPage ? (
+          <>
+            <QuestionsLoader short={true} />
+          </>
+        ) : null}
+
         {props.loader ? (
-          !questions?.length ? (
+          !questions.length ? (
             <QuestionsLoader />
           ) : (
-            <QuestionsLoader short='true' />
+            <QuestionsLoader short={true} />
           )
         ) : (
           <>
-            {questions?.length > 0 && !props.hasNextPage && (
-              <>
-                <div className='p-3 m-3 mr-1 rounded-lg border bg-background  text-center'>
-                  <p className='text-xs sm:text-base m-0 mb-2 '>
-                    No more questions to fetch
+            {questions.length > 0 && !props.hasNextPage && (
+              <div className="bg-white py-2 mt-2">
+                <div className="p-3 m-3 rounded-lg border bg-background  text-center">
+                  <p className="text-xs sm:text-base m-0 ">
+                    You're at the bottom of the feed
                   </p>
-
-                  <Link to='/qfeed/post'>
-                    <PrimaryButton cta='Ask a question' />
-                  </Link>
                 </div>
-                <div className='h-[65px] w-full sm:hidden'></div>
-              </>
+                <div className="h-[65px] w-full sm:hidden"></div>
+              </div>
             )}
-          </>
-        )}
-
-        {props.loader && questions?.length <= 1 ? (
-          <QuestionsLoader />
-        ) : (
-          // This is suppose to be the loader that shows when a user scrolls to the bottom after localStorage populates the Qfeed
-          <>
-            <div className='h-24'></div>
           </>
         )}
       </div>

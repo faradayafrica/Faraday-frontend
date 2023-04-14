@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import CommentsLoader from "./commentComponents/CommentsLoader";
+import uuid from "react-uuid";
 
 const QuestionsLoader = ({ type, short }) => {
   const el = useRef();
@@ -106,57 +107,55 @@ const QuestionsLoader = ({ type, short }) => {
   }
 
   return (
-    <div ref={el} className="mt-4 bg-white">
+    <div ref={el} className="mt-4 bg-background">
       {!short ? (
         <>
-          {Array(3)
+          {Array(6)
             .fill(null)
             .map((_, ind) => (
-              <div
-                key={ind}
-                className="px-3 animate-pulse border-b-[1px]  py-2"
-              >
-                <div className="flex">
-                  <div className="w-14 mr-2 cursor-pointer  ">
-                    <div className="w-12 h-12 rounded-full mr-2 bg-slate-300 float-left"></div>
-                  </div>
-                  <div className=" w-full  ">
-                    <div className="max-w-[350px] h-3 rounded-xl bg-slate-300 mt-2"></div>
-                    <div className="w-[150px] h-3 rounded-xl bg-slate-300 mt-2"></div>{" "}
-                    <div className=" h-32 w-full rounded-xl bg-slate-300 mt-4"></div>
-                    <div className="mt-3 py-2 border-background2 border-t-[1px] ">
-                      <div className="flex justify-between items-center max-w-lg mx-auto">
-                        <div className="w-16 h-10 rounded-lg bg-slate-300"></div>
-                        <div className="w-16 h-10 rounded-lg bg-slate-300"></div>
-                        <div className="w-16 h-10 rounded-lg bg-slate-300 "></div>
-                        <div className="w-16 h-10 rounded-lg bg-slate-300 "></div>
-                      </div>
+              <div className="bg-white mb-2 py-5 px-3" key={uuid()}>
+                <div className=" animate-pulse">
+                  <div className="flex">
+                    <div className="w-11 mr-2 cursor-pointer  ">
+                      <div className="w-11 h-11 rounded-full mr-2 bg-slate-300 float-left"></div>
+                    </div>
+                    <div className=" w-full">
+                      <div className="max-w-[350px] h-2 rounded-xl bg-slate-300 mt-2"></div>
+                      <div className="w-[150px] h-2 rounded-xl bg-slate-300 mt-2"></div>{" "}
                     </div>
                   </div>
+                  <div className="h-2 mt-4 w-full rounded-l-md bg-slate-300 mb-[6px]"></div>
+                  <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
+                  <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
+                  <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
+                  <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
+                  <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
+                  <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
+                  <div className="h-2 w-24 rounded-r-md bg-slate-300 mb-[6px]"></div>
                 </div>
               </div>
             ))}
         </>
       ) : (
         <>
-          <div className="px-3 animate-pulse border-b-[1px] question-loader-item py-2">
-            <div className="flex">
-              <div className="w-14 mr-2 cursor-pointer  ">
-                <div className="w-12 h-12 rounded-full mr-2 bg-slate-300 float-left"></div>
-              </div>
-              <div className=" w-full  ">
-                <div className="max-w-[350px] h-3 rounded-xl bg-slate-300 mt-2"></div>
-                <div className="w-[150px] h-3 rounded-xl bg-slate-300 mt-2"></div>{" "}
-                <div className=" h-32 w-full rounded-xl bg-slate-300 mt-4"></div>
-                <div className="mt-3 py-2 border-background2 border-t-[1px] ">
-                  <div className="flex justify-between items-center max-w-lg mx-auto">
-                    <div className="w-16 h-10 rounded-lg bg-slate-300"></div>
-                    <div className="w-16 h-10 rounded-lg bg-slate-300"></div>
-                    <div className="w-16 h-10 rounded-lg bg-slate-300 "></div>
-                    <div className="w-16 h-10 rounded-lg bg-slate-300 "></div>
-                  </div>
+          <div className="bg-white py-5 px-3 relative top-[-.5rem]">
+            <div className=" animate-pulse">
+              <div className="flex">
+                <div className="w-11 mr-2 cursor-pointer  ">
+                  <div className="w-11 h-11 rounded-full mr-2 bg-slate-300 float-left"></div>
+                </div>
+                <div className=" w-full">
+                  <div className="max-w-[350px] h-2 rounded-xl bg-slate-300 mt-2"></div>
+                  <div className="w-[150px] h-2 rounded-xl bg-slate-300 mt-2"></div>{" "}
                 </div>
               </div>
+              <div className="h-2 mt-4 w-full rounded-l-md bg-slate-300 mb-[6px]"></div>
+              <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
+              <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
+              <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
+              <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
+              <div className="h-2 w-full bg-slate-300 mb-[6px]"></div>
+              <div className="h-2 w-24 rounded-r-md bg-slate-300 mb-[6px]"></div>
             </div>
           </div>
 
