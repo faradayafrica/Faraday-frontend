@@ -128,7 +128,6 @@ class Form extends Component {
   };
 
   renderButton(label, isFluid) {
-    // console.log(this.validate());
     return (
       <div className="mt-3">
         <PrimaryButton cta={label} disabled={this.validate()} wide />

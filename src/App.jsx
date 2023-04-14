@@ -28,7 +28,6 @@ const App = () => {
 
   const handleClearCache = () => {
     setClearCache(true);
-    // console.log("Made ", clearCache);
   };
 
   // const syncPendingComments = async () => {

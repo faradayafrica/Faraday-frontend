@@ -278,7 +278,6 @@ class PersonalData extends Form {
       this.state.data.image ==
       "/static/media/Add Image.b2309ebf700c4fec8376adf1bed746c5.svg"
     ) {
-      console.log("Not this image");
       formData.append("profile_pic", defaultProfile);
     } else {
       formData.append("profile_pic", this.state.data.image);

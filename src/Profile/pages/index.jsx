@@ -118,7 +118,6 @@ function Profile({ match, history }) {
       !isQuestionLoading &&
       questionData?.pages.map((page) =>
         page?.data?.results.map((item) => {
-          // console.log("Question first fetch");
           return newQuestions.push(item);
         })
       );
@@ -133,7 +132,6 @@ function Profile({ match, history }) {
       !isSolutionLoading &&
       solutionData?.pages?.map((page) =>
         page?.data?.results?.map((item) => {
-          // console.log("Solution first fetch");
           return newSolutions.push(item);
         })
       );
@@ -148,7 +146,6 @@ function Profile({ match, history }) {
       !isBookmarkLoading &&
       bookmarkData?.pages?.map((page) =>
         page?.data?.results?.[0]?.ques.map((item) => {
-          // console.log("Bookmark first fetch");
           return newBookmarks.push(item);
         })
       );
@@ -206,7 +203,6 @@ function Profile({ match, history }) {
 
         setLoading(false);
       } catch (e) {
-        console.log(e);
         setLoading(false);
         setError("Couldn't fetch user at this time");
       }
@@ -224,7 +220,7 @@ function Profile({ match, history }) {
   };
 
   return (
-    <div className='w-full route-wrapper profile-wrapper text-faraday-night'>
+    <div className="w-full route-wrapper profile-wrapper text-faraday-night">
       {loading ? (
         <ProfileHomeLoader />
       ) : error ? (
@@ -232,7 +228,7 @@ function Profile({ match, history }) {
       ) : (
         <Switch>
           <Route
-            path='/me/:username/qfeed'
+            path="/me/:username/qfeed"
             render={(props) => (
               <UserQuestionSolutionPage
                 user={user}
@@ -252,12 +248,8 @@ function Profile({ match, history }) {
           />
 
           <Route
-            path='/'
+            path="/"
             render={(props) => (
-              // <>
-              //   {console.log(user, "<<<<<<")}
-              //   <div>HI</div>
-              // </>
               <ProfileHome
                 user={user}
                 currentUser={currentUser}
@@ -275,8 +267,8 @@ function Profile({ match, history }) {
               />
             )}
           />
-          <Route path='/not-found' component={NotFound} />
-          <Redirect push to='/not-found' />
+          <Route path="/not-found" component={NotFound} />
+          <Redirect push to="/not-found" />
         </Switch>
       )}
     </div>

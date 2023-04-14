@@ -24,7 +24,6 @@ const PostPage = (props) => {
       props.history.replace("/");
 
       // if (status === QfeedStates.SUCCESSFUL) {
-      //   console.log("Sent");
       //   SuccessToast("Question sent");
       // }
     }

@@ -38,7 +38,6 @@ const userSlice = createSlice({
 
   reducers: {
     updateOnline: (state, action) => {
-      // console.log(action.payload);
       const { name, value } = action.payload;
 
       state.onlineStatus = {
@@ -56,7 +55,6 @@ const userSlice = createSlice({
     });
     builder.addCase(currentUserThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      // console.log(data, "fetch current user");
 
       if (data) {
         state.data = data;

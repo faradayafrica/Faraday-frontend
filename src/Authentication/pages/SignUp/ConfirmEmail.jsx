@@ -47,7 +47,6 @@ class ConfirmEmail extends Form {
 
   doResend = () => {
     const spinner = document.getElementById("spinnerContainer");
-    console.log(auth.getCurrentUser().email, "Confirm Password");
     if (auth.getCurrentUser().email) {
       spinner.classList.remove("vanish");
       try {

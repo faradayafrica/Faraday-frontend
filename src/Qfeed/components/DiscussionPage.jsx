@@ -68,7 +68,7 @@ const DiscussionPage = ({ match, history }) => {
             });
           });
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     }
   };

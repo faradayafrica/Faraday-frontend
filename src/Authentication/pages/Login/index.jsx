@@ -8,7 +8,6 @@ import faraday from "../../../common/assets/logo.svg";
 
 class LoginPage extends Form {
   componentDidMount() {
-    // console.log("props", this.props);
     if (this.props.clearCache == true) window.location.reload(true);
   }
 

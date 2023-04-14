@@ -52,6 +52,9 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
                 event.preventDefault();
                 editorRef.current.focus();
               }
+              if (event.shiftKey && event.key === "Enter") {
+                postQuestion(title, content);
+              }
             }}
           />
           {title.length > LIMIT.title ? (

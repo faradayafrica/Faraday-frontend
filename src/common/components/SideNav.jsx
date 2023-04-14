@@ -109,10 +109,7 @@ function SideNav({ history }) {
   const { online, visible } = useSelector((state) => state.user.onlineStatus);
   const dispatch = useDispatch();
 
-  // console.log(currentUser);
-
   const handleLink = (item) => {
-    // history.replace(`/${item}`);
     const allLinks = links.map((link) => {
       link.focus = false;
       return link;
@@ -134,7 +131,6 @@ function SideNav({ history }) {
 
   const unShowPost = () => {
     setHidePost(true);
-    console.log(history);
     history.replace("/");
   };
 
