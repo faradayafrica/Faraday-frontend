@@ -48,7 +48,7 @@ const TimeLine = (props) => {
     <div className="relative">
       <div className="bg-background " id="timeline">
         <div className="min-h-[70px] sm:min-h-[0px] bg-transparent"> </div>
-        <h1 className="text-center md:!text-left text-2xl sm:text-2xl m-3 font-bold">
+        <h1 className="text-cente md:!text-left text-2xl sm:text-2xl m-3 font-bold">
           Question Feed
         </h1>
         {/* The questions */}

@@ -239,6 +239,10 @@
   margin-right: 0.2rem;
 }
 
+.QTE .quill .ql-editor::before {
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
 /* Style the RT-format here */
 .render {
   margin-top: 0.5rem;

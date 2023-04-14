@@ -195,7 +195,7 @@ const DiscussionPage = ({ match, history }) => {
           <div className="flex items-center p-3">
             <img
               src={arrowRight}
-              className="w-8 h-8 p-2 rounded-full mr-2 bg-white hover:bg-background2 cursor-pointer rotate-180"
+              className="w-8 h-8 p-2 rounded-full mr-2 bg-white hover:bg-background2 cursor-pointer rotate-180 shadow-sm"
               alt="return"
               onClick={() => {
                 // dispatch(updateQuestion({ name: "comments", value: [] }));
