@@ -107,6 +107,13 @@
   overflow-x: hidden;
   font-size: 0.875rem;
   min-height: 4rem;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease-in;
+}
+
+.RTE .quill .ql-editor:focus-within {
+  border-bottom: 1px solid var(--text2-black);
+  border-radius: 8px;
 }
 
 .RTE .quill .ql-toolbar {

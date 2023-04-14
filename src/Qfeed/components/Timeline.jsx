@@ -70,7 +70,7 @@ const TimeLine = (props) => {
               {!props.loader && (
                 <div className="p-3 bg-white">
                   <div className="p-3 rounded-lg border bg-background  text-center">
-                    <p className="text-xs sm:text-base m-0  mb-2">
+                    <p className="text-xs sm:text-sm m-0  mb-2">
                       {props.isError
                         ? props.error.message
                         : "No questions yet! Be the first to ask the first question"}
@@ -98,7 +98,7 @@ const TimeLine = (props) => {
         {props.isError ? (
           <div className="p-3  rounded-lg border bg-background m-3 text-center">
             <>
-              <p className="text-sm sm:text-base ">Something went wrong</p>
+              <p className="text-xs sm:text-sm ">Something went wrong</p>
               <SecondaryButton cta="Retry" action={props.refetch} />
             </>
           </div>
@@ -123,7 +123,7 @@ const TimeLine = (props) => {
             {questions.length > 0 && !props.hasNextPage && (
               <div className="bg-white py-2 mt-2">
                 <div className="p-3 m-3 rounded-lg border bg-background  text-center">
-                  <p className="text-xs sm:text-base m-0 ">
+                  <p className="text-xs sm:text-sm m-0 ">
                     You're at the bottom of the feed
                   </p>
                 </div>

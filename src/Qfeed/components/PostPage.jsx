@@ -36,7 +36,7 @@ const PostPage = (props) => {
   }
 
   return (
-    <div className=" w-full">
+    <div className=" w-full bg-background">
       <div className="min-h-[70px] sm:min-h-[0px]  "> </div>
       <div className="z-30">
         <PostComponent postQuestion={postQuestion} LIMIT={LIMIT} {...props} />

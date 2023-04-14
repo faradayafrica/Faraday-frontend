@@ -87,8 +87,6 @@ const Comments = ({
       let content = comment;
       dispatch(createCommentThunk({ postid, content }));
     }
-
-    // TODO: Clear the input after comment creation is successful
   };
 
   const deleteComment = async (selectedComment) => {
@@ -147,7 +145,7 @@ const Comments = ({
           {!commentLoader && (
             <div className="p-3 mt-2 bg-white">
               <div className="p-3 rounded-lg border bg-background  text-center">
-                <p className="text-xs sm:text-base m-0 ">
+                <p className="text-xs sm:text-sm m-0 ">
                   {isError
                     ? error.message
                     : "No comments yet! Be the first to comment on this question"}
@@ -175,7 +173,7 @@ const Comments = ({
           {comments.length > 0 && !hasNextPage && (
             <div className="bg-white py-2 mt-2">
               <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
-                <p className="text-xs sm:text-base m-0 ">
+                <p className="text-xs sm:text-sm m-0 ">
                   No more comment to fetch
                 </p>
               </div>

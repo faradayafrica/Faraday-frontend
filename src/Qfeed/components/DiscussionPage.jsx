@@ -189,7 +189,7 @@ const DiscussionPage = ({ match, history }) => {
 
   return (
     <>
-      <div className=" bg-background min-h-[100vh] z-30 bottom-0 left-0 h-min-screen w-screen sm:w-auto sm:static">
+      <div className=" bg-background min-h-[100vh] z-30 bottom-0 left-0 h-min-screen sm:w-auto sm:static">
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
         <div className="z-50" id="discussion">
           <div className="flex items-center p-3">
