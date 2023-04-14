@@ -39,13 +39,14 @@ const TimeLine = (props) => {
   }, [window.pageYOffset]);
 
   // console.log(
+  //   questions,
   //   questions.filter((ques) => ques.type === "pen"),
   //   "ANNNNNNI"
   // );
 
   return (
     <div className='relative'>
-      <div className='bg-[#f5f5f5] sm:bg-white ' id='timeline'>
+      <div className='bg-background ' id='timeline'>
         <div className='min-h-[70px] sm:min-h-[0px] bg-transparent'> </div>
         <h1 className='text-center md:!text-left text-2xl sm:text-2xl m-3 font-bold'>
           Question Feed
@@ -54,7 +55,7 @@ const TimeLine = (props) => {
 
         <>
           {questions?.length ? (
-            <div className='space-y-1 sm:space-y-0'>
+            <div className='space-y-1 sm:space-y-0 bg-background'>
               {questions?.map((question) => (
                 <Question
                   question={question}

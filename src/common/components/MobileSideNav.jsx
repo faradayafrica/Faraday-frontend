@@ -18,6 +18,7 @@ import "../styles/topnav.css";
 import { currentUserThunk } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "./PrimaryButton";
+import { useParams } from "react-router-dom";
 
 function MobileSideNav() {
   const [isQfeed, setQfeed] = useState();
@@ -29,6 +30,7 @@ function MobileSideNav() {
 
   const { data: user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
 
   useEffect(() => {
     setQfeed(location.pathname === "/" || location.pathname === "/qfeed");

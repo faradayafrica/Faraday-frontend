@@ -33,18 +33,6 @@ const AddComment = ({
 
   return (
     <div className="add-comment flex justify-start border-b-[1px] border-background2 ">
-      {/* <Link
-        to={`/me/${currentUser?.username}`}
-        style={{ textDecoration: "none" }}
-        className="profile-img"
-      >
-        <img
-          src={currentUser?.profile_pic}
-          alt=""
-          className="w-12 h-12 rounded-full mr-2 bg-background2 float-left"
-          style={{ objectFit: "cover" }}
-        />
-      </Link> */}
       <div className="RTE-wrapper">
         {!question.is_closed ? (
           <>
@@ -52,16 +40,8 @@ const AddComment = ({
               value={comment}
               onChange={onChange}
               placeholder={`Reply to @${question.user.username}`}
+              submit={() => postComment(questionId, LIMIT)}
             />
-            {comment.length > 0 && (
-              <div className="m-0 pb-2 float-right">
-                <PrimaryButton
-                  cta="Submit"
-                  action={() => postComment(questionId, LIMIT)}
-                  variant="small"
-                />
-              </div>
-            )}
           </>
         ) : (
           <div className="h-[100%] flex py-3 ">

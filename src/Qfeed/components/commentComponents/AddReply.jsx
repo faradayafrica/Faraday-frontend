@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PrimaryButton from "../../../common/components/PrimaryButton";
 import { getCurrentUser } from "../../../common/services/authService";
-import RTF from "../RTE";
+import RTE from "../RTE";
 
 export default function AddReply({
   parentCommentAuthor,
@@ -12,17 +12,9 @@ export default function AddReply({
   close,
 }) {
   const currentUser = getCurrentUser();
-  const LIMIT = 450;
 
   const { thisQuestion } = useSelector((state) => state.qfeed);
-
-  let inputClasses =
-    "bg-transparent mt-1 px-2 py-2 mb-2 placeholder-secondary-text border-[#cfd9de] border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-sm ";
-
-  inputClasses +=
-    reply.length > LIMIT
-      ? "focus:bg-gradient-to-t from-danger-highlight to-white focus:border-danger border-danger"
-      : "";
+  const LIMIT = 450;
 
   if (!currentUser.username) {
     return (
@@ -66,20 +58,12 @@ export default function AddReply({
             <div className="content">
               {" "}
               <div className="RTE-wrapper">
-                <RTF
+                <RTE
                   value={reply}
                   onChange={onChange}
                   placeholder={"Leave a comment"}
+                  submit={() => postReply(LIMIT)}
                 />
-                {reply.length > 0 && (
-                  <div className="m-0 pb-2 float-right">
-                    <PrimaryButton
-                      cta="Submit"
-                      action={() => postReply(LIMIT)}
-                      variant="small"
-                    />
-                  </div>
-                )}
               </div>
             </div>
           </div>

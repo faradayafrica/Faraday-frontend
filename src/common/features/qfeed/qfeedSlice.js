@@ -374,6 +374,23 @@ const qfeedSlice = createSlice({
       }
     },
 
+    optimisticCommentVote: (state, action) => {
+      const { commentid, value } = action.payload;
+
+      const _comments = state.thisQuestion.comments;
+
+      let index = _comments.findIndex((comment) => comment.id === commentid);
+
+      // Use the splice() method to replace the object from the array
+      if (index !== -1) {
+        _comments.splice(index, 1, {
+          ..._comments[index],
+          vote_rank: value.rank,
+          vote_status: value.status,
+        });
+      }
+    },
+
     // <--------------Profile Reducers ----------->
     updateProfile: (state, action) => {
       const { name, value } = action.payload;
@@ -405,7 +422,13 @@ const qfeedSlice = createSlice({
       state.status = QfeedStates.LOADING;
     });
     builder.addCase(followUserThunk.fulfilled, (state, action) => {
-      const { data, message: error } = action.payload;
+      const { data, message } = action.payload;
+
+      if (data) {
+        SuccessToast(message);
+      } else {
+        SuccessToast(message);
+      }
 
       if (data) {
         // Update Qfeed on home Page
@@ -413,6 +436,10 @@ const qfeedSlice = createSlice({
         for (let i = 0; i < feed.length; i++) {
           if (feed[i].user.username === data.username) {
             feed[i].user.is_following = data.is_following;
+          }
+
+          if (feed[i].type === "echo" && feed[i].original.user.id === data.id) {
+            feed[i].original.user.is_following = data.is_following;
           }
         }
         state.feed.qfeed = feed;
@@ -489,7 +516,7 @@ const qfeedSlice = createSlice({
 
         state.status = QfeedStates.SUCCESSFUL;
       } else {
-        state.error = error;
+        state.error = message;
       }
     });
     builder.addCase(followUserThunk.rejected, (state) => {
@@ -630,9 +657,14 @@ const qfeedSlice = createSlice({
 
       if (data) {
         // Updates the qfeed Home
-        const newFeed = state.feed.qfeed.map((question) =>
-          question.id === data.id ? data : question
-        );
+        const newFeed = state.feed.qfeed.map((question) => {
+          if (question.type === "echo" && question.original.id === data.id) {
+            question.original.is_closed = data.is_closed;
+            return question;
+          }
+          if (question.id === data.id) return data;
+          return question;
+        });
         state.feed.qfeed = newFeed;
 
         // Updates the profile question feed
@@ -672,7 +704,7 @@ const qfeedSlice = createSlice({
     builder.addCase(echoQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
 
-      console.log({ data, state });
+      // console.log({ data, state });
 
       if (data) {
         const feed = state.feed.qfeed;
@@ -711,7 +743,9 @@ const qfeedSlice = createSlice({
         // state.feed.profile.userSolutions = newUserSolutionFeed;
 
         // Update the discussionPage after voting
-        state.thisQuestion.question = data;
+        // state.thisQuestion.question = data; // This is giving an unwanted effect on the Discussion page.
+        state.thisQuestion.question.share_count++;
+        state.thisQuestion.question.type = "echo";
         state.status = QfeedStates.SUCCESSFUL;
       }
     });
@@ -1160,6 +1194,10 @@ const qfeedSlice = createSlice({
           if (feed[i].id === data.id) {
             feed[i].bookmarked = data.bookmarked;
           }
+
+          if (feed[i].type === "echo" && feed[i].original.id === data.id) {
+            feed[i].original.bookmarked = data.bookmarked;
+          }
         }
         state.feed.qfeed = feed;
 
@@ -1171,6 +1209,7 @@ const qfeedSlice = createSlice({
           }
         }
         state.feed.profile.userQuestions = newUserQuestionFeed;
+        state.thisQuestion.question = structuredClone(data);
 
         // Update Profile Bookmark feed
         const newUserBookmarkFeed = state.feed.profile.userBookmarks;
@@ -1204,6 +1243,7 @@ export const {
   resetProfile,
   hideSecondReply,
   hideThirdReply,
+  optimisticCommentVote,
   optimisticReplyVote,
   resetStatus,
   resetToast,

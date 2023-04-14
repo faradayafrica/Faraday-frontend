@@ -1,23 +1,7 @@
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import QuestionMenu from "./QuestionMenu";
-import CopyLink from "./CopyLink";
-import moment from "moment";
+import { useHistory } from "react-router-dom";
 // import ReactMarkdown from "react-markdown";
 import http from "../../common/services/httpService";
-
-//icon import
-import ellipses from "../assets/ellipses.svg";
-import arrow from "../assets/arrow-right.svg";
-import love from "../assets/love.svg";
-import redLove from "../assets/red-love.svg";
-import smiley from "../assets/smiley.svg";
-import link from "../assets/link.svg";
-import mark from "../assets/mark.svg";
-import verify from "../assets/verify.svg";
-import info from "../assets/info.svg";
-import Modal from "../../common/components/Modal";
-import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteQuestionThunk,
@@ -25,16 +9,6 @@ import {
   updateFeed,
   voteQuestionThunk,
 } from "../../common/features/qfeed/qfeedSlice";
-
-import upvote from "../assets/upvote.svg";
-import downvote from "../assets/downvote.svg";
-import upvoteActive from "../assets/upvote-active.svg";
-import downvoteActive from "../assets/downvote-active.svg";
-import { ReactComponent as ShareIcon } from "../assets/share.svg";
-import { ReactComponent as BroadCastIcon } from "../assets/broadcast.svg";
-import { ReactComponent as EllipsesIcon } from "../assets/ellipses.svg";
-
-import replyImg from "../assets/reply.svg";
 import QuestionComponent from "./QuestionComponent";
 
 const Question = (props) => {
@@ -125,6 +99,27 @@ const Question = (props) => {
     return (
       <QuestionComponent
         type={question.type}
+        user={question.user}
+        question={question.original}
+        setQuestionMenu={setQuestionMenu}
+        handleLike={handleLike}
+        handleEcho={handleEcho}
+        handleCopyLinkModal={handleCopyLinkModal}
+        getShortLink={getShortLink}
+        isCopyLinkModal={isCopyLinkModal}
+        isCopied={isCopied}
+        shortLink={shortLink}
+        handleIsCopied={handleIsCopied}
+        questionMenu={questionMenu}
+        toggleQuestionMenu={toggleQuestionMenu}
+        handleQuestionDelete={handleQuestionDelete}
+      />
+    );
+  }
+  if (question.type === "pen") {
+    return (
+      <QuestionComponent
+        type={"pen"}
         user={question.user}
         question={question.original}
         setQuestionMenu={setQuestionMenu}

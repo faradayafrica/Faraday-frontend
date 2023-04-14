@@ -1,5 +1,5 @@
 .comment-wrapper {
-  margin: 0 1rem;
+  margin: 0 0.5rem;
   padding: 0 1rem 0 2rem;
   margin-bottom: 0.3rem;
   transition: 0.3s all ease;
@@ -233,4 +233,26 @@
   object-fit: contain;
 
   margin-right: 0.2rem;
+}
+
+/* Style the RT-format here */
+.render {
+  margin-top: 0.875rem;
+}
+
+.render pre,
+.ql-snow .ql-editor pre.ql-syntax {
+  font-family: Consolas, Menlo, "courier new", monospace;
+  background-color: #07553f;
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: #00e5a6;
+  margin: 0.5rem 0;
+}
+
+.ql-snow a,
+.render a {
+  color: #2c974b;
+  text-decoration: underline;
+  font-weight: 600;
 }
