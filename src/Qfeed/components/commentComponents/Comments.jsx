@@ -52,7 +52,6 @@ const Comments = ({
     );
   }
 
-  // console.log(questions);
   const pendingContents = pendingComments.map((item) => {
     return {
       content: item.content,

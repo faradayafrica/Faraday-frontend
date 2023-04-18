@@ -11,7 +11,7 @@ const AddComment = ({
   questionId,
   // comment,
 }) => {
-  const LIMIT = 450;
+  const LIMIT = 1050;
 
   const { question } = useSelector((state) => state.qfeed.thisQuestion);
   const { newComment: comment } = useSelector(

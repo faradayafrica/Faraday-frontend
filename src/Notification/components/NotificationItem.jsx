@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import moment from "moment";
 // icons import -unread variants
 
 import followUnread from "../assets/follow_unread.svg";
@@ -24,15 +24,20 @@ const NotificationItem = ({
   que,
   follow_by,
   commentQue,
+  notification,
 }) => {
   const [limit, setLimit] = useState(180);
+
+  if (notification === null) {
+    return "";
+  }
 
   return (
     <>
       {/* follow type */}
       {notification_type === "follow" ? (
         <Link
-          to={`/me/${follow_by?.username}`}
+          to={`/me/${notification?.username}`}
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
@@ -50,13 +55,18 @@ const NotificationItem = ({
 
           <div className="">
             <img
-              src={follow_by.profile_pic}
+              src={notification?.profile_pic}
               className="w-8 h-8 rounded-full bg-background2"
               style={{ objectFit: "cover" }}
               alt=""
             />
-            {message}
-            <span className="absolute text-xs top-3 right-3">{created}</span>
+
+            <span className="text-sm"> {message}</span>
+
+            <span className="absolute text-xs top-3 right-3">
+              {" "}
+              {moment(created).fromNow()}
+            </span>
           </div>
         </Link>
       ) : (
@@ -82,22 +92,28 @@ const NotificationItem = ({
             alt=""
           />
 
-          <div className="">
+          <div className="w-full">
             <img
-              src={que?.user.profile_pic}
-              className="w-8 h-8 rounded-full  bg-background2"
+              src={que?.user?.profile_pic}
+              className="w-8 h-8 rounded-full  bg-background2 "
               style={{ objectFit: "cover" }}
               alt=""
             />
-            {message}
-            <span className="absolute text-xs top-3 right-3">{created}</span>
+            <span className="text-sm"> {message}</span>
 
-            <div className="border p-2 bg-white mt-2 rounded-lg text-secondary font-semibold ">
-              {que?.title}?{" "}
+            <span className="absolute text-xs top-3 right-3">
+              {" "}
+              {moment(created).fromNow()}
+            </span>
+
+            <div className="border p-2 pb-0 w-full bg-white mt-2 rounded-lg text-faraday-night font-semibold">
+              {que?.title}
+
               <span className="text-xs font-normal">
-                {que?.content.length >= limit
-                  ? que?.content.substring(0, limit) + "..."
-                  : que?.content}
+                <div
+                  className="mb-2 text-sm render"
+                  dangerouslySetInnerHTML={{ __html: que?.content }}
+                />
               </span>
             </div>
           </div>
@@ -127,15 +143,23 @@ const NotificationItem = ({
 
           <div className="">
             <img
-              src={que?.user.profile_pic}
+              src={que?.user?.profile_pic}
               className="w-8 h-8 rounded-full  bg-background2"
               style={{ objectFit: "cover" }}
               alt=""
             />
-            {message}
-            <span className="absolute text-xs top-3 right-3">{created}</span>
+            {message && (
+              <div
+                className="mb-4 text-sm text-faraday-night render"
+                dangerouslySetInnerHTML={{ __html: message }}
+              />
+            )}
+            <span className="absolute text-xs top-3 right-3">
+              {" "}
+              {moment(created).fromNow()}
+            </span>
 
-            {que.solution ? (
+            {que?.solution ? (
               <div className="border p-2 bg-white text-sm mt-2 rounded-lg text-secondary">
                 {que.solution.content.length >= limit
                   ? que?.solution.content.substring(0, limit) + "..."
@@ -153,7 +177,7 @@ const NotificationItem = ({
       {/* comment type */}
       {notification_type === "comment" ? (
         <Link
-          to={`/qfeed/${commentQue.id}`}
+          to={`/qfeed/${commentQue?.id}`}
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
@@ -171,19 +195,29 @@ const NotificationItem = ({
 
           <div className="">
             <img
-              src={commentQue?.comment.user.profile_pic}
+              src={commentQue?.comment?.user?.profile_pic}
               className="w-8 h-8 rounded-full  bg-background2"
               style={{ objectFit: "cover" }}
               alt=""
             />
-            {message}
-            <span className="absolute text-xs top-3 right-3">{created}</span>
+            {message && (
+              <div
+                className="mb-4 text-sm text-faraday-night render"
+                dangerouslySetInnerHTML={{ __html: message }}
+              />
+            )}
+            <span className="absolute text-xs top-3 right-3">
+              {" "}
+              {moment(created).fromNow()}
+            </span>
 
-            <div className="border p-2 bg-white text-sm mt-2 rounded-lg text-secondary">
-              {commentQue?.comment.content.length >= limit
-                ? commentQue?.comment.content.substring(0, limit) + "..."
-                : commentQue?.comment.content}
-            </div>
+            {commentQue?.comment.content && (
+              <div className="border p-2 bg-white text-sm mt-2 rounded-lg text-secondary">
+                {commentQue?.comment.content.length >= limit
+                  ? commentQue?.comment.content.substring(0, limit) + "..."
+                  : commentQue?.comment.content}
+              </div>
+            )}
           </div>
         </Link>
       ) : (

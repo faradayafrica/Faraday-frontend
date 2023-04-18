@@ -15,6 +15,7 @@ const Notification = (props) => {
 
   const [filter, setFilter] = useState("");
   const [showFilter, setShowFilter] = useState(false);
+  const [count, setCount] = useState(null);
 
   const filter_modal = useRef();
 
@@ -62,6 +63,7 @@ const Notification = (props) => {
 
   const fetchNotifications = async (pageParam) => {
     const resp = await http.get(apiEndpoint + `?page=${pageParam}`);
+    setCount(resp.data.count);
     return resp;
   };
 
@@ -125,7 +127,9 @@ const Notification = (props) => {
               props.history.goBack();
             }}
           />
-          <h1 className="text-2xl sm:text-2xl font-bold m-0 ">Notification</h1>
+          <h1 className="text-2xl sm:text-2xl font-bold m-0 ">
+            Notification <span className="text-brand">{count}</span>
+          </h1>
         </div>
 
         <div className="relative">
@@ -198,14 +202,16 @@ const Notification = (props) => {
                     key={item.id}
                     id={item.id}
                     is_read={item.is_read}
-                    notification_type={item.notification_type}
-                    message={item.content}
                     created={item.created}
+                    notification_type={item.notification_type}
+                    // notification data
+                    message={item.content}
+                    que={item.notification}
+                    follow_by={item.notification?.followed_by}
+                    commentQue={item.notification?.que_with_comment}
+                    notification={item.notification}
+                    // function
                     markAsRead={markAsRead}
-                    // notification type content
-                    que={item.que}
-                    follow_by={item.followed_by}
-                    commentQue={item.que_with_comment}
                   />
                 ))
               )}

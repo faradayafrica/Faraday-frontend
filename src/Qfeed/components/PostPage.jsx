@@ -8,7 +8,7 @@ const PostPage = (props) => {
   // Redux here
   const dispatch = useDispatch();
 
-  const LIMIT = { title: 150, content: 400 };
+  const LIMIT = { title: 150, content: 1050 };
 
   const currentUser = getCurrentUser();
 
