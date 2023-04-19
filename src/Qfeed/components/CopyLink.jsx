@@ -72,7 +72,7 @@ const CopyLink = (props) => {
                 <h5 className="font-semibold">Here's a link to the question</h5>
                 {shortLink ? (
                   <>
-                    <p className="text-secondary">
+                    <p className="text-faraday-night opacity-70 text-sm mb-4 mt-2">
                       Copy this link and share with people you want to see the
                       question.
                     </p>
@@ -82,7 +82,7 @@ const CopyLink = (props) => {
                       <input
                         id="link"
                         value={`https://frda.me/${shortLink}`}
-                        className="bg-transparent"
+                        className="bg-transparent text-sm"
                         readOnly
                       />
 
