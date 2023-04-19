@@ -4,8 +4,8 @@ const TagsInput = React.forwardRef((props, ref) => {
   const [tags, setTags] = React.useState(props.tags);
 
   function removeSpaces(str) {
-    return str.replace(/[A-Z\s]+/g, function (match) {
-      return match.toLowerCase().replace(/\s/g, "");
+    return str.replace(/[A-Z,\s]+/g, function (match) {
+      return match.toLowerCase().replace(/[\s,]/g, "");
     });
   }
 
@@ -49,7 +49,9 @@ const TagsInput = React.forwardRef((props, ref) => {
       <input
         type="text"
         onKeyUp={(event) =>
-          event.key === "Enter" || event.key === " " ? addTags(event) : null
+          event.key === "Enter" || event.key === " " || event.key === ","
+            ? addTags(event)
+            : null
         }
         placeholder="Add tags here, press enter or space to add tags"
         className="bg-background"
