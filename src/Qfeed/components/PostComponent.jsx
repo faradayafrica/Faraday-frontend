@@ -110,7 +110,7 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
       <div className=" flex justify-between items-end bg-white">
         <div className="fixed sm:static bottom-0 left-0 p-3 py-5 sm:py-3 w-full z-50 bg-white  sm:w-[12rem]">
           <PrimaryButton
-            cta="Send question"
+            cta="Send Question"
             wide={true}
             action={() => postQuestion(title, content, tags)}
           />
