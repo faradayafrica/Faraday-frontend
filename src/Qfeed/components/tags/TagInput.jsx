@@ -4,7 +4,9 @@ const TagsInput = React.forwardRef((props, ref) => {
   const [tags, setTags] = React.useState(props.tags);
 
   function removeSpaces(str) {
-    return str.replace(/\s+/g, "");
+    return str.replace(/[A-Z\s]+/g, function (match) {
+      return match.toLowerCase().replace(/\s/g, "");
+    });
   }
 
   const removeTags = (indexToRemove) => {
@@ -19,10 +21,10 @@ const TagsInput = React.forwardRef((props, ref) => {
     }
   };
   return (
-    <div className="tags-input mr-2 bg-background mb-4">
+    <div className="tags-input mr-2 bg-background mb-4 mt-2">
       <ul id="tags">
         {tags.map((tag, index) => (
-          <li key={index} className="tag shadow-sm ">
+          <li key={index} className="tag shadow-s ">
             <span className="tag-title">{tag}</span>
             <span
               className="ml-[4px] cursor-pointer"
@@ -60,7 +62,7 @@ const TagsInput = React.forwardRef((props, ref) => {
           if (event.shiftKey && event.key === "Enter") {
             props.postQuestion();
           }
-          if (event.key === "Backspace") {
+          if (event.key === "Backspace" && event.target.value === "") {
             removeTags(tags.length - 1);
           }
         }}

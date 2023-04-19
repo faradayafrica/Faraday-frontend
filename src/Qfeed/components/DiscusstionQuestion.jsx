@@ -20,6 +20,7 @@ import {
   voteQuestionThunk,
 } from "../../common/features/qfeed/qfeedSlice";
 import { useDispatch } from "react-redux";
+import uuid from "react-uuid";
 
 const DiscussionQuestion = ({
   question,
@@ -125,6 +126,18 @@ const DiscussionQuestion = ({
           className="mb-4 text-sm text-faraday-night render"
           dangerouslySetInnerHTML={{ __html: question.content }}
         />
+      )}
+      {question.tags && (
+        <ul id="tags">
+          {question.tags.map((item) => (
+            <li
+              key={uuid()}
+              className="bg-[#ECECF0] mr-2 py-[4px] px-3 rounded-md text-xs font-medium"
+            >
+              <span className="tag-title">{item.name}</span>
+            </li>
+          ))}
+        </ul>
       )}
 
       <div className="action-bar mt-4 pt-4">

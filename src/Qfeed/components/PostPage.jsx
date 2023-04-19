@@ -13,7 +13,7 @@ const PostPage = (props) => {
   const currentUser = getCurrentUser();
 
   function arrayToString(arr) {
-    return arr.join(",");
+    return arr.join(", ");
   }
 
   const postQuestion = (title, content, tags) => {
@@ -27,7 +27,7 @@ const PostPage = (props) => {
       // format tags
       const tagsAsString = arrayToString(tags);
       dispatch(createQuestionThunk({ title, content, tags: tagsAsString }));
-      // props.history.replace("/");
+      props.history.replace("/");
 
       // if (status === QfeedStates.SUCCESSFUL) {
       //   SuccessToast("Question sent");

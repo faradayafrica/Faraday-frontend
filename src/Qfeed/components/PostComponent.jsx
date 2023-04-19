@@ -13,7 +13,7 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
   const tagRef = useRef();
 
   let titleClasses =
-    "bg-background to-white rounded-[8px] mt-2 px-3 py-4 placeholder-[rgba(0,0,0,0.5)] border-background border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-base sm:text-lg font-semibold ";
+    "ask-title bg-background to-white rounded-[8px] mt-2 px-3 py-4 placeholder-[rgba(0,0,0,0.5)] border-background border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-base sm:text-lg font-semibold ";
 
   titleClasses +=
     title.length > LIMIT.title
@@ -56,7 +56,7 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
             value={title}
             onKeyDown={(event) => {
               if (event.shiftKey && event.key === "Enter") {
-                postQuestion(title, content);
+                postQuestion(title, content, tags);
               }
             }}
           />
@@ -74,6 +74,16 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
             ""
           )}
         </label>
+
+        {/* Tags */}
+        <TagsInput
+          selectedTags={selectedTags}
+          tags={tags}
+          ref={tagRef}
+          editorRef={editorRef}
+          postQuestion={() => postQuestion(title, content, tags)}
+        />
+
         <label className="block w-full m-0 mt-3 relative">
           {content.length > LIMIT.content ? (
             <>
@@ -88,15 +98,6 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
           ) : (
             ""
           )}
-
-          {/* Tags */}
-          <TagsInput
-            selectedTags={selectedTags}
-            tags={tags}
-            ref={tagRef}
-            editorRef={editorRef}
-            postQuestion={() => postQuestion(title, content, tags)}
-          />
 
           <QuestionRTE
             ref={editorRef}
