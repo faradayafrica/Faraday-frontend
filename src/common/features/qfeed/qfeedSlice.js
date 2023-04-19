@@ -57,9 +57,9 @@ export const followUserThunk = createAsyncThunk(
 // Ask a question
 export const createQuestionThunk = createAsyncThunk(
   "qfeed/create-question",
-  async ({ title, content }, { rejectWithValue }) => {
+  async ({ title, content, tags }, { rejectWithValue }) => {
     try {
-      const response = await QService.createQuestion(title, content);
+      const response = await QService.createQuestion(title, content, tags);
       return response;
     } catch (error) {
       return rejectWithValue(error.toString());

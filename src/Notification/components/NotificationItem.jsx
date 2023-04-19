@@ -125,7 +125,7 @@ const NotificationItem = ({
       {/* solution type */}
       {notification_type === "solution" ? (
         <Link
-          to={`/qfeed/${que?.id}`}
+          to={`/qfeed/${notification?.id}`}
           style={{ textDecoration: "none", color: "var(--faraday-night)" }}
           className={
             is_read
@@ -140,6 +140,8 @@ const NotificationItem = ({
             style={{ objectFit: "fill" }}
             alt=""
           />
+
+          {console.log("From solution Type ==> ", notification)}
 
           <div className="">
             <img

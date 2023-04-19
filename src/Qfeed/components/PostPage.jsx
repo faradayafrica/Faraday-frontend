@@ -12,7 +12,11 @@ const PostPage = (props) => {
 
   const currentUser = getCurrentUser();
 
-  const postQuestion = (title, content) => {
+  function arrayToString(arr) {
+    return arr.join(",");
+  }
+
+  const postQuestion = (title, content, tags) => {
     if (
       title.length > LIMIT.title ||
       content.length > LIMIT.content ||
@@ -20,8 +24,10 @@ const PostPage = (props) => {
     ) {
       ErrorToast("Can't send until you resolve the concerns ");
     } else {
-      dispatch(createQuestionThunk({ title, content }));
-      props.history.replace("/");
+      // format tags
+      const tagsAsString = arrayToString(tags);
+      dispatch(createQuestionThunk({ title, content, tags: tagsAsString }));
+      // props.history.replace("/");
 
       // if (status === QfeedStates.SUCCESSFUL) {
       //   SuccessToast("Question sent");

@@ -209,7 +209,7 @@ const Notification = (props) => {
                     que={item.notification}
                     follow_by={item.notification?.followed_by}
                     commentQue={item.notification?.que_with_comment}
-                    notification={item.notification}
+                    notification={item}
                     // function
                     markAsRead={markAsRead}
                   />
@@ -226,14 +226,16 @@ const Notification = (props) => {
                       key={item.id}
                       id={item.id}
                       is_read={item.is_read}
-                      notification_type={item.notification_type}
-                      message={item.content}
                       created={item.created}
+                      notification_type={item.notification_type}
+                      // notification data
+                      message={item.content}
+                      que={item.notification}
+                      follow_by={item.notification?.followed_by}
+                      commentQue={item.notification?.que_with_comment}
+                      notification={item.notification}
+                      // function
                       markAsRead={markAsRead}
-                      // notification type content
-                      que={item.que}
-                      follow_by={item.followed_by}
-                      commentQue={item.que_with_comment}
                     />
                   ))
               )}
@@ -248,14 +250,16 @@ const Notification = (props) => {
                       key={item.id}
                       id={item.id}
                       is_read={item.is_read}
-                      notification_type={item.notification_type}
-                      message={item.content}
                       created={item.created}
+                      notification_type={item.notification_type}
+                      // notification data
+                      message={item.content}
+                      que={item.notification}
+                      follow_by={item.notification?.followed_by}
+                      commentQue={item.notification?.que_with_comment}
+                      notification={item.notification}
+                      // function
                       markAsRead={markAsRead}
-                      // notification type content
-                      que={item.que}
-                      follow_by={item.followed_by}
-                      commentQue={item.que_with_comment}
                     />
                   ))
               )}

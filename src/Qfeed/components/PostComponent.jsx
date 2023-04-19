@@ -1,13 +1,16 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import PrimaryButton from "../../common/components/PrimaryButton";
 import arrowRight from "../assets/arrow-right.svg";
 import QuestionRTE from "./CreateQuestionRTE";
+import TagsInput from "./tags/TagInput";
 
 const PostComponent = ({ LIMIT, postQuestion, history }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [tags, setTags] = useState([]);
 
   const editorRef = useRef();
+  const tagRef = useRef();
 
   let titleClasses =
     "bg-background to-white rounded-[8px] mt-2 px-3 py-4 placeholder-[rgba(0,0,0,0.5)] border-background border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-base sm:text-lg font-semibold ";
@@ -20,6 +23,10 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
   function handleChange(value) {
     setContent(value);
   }
+
+  const selectedTags = (tags) => {
+    setTags(tags);
+  };
 
   return (
     <>
@@ -48,10 +55,6 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
             }}
             value={title}
             onKeyDown={(event) => {
-              if (event.key === "Tab") {
-                event.preventDefault();
-                editorRef.current.focus();
-              }
               if (event.shiftKey && event.key === "Enter") {
                 postQuestion(title, content);
               }
@@ -71,7 +74,6 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
             ""
           )}
         </label>
-
         <label className="block w-full m-0 mt-3 relative">
           {content.length > LIMIT.content ? (
             <>
@@ -87,6 +89,15 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
             ""
           )}
 
+          {/* Tags */}
+          <TagsInput
+            selectedTags={selectedTags}
+            tags={tags}
+            ref={tagRef}
+            editorRef={editorRef}
+            postQuestion={() => postQuestion(title, content, tags)}
+          />
+
           <QuestionRTE
             ref={editorRef}
             value={content}
@@ -100,7 +111,7 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
           <PrimaryButton
             cta="Send question"
             wide={true}
-            action={() => postQuestion(title, content)}
+            action={() => postQuestion(title, content, tags)}
           />
         </div>
       </div>
