@@ -45,7 +45,7 @@ const DiscussionPage = ({ match, history }) => {
   };
 
   const getShortLink = (id) => {
-    const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
+    const original_url = process.env.REACT_APP_URL + `/qfeed/${id}`;
     const questionsClone = [...questions];
     const question_index = questions.findIndex(
       (question) => question.id === id
@@ -68,7 +68,7 @@ const DiscussionPage = ({ match, history }) => {
             });
           });
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     }
   };
@@ -189,13 +189,13 @@ const DiscussionPage = ({ match, history }) => {
 
   return (
     <>
-      <div className=" bg-background min-h-[100vh] z-30 bottom-0 left-0 h-min-screen w-screen sm:w-auto sm:static">
+      <div className=" bg-background min-h-[100vh] z-30 bottom-0 left-0 h-min-screen sm:w-auto sm:static">
         <div className="min-h-[70px] sm:min-h-[0px] "> </div>
         <div className="z-50" id="discussion">
           <div className="flex items-center p-3">
             <img
               src={arrowRight}
-              className="w-8 h-8 p-2 rounded-full mr-2 bg-white hover:bg-background2 cursor-pointer rotate-180"
+              className="w-8 h-8 p-2 rounded-full mr-2 bg-white hover:bg-background2 cursor-pointer rotate-180 shadow-sm"
               alt="return"
               onClick={() => {
                 // dispatch(updateQuestion({ name: "comments", value: [] }));

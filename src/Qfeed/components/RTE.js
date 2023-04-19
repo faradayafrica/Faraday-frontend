@@ -13,7 +13,6 @@ export default function RTE({ value, onChange, placeholder, submit }) {
   };
 
   const sendComment = () => {
-    console.log("Submit");
     submit();
   };
 

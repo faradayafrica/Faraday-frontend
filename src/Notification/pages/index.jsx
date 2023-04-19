@@ -15,11 +15,11 @@ const Notification = (props) => {
 
   const [filter, setFilter] = useState("");
   const [showFilter, setShowFilter] = useState(false);
+  const [count, setCount] = useState(null);
 
   const filter_modal = useRef();
 
   const markAsRead = async (notificationId) => {
-    console.log("Mark me as read");
     try {
       await http.put(apiEndpoint + `${notificationId}/read/`);
     } catch (e) {
@@ -63,6 +63,7 @@ const Notification = (props) => {
 
   const fetchNotifications = async (pageParam) => {
     const resp = await http.get(apiEndpoint + `?page=${pageParam}`);
+    setCount(resp.data.count);
     return resp;
   };
 
@@ -88,7 +89,6 @@ const Notification = (props) => {
   );
 
   // Check for the kind of error
-  // console.log(error?.response.status, "Error");
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -103,7 +103,6 @@ const Notification = (props) => {
       if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
         fetching = true;
         if (hasNextPage) {
-          console.log(hasNextPage, "hasNextPage");
           await fetchNextPage();
         }
         fetching = false;
@@ -116,22 +115,24 @@ const Notification = (props) => {
   }, [fetchNextPage, hasNextPage]);
 
   return (
-    <div className='relative w-full route-wrapper' id='notification-wrapper'>
-      <div className='min-h-[70px] sm:min-h-[0px] bg-transparent'> </div>
-      <div className='flex justify-between items-center p-3'>
-        <div className='flex items-center'>
+    <div className="relative w-full route-wrapper" id="notification-wrapper">
+      <div className="min-h-[70px] sm:min-h-[0px] bg-transparent"> </div>
+      <div className="flex justify-between items-center p-3">
+        <div className="flex items-center">
           <img
             src={arrowRight}
-            className='w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180'
-            alt='return'
+            className="w-8 h-8 p-2 rounded-full mr-2 bg-white hover:bg-background2 cursor-pointer rotate-180 shadow-sm"
+            alt="return"
             onClick={() => {
               props.history.goBack();
             }}
           />
-          <h1 className='text-2xl sm:text-2xl font-bold m-0 '>Notification</h1>
+          <h1 className="text-2xl sm:text-2xl font-bold m-0 ">
+            Notification <span className="text-brand">{count}</span>
+          </h1>
         </div>
 
-        <div className='relative'>
+        <div className="relative">
           <button
             onClick={() => {
               toggleFilterDropDown();
@@ -142,28 +143,28 @@ const Notification = (props) => {
                 : "border-y border-x border-faraday-night rounded-lg py-2 "
             }
           >
-            <p className='m-0 pl-3 pr-2 inline'>{filter ? filter : "Filter"}</p>{" "}
-            <img className='inline px-2' src={caretIcon} alt='' />
+            <p className="m-0 pl-3 pr-2 inline">{filter ? filter : "Filter"}</p>{" "}
+            <img className="inline px-2" src={caretIcon} alt="" />
           </button>
           {showFilter ? (
             <div
               ref={filter_modal}
-              className='p-1 border rounded-xl filter-dropdown absolute right-0 top-12 bg-white z-40 ask-shadow w-28 opacity-0'
+              className="p-1 border rounded-xl filter-dropdown absolute right-0 top-12 bg-white z-40 ask-shadow w-28 opacity-0"
             >
               <p
-                className='border-b px-3 py-2 m-0 rounded-t-lg'
+                className="border-b px-3 py-2 m-0 rounded-t-lg"
                 onClick={() => filterNotification("unread")}
               >
                 Unread{" "}
               </p>
               <p
-                className='border-b px-3 py-2 m-0'
+                className="border-b px-3 py-2 m-0"
                 onClick={() => filterNotification("read")}
               >
                 Read{" "}
               </p>
               <p
-                className=' px-3 py-2 m-0 rounded-b-lg'
+                className=" px-3 py-2 m-0 rounded-b-lg"
                 onClick={() => {
                   filterNotification("all");
                 }}
@@ -180,12 +181,12 @@ const Notification = (props) => {
       {isLoading && <NotificationLoader />}
 
       {isError && (
-        <div className='p-3  rounded-lg border bg-background m-3 text-center'>
+        <div className="p-3  rounded-lg border bg-background m-3 text-center">
           <>
-            <p className='text-xs sm:text-base '>
+            <p className="text-xs sm:text-base ">
               Something went wrong, please try again later
             </p>
-            <SecondaryButton cta='Retry' action={refetch} />
+            <SecondaryButton cta="Retry" action={refetch} />
           </>
         </div>
       )}
@@ -201,14 +202,16 @@ const Notification = (props) => {
                     key={item.id}
                     id={item.id}
                     is_read={item.is_read}
-                    notification_type={item.notification_type}
-                    message={item.content}
                     created={item.created}
+                    notification_type={item.notification_type}
+                    // notification data
+                    message={item.content}
+                    que={item.notification}
+                    follow_by={item.notification?.followed_by}
+                    commentQue={item.notification?.que_with_comment}
+                    notification={item}
+                    // function
                     markAsRead={markAsRead}
-                    // notification type content
-                    que={item.que}
-                    follow_by={item.followed_by}
-                    commentQue={item.que_with_comment}
                   />
                 ))
               )}
@@ -223,14 +226,16 @@ const Notification = (props) => {
                       key={item.id}
                       id={item.id}
                       is_read={item.is_read}
-                      notification_type={item.notification_type}
-                      message={item.content}
                       created={item.created}
+                      notification_type={item.notification_type}
+                      // notification data
+                      message={item.content}
+                      que={item.notification}
+                      follow_by={item.notification?.followed_by}
+                      commentQue={item.notification?.que_with_comment}
+                      notification={item.notification}
+                      // function
                       markAsRead={markAsRead}
-                      // notification type content
-                      que={item.que}
-                      follow_by={item.followed_by}
-                      commentQue={item.que_with_comment}
                     />
                   ))
               )}
@@ -245,14 +250,16 @@ const Notification = (props) => {
                       key={item.id}
                       id={item.id}
                       is_read={item.is_read}
-                      notification_type={item.notification_type}
-                      message={item.content}
                       created={item.created}
+                      notification_type={item.notification_type}
+                      // notification data
+                      message={item.content}
+                      que={item.notification}
+                      follow_by={item.notification?.followed_by}
+                      commentQue={item.notification?.que_with_comment}
+                      notification={item.notification}
+                      // function
                       markAsRead={markAsRead}
-                      // notification type content
-                      que={item.que}
-                      follow_by={item.followed_by}
-                      commentQue={item.que_with_comment}
                     />
                   ))
               )}
@@ -262,14 +269,14 @@ const Notification = (props) => {
 
       {isFetchingNextPage && hasNextPage ? (
         <>
-          <div className='animate-pulse border-b notification-loader-item'>
-            <div className='w-full p-3 flex  bg-white'>
-              <div className='w-6 h-6 mr-2 bg-background2'></div>
+          <div className="animate-pulse border-b notification-loader-item">
+            <div className="w-full p-3 flex  bg-white">
+              <div className="w-6 h-6 mr-2 bg-background2"></div>
 
-              <div className='w-full'>
-                <div className='w-8 h-8 rounded-full  bg-background2'></div>
-                <div className=' h-3 rounded-xl  bg-background2 mt-2'></div>
-                <div className='w-[140px] h-3 rounded-xl  bg-background2 mt-2'></div>
+              <div className="w-full">
+                <div className="w-8 h-8 rounded-full  bg-background2"></div>
+                <div className=" h-3 rounded-xl  bg-background2 mt-2"></div>
+                <div className="w-[140px] h-3 rounded-xl  bg-background2 mt-2"></div>
               </div>
             </div>
           </div>
@@ -278,12 +285,12 @@ const Notification = (props) => {
 
       {!hasNextPage && data?.pages.length && (
         <>
-          <div className='p-3 m-3 mr-1 rounded-lg border bg-background  text-center'>
-            <p className='text-xs sm:text-base m-0 '>
+          <div className="p-3 m-3 mr-1 rounded-lg border bg-background  text-center">
+            <p className="text-xs sm:text-base m-0 ">
               No more notifications to fetch
             </p>
           </div>
-          <div className='h-[65px] w-full sm:hidden'></div>
+          <div className="h-[65px] w-full sm:hidden"></div>
         </>
       )}
     </div>

@@ -8,11 +8,15 @@ const PostPage = (props) => {
   // Redux here
   const dispatch = useDispatch();
 
-  const LIMIT = { title: 150, content: 400 };
+  const LIMIT = { title: 150, content: 1050 };
 
   const currentUser = getCurrentUser();
 
-  const postQuestion = (title, content) => {
+  function arrayToString(arr) {
+    return arr.join(", ");
+  }
+
+  const postQuestion = (title, content, tags) => {
     if (
       title.length > LIMIT.title ||
       content.length > LIMIT.content ||
@@ -20,11 +24,12 @@ const PostPage = (props) => {
     ) {
       ErrorToast("Can't send until you resolve the concerns ");
     } else {
-      dispatch(createQuestionThunk({ title, content }));
+      // format tags
+      const tagsAsString = arrayToString(tags);
+      dispatch(createQuestionThunk({ title, content, tags: tagsAsString }));
       props.history.replace("/");
 
       // if (status === QfeedStates.SUCCESSFUL) {
-      //   console.log("Sent");
       //   SuccessToast("Question sent");
       // }
     }
@@ -36,7 +41,7 @@ const PostPage = (props) => {
   }
 
   return (
-    <div className=" w-full">
+    <div className=" w-full bg-background">
       <div className="min-h-[70px] sm:min-h-[0px]  "> </div>
       <div className="z-30">
         <PostComponent postQuestion={postQuestion} LIMIT={LIMIT} {...props} />

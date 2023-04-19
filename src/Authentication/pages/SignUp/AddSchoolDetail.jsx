@@ -56,8 +56,6 @@ const AddSchoolDetail = () => {
     }
   }, [allSchools]);
 
-  // console.log(schoolsData, "schoolsData");
-
   const {
     register,
     handleSubmit,
@@ -138,8 +136,6 @@ const AddSchoolDetail = () => {
   const filteredDepartmentData = filterData(departmentQuery, departmentData);
   const filteredLevelData = filterData(levelQuery, getLevel());
 
-  // console.log(facultiesData, "facultiesData");
-
   const onSubmit = async () => {
     const data = {
       school: schoolValue,
@@ -181,21 +177,21 @@ const AddSchoolDetail = () => {
   };
 
   return (
-    <div className='login-page'>
-      {redirect && <Redirect to='/update-personal-data' />}
+    <div className="login-page">
+      {redirect && <Redirect to="/update-personal-data" />}
       {/* the spinner */}
-      <div id='spinnerContainer' className='spinner-container vanish'>
+      <div id="spinnerContainer" className="spinner-container vanish">
         <Myspinner />
       </div>
-      <div className='progress-container mx-auto mt-3'>
-        <div className='progress progress-50'></div>
+      <div className="progress-container mx-auto mt-3">
+        <div className="progress progress-50"></div>
       </div>
-      <div className='form-container'>
-        <div className='logo-container'>
-          <img className='logo mx-auto' src={faraday} alt='faraday' />
+      <div className="form-container">
+        <div className="logo-container">
+          <img className="logo mx-auto" src={faraday} alt="faraday" />
         </div>
-        <h3 className='form-title '>We're almost done</h3>
-        <p className='mx-3 extra-info text-md'>
+        <h3 className="form-title ">We're almost done</h3>
+        <p className="mx-3 extra-info text-md">
           We just need your academic information.
         </p>
         {/* 
@@ -262,9 +258,9 @@ const AddSchoolDetail = () => {
             setQuery={setLevelQuery}
           />
 
-          <div className='mt-3'>
+          <div className="mt-3">
             <PrimaryButton
-              cta='Next'
+              cta="Next"
               // disabled={validate()}
               wide
             />

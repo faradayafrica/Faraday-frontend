@@ -43,9 +43,7 @@ export function getCurrentUser() {
 }
 
 export async function updateSchoolDetail(user) {
-  // console.log(user, "School details oo")
   const url = process.env.REACT_APP_API_URL + "/users/edu_update/";
-  // const jwt = getJwt();
 
   const config = {
     headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` },

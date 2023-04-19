@@ -20,6 +20,7 @@ import {
   voteQuestionThunk,
 } from "../../common/features/qfeed/qfeedSlice";
 import { useDispatch } from "react-redux";
+import uuid from "react-uuid";
 
 const DiscussionQuestion = ({
   question,
@@ -109,6 +110,21 @@ const DiscussionQuestion = ({
         toggleQuestionMenu={toggleQuestionMenu}
         onDeleteQuestion={handleQuestionDelete}
       />
+
+      <div className="mt-4">
+        {question.tags && (
+          <ul id="tags">
+            {question.tags.slice(0, question.tags.length).map((item) => (
+              <li
+                key={uuid()}
+                className="bg-[#ECECF0] mr-2 py-1 mb-2 px-2 rounded-md text-xs font-medium"
+              >
+                <span className="tag-title">{item.name}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       <h3
         style={{ lineHeight: "125%" }}

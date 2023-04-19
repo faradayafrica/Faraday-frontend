@@ -239,9 +239,30 @@
   margin-right: 0.2rem;
 }
 
+.QTE .quill .ql-editor::before {
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
 /* Style the RT-format here */
+
 .render {
   margin-top: 0.5rem;
+}
+
+.render ol {
+  list-style: decimal;
+  margin-left: 1rem;
+}
+
+.render ul {
+  list-style: disc;
+  margin-left: 1rem;
+}
+
+.render ol li,
+.render ul li {
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .render pre,
@@ -252,6 +273,8 @@
   border-radius: 4px;
   color: #00e5a6;
   margin: 0.5rem 0;
+
+  overflow-x: visible;
 }
 
 .ql-snow a,

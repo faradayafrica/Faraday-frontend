@@ -57,9 +57,9 @@ export const followUserThunk = createAsyncThunk(
 // Ask a question
 export const createQuestionThunk = createAsyncThunk(
   "qfeed/create-question",
-  async ({ title, content }, { rejectWithValue }) => {
+  async ({ title, content, tags }, { rejectWithValue }) => {
     try {
-      const response = await QService.createQuestion(title, content);
+      const response = await QService.createQuestion(title, content, tags);
       return response;
     } catch (error) {
       return rejectWithValue(error.toString());
@@ -319,7 +319,6 @@ const qfeedSlice = createSlice({
         if (parent.replies) {
           for (let child of parent.replies.data) {
             if (child.id === replyid) {
-              console.log(child, "<=========== Na me");
               if (child.replies) {
                 child.replies.showReply = value;
               }
@@ -530,7 +529,6 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(createQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      // console.log(data, state.status, "create que");
       toast.dismiss();
       SuccessToast("Question sent");
 
@@ -555,7 +553,6 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(deleteQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      // console.log(data, "delete");
       toast.dismiss();
       SuccessToast("Question deleted");
 
@@ -599,7 +596,6 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(voteQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      // console.log(data, "vote");
 
       if (data) {
         // Updates the qfeed Home
@@ -645,7 +641,6 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(closeQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      // console.log(data, "close q");
       toast.dismiss();
       if (data.is_closed) {
         SuccessToast("Question closed");
@@ -704,8 +699,6 @@ const qfeedSlice = createSlice({
     builder.addCase(echoQuestionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
 
-      // console.log({ data, state });
-
       if (data) {
         const feed = state.feed.qfeed;
         for (let i = 0; i < feed.length; i++) {
@@ -762,7 +755,6 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(markSolutionThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      // console.log(data, "mark soln");
       toast.dismiss();
       SuccessToast("New solution selected");
       if (data) {
@@ -835,7 +827,6 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(createCommentThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      // console.log(data, "create comment");
       toast.dismiss();
       SuccessToast("Comment sent");
 
@@ -905,7 +896,6 @@ const qfeedSlice = createSlice({
     builder.addCase(fetchThirdLevelCommentThunk.fulfilled, (state, action) => {
       const data = action.payload;
       const parent_id = data?.results?.[0]?.parent_id; // Get the parent id
-      console.log(data, "<======== 3rd");
 
       const _comments = state.thisQuestion.comments;
 
@@ -913,7 +903,6 @@ const qfeedSlice = createSlice({
         if (parent.replies) {
           for (let child of parent.replies.data) {
             if (child.id === parent_id) {
-              console.log(child, "<=========== Na me");
               if (child.replies) {
                 child.replies.data.push(...data.results);
               } else {
@@ -1008,7 +997,6 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(createThirdLevelCommentThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      // console.log(data, "3rd Level create");
       toast.dismiss();
       SuccessToast("Reply sent");
 
@@ -1043,7 +1031,6 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(deleteReplyThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      // console.log(data, "3rd Level delete");
       toast.dismiss();
       SuccessToast("Reply deleted");
 
@@ -1093,7 +1080,6 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(voteReplyThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      // console.log(data, "Reply vote");
 
       const _comments = state.thisQuestion.comments;
 
@@ -1150,7 +1136,6 @@ const qfeedSlice = createSlice({
     });
     builder.addCase(voteCommentThunk.fulfilled, (state, action) => {
       const { data, message: error } = action.payload;
-      console.log(data, "Reply comment");
 
       const _comments = state.thisQuestion.comments;
 

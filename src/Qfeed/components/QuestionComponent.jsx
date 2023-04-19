@@ -168,8 +168,8 @@ function QuestionComponent({
                 </>
               ) : null}
 
-              <div className="action-bar mt-5">
-                <div className="flex justify-between items-center max-w-lg mx-auto">
+              <div className="action-bar mt-4 pt-2">
+                <div className="flex justify-between items-center max-w-lg">
                   <button
                     disabled={type === "echo" || type === "pen" ? true : false}
                     className="flex items-center gap-2 disabled:text-gray-400 disabled:cursor-not-allowed"

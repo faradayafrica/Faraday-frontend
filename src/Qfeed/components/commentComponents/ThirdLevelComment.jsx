@@ -28,7 +28,6 @@ export default function ThirdLevelComment({ reply }) {
 
   const onDeleteReply = () => {
     dispatch(deleteReplyThunk({ replyid: reply.id }));
-    console.log("Handle delete for 3rd level reply");
   };
 
   return (

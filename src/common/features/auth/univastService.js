@@ -14,7 +14,6 @@ export default class UnivastService {
       throw new Error("some error");
     }
 
-    console.log(response.data);
     return response.data;
   }
 }

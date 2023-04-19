@@ -84,7 +84,6 @@ class SignUpPage extends Form {
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
-        // console.log(ex.response.data, "hello");
 
         if (ex.response.data.detail[0].indexOf("username") !== -1) {
           errors.username = ex.response.data.detail[0];
@@ -103,7 +102,6 @@ class SignUpPage extends Form {
         errors.email = "Check your internet connection and try again";
         spinner.classList.add("vanish");
 
-        // console.log(ex.response.data, "hello");
         this.setState({ errors });
       }
     }

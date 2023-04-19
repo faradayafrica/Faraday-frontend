@@ -967,16 +967,27 @@ TAGS
   border-radius: 6px;
 }
 
-.tags-input:focus-within {
-  /* border-bottom: 0.5px solid var(--text2-black); */
-}
-
 .tags-input input {
   flex: 1;
   border: none;
   height: 46px;
   font-size: 15px !important;
   padding: 4px 0 0 0;
+}
+
+.tags-input:focus-within {
+  border-bottom: 1px solid var(--faraday-night);
+}
+
+.tags-input input::placeholder {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.5) !important;
+  font-size: 14px;
+}
+
+input.ask-title::placeholder {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.5) !important;
 }
 
 input:focus {
@@ -1004,7 +1015,8 @@ input:focus {
   list-style: none;
   border-radius: 6px;
   margin: 0 8px 8px 0;
-  background: var(--background2);
+  /* background: var(--background2); */
+  background: #ececf0;
   /* border: 0.5px solid var(--secondary-text); */
 }
 

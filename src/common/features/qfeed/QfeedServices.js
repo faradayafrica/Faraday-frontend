@@ -38,10 +38,11 @@ export default class QService {
     return data;
   }
 
-  static async createQuestion(title, content) {
+  static async createQuestion(title, content, tags) {
     const { data } = await http.post(apiRoutes.postQuestion, {
       title,
       content,
+      tags,
     });
     return data;
   }
