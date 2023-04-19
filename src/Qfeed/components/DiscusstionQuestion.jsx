@@ -111,6 +111,21 @@ const DiscussionQuestion = ({
         onDeleteQuestion={handleQuestionDelete}
       />
 
+      <div className="mt-4">
+        {question.tags && (
+          <ul id="tags">
+            {question.tags.map((item) => (
+              <li
+                key={uuid()}
+                className="bg-[#ECECF0] mr-2 py-1 px-2 rounded-md text-xs font-medium"
+              >
+                <span className="tag-title">{item.name}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
       <h3
         style={{ lineHeight: "125%" }}
         className=" mt-4 text-lg sm:text-xl font-semibold m-0 "
@@ -126,18 +141,6 @@ const DiscussionQuestion = ({
           className="mb-4 text-sm text-faraday-night render"
           dangerouslySetInnerHTML={{ __html: question.content }}
         />
-      )}
-      {question.tags && (
-        <ul id="tags">
-          {question.tags.map((item) => (
-            <li
-              key={uuid()}
-              className="bg-[#ECECF0] mr-2 py-[4px] px-3 rounded-md text-xs font-medium"
-            >
-              <span className="tag-title">{item.name}</span>
-            </li>
-          ))}
-        </ul>
       )}
 
       <div className="action-bar mt-4 pt-4">
