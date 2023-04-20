@@ -46,7 +46,7 @@ const DiscussionPage = ({ match, history }) => {
 
   const getShortLink = (id) => {
     const original_url = process.env.REACT_APP_URL + `/qfeed/${id}`;
-    const questionsClone = [...questions];
+    let questionsClone = [...questions];
     const question_index = questions.findIndex(
       (question) => question.id === id
     );
@@ -58,14 +58,16 @@ const DiscussionPage = ({ match, history }) => {
             original_url,
           })
           .then((resp) => {
-            setShortLink(resp.data.short_url);
-            questionsClone[question_index].short_link = resp.data.short_url;
-            dispatch(updateFeed({ name: "qfeed", value: questionsClone }));
-            // sync with B.E
             http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {
               postid: id,
               link: resp.data.short_url,
             });
+
+            setShortLink(resp.data.short_url);
+            if (question_index !== -1) {
+              questionsClone[question_index].short_link = resp.data.short_url;
+              dispatch(updateFeed({ name: "qfeed", value: questionsClone }));
+            }
           });
       } catch (e) {
         // console.log(e);
@@ -184,8 +186,11 @@ const DiscussionPage = ({ match, history }) => {
     const thisQuestion = questions?.find((q) => q.id === match.params.id);
     const value = thisQuestion ? thisQuestion : {};
     dispatch(updateQuestion({ name: "question", value }));
-    setShortLink(thisQuestion ? thisQuestion.short_link : "");
   }, []);
+
+  useEffect(() => {
+    setShortLink(question ? question.short_link : "");
+  }, [question]);
 
   return (
     <>
