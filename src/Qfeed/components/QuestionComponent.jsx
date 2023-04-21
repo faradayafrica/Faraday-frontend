@@ -12,6 +12,8 @@ import { ReactComponent as BroadCastIcon } from "../assets/broadcast.svg";
 import { ReactComponent as EllipsesIcon } from "../assets/ellipses.svg";
 import verify from "../assets/verify.svg";
 import replyImg from "../assets/reply.svg";
+import EchoMenu from "./EchoMenu";
+import uuid from "react-uuid";
 
 const token = localStorage.getItem("token");
 
@@ -31,30 +33,73 @@ function QuestionComponent({
   questionMenu,
   toggleQuestionMenu,
   handleQuestionDelete,
+  echoMenu,
+  setEchoMenu,
+  discussionPage,
 }) {
+  const QuestionBodyComp = (
+    <>
+      {/* Question head */}
+      <h3
+        className={`${
+          discussionPage
+            ? "mt-4 text-lg sm:text-xl font-semibold m-0 "
+            : "text-base font-semibold m-0 mb-1 md:text-lg"
+        }`}
+      >
+        {question?.title}
+      </h3>
+      {discussionPage && (
+        <p className='m-0 mb-4 mt-1 text-night-secondary text-xs'>
+          Published {moment(question?.created).fromNow()}
+        </p>
+      )}
+
+      {Boolean(question.has_solution) && (
+        <div className='bg-[#F1FBEF] inline-block py-1 px-3 rounded-full text-[#2C974B] font-medium text-xs mb-2'>
+          Solved
+        </div>
+      )}
+
+      {/* Question body without a selected solution --optional */}
+      {question && question?.content && (
+        <div
+          className='mb-4 text-sm text-faraday-night render'
+          style={{ marginTop: 0 }}
+          dangerouslySetInnerHTML={{ __html: question.content }}
+        />
+      )}
+    </>
+  );
   // console.log(question, type);
   return (
-    <div className="relative">
+    <div className='relative'>
       <QuestionMenu
         questionMenu={questionMenu}
         question={question}
         toggleQuestionMenu={toggleQuestionMenu}
         onDeleteQuestion={handleQuestionDelete}
       />
+      <EchoMenu
+        question={question}
+        echoMenu={echoMenu}
+        setEchoMenu={setEchoMenu}
+        handleEcho={() => handleEcho(question.id)}
+      />
       <div
-        id="container__questions relative bg-danger"
-        className=" bg-white"
+        id='container__questions relative bg-danger'
+        className=' bg-white'
         style={{ marginBottom: ".3rem" }}
       >
-        {type === "echo" && (
-          <div className="flex items-center gap-2 border-b-[1px] border-[#f5f5f5] py-1 px-3 text-xs">
-            <BroadCastIcon className="w-3 h-3" />
+        {type === "echo" && discussionPage === false && (
+          <div className='flex items-center gap-2 border-b-[1px] border-[#f5f5f5] py-1 px-3 text-xs'>
+            <BroadCastIcon className='w-3 h-3' />
             <span>
               echoed by{" "}
               <Link
                 to={`/me/${user.username}`}
                 style={{ textDecoration: "none" }}
-                className="text-faraday-night hover:text-faraday-night "
+                className='text-faraday-night hover:text-faraday-night '
               >
                 @{user.username}
               </Link>
@@ -62,58 +107,112 @@ function QuestionComponent({
           </div>
         )}
         <div
-          className={`question-component px-3 py-3 sm:pt-4 relative ${
-            Boolean(question.has_solution) ? "border-r-4 border-green-600" : ""
-          }`}
+          className={`${
+            discussionPage ? "" : "border-b border-b-[#ECECF0]"
+          } px-3 py-3 sm:pt-4 relative `}
         >
-          <div className="flex justify-start items-start ">
-            <Link
-              to={
-                token === null || token === undefined
-                  ? `/login?redirect=${window.origin}/qfeed/${question.id}`
-                  : `/me/${question?.user.username}`
-              }
-              style={{ textDecoration: "none" }}
-              className="w-10 mr-2 cursor-pointer hidden md:block"
-            >
-              <img
-                src={question?.user.profile_pic}
-                className="w-10 h-10 rounded-full bg-background2"
-                style={{ objectFit: "cover", border: "1px solid #cfd9de" }}
-                alt=""
-              />
-            </Link>
-            <section className=" p-0 w-full">
-              <div className=" pr-2 relative">
-                <div className="flex items-center justify-between ">
+          <div className={`flex justify-start items-start `}>
+            {discussionPage === false && (
+              <Link
+                to={
+                  token === null || token === undefined
+                    ? `/login?redirect=${window.origin}/qfeed/${question.id}`
+                    : `/me/${question?.user.username}`
+                }
+                style={{ textDecoration: "none" }}
+                className='w-10 mr-2 cursor-pointer hidden md:block'
+              >
+                <img
+                  src={question?.user.profile_pic}
+                  className='w-10 h-10 rounded-full bg-background2'
+                  style={{ objectFit: "cover", border: "1px solid #cfd9de" }}
+                  alt=''
+                />
+              </Link>
+            )}
+            <section className=' p-0 w-full'>
+              <div className=' pr-2 relative'>
+                <div className='flex items-center justify-between '>
                   {/* Profile details */}
-                  <p className="flex m-0 text-night-secondary mb-1 text-xs sm:text-sm flex-wrap">
-                    <span className=" font-semibold text-faraday-night shorten">
-                      {question?.user.firstname} {question?.user.lastname}
-                    </span>
-                    <span className="mr-1">
-                      {question?.user.account_verified && (
+                  <div className='flex'>
+                    {discussionPage === true && (
+                      <Link
+                        to={
+                          token === null || token === undefined
+                            ? `/login?redirect=${window.origin}/qfeed/${question.id}`
+                            : `/me/${question?.user.username}`
+                        }
+                        style={{ textDecoration: "none" }}
+                        className='w-10 mr-2 cursor-pointer'
+                      >
                         <img
-                          src={verify}
-                          className="h-[14px] w-[14px] sm:h-5 sm:w-5 ml-1"
-                          alt=""
+                          src={question?.user.profile_pic}
+                          className='w-10 h-10 rounded-full bg-background2'
+                          style={{
+                            objectFit: "cover",
+                            border: "1px solid #cfd9de",
+                          }}
+                          alt=''
                         />
-                      )}
-                    </span>
-                    <span className="mr-1 ">@{question?.user.username} </span>{" "}
-                    <span className="shorten-time">
-                      {moment(question?.created, "YYYYMMDD").fromNow()}
-                    </span>
-                  </p>
+                      </Link>
+                    )}
+                    <div>
+                      <p className='flex m-0 text-night-secondary text-xs sm:text-sm flex-wrap'>
+                        <span className=' font-semibold text-faraday-night shorten'>
+                          {question?.user.firstname} {question?.user.lastname}
+                        </span>
+                        <span className='mr-1'>
+                          {question?.user.account_verified && (
+                            <img
+                              src={verify}
+                              className='h-[14px] w-[14px] sm:h-5 sm:w-5 ml-1'
+                              alt=''
+                            />
+                          )}
+                        </span>
+                        <span className='mr-1 '>
+                          @{question?.user.username}{" "}
+                        </span>{" "}
+                        {discussionPage === false && (
+                          <span className='shorten-time'>
+                            {moment(question?.created, "YYYYMMDD").fromNow()}
+                          </span>
+                        )}
+                      </p>
+                      <p className='m-0 text-night-secondary text-sm  flex align-middle '>
+                        {/* <img src={love} className="h-4 w-4 object-fill" alt="" /> */}
+                        <span className='min-h-4'>
+                          {question?.user?.department}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
 
                   <button
-                    className=" hover:bg-brand-highlight cursor-pointer absolute right-1 top-[-8px] rounded-md"
+                    className=' hover:bg-brand-highlight cursor-pointer absolute right-1 top-[-8px] rounded-md'
                     onClick={() => {
                       setQuestionMenu(!questionMenu);
                     }}
                   >
-                    <EllipsesIcon className="w-6 h-6 rounded-full m-1 " />
+                    <EllipsesIcon className='w-6 h-6 rounded-full m-1 ' />
                   </button>
+                </div>
+
+                <div className='mt-4'>
+                  {question.tags && (
+                    <ul id='tags'>
+                      {question.tags
+                        .slice(0, question.tags.length)
+                        .map((item) => (
+                          <li
+                            key={uuid()}
+                            className='bg-[#ECECF0] mr-2 py-1 mb-2 px-2 rounded-md text-xs font-medium'
+                          >
+                            <span className='tag-title'>{item.name}</span>
+                          </li>
+                        ))}
+                    </ul>
+                  )}
                 </div>
 
                 {/* <Modal
@@ -126,34 +225,28 @@ function QuestionComponent({
                   marked as a solution.`}
             /> */}
                 {question?.created !== "Just now" ? (
-                  <Link
-                    to={`/qfeed/${question.id}`}
-                    style={{ textDecoration: "none" }}
-                    className={`text-faraday-night hover:text-faraday-night `}
-                  >
-                    {/* Question head */}
-                    <h3 className="text-base font-semibold m-0 mb-1 md:text-lg">
-                      {question?.title}
-                    </h3>
-
-                    {/* Question body without a selected solution --optional */}
-                    {question && question?.content && (
-                      <div
-                        className="mb-4 text-sm text-faraday-night render"
-                        style={{ marginTop: 0 }}
-                        dangerouslySetInnerHTML={{ __html: question.content }}
-                      />
+                  <>
+                    {discussionPage === true ? (
+                      QuestionBodyComp
+                    ) : (
+                      <Link
+                        to={`/qfeed/${question.id}`}
+                        style={{ textDecoration: "none" }}
+                        className={`text-faraday-night hover:text-faraday-night `}
+                      >
+                        {QuestionBodyComp}
+                      </Link>
                     )}
-                  </Link>
+                  </>
                 ) : (
                   <>
-                    <h3 className="text-base font-semibold m-0 mb-1 md:text-lg">
+                    <h3 className='text-base font-semibold m-0 mb-1 md:text-lg'>
                       {question?.title}
                     </h3>
                     {/* Question body --optional */}
                     {question && question?.content && (
                       <div
-                        className="mb-4 text-sm text-faraday-night render"
+                        className='mb-4 text-sm text-faraday-night render'
                         style={{ marginTop: 0 }}
                         dangerouslySetInnerHTML={{ __html: question.content }}
                       />
@@ -168,12 +261,16 @@ function QuestionComponent({
                 </>
               ) : null}
 
-              <div className="action-bar mt-4 pt-2">
-                <div className="flex justify-between items-center max-w-lg">
+              <div className='action-bar mt-4 pt-2'>
+                <div
+                  className={`flex justify-between items-center max-w-lg ${
+                    discussionPage ? "mx-auto" : ""
+                  }`}
+                >
                   <button
                     disabled={type === "echo" || type === "pen" ? true : false}
-                    className="flex items-center gap-2 disabled:text-gray-400 disabled:cursor-not-allowed"
-                    onClick={() => handleEcho(question.id)}
+                    className='flex items-center gap-2 disabled:text-gray-400 disabled:cursor-not-allowed'
+                    onClick={() => setEchoMenu(true)}
                   >
                     <BroadCastIcon
                       stroke={
@@ -184,20 +281,20 @@ function QuestionComponent({
                     />
                     <span>{question.share_count}</span>
                   </button>
-                  <div className="flex justify-between items-center min-w-[4rem]">
+                  <div className='flex justify-between items-center min-w-[4rem]'>
                     <button onClick={() => handleLike(question.id, "upvote")}>
                       {question.vote_status === "upvote" ? (
-                        <img src={upvoteActive} alt="helpful" />
+                        <img src={upvoteActive} alt='helpful' />
                       ) : (
-                        <img src={upvote} alt="helpful" />
+                        <img src={upvote} alt='helpful' />
                       )}
                     </button>
-                    <span className="count">{question.vote_rank}</span>
+                    <span className='count'>{question.vote_rank}</span>
                     <button onClick={() => handleLike(question.id, "downvote")}>
                       {question.vote_status === "downvote" ? (
-                        <img src={downvoteActive} alt="not helpful" />
+                        <img src={downvoteActive} alt='not helpful' />
                       ) : (
-                        <img src={downvote} alt="not helpful" />
+                        <img src={downvote} alt='not helpful' />
                       )}
                     </button>
                   </div>
@@ -206,10 +303,10 @@ function QuestionComponent({
                   <Link
                     to={`/qfeed/${question.id}`}
                     style={{ textDecoration: "none " }}
-                    className="text-faraday-night hover:text-faraday-night flex items-center gap-2"
+                    className='text-faraday-night hover:text-faraday-night flex items-center gap-2'
                   >
-                    <img src={replyImg} alt="reply" />
-                    <span className="">
+                    <img src={replyImg} alt='reply' />
+                    <span className=''>
                       {question.comment_count === 0
                         ? "Reply"
                         : `${question.comment_count}`}
@@ -221,10 +318,10 @@ function QuestionComponent({
                       handleCopyLinkModal();
                       getShortLink(question.id);
                     }}
-                    className="flex gap-2 items-center"
+                    className='flex gap-2 items-center mr-2 md:mr-0'
                   >
                     <ShareIcon />
-                    <span className="hidden sm:block">Share</span>
+                    <span className='hidden sm:block'>Share</span>
                   </button>
                 </div>
               </div>
@@ -253,14 +350,14 @@ function PinnedQuestion({ question }) {
         Boolean(question.has_solution) ? "border-r-4 border-green-600" : ""
       }`}
     >
-      <p className="flex m-0 text-night-secondary mb-1 text-xs sm:text-sm">
-        <span className="mr-2 font-semibold text-faraday-night flex items-center text-sm">
+      <p className='flex m-0 text-night-secondary mb-1 text-xs sm:text-sm'>
+        <span className='mr-2 font-semibold text-faraday-night flex items-center text-sm'>
           {question?.user.firstname} {question?.user.lastname}{" "}
           {question?.user.account_verified && (
-            <img src={verify} className="h-5 w-5 ml-1" alt="" />
+            <img src={verify} className='h-5 w-5 ml-1' alt='' />
           )}
         </span>
-        <span className="mr-2 ">@{question?.user.username} </span>{" "}
+        <span className='mr-2 '>@{question?.user.username} </span>{" "}
         <span>{moment(question?.created, "YYYYMMDD").fromNow()}</span>
       </p>
       <Link
@@ -268,11 +365,11 @@ function PinnedQuestion({ question }) {
         style={{ textDecoration: "none" }}
         className={`text-faraday-night hover:text-faraday-night `}
       >
-        <h3 className="text-lg font-semibold m-0 mb-1 md:text-xl">
+        <h3 className='text-lg font-semibold m-0 mb-1 md:text-xl'>
           {question?.title}
         </h3>
         {/* Question body --optional */}
-        <p className="text-sm sm:text-base m-0 mb-2">{question?.content}</p>
+        <p className='text-sm sm:text-base m-0 mb-2'>{question?.content}</p>
       </Link>
     </div>
   );
