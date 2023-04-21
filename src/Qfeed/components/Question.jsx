@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 // import ReactMarkdown from "react-markdown";
 import http from "../../common/services/httpService";
@@ -50,27 +50,33 @@ const Question = (props) => {
       (question) => question.id === id
     );
 
-    if (shortLink === "" || shortLink === null) {
+    if (!shortLink) {
       try {
         http
           .post("https://frda.me/api/shorten/", {
             original_url,
           })
           .then((resp) => {
-            setShortLink(resp.data.short_url);
-            questionsClone[question_index].short_link = resp.data.short_url;
-            dispatch(updateFeed({ name: "qfeed", value: questionsClone }));
-            // sync with B.E
             http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {
               postid: id,
               link: resp.data.short_url,
             });
+
+            setShortLink(resp.data.short_url);
+            if (question_index !== -1) {
+              questionsClone[question_index].short_link = resp.data.short_url;
+              dispatch(updateFeed({ name: "qfeed", value: questionsClone }));
+            }
           });
       } catch (e) {
         // console.log(e);
       }
     }
   };
+
+  useEffect(() => {
+    setShortLink(question ? question.short_link : "");
+  }, [question]);
 
   const token = localStorage.getItem("token");
 

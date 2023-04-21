@@ -44,6 +44,7 @@ const CopyLink = (props) => {
     handleIsCopied(true);
     SuccessToast("Link copied");
   };
+
   return (
     <>
       {isCopyLinkModal ? (
@@ -82,7 +83,7 @@ const CopyLink = (props) => {
                       <input
                         id="link"
                         value={`https://frda.me/${shortLink}`}
-                        className="bg-transparent text-sm"
+                        className="bg-transparent text-sm w-full"
                         readOnly
                       />
 
