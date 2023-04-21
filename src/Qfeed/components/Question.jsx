@@ -44,7 +44,7 @@ const Question = (props) => {
   };
 
   const getShortLink = (id) => {
-    const original_url = process.env.REACT_APP_URL + `/qfeed/${id}`;
+    const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
     const questionsClone = [...questions];
     const question_index = questions.findIndex(
       (question) => question.id === id
