@@ -1,0 +1,18 @@
+.questionQTE .quill {
+  border: none !important;
+}
+.questionQTE .quill .ql-container {
+  margin: 0;
+}
+
+.questionQTE .quill .ql-editor {
+  margin: 0;
+  min-height: 12rem;
+}
+
+.questionQTE .quill .ql-editor::before {
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.questionQTE .quill .ql-toolbar {
+}
