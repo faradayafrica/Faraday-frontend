@@ -14,6 +14,7 @@ import verify from "../assets/verify.svg";
 import replyImg from "../assets/reply.svg";
 import EchoMenu from "./EchoMenu";
 import uuid from "react-uuid";
+import PennedModal from "./PennedModal";
 
 const token = localStorage.getItem("token");
 
@@ -37,6 +38,10 @@ function QuestionComponent({
   setEchoMenu,
   discussionPage,
 }) {
+  console.log(question)
+  const [isPennedOpen, setIsPennedOpen] = React.useState(false);
+  console.log(type, question.type);
+
   const QuestionBodyComp = (
     <>
       {/* Question head */}
@@ -85,6 +90,12 @@ function QuestionComponent({
         echoMenu={echoMenu}
         setEchoMenu={setEchoMenu}
         handleEcho={() => handleEcho(question.id)}
+        setIsPennedOpen={setIsPennedOpen}
+      />
+      <PennedModal
+        question={question}
+        isPennedOpen={isPennedOpen}
+        setIsPennedOpen={setIsPennedOpen}
       />
       <div
         id='container__questions relative bg-danger'
@@ -255,9 +266,9 @@ function QuestionComponent({
                 )}
               </div>
 
-              {question.type === "pen" ? (
+              {type === "pen" ? (
                 <>
-                  <PinnedQuestion question={question.original} />
+                  <PinnedQuestion question={question} />
                 </>
               ) : null}
 
@@ -345,11 +356,7 @@ export default QuestionComponent;
 
 function PinnedQuestion({ question }) {
   return (
-    <div
-      className={`border border- rounded-md p-3  ${
-        Boolean(question.has_solution) ? "border-r-4 border-green-600" : ""
-      }`}
-    >
+    <div className={`border border- rounded-md p-3`}>
       <p className='flex m-0 text-night-secondary mb-1 text-xs sm:text-sm'>
         <span className='mr-2 font-semibold text-faraday-night flex items-center text-sm'>
           {question?.user.firstname} {question?.user.lastname}{" "}
@@ -361,15 +368,17 @@ function PinnedQuestion({ question }) {
         <span>{moment(question?.created, "YYYYMMDD").fromNow()}</span>
       </p>
       <Link
-        to={`/qfeed/${question.id}`}
+        to={`/qfeed/${question?.original?.id}`}
         style={{ textDecoration: "none" }}
         className={`text-faraday-night hover:text-faraday-night `}
       >
         <h3 className='text-lg font-semibold m-0 mb-1 md:text-xl'>
-          {question?.title}
+          {question?.original?.title}
         </h3>
         {/* Question body --optional */}
-        <p className='text-sm sm:text-base m-0 mb-2'>{question?.content}</p>
+        <p className='text-sm sm:text-base m-0 mb-2'>
+          {question?.original?.content}
+        </p>
       </Link>
     </div>
   );

@@ -76,13 +76,15 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
         </label>
 
         {/* Tags */}
-        <TagsInput
-          selectedTags={selectedTags}
-          tags={tags}
-          ref={tagRef}
-          editorRef={editorRef}
-          postQuestion={() => postQuestion(title, content, tags)}
-        />
+        <div className="mr-2 mb-4 mt-2">
+          <TagsInput
+            selectedTags={selectedTags}
+            tags={tags}
+            ref={tagRef}
+            editorRef={editorRef}
+            postQuestion={() => postQuestion(title, content, tags)}
+          />
+        </div>
 
         <label className="block w-full m-0 mt-3 relative">
           {content.length > LIMIT.content ? (

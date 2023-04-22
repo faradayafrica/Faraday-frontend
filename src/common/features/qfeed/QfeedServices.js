@@ -95,6 +95,14 @@ export default class QService {
     return data;
   }
 
+  static async penQuestion(title, tags, ques_id) {
+    const { data } = await http.post(apiBase + `/qfeed/que/echo/${ques_id}/`, {
+      title,
+      tags,
+    });
+    return data;
+  }
+
   static async deleteComment(ques_id, commentid) {
     const { data } = await http.delete(
       apiRoutes.deleteComment + `${ques_id}/${commentid}/`

@@ -21,7 +21,7 @@ const TagsInput = React.forwardRef((props, ref) => {
     }
   };
   return (
-    <div className="tags-input mr-2 bg-background mb-4 mt-2">
+    <div className={`${props?.from === "penned" ? "w-full" :  "tags-input bg-background " } `}>
       <ul id="tags">
         {tags.map((tag, index) => (
           <li key={index} className="tag shadow-s ">
@@ -54,7 +54,7 @@ const TagsInput = React.forwardRef((props, ref) => {
             : null
         }
         placeholder="Add tags here, press enter or space to add tags"
-        className="bg-background"
+        className={`${props?.from === "penned" ? "" : "bg-background"} w-full`}
         ref={ref}
         onKeyDown={(event) => {
           if (event.key === "Tab") {
@@ -62,7 +62,7 @@ const TagsInput = React.forwardRef((props, ref) => {
             props.editorRef.current.focus();
           }
           if (event.shiftKey && event.key === "Enter") {
-            props.postQuestion();
+            props?.postQuestion();
           }
           if (event.key === "Backspace" && event.target.value === "") {
             removeTags(tags.length - 1);

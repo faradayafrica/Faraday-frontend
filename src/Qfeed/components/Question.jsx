@@ -116,11 +116,7 @@ const Question = (props) => {
           ? question.user
           : null
       }
-      question={
-        question.type === "echo" || question.type === "pen"
-          ? question.original
-          : question
-      }
+      question={question.type === "echo" ? question.original : question}
       setQuestionMenu={setQuestionMenu}
       handleLike={handleLike}
       handleEcho={handleEcho}

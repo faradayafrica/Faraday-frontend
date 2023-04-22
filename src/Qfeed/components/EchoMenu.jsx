@@ -3,7 +3,13 @@ import React, { useRef, useEffect } from "react";
 import { ReactComponent as BroadCastIcon } from "../assets/broadcast.svg";
 import { ReactComponent as PenIcon } from "../assets/pen.svg";
 
-function EchoMenu({ question, echoMenu, setEchoMenu, handleEcho }) {
+function EchoMenu({
+  question,
+  echoMenu,
+  setEchoMenu,
+  handleEcho,
+  setIsPennedOpen,
+}) {
   const echo_menu = useRef();
 
   // Gsap animation
@@ -61,7 +67,10 @@ function EchoMenu({ question, echoMenu, setEchoMenu, handleEcho }) {
             </button>
             <button
               className='px-4 py-2 hover:bg-background rounded-lg w-full text-left flex items-center gap-4'
-             
+              onClick={() => {
+                hideMenu();
+                setIsPennedOpen(true);
+              }}
             >
               <PenIcon />
               <div>
