@@ -9,7 +9,7 @@
   "description": "Where students connect, learn, and innovate together.",
   "icons": [
     {
-      "src": "./maskable.png",
+      "src": "./maskable.jpg",
       "sizes": "196x196",
       "type": "image/png",
       "purpose": "any maskable"
@@ -36,14 +36,6 @@
     }
   ],
   "orientation": "portrait",
-  "display_override": [
-    "minimal-ui",
-    "fullscreen"
-  ],
-  "categories": [
-    "books",
-    "education",
-    "productivity",
-    "social"
-  ]
+  "display_override": ["minimal-ui", "fullscreen"],
+  "categories": ["books", "education", "productivity", "social"]
 }
