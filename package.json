@@ -32,7 +32,9 @@
     "react-uuid": "^2.0.0",
     "sass": "^1.47.0",
     "styled-components": "^5.3.1",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "workbox-precaching": "^6.5.4",
+    "workbox-runtime-caching": "^2.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
