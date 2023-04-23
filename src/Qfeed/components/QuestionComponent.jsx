@@ -10,6 +10,7 @@ import downvoteActive from "../assets/downvote-active.svg";
 import { ReactComponent as ShareIcon } from "../assets/share.svg";
 import { ReactComponent as BroadCastIcon } from "../assets/broadcast.svg";
 import { ReactComponent as EllipsesIcon } from "../assets/ellipses.svg";
+import { ReactComponent as SolvedIcon } from "../assets/answered_mark.svg";
 import verify from "../assets/verify.svg";
 import replyImg from "../assets/reply.svg";
 import EchoMenu from "./EchoMenu";
@@ -38,9 +39,9 @@ function QuestionComponent({
   setEchoMenu,
   discussionPage,
 }) {
-  console.log(question)
+  // console.log(question)
   const [isPennedOpen, setIsPennedOpen] = React.useState(false);
-  console.log(type, question.type);
+  // console.log(type, question.type);
 
   const QuestionBodyComp = (
     <>
@@ -210,20 +211,22 @@ function QuestionComponent({
                 </div>
 
                 <div className='mt-4'>
-                  {question.tags && (
-                    <ul id='tags'>
-                      {question.tags
-                        .slice(0, question.tags.length)
-                        .map((item) => (
-                          <li
-                            key={uuid()}
-                            className='bg-[#ECECF0] mr-2 py-1 mb-2 px-2 rounded-md text-xs font-medium'
-                          >
-                            <span className='tag-title'>{item.name}</span>
-                          </li>
-                        ))}
-                    </ul>
-                  )}
+                  {discussionPage === true
+                    ? question.tags && (
+                        <ul id='tags'>
+                          {question.tags
+                            .slice(0, question.tags.length)
+                            .map((item) => (
+                              <li
+                                key={uuid()}
+                                className='bg-[#ECECF0] mr-2 py-1 mb-2 px-2 rounded-md text-xs font-medium'
+                              >
+                                <span className='tag-title'>{item.name}</span>
+                              </li>
+                            ))}
+                        </ul>
+                      )
+                    : null}
                 </div>
 
                 {/* <Modal
@@ -316,8 +319,16 @@ function QuestionComponent({
                     style={{ textDecoration: "none " }}
                     className='text-faraday-night hover:text-faraday-night flex items-center gap-2'
                   >
-                    <img src={replyImg} alt='reply' />
-                    <span className=''>
+                    {Boolean(question.has_solution) ? (
+                      <SolvedIcon />
+                    ) : (
+                      <img src={replyImg} alt='reply' />
+                    )}
+                    <span
+                      className={`${
+                        Boolean(question.has_solution) ? "text-green-600" : ""
+                      }`}
+                    >
                       {question.comment_count === 0
                         ? "Reply"
                         : `${question.comment_count}`}
