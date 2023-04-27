@@ -135,6 +135,20 @@ export const echoQuestionThunk = createAsyncThunk(
   }
 );
 
+// <--------------------Pen Thunk------------------------------>
+
+export const penQuestionThunk = createAsyncThunk(
+  "qfeed/pen-question",
+  async ({ title, tags, ques_id }, { rejectWithValue }) => {
+    try {
+      const response = await QService.penQuestion(title, tags, ques_id);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
 // <--------------------Comment Thunk------------------------------>
 
 // Mark a comment as Solution
@@ -743,6 +757,66 @@ const qfeedSlice = createSlice({
       }
     });
     builder.addCase(echoQuestionThunk.rejected, (state) => {
+      state.status = QfeedStates.FAILED;
+    });
+
+    // Extra Reducers to pen a question
+    builder.addCase(penQuestionThunk.pending, (state) => {
+      LoadingToast("Loading");
+      state.status = QfeedStates.LOADING;
+    });
+    builder.addCase(penQuestionThunk.fulfilled, (state, action) => {
+      const { data, message } = action.payload;
+
+      if (data) {
+        toast.dismiss();
+        SuccessToast(message);
+
+        const feed = state.feed.qfeed;
+        for (let i = 0; i < feed.length; i++) {
+          if (feed[i].id === data.original.id) {
+            feed[i] = data;
+          }
+        }
+        state.feed.qfeed = feed;
+
+        // // Updates the qfeed Home
+        // const newFeed = state.feed.qfeed.map((question) =>
+        //   question.id === data.id ? data : question
+        // );
+        // state.feed.qfeed = newFeed;
+
+        // // Updates the profile question feed
+        // const newUserQuestionFeed = state.feed.profile.userQuestions.map(
+        //   (question) => (question.id === data.id ? data : question)
+        // );
+        // state.feed.profile.userQuestions = newUserQuestionFeed;
+
+        // // Updates the profile bookmarks feed
+        // const newUserBookmarkFeed = state.feed.profile.userBookmarks.map(
+        //   (question) => (question.id === data.id ? data : question)
+        // );
+        // state.feed.profile.userBookmarks = newUserBookmarkFeed;
+
+        // // Updates the profile Solution feed
+        // const newUserSolutionFeed = state.feed.profile.userSolutions.map(
+        //   (solution) =>
+        //     solution.question.id === data.id
+        //       ? { ...solution, question: data }
+        //       : solution
+        // );
+        // state.feed.profile.userSolutions = newUserSolutionFeed;
+
+        // Update the discussionPage after voting
+        // state.thisQuestion.question = data; // This is giving an unwanted effect on the Discussion page.
+        state.thisQuestion.question.share_count++;
+        state.thisQuestion.question.type = "echo";
+        state.status = QfeedStates.SUCCESSFUL;
+      }
+    });
+    builder.addCase(penQuestionThunk.rejected, (state) => {
+      toast.dismiss();
+      ErrorToast("Something went wrong!");
       state.status = QfeedStates.FAILED;
     });
 

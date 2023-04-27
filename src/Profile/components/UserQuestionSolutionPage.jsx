@@ -19,10 +19,11 @@ const UserQuestionSolutionPage = ({
 }) => {
   const history = useHistory();
 
+  console.log(questions)
+
   useEffect(() => {
     let fetching = false;
     const handleScroll = async (e) => {
-      console.log(e);
       const { scrollHeight, scrollTop, clientHeight } =
         e.target.scrollingElement;
       if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {

@@ -14,6 +14,7 @@ import QuestionComponent from "./QuestionComponent";
 const Question = (props) => {
   const { question } = props;
   const [questionMenu, setQuestionMenu] = useState(false);
+  const [echoMenu, setEchoMenu] = useState(false);
   const [isCopyLinkModal, setCopyLinkModal] = useState(false);
   const [isCopied, setCopied] = useState(false);
   const [shortLink, setShortLink] = useState(props.question.short_link);
@@ -101,54 +102,21 @@ const Question = (props) => {
     dispatch(echoQuestionThunk({ ques_id }));
   }
 
-  if (question.type === "echo") {
-    return (
-      <QuestionComponent
-        type={question.type}
-        user={question.user}
-        question={question.original}
-        setQuestionMenu={setQuestionMenu}
-        handleLike={handleLike}
-        handleEcho={handleEcho}
-        handleCopyLinkModal={handleCopyLinkModal}
-        getShortLink={getShortLink}
-        isCopyLinkModal={isCopyLinkModal}
-        isCopied={isCopied}
-        shortLink={shortLink}
-        handleIsCopied={handleIsCopied}
-        questionMenu={questionMenu}
-        toggleQuestionMenu={toggleQuestionMenu}
-        handleQuestionDelete={handleQuestionDelete}
-      />
-    );
-  }
-  if (question.type === "pen") {
-    return (
-      <QuestionComponent
-        type={"pen"}
-        user={question.user}
-        question={question.original}
-        setQuestionMenu={setQuestionMenu}
-        handleLike={handleLike}
-        handleEcho={handleEcho}
-        handleCopyLinkModal={handleCopyLinkModal}
-        getShortLink={getShortLink}
-        isCopyLinkModal={isCopyLinkModal}
-        isCopied={isCopied}
-        shortLink={shortLink}
-        handleIsCopied={handleIsCopied}
-        questionMenu={questionMenu}
-        toggleQuestionMenu={toggleQuestionMenu}
-        handleQuestionDelete={handleQuestionDelete}
-      />
-    );
-  }
-
   return (
     <QuestionComponent
-      type={question.type}
-      user={null} // this is null because it's not an echo, though question.user is present
-      question={question}
+      type={
+        question.type === "echo"
+          ? question.type
+          : question.type === "pen"
+          ? "pen"
+          : question.type
+      }
+      user={
+        question.type === "echo" || question.type === "pen"
+          ? question.user
+          : null
+      }
+      question={question.type === "echo" ? question.original : question}
       setQuestionMenu={setQuestionMenu}
       handleLike={handleLike}
       handleEcho={handleEcho}
@@ -161,6 +129,9 @@ const Question = (props) => {
       questionMenu={questionMenu}
       toggleQuestionMenu={toggleQuestionMenu}
       handleQuestionDelete={handleQuestionDelete}
+      echoMenu={echoMenu}
+      setEchoMenu={setEchoMenu}
+      discussionPage={false}
     />
   );
 };
