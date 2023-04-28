@@ -342,6 +342,76 @@ const qfeedSlice = createSlice({
       }
     },
 
+    optimisticQuestionVote: (state, action) => {
+      const { questionid, value } = action.payload;
+
+      // Update for the Qfeed
+      const _questions = state.feed.qfeed;
+      let index = _questions.findIndex(
+        (question) => question.id === questionid
+      );
+
+      if (index !== -1) {
+        _questions.splice(index, 1, {
+          ..._questions[index],
+          vote_rank: value.rank,
+          vote_status: value.status,
+        });
+      }
+
+      // Update for Profile Questions
+      const _profile_questions = state.feed.profile.userQuestions;
+      let _profileQuestionIndex = _profile_questions.findIndex(
+        (question) => question.id === questionid
+      );
+
+      if (_profileQuestionIndex !== -1) {
+        _profile_questions.splice(_profileQuestionIndex, 1, {
+          ..._profile_questions[_profileQuestionIndex],
+          vote_rank: value.rank,
+          vote_status: value.status,
+        });
+      }
+
+      // Update for Profile Solutions -doesn't work because of the inconsistent data structure
+      const _profile_solutions = state.feed.profile.userSolutions;
+      let _profileSolutionIndex = _profile_solutions.findIndex(
+        (question) => question.question.id === questionid
+      );
+
+      console.log("Optimistic", _profileSolutionIndex);
+
+      if (_profileSolutionIndex !== -1) {
+        _profile_solutions.splice(_profileSolutionIndex, 1, {
+          ..._profile_solutions[_profileSolutionIndex],
+          vote_rank: value.rank,
+          vote_status: value.status,
+        });
+      }
+
+      // Update for Profile Bookmarks
+      const _profile_bookmarks = state.feed.profile.userBookmarks;
+      let _profileBookmarkIndex = _profile_bookmarks.findIndex(
+        (question) => question.id === questionid
+      );
+
+      if (_profileBookmarkIndex !== -1) {
+        _profile_bookmarks.splice(_profileBookmarkIndex, 1, {
+          ..._profile_bookmarks[_profileBookmarkIndex],
+          vote_rank: value.rank,
+          vote_status: value.status,
+        });
+      }
+
+      // Update for Discussion Page
+
+      state.thisQuestion.question = {
+        ...state.thisQuestion.question,
+        vote_rank: value.rank,
+        vote_status: value.status,
+      };
+    },
+
     optimisticReplyVote: (state, action) => {
       const { replyid, value } = action.payload;
       // {rank: 4, status: "upvote"} = value
@@ -1302,6 +1372,7 @@ export const {
   resetProfile,
   hideSecondReply,
   hideThirdReply,
+  optimisticQuestionVote,
   optimisticCommentVote,
   optimisticReplyVote,
   resetStatus,

@@ -17,6 +17,7 @@ import { useState } from "react";
 
 import {
   echoQuestionThunk,
+  optimisticQuestionVote,
   voteQuestionThunk,
 } from "../../common/features/qfeed/qfeedSlice";
 import { useDispatch } from "react-redux";
@@ -47,22 +48,6 @@ const DiscussionQuestion = ({
     setQuestionMenu(!setQuestionMenu);
   };
 
-  const handleLike = async (postid, vote) => {
-    if (token === null || token === undefined) {
-      return history.push(`/login?redirect=${window.origin}/qfeed/${postid}`);
-    }
-
-    if (vote === "downvote") {
-      dispatch(voteQuestionThunk({ postid, value: "downvote" }));
-    } else {
-      dispatch(voteQuestionThunk({ postid }));
-    }
-  };
-
-  function handleEcho(ques_id) {
-    dispatch(echoQuestionThunk({ ques_id }));
-  }
-
   return (
     <>
       <QuestionComponent
@@ -78,15 +63,11 @@ const DiscussionQuestion = ({
             ? question.user
             : null
         }
-        // question={
-        //   question.type === "echo" || question.type === "pen"
-        //     ? question.original
-        //     : question
-        // }
         question={question.type === "echo" ? question.original : question}
         setQuestionMenu={setQuestionMenu}
-        handleLike={handleLike}
-        handleEcho={handleEcho}
+        // handleLike={handleLike}
+        // handleEcho={handleEcho}
+        history={history}
         handleCopyLinkModal={handleCopyLinkModal}
         getShortLink={getShortLink}
         isCopyLinkModal={isCopyLinkModal}

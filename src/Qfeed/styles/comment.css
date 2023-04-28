@@ -249,6 +249,14 @@
   margin-top: 0.5rem;
 }
 
+.truncate-render {
+  max-height: 280px !important;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+
+  /* background-color: #07553f; */
+}
+
 .render ol {
   list-style: decimal;
   margin-left: 1rem;

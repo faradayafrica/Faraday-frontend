@@ -16,16 +16,22 @@ import replyImg from "../assets/reply.svg";
 import EchoMenu from "./EchoMenu";
 import uuid from "react-uuid";
 import PennedModal from "./PennedModal";
+import Helpers from "../utils/helpers";
+import {
+  echoQuestionThunk,
+  optimisticQuestionVote,
+  voteQuestionThunk,
+} from "../../common/features/qfeed/qfeedSlice";
+import { useDispatch } from "react-redux";
 
 const token = localStorage.getItem("token");
 
 function QuestionComponent({
+  history,
   type,
   user,
   question,
   setQuestionMenu,
-  handleLike,
-  handleEcho,
   handleCopyLinkModal,
   getShortLink,
   isCopyLinkModal,
@@ -43,6 +49,24 @@ function QuestionComponent({
   const [isPennedOpen, setIsPennedOpen] = React.useState(false);
   // console.log(type, question.type);
 
+  const dispatch = useDispatch();
+
+  const handleLike = async (postid, vote) => {
+    if (token === null || token === undefined) {
+      return history.push(`/login?redirect=${window.origin}/qfeed/${postid}`);
+    }
+
+    if (vote === "downvote") {
+      dispatch(voteQuestionThunk({ postid, value: "downvote" }));
+    } else {
+      dispatch(voteQuestionThunk({ postid }));
+    }
+  };
+
+  function handleEcho(ques_id) {
+    dispatch(echoQuestionThunk({ ques_id }));
+  }
+
   const QuestionBodyComp = (
     <>
       {/* Question head */}
@@ -59,18 +83,16 @@ function QuestionComponent({
         <p className="m-0 mb-4 mt-1 text-night-secondary text-xs">
           Published {moment(question?.created).fromNow()}
         </p>
-      )}
-
+      )}{" "}
       {/* {Boolean(question.has_solution) && (
         <div className="bg-[#F1FBEF] inline-block py-1 px-3 rounded-full text-[#2C974B] font-medium text-xs mb-2">
           Solved
         </div>
       )} */}
-
       {/* Question body without a selected solution --optional */}
       {question && question?.content && (
         <div
-          className="mb-4 text-sm text-faraday-night render"
+          className="mb-4 text-sm text-faraday-night render truncate-render"
           style={{ marginTop: 0 }}
           dangerouslySetInnerHTML={{ __html: question.content }}
         />
@@ -319,7 +341,29 @@ function QuestionComponent({
                     <span>{question.share_count}</span>
                   </button>
                   <div className="flex justify-between items-center min-w-[4rem]">
-                    <button onClick={() => handleLike(question.id, "upvote")}>
+                    <button
+                      onClick={() => {
+                        dispatch(
+                          optimisticQuestionVote({
+                            questionid: question.id,
+                            value: {
+                              rank:
+                                question.vote_status === null
+                                  ? question.vote_rank + 1
+                                  : question.vote_status === "upvote"
+                                  ? question.vote_rank - 1
+                                  : question.vote_status === "downvote" &&
+                                    question.vote_rank + 2,
+                              status:
+                                question.vote_status === "upvote"
+                                  ? null
+                                  : "upvote",
+                            },
+                          })
+                        );
+                        handleLike(question.id, "upvote");
+                      }}
+                    >
                       {question.vote_status === "upvote" ? (
                         <img src={upvoteActive} alt="helpful" />
                       ) : (
@@ -327,7 +371,29 @@ function QuestionComponent({
                       )}
                     </button>
                     <span className="count">{question.vote_rank}</span>
-                    <button onClick={() => handleLike(question.id, "downvote")}>
+                    <button
+                      onClick={() => {
+                        dispatch(
+                          optimisticQuestionVote({
+                            questionid: question.id,
+                            value: {
+                              rank:
+                                question.vote_status === null
+                                  ? question.vote_rank - 1
+                                  : question.vote_status === "downvote"
+                                  ? question.vote_rank + 1
+                                  : question.vote_status === "upvote" &&
+                                    question.vote_rank - 2,
+                              status:
+                                question.vote_status === "downvote"
+                                  ? null
+                                  : "downvote",
+                            },
+                          })
+                        );
+                        handleLike(question.id, "downvote");
+                      }}
+                    >
                       {question.vote_status === "downvote" ? (
                         <img src={downvoteActive} alt="not helpful" />
                       ) : (
