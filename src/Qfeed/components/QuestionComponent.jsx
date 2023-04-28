@@ -398,7 +398,7 @@ function PinnedQuestion({ question }) {
         <span className="mr-2 font-semibold text-night-secondary flex items-center text-xs">
           {question?.user.firstname} {question?.user.lastname}{" "}
           {question?.user.account_verified && (
-            <img src={verify} className="h-5 w-5 ml-1" alt="" />
+            <img src={verify} className="h-3 w-3 ml-1" alt="" />
           )}
         </span>
         <span className="mr-2 ">@{question?.user.username} </span>{" "}

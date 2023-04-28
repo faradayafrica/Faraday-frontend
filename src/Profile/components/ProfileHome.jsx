@@ -29,7 +29,7 @@ const ProfileHome = ({
   const history = useHistory();
 
   return (
-    <div className="bg-white">
+    <div className="bg-white py-4">
       <div className="min-h-[70px] sm:min-h-[20px] bg-brand-highlight"> </div>
       {user ? (
         <>
@@ -97,21 +97,6 @@ const ProfileHome = ({
               </div>
             </div>
           </div>
-
-          <UserQuestionSolutionPage
-            user={user}
-            currentUser={currentUser}
-            handleFollow={handleFollow}
-            questions={questions}
-            bookmarks={bookmarks}
-            solutions={solutions}
-            isQuestionLoading={isQuestionLoading}
-            isBookmarkLoading={isBookmarkLoading}
-            isSolutionLoading={isSolutionLoading}
-            questionError={questionError}
-            bookmarkError={bookmarkError}
-            solutionError={solutionError}
-          />
         </>
       ) : (
         <div className="m-3">

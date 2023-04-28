@@ -4,6 +4,7 @@ import Loader from "../../common/components/Loader";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import arrowRight from "../../Qfeed/assets/arrow-right.svg";
 import { useEffect } from "react";
+import QuestionsLoader from "../../Qfeed/components/QuestionsLoader";
 
 const UserQuestionSolutionPage = ({
   user,
@@ -12,33 +13,17 @@ const UserQuestionSolutionPage = ({
   bookmarks,
   deleteQuestion,
   updateQuestions,
-  fetchQuestionNextPage,
+  isQuestionLoading,
+  isSolutionLoading,
+  isBookmarkLoading,
   hasQuestionNextPage,
-  fetchBookmarkNextPage,
+  hasSolutionNextPage,
   hasBookmarkNextPage,
+  isFetchingQuestionNextPage,
+  isFetchingSolutionNextPage,
+  isFetchingBookmarkNextPage,
 }) => {
   const history = useHistory();
-
-  console.log(questions);
-
-  useEffect(() => {
-    let fetching = false;
-    const handleScroll = async (e) => {
-      const { scrollHeight, scrollTop, clientHeight } =
-        e.target.scrollingElement;
-      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
-        fetching = true;
-        if (hasQuestionNextPage) {
-          await fetchQuestionNextPage();
-        }
-        fetching = false;
-      }
-    };
-    document.addEventListener("scroll", handleScroll);
-    return () => {
-      document.removeEventListener("scroll", handleScroll);
-    };
-  }, [fetchQuestionNextPage, hasQuestionNextPage]);
 
   return (
     <>
@@ -49,7 +34,7 @@ const UserQuestionSolutionPage = ({
         className="w-full profile-wrapper text-faraday-night"
       >
         <Tab.Group>
-          <Tab.List className="border-b p-0 z-20 w-full sticky top-2 my-4">
+          <Tab.List className="border-b p-0 z-20 w-full sticky top-2 mt-4">
             <div className="sticky top-2 w-full">
               {["Questions", "Solutions", "Bookmarks"].map((tab, index) => (
                 <Tab
@@ -86,6 +71,27 @@ const UserQuestionSolutionPage = ({
                         />
                       ))}
                     </div>
+
+                    {isQuestionLoading || isFetchingQuestionNextPage ? (
+                      !questions?.length ? (
+                        <QuestionsLoader />
+                      ) : (
+                        <QuestionsLoader short={true} />
+                      )
+                    ) : (
+                      <>
+                        {questions?.length > 0 && hasQuestionNextPage && (
+                          <div className="bg-white py-2 mt-2">
+                            <div className="p-3 m-3 rounded-lg border bg-background  text-center">
+                              <p className="text-xs sm:text-sm m-0 ">
+                                You're at the bottom of the feed
+                              </p>
+                            </div>
+                            <div className="h-[65px] w-full sm:hidden"></div>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </>
                 ) : (
                   <div className="m-3">
@@ -110,6 +116,27 @@ const UserQuestionSolutionPage = ({
                       />
                     ))}
                   </div>
+
+                  {isSolutionLoading || isFetchingSolutionNextPage ? (
+                    !solutions?.length ? (
+                      <QuestionsLoader />
+                    ) : (
+                      <QuestionsLoader short={true} />
+                    )
+                  ) : (
+                    <>
+                      {solutions?.length > 0 && !hasSolutionNextPage && (
+                        <div className="bg-white py-2 mt-2">
+                          <div className="p-3 m-3 rounded-lg border bg-background  text-center">
+                            <p className="text-xs sm:text-sm m-0 ">
+                              You're at the bottom of the feed
+                            </p>
+                          </div>
+                          <div className="h-[65px] w-full sm:hidden"></div>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </>
               ) : (
                 ""
@@ -129,6 +156,27 @@ const UserQuestionSolutionPage = ({
                       />
                     ))}
                   </div>
+
+                  {isBookmarkLoading || isFetchingBookmarkNextPage ? (
+                    !bookmarks?.length ? (
+                      <QuestionsLoader />
+                    ) : (
+                      <QuestionsLoader short={true} />
+                    )
+                  ) : (
+                    <>
+                      {bookmarks?.length > 0 && !hasBookmarkNextPage && (
+                        <div className="bg-white py-2 mt-2">
+                          <div className="p-3 m-3 rounded-lg border bg-background  text-center">
+                            <p className="text-xs sm:text-sm m-0 ">
+                              You're at the bottom of the feed
+                            </p>
+                          </div>
+                          <div className="h-[65px] w-full sm:hidden"></div>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </>
               ) : (
                 ""

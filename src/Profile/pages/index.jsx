@@ -177,6 +177,56 @@ function Profile({ match, history }) {
     //questions/ solutions
   }, [fetchQuestionNextPage, hasQuestionNextPage]);
 
+  useEffect(() => {
+    let fetching = false;
+    const handleScroll = async (e) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasSolutionNextPage) {
+          await fetchSolutionNextPage();
+        } else {
+          fetching = false;
+        }
+      }
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+
+    //We have a bug at the moment, this block of code runs and fetches more
+    // questions when a user reaches the end of the page, whether on the question tab
+    //or solution tab. This can be revisited in the future when users have > 30
+    //questions/ solutions
+  }, [fetchSolutionNextPage, hasSolutionNextPage]);
+
+  useEffect(() => {
+    let fetching = false;
+    const handleScroll = async (e) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasBookmarkNextPage) {
+          await fetchBookmarkNextPage();
+        } else {
+          fetching = false;
+        }
+      }
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+
+    //We have a bug at the moment, this block of code runs and fetches more
+    // questions when a user reaches the end of the page, whether on the question tab
+    //or solution tab. This can be revisited in the future when users have > 30
+    //questions/ solutions
+  }, [fetchBookmarkNextPage, hasBookmarkNextPage]);
+
   const handleFollow = (user) => {
     dispatch(followUserThunk({ username: user?.profile.username }));
   };
@@ -227,21 +277,44 @@ function Profile({ match, history }) {
       ) : error ? (
         error
       ) : (
-        <ProfileHome
-          user={user}
-          currentUser={currentUser}
-          handleFollow={handleFollow}
-          questions={questions}
-          bookmarks={bookmarks}
-          solutions={solutions}
-          isQuestionLoading={isQuestionLoading}
-          isBookmarkLoading={isBookmarkLoading}
-          isSolutionLoading={isSolutionLoading}
-          questionError={questionError}
-          bookmarkError={bookmarkError}
-          solutionError={solutionError}
-          // {...props}
-        />
+        <>
+          <ProfileHome
+            user={user}
+            currentUser={currentUser}
+            handleFollow={handleFollow}
+            questions={questions}
+            bookmarks={bookmarks}
+            solutions={solutions}
+            isQuestionLoading={isQuestionLoading}
+            isBookmarkLoading={isBookmarkLoading}
+            isSolutionLoading={isSolutionLoading}
+            questionError={questionError}
+            bookmarkError={bookmarkError}
+            solutionError={solutionError}
+            // {...props}
+          />
+
+          <UserQuestionSolutionPage
+            user={user}
+            currentUser={currentUser}
+            handleFollow={handleFollow}
+            questions={questions}
+            bookmarks={bookmarks}
+            solutions={solutions}
+            isQuestionLoading={isQuestionLoading}
+            isBookmarkLoading={isBookmarkLoading}
+            isSolutionLoading={isSolutionLoading}
+            questionError={questionError}
+            bookmarkError={bookmarkError}
+            solutionError={solutionError}
+            hasQuestionNextPage={hasQuestionNextPage}
+            hasSolutionNextPage={hasSolutionNextPage}
+            hasBookmarkNextPage={hasBookmarkNextPage}
+            isFetchingQuestionNextPage={isFetchingQuestionNextPage}
+            isFetchingSolutionNextPage={isFetchingSolutionNextPage}
+            isFetchingBookmarkNextPage={isFetchingBookmarkNextPage}
+          />
+        </>
       )}
     </div>
   );
