@@ -94,8 +94,6 @@ const CommentMenu = ({
             <></>
           )}
 
-          {console.log(confirmSolution, "mark")}
-
           {selectedComment?.user?.username !== currentUser.username ? (
             <button
               className="px-4 py-3 hover:bg-background rounded-lg w-full text-left flex"

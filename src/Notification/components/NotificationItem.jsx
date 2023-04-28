@@ -141,8 +141,6 @@ const NotificationItem = ({
             alt=""
           />
 
-          {console.log("From solution Type ==> ", notification)}
-
           <div className="">
             <img
               src={que?.user?.profile_pic}
