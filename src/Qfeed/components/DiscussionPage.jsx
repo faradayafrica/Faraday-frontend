@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import CopyLink from "./CopyLink";
 import SecondaryButton from "../../common/components/SecondaryButton";
 import Comments from "./commentComponents/Comments";
@@ -21,6 +21,7 @@ import QService from "../../common/features/qfeed/QfeedServices";
 import DiscussionQuestion from "./DiscusstionQuestion";
 
 const DiscussionPage = ({ match, history }) => {
+  const [url, setUrl] = useState(match.params.id);
   const [loader, setLoader] = useState(true);
 
   const [isCopyLinkModal, setCopyLinkModal] = useState(false);
@@ -34,6 +35,7 @@ const DiscussionPage = ({ match, history }) => {
     (state) => state.qfeed.thisQuestion
   );
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   // Redux biz ends here
 
   const handleIsCopied = (value) => {
@@ -114,14 +116,6 @@ const DiscussionPage = ({ match, history }) => {
     }
   };
 
-  useEffect(async () => {
-    if (question.user) {
-      // Skip
-    } else {
-      fetchThisQuestion();
-    }
-  }, []);
-
   const updateComments = (newComments) => {
     dispatch(updateQuestion({ name: "comments", value: newComments }));
   };
@@ -138,8 +132,7 @@ const DiscussionPage = ({ match, history }) => {
     refetch,
   } = useInfiniteQuery(
     ["comments"],
-    ({ pageParam = 1 }) =>
-      QService.fetchQuestionComments(match.params.id, pageParam),
+    ({ pageParam = 1 }) => QService.fetchQuestionComments(url, pageParam),
     {
       cacheTime: 0,
       getNextPageParam: (lastPage, allPages) => {
@@ -148,6 +141,10 @@ const DiscussionPage = ({ match, history }) => {
       },
     }
   );
+
+  useEffect(() => {
+    refetch();
+  }, [question]);
 
   // Next page fetch from the useInfinite Query
   useEffect(() => {
@@ -184,34 +181,37 @@ const DiscussionPage = ({ match, history }) => {
 
   // Initialize the state of the Discussion feed when navigating from the Qfeen home
   useLayoutEffect(() => {
+    fetchThisQuestion();
+    setUrl(match.params.id);
+    dispatch(updateQuestion({ name: "comments", value: [] }));
     const thisQuestion = questions?.find((q) => q.id === match.params.id);
     const value = thisQuestion ? thisQuestion : {};
     dispatch(updateQuestion({ name: "question", value }));
-  }, []);
+  }, [match.params.id]);
 
   useEffect(() => {
     setShortLink(question ? question.short_link : "");
-  }, [question]);
+  }, [question, match.params.id]);
 
   return (
     <>
-      <div className=' bg-background min-h-[100vh] z-30 bottom-0 left-0 h-min-screen sm:w-auto sm:static'>
-        <div className='min-h-[70px] sm:min-h-[0px] '> </div>
-        <div className='z-50' id='discussion'>
-          <div className='flex items-center p-3'>
+      <div className=" bg-background min-h-[100vh] z-30 bottom-0 left-0 h-min-screen sm:w-auto sm:static">
+        <div className="min-h-[70px] sm:min-h-[0px] "> </div>
+        <div className="z-50" id="discussion">
+          <div className="flex items-center p-3">
             <img
               src={arrowRight}
-              className='w-8 h-8 p-2 rounded-full mr-2 bg-white hover:bg-background2 cursor-pointer rotate-180 shadow-sm'
-              alt='return'
+              className="w-8 h-8 p-2 rounded-full mr-2 bg-white hover:bg-background2 cursor-pointer rotate-180 shadow-sm"
+              alt="return"
               onClick={() => {
                 // dispatch(updateQuestion({ name: "comments", value: [] }));
                 history.goBack();
               }}
             />
-            <h1 className='text-2xl text-center font-bold m-0 '>Discussion</h1>
+            <h1 className="text-2xl text-center font-bold m-0 ">Discussion</h1>
           </div>
           {question?.user ? (
-            <div className=' py-3 relative bg-white'>
+            <div className=" py-3 relative bg-white">
               <DiscussionQuestion
                 question={question}
                 handleQuestionDelete={handleQuestionDelete}
@@ -251,14 +251,14 @@ const DiscussionPage = ({ match, history }) => {
           ) : (
             <>
               {loader ? (
-                <QuestionsLoader type='discussion' />
+                <QuestionsLoader type="discussion" />
               ) : (
-                <div className='p-3  rounded-lg border bg-background m-3 text-center'>
+                <div className="p-3  rounded-lg border bg-background m-3 text-center">
                   <>
-                    <p className='text-xs sm:text-sm '>
+                    <p className="text-xs sm:text-sm ">
                       Couldn't fetch this question at this time, try again later
                     </p>
-                    <SecondaryButton cta='Retry' action={retry} />
+                    <SecondaryButton cta="Retry" action={retry} />
                   </>
                 </div>
               )}

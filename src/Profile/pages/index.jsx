@@ -186,6 +186,7 @@ function Profile({ match, history }) {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     // Resets userData to an initial state
     // document.title = `${currentUser?.last_name} ${currentUser?.first_name} Profile`;
     dispatch(resetProfile());
@@ -226,50 +227,21 @@ function Profile({ match, history }) {
       ) : error ? (
         error
       ) : (
-        <Switch>
-          <Route
-            path="/me/:username/qfeed"
-            render={(props) => (
-              <UserQuestionSolutionPage
-                user={user}
-                questions={questions}
-                solutions={solutions}
-                bookmarks={bookmarks}
-                deleteQuestion={deleteQuestion}
-                updateQuestions={updateQuestions}
-                fetchQuestionNextPage={fetchQuestionNextPage}
-                hasQuestionNextPage={hasQuestionNextPage}
-                fetchSolutionNextPage={fetchSolutionNextPage}
-                hasSolutionNextPage={hasSolutionNextPage}
-                fetchBookmarkNextPage={fetchBookmarkNextPage}
-                hasBookmarkNextPage={hasBookmarkNextPage}
-              />
-            )}
-          />
-
-          <Route
-            path="/"
-            render={(props) => (
-              <ProfileHome
-                user={user}
-                currentUser={currentUser}
-                handleFollow={handleFollow}
-                questions={questions}
-                bookmarks={bookmarks}
-                solutions={solutions}
-                isQuestionLoading={isQuestionLoading}
-                isBookmarkLoading={isBookmarkLoading}
-                isSolutionLoading={isSolutionLoading}
-                questionError={questionError}
-                bookmarkError={bookmarkError}
-                solutionError={solutionError}
-                {...props}
-              />
-            )}
-          />
-          <Route path="/not-found" component={NotFound} />
-          <Redirect push to="/not-found" />
-        </Switch>
+        <ProfileHome
+          user={user}
+          currentUser={currentUser}
+          handleFollow={handleFollow}
+          questions={questions}
+          bookmarks={bookmarks}
+          solutions={solutions}
+          isQuestionLoading={isQuestionLoading}
+          isBookmarkLoading={isBookmarkLoading}
+          isSolutionLoading={isSolutionLoading}
+          questionError={questionError}
+          bookmarkError={bookmarkError}
+          solutionError={solutionError}
+          // {...props}
+        />
       )}
     </div>
   );

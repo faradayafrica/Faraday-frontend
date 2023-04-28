@@ -19,7 +19,7 @@ const UserQuestionSolutionPage = ({
 }) => {
   const history = useHistory();
 
-  console.log(questions)
+  console.log(questions);
 
   useEffect(() => {
     let fetching = false;
@@ -43,41 +43,31 @@ const UserQuestionSolutionPage = ({
   return (
     <>
       {/* We need a nav here */}
-      <div className="w-full profile-wrapper text-faraday-night bg-white relative">
+
+      <div
+        // style={{ maxHeight: "70vh" }}
+        className="w-full profile-wrapper text-faraday-night"
+      >
         <Tab.Group>
-          <Tab.List className="border-b bg-white fixed sm:static z-20 w-full">
-            <div className="">
-              <div className="min-h-[70px] sm:min-h-[20px] w-full"> </div>
-              <div className="flex items-center p-3 sticky top-10">
-                <img
-                  src={arrowRight}
-                  className="w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180"
-                  alt="return"
-                  onClick={() => {
-                    history.goBack();
-                  }}
-                />
-                <h1 className="text-2xl sm:text-2xl font-bold m-0 ">
-                  {user?.profile.firstname}'s question feed
-                </h1>
-              </div>
+          <Tab.List className="border-b p-0 z-20 w-full sticky top-2 my-4">
+            <div className="sticky top-2 w-full">
+              {["Questions", "Solutions", "Bookmarks"].map((tab, index) => (
+                <Tab
+                  key={index}
+                  className={({ selected }) =>
+                    `text-md py-3 px-4 font-bold outline-none border-b-2 ${
+                      selected
+                        ? " border-brand text-brand"
+                        : " text-night-secondary border-transparent hover:border-night-secondary hover:bg-background"
+                    }`
+                  }
+                >
+                  {tab}
+                </Tab>
+              ))}
             </div>
-            {["Questions", "Solutions", "Bookmarks"].map((tab, index) => (
-              <Tab
-                key={index}
-                className={({ selected }) =>
-                  `text-md py-2 px-4 ml-3 my-2 font-bold outline-none rounded-xl  ${
-                    selected
-                      ? "  bg-brand text-white"
-                      : "border-x-[1px] border-y-[1px] text-night-secondary border-night-secondary hover:bg-background"
-                  }`
-                }
-              >
-                {tab}
-              </Tab>
-            ))}
           </Tab.List>
-          <Tab.Panels className="mt-48 sm:mt-2 pt-2">
+          <Tab.Panels>
             <Tab.Panel>
               <div
               // className="profile-question-section h-[600px]"
@@ -85,15 +75,17 @@ const UserQuestionSolutionPage = ({
               >
                 {questions ? (
                   <>
-                    {questions.map((question) => (
-                      <Question
-                        question={question}
-                        questions={questions}
-                        handleUpdatedQuestions={updateQuestions}
-                        onDeleteQuestion={deleteQuestion}
-                        key={question.id}
-                      />
-                    ))}
+                    <div className="space-y-1 sm:space-y-0 bg-background sticky top-2">
+                      {questions.map((question) => (
+                        <Question
+                          question={question}
+                          questions={questions}
+                          handleUpdatedQuestions={updateQuestions}
+                          onDeleteQuestion={deleteQuestion}
+                          key={question.id}
+                        />
+                      ))}
+                    </div>
                   </>
                 ) : (
                   <div className="m-3">
@@ -107,15 +99,17 @@ const UserQuestionSolutionPage = ({
             <Tab.Panel>
               {solutions ? (
                 <>
-                  {solutions.map((item) => (
-                    <Question
-                      question={item.question}
-                      questions={item.questions}
-                      handleUpdatedQuestions={updateQuestions}
-                      onDeleteQuestion={deleteQuestion}
-                      key={item.question.id}
-                    />
-                  ))}
+                  <div className="space-y-1 sm:space-y-0 bg-background">
+                    {solutions?.map((item) => (
+                      <Question
+                        question={item.question}
+                        questions={item.questions}
+                        handleUpdatedQuestions={updateQuestions}
+                        onDeleteQuestion={deleteQuestion}
+                        key={item.question.id}
+                      />
+                    ))}
+                  </div>
                 </>
               ) : (
                 ""
@@ -124,15 +118,17 @@ const UserQuestionSolutionPage = ({
             <Tab.Panel>
               {bookmarks.length ? (
                 <>
-                  {bookmarks?.map((bookmark) => (
-                    <Question
-                      question={bookmark}
-                      questions={bookmarks}
-                      handleUpdatedQuestions={updateQuestions}
-                      onDeleteQuestion={deleteQuestion}
-                      key={bookmark.id}
-                    />
-                  ))}
+                  <div className="space-y-1 sm:space-y-0 bg-background">
+                    {bookmarks?.map((bookmark) => (
+                      <Question
+                        question={bookmark}
+                        questions={bookmarks}
+                        handleUpdatedQuestions={updateQuestions}
+                        onDeleteQuestion={deleteQuestion}
+                        key={bookmark.id}
+                      />
+                    ))}
+                  </div>
                 </>
               ) : (
                 ""
