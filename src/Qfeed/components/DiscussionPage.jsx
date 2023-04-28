@@ -78,10 +78,6 @@ const DiscussionPage = ({ match, history }) => {
     }
   };
 
-  const handleMarkSolution = (postid, commentid) => {
-    dispatch(markSolutionThunk({ postid, commentid }));
-  };
-
   const handleQuestionDelete = (ques_id) => {
     dispatch(deleteQuestionThunk({ ques_id }));
     setTimeout(() => {
@@ -240,7 +236,6 @@ const DiscussionPage = ({ match, history }) => {
                 commentLoader={isLoading}
                 questionOwner={question?.user}
                 onUpdateComments={updateComments}
-                onMarkSolution={handleMarkSolution}
                 match={match}
                 error={error}
                 isError={isError}

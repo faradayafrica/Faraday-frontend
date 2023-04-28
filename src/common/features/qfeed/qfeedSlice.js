@@ -379,8 +379,6 @@ const qfeedSlice = createSlice({
         (question) => question.question.id === questionid
       );
 
-      console.log("Optimistic", _profileSolutionIndex);
-
       if (_profileSolutionIndex !== -1) {
         _profile_solutions.splice(_profileSolutionIndex, 1, {
           ..._profile_solutions[_profileSolutionIndex],
@@ -404,7 +402,6 @@ const qfeedSlice = createSlice({
       }
 
       // Update for Discussion Page
-
       state.thisQuestion.question = {
         ...state.thisQuestion.question,
         vote_rank: value.rank,
@@ -912,6 +909,12 @@ const qfeedSlice = createSlice({
         });
         state.thisQuestion.comments = newComments;
         state.status = QfeedStates.SUCCESSFUL;
+
+        //Update on DiscussionPage
+        state.thisQuestion.question = {
+          ...state.thisQuestion.question,
+          has_solution: !state.thisQuestion.question.has_solution,
+        };
 
         // Update solution for question on the Qfeed Home
         const newFeed = state.feed.qfeed;
