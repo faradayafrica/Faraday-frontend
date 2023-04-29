@@ -266,7 +266,9 @@ function MobileSideNav() {
               </div>
             </div>
 
-            <span className="version text-night-secondary">PointBreak v2</span>
+            <span className="version text-night-secondary">
+              PointBreak v2.0
+            </span>
           </div>
         </div>
       </div>
