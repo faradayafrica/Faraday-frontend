@@ -1,5 +1,23 @@
 .profile-wrapper {
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
+}
+
+.profile-nav {
+  /* background-color: white; */
+  position: sticky;
+  top: 0;
+}
+
+.profile-nav > .displace {
+  display: none;
+}
+
+.profile-nav-sticky {
+  background-color: white !important;
+}
+
+.profile-nav-sticky > .displace {
+  display: block !important;
 }
 
 .question-section {

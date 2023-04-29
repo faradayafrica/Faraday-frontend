@@ -2,9 +2,8 @@ import { Tab } from "@headlessui/react";
 import Question from "../../Qfeed/components/Question";
 import Loader from "../../common/components/Loader";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import arrowRight from "../../Qfeed/assets/arrow-right.svg";
-import { useEffect } from "react";
 import QuestionsLoader from "../../Qfeed/components/QuestionsLoader";
+import { useEffect } from "react";
 
 const UserQuestionSolutionPage = ({
   user,
@@ -25,32 +24,48 @@ const UserQuestionSolutionPage = ({
 }) => {
   const history = useHistory();
 
+  useEffect(() => {
+    const element = document.querySelector(".profile-nav");
+    const handleScroll = () => {
+      const isSticky = element.offsetTop <= window.scrollY + 40;
+      if (isSticky) {
+        element.classList.add("profile-nav", "profile-nav-sticky");
+      } else {
+        element.classList.remove("profile-nav-sticky");
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
       {/* We need a nav here */}
 
-      <div
-        // style={{ maxHeight: "70vh" }}
-        className="w-full profile-wrapper text-faraday-night"
-      >
+      <div className="w-full profile-wrapper text-faraday-night ">
         <Tab.Group>
-          <Tab.List className="border-b p-0 z-20 w-full sticky top-2 mt-4">
-            <div className="sticky top-2 w-full">
-              {["Questions", "Solutions", "Bookmarks"].map((tab, index) => (
-                <Tab
-                  key={index}
-                  className={({ selected }) =>
-                    `text-md py-3 px-4 font-bold outline-none border-b-2 ${
-                      selected
-                        ? " border-brand text-brand"
-                        : " text-night-secondary border-transparent hover:border-night-secondary hover:bg-background"
-                    }`
-                  }
-                >
-                  {tab}
-                </Tab>
-              ))}
-            </div>
+          <Tab.List
+            style={{ zIndex: 1 }}
+            className="border-b p-0 w-full pt-2 mt-4 bg-whit profile-nav"
+          >
+            <div className="h-14 displace"></div>
+            {["Questions", "Solutions", "Bookmarks"].map((tab, index) => (
+              <Tab
+                key={index}
+                className={({ selected }) =>
+                  `text-md py-3 px-4 font-bold outline-none border-b-2 ${
+                    selected
+                      ? " border-brand text-brand"
+                      : " text-night-secondary border-transparent hover:border-night-secondary hover:bg-background"
+                  }`
+                }
+              >
+                {tab}
+              </Tab>
+            ))}
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>

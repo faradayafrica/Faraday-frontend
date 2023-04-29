@@ -287,28 +287,26 @@ function Profile({ match, history }) {
             // {...props}
           />
 
-          <div className="sticky top-0">
-            <UserQuestionSolutionPage
-              user={user}
-              currentUser={currentUser}
-              handleFollow={handleFollow}
-              questions={questions}
-              bookmarks={bookmarks}
-              solutions={solutions}
-              isQuestionLoading={isQuestionLoading}
-              isBookmarkLoading={isBookmarkLoading}
-              isSolutionLoading={isSolutionLoading}
-              questionError={questionError}
-              bookmarkError={bookmarkError}
-              solutionError={solutionError}
-              hasQuestionNextPage={hasQuestionNextPage}
-              hasSolutionNextPage={hasSolutionNextPage}
-              hasBookmarkNextPage={hasBookmarkNextPage}
-              isFetchingQuestionNextPage={isFetchingQuestionNextPage}
-              isFetchingSolutionNextPage={isFetchingSolutionNextPage}
-              isFetchingBookmarkNextPage={isFetchingBookmarkNextPage}
-            />
-          </div>
+          <UserQuestionSolutionPage
+            user={user}
+            currentUser={currentUser}
+            handleFollow={handleFollow}
+            questions={questions}
+            bookmarks={bookmarks}
+            solutions={solutions}
+            isQuestionLoading={isQuestionLoading}
+            isBookmarkLoading={isBookmarkLoading}
+            isSolutionLoading={isSolutionLoading}
+            questionError={questionError}
+            bookmarkError={bookmarkError}
+            solutionError={solutionError}
+            hasQuestionNextPage={hasQuestionNextPage}
+            hasSolutionNextPage={hasSolutionNextPage}
+            hasBookmarkNextPage={hasBookmarkNextPage}
+            isFetchingQuestionNextPage={isFetchingQuestionNextPage}
+            isFetchingSolutionNextPage={isFetchingSolutionNextPage}
+            isFetchingBookmarkNextPage={isFetchingBookmarkNextPage}
+          />
         </>
       )}
     </div>
