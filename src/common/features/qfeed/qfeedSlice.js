@@ -921,8 +921,9 @@ const qfeedSlice = createSlice({
         const question = newFeed.find(
           (q) => q.id === state.thisQuestion.question.id
         );
+
         if (question) {
-          question.solution = data;
+          question.has_solution = !question.has_solution;
         }
         state.feed.qfeed = newFeed;
       }

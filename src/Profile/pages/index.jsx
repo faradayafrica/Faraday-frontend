@@ -1,17 +1,10 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
+import React, { useEffect, useState } from "react";
 import http from "../../common/services/httpService";
 import { getCurrentUser } from "../../common/services/authService";
-import { Switch, Route, Redirect } from "react-router-dom";
 import "../styles/profile.scss";
 import "../styles/profile.css";
-import {
-  SuccessToast,
-  ErrorToast,
-  PromiseToast,
-} from "../../common/components/CustomToast";
 
 import UserQuestionSolutionPage from "../components/UserQuestionSolutionPage";
-import NotFound from "../../common/components/NotFound";
 import ProfileHome from "../components/ProfileHome";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import ProfileHomeLoader from "../components/ProfileHomeLoader";
@@ -294,26 +287,28 @@ function Profile({ match, history }) {
             // {...props}
           />
 
-          <UserQuestionSolutionPage
-            user={user}
-            currentUser={currentUser}
-            handleFollow={handleFollow}
-            questions={questions}
-            bookmarks={bookmarks}
-            solutions={solutions}
-            isQuestionLoading={isQuestionLoading}
-            isBookmarkLoading={isBookmarkLoading}
-            isSolutionLoading={isSolutionLoading}
-            questionError={questionError}
-            bookmarkError={bookmarkError}
-            solutionError={solutionError}
-            hasQuestionNextPage={hasQuestionNextPage}
-            hasSolutionNextPage={hasSolutionNextPage}
-            hasBookmarkNextPage={hasBookmarkNextPage}
-            isFetchingQuestionNextPage={isFetchingQuestionNextPage}
-            isFetchingSolutionNextPage={isFetchingSolutionNextPage}
-            isFetchingBookmarkNextPage={isFetchingBookmarkNextPage}
-          />
+          <div className="sticky top-0">
+            <UserQuestionSolutionPage
+              user={user}
+              currentUser={currentUser}
+              handleFollow={handleFollow}
+              questions={questions}
+              bookmarks={bookmarks}
+              solutions={solutions}
+              isQuestionLoading={isQuestionLoading}
+              isBookmarkLoading={isBookmarkLoading}
+              isSolutionLoading={isSolutionLoading}
+              questionError={questionError}
+              bookmarkError={bookmarkError}
+              solutionError={solutionError}
+              hasQuestionNextPage={hasQuestionNextPage}
+              hasSolutionNextPage={hasSolutionNextPage}
+              hasBookmarkNextPage={hasBookmarkNextPage}
+              isFetchingQuestionNextPage={isFetchingQuestionNextPage}
+              isFetchingSolutionNextPage={isFetchingSolutionNextPage}
+              isFetchingBookmarkNextPage={isFetchingBookmarkNextPage}
+            />
+          </div>
         </>
       )}
     </div>

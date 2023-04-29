@@ -30,19 +30,30 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
 
   return (
     <>
-      <div className="flex items-center p-3 bg-background">
-        <img
-          src={arrowRight}
-          className="w-8 h-8 p-2 rounded-full mr-2 bg-white shadow-sm hover:bg-background2 cursor-pointer rotate-180"
-          alt="return"
-          onClick={() => {
-            history.goBack();
-          }}
-        />
-        <h1 className="text-2xl sm:text-2xl font-bold m-0 ">
-          Ask your Question
-        </h1>
+      <div className="flex items-start justify-between p-3 bg-background">
+        <div className="flex ">
+          <img
+            src={arrowRight}
+            className="w-8 h-8 p-2 rounded-full mr-2 bg-white shadow-sm hover:bg-background2 cursor-pointer rotate-180"
+            alt="return"
+            onClick={() => {
+              history.goBack();
+            }}
+          />
+          <h1 className="text-2xl sm:text-2xl font-bold m-0 ">
+            Ask your Question
+          </h1>
+        </div>
+
+        <div className="sm:hidden">
+          <PrimaryButton
+            cta="Send"
+            wide={false}
+            action={() => postQuestion(title, content, tags)}
+          />
+        </div>
       </div>
+
       <div className="px-3 pt-4 mt-2 bg-white">
         <label className="block w-full m-0 relative">
           <input
@@ -110,7 +121,7 @@ const PostComponent = ({ LIMIT, postQuestion, history }) => {
         </label>
       </div>
       <div className=" flex justify-between items-end bg-white">
-        <div className="fixed sm:static bottom-0 left-0 p-3 py-5 sm:py-3 w-full z-50 bg-white  sm:w-[12rem]">
+        <div className="hidden sm:block bottom-0 left-0 p-3 py-5 sm:py-3 w-full z-50 bg-white  sm:w-[12rem]">
           <PrimaryButton
             cta="Send Question"
             wide={true}
