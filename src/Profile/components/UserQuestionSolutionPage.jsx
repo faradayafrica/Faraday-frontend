@@ -27,7 +27,7 @@ const UserQuestionSolutionPage = ({
   useEffect(() => {
     const element = document.querySelector(".profile-nav");
     const handleScroll = () => {
-      const isSticky = element.offsetTop <= window.scrollY + 40;
+      const isSticky = element.offsetTop <= window.scrollY + 20;
       if (isSticky) {
         element.classList.add("profile-nav", "profile-nav-sticky");
       } else {
@@ -51,7 +51,7 @@ const UserQuestionSolutionPage = ({
             style={{ zIndex: 1 }}
             className="border-b p-0 w-full pt-2 mt-4 bg-whit profile-nav"
           >
-            <div className="h-14 displace"></div>
+            <div className="h-14 sm:h-0 displace" id="displace"></div>
             {["Questions", "Solutions", "Bookmarks"].map((tab, index) => (
               <Tab
                 key={index}
@@ -75,7 +75,7 @@ const UserQuestionSolutionPage = ({
               >
                 {questions ? (
                   <>
-                    <div className="space-y-1 sm:space-y-0 bg-background sticky top-2">
+                    <div className="space-y-1 sm:space-y-0 bg-background">
                       {questions.map((question) => (
                         <Question
                           question={question}
@@ -89,7 +89,9 @@ const UserQuestionSolutionPage = ({
 
                     {isQuestionLoading || isFetchingQuestionNextPage ? (
                       !questions?.length ? (
-                        <QuestionsLoader />
+                        <div className="relative top-[-20px]">
+                          <QuestionsLoader />
+                        </div>
                       ) : (
                         <QuestionsLoader short={true} />
                       )

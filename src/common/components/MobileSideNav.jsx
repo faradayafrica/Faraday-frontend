@@ -15,10 +15,8 @@ import close from "../assets/nav/close_md.svg";
 //styles import
 import "../styles/mobileSideNav.scss";
 import "../styles/topnav.css";
-import { currentUserThunk } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "./PrimaryButton";
-import { useParams } from "react-router-dom";
 
 function MobileSideNav() {
   const [isQfeed, setQfeed] = useState();
