@@ -2,7 +2,7 @@ import { Tab } from "@headlessui/react";
 import Question from "../../Qfeed/components/Question";
 import Loader from "../../common/components/Loader";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import arrowRight from "../../Qfeed/assets/arrow-right.svg";
+import QuestionsLoader from "../../Qfeed/components/QuestionsLoader";
 import { useEffect } from "react";
 
 const UserQuestionSolutionPage = ({
@@ -12,64 +12,54 @@ const UserQuestionSolutionPage = ({
   bookmarks,
   deleteQuestion,
   updateQuestions,
-  fetchQuestionNextPage,
+  isQuestionLoading,
+  isSolutionLoading,
+  isBookmarkLoading,
   hasQuestionNextPage,
-  fetchBookmarkNextPage,
+  hasSolutionNextPage,
   hasBookmarkNextPage,
+  isFetchingQuestionNextPage,
+  isFetchingSolutionNextPage,
+  isFetchingBookmarkNextPage,
 }) => {
   const history = useHistory();
 
-  console.log(questions)
-
   useEffect(() => {
-    let fetching = false;
-    const handleScroll = async (e) => {
-      const { scrollHeight, scrollTop, clientHeight } =
-        e.target.scrollingElement;
-      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
-        fetching = true;
-        if (hasQuestionNextPage) {
-          await fetchQuestionNextPage();
-        }
-        fetching = false;
+    const element = document.querySelector(".profile-nav");
+    const handleScroll = () => {
+      const isSticky = element.offsetTop <= window.scrollY + 20;
+      if (isSticky) {
+        element.classList.add("profile-nav", "profile-nav-sticky");
+      } else {
+        element.classList.remove("profile-nav-sticky");
       }
     };
-    document.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
+
     return () => {
-      document.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [fetchQuestionNextPage, hasQuestionNextPage]);
+  }, []);
 
   return (
     <>
       {/* We need a nav here */}
-      <div className="w-full profile-wrapper text-faraday-night bg-white relative">
+
+      <div className="w-full profile-wrapper text-faraday-night ">
         <Tab.Group>
-          <Tab.List className="border-b bg-white fixed sm:static z-20 w-full">
-            <div className="">
-              <div className="min-h-[70px] sm:min-h-[20px] w-full"> </div>
-              <div className="flex items-center p-3 sticky top-10">
-                <img
-                  src={arrowRight}
-                  className="w-8 h-8 p-2 rounded-full mr-2 bg-background hover:bg-background2 cursor-pointer rotate-180"
-                  alt="return"
-                  onClick={() => {
-                    history.goBack();
-                  }}
-                />
-                <h1 className="text-2xl sm:text-2xl font-bold m-0 ">
-                  {user?.profile.firstname}'s question feed
-                </h1>
-              </div>
-            </div>
+          <Tab.List
+            style={{ zIndex: 1 }}
+            className="border-b p-0 w-full pt-2 mt-4 bg-whit profile-nav"
+          >
+            <div className="h-14 sm:h-0 displace" id="displace"></div>
             {["Questions", "Solutions", "Bookmarks"].map((tab, index) => (
               <Tab
                 key={index}
                 className={({ selected }) =>
-                  `text-md py-2 px-4 ml-3 my-2 font-bold outline-none rounded-xl  ${
+                  `text-md py-3 px-4 font-bold outline-none border-b-2 ${
                     selected
-                      ? "  bg-brand text-white"
-                      : "border-x-[1px] border-y-[1px] text-night-secondary border-night-secondary hover:bg-background"
+                      ? " border-brand text-brand"
+                      : " text-night-secondary border-transparent hover:border-night-secondary hover:bg-background"
                   }`
                 }
               >
@@ -77,7 +67,7 @@ const UserQuestionSolutionPage = ({
               </Tab>
             ))}
           </Tab.List>
-          <Tab.Panels className="mt-48 sm:mt-2 pt-2">
+          <Tab.Panels>
             <Tab.Panel>
               <div
               // className="profile-question-section h-[600px]"
@@ -85,15 +75,40 @@ const UserQuestionSolutionPage = ({
               >
                 {questions ? (
                   <>
-                    {questions.map((question) => (
-                      <Question
-                        question={question}
-                        questions={questions}
-                        handleUpdatedQuestions={updateQuestions}
-                        onDeleteQuestion={deleteQuestion}
-                        key={question.id}
-                      />
-                    ))}
+                    <div className="space-y-1 sm:space-y-0 bg-background">
+                      {questions.map((question) => (
+                        <Question
+                          question={question}
+                          questions={questions}
+                          handleUpdatedQuestions={updateQuestions}
+                          onDeleteQuestion={deleteQuestion}
+                          key={question.id}
+                        />
+                      ))}
+                    </div>
+
+                    {isQuestionLoading || isFetchingQuestionNextPage ? (
+                      !questions?.length ? (
+                        <div className="relative top-[-20px]">
+                          <QuestionsLoader />
+                        </div>
+                      ) : (
+                        <QuestionsLoader short={true} />
+                      )
+                    ) : (
+                      <>
+                        {questions?.length > 0 && hasQuestionNextPage && (
+                          <div className="bg-white py-2 mt-2">
+                            <div className="p-3 m-3 rounded-lg border bg-background  text-center">
+                              <p className="text-xs sm:text-sm m-0 ">
+                                You're at the bottom of the feed
+                              </p>
+                            </div>
+                            <div className="h-[65px] w-full sm:hidden"></div>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </>
                 ) : (
                   <div className="m-3">
@@ -107,15 +122,38 @@ const UserQuestionSolutionPage = ({
             <Tab.Panel>
               {solutions ? (
                 <>
-                  {solutions.map((item) => (
-                    <Question
-                      question={item.question}
-                      questions={item.questions}
-                      handleUpdatedQuestions={updateQuestions}
-                      onDeleteQuestion={deleteQuestion}
-                      key={item.question.id}
-                    />
-                  ))}
+                  <div className="space-y-1 sm:space-y-0 bg-background">
+                    {solutions?.map((item) => (
+                      <Question
+                        question={item.question}
+                        questions={item.questions}
+                        handleUpdatedQuestions={updateQuestions}
+                        onDeleteQuestion={deleteQuestion}
+                        key={item.question.id}
+                      />
+                    ))}
+                  </div>
+
+                  {isSolutionLoading || isFetchingSolutionNextPage ? (
+                    !solutions?.length ? (
+                      <QuestionsLoader />
+                    ) : (
+                      <QuestionsLoader short={true} />
+                    )
+                  ) : (
+                    <>
+                      {solutions?.length > 0 && !hasSolutionNextPage && (
+                        <div className="bg-white py-2 mt-2">
+                          <div className="p-3 m-3 rounded-lg border bg-background  text-center">
+                            <p className="text-xs sm:text-sm m-0 ">
+                              You're at the bottom of the feed
+                            </p>
+                          </div>
+                          <div className="h-[65px] w-full sm:hidden"></div>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </>
               ) : (
                 ""
@@ -124,15 +162,38 @@ const UserQuestionSolutionPage = ({
             <Tab.Panel>
               {bookmarks.length ? (
                 <>
-                  {bookmarks?.map((bookmark) => (
-                    <Question
-                      question={bookmark}
-                      questions={bookmarks}
-                      handleUpdatedQuestions={updateQuestions}
-                      onDeleteQuestion={deleteQuestion}
-                      key={bookmark.id}
-                    />
-                  ))}
+                  <div className="space-y-1 sm:space-y-0 bg-background">
+                    {bookmarks?.map((bookmark) => (
+                      <Question
+                        question={bookmark}
+                        questions={bookmarks}
+                        handleUpdatedQuestions={updateQuestions}
+                        onDeleteQuestion={deleteQuestion}
+                        key={bookmark.id}
+                      />
+                    ))}
+                  </div>
+
+                  {isBookmarkLoading || isFetchingBookmarkNextPage ? (
+                    !bookmarks?.length ? (
+                      <QuestionsLoader />
+                    ) : (
+                      <QuestionsLoader short={true} />
+                    )
+                  ) : (
+                    <>
+                      {bookmarks?.length > 0 && !hasBookmarkNextPage && (
+                        <div className="bg-white py-2 mt-2">
+                          <div className="p-3 m-3 rounded-lg border bg-background  text-center">
+                            <p className="text-xs sm:text-sm m-0 ">
+                              You're at the bottom of the feed
+                            </p>
+                          </div>
+                          <div className="h-[65px] w-full sm:hidden"></div>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </>
               ) : (
                 ""

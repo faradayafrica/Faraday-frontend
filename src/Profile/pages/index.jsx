@@ -1,17 +1,10 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
+import React, { useEffect, useState } from "react";
 import http from "../../common/services/httpService";
 import { getCurrentUser } from "../../common/services/authService";
-import { Switch, Route, Redirect } from "react-router-dom";
 import "../styles/profile.scss";
 import "../styles/profile.css";
-import {
-  SuccessToast,
-  ErrorToast,
-  PromiseToast,
-} from "../../common/components/CustomToast";
 
 import UserQuestionSolutionPage from "../components/UserQuestionSolutionPage";
-import NotFound from "../../common/components/NotFound";
 import ProfileHome from "../components/ProfileHome";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import ProfileHomeLoader from "../components/ProfileHomeLoader";
@@ -177,6 +170,56 @@ function Profile({ match, history }) {
     //questions/ solutions
   }, [fetchQuestionNextPage, hasQuestionNextPage]);
 
+  useEffect(() => {
+    let fetching = false;
+    const handleScroll = async (e) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasSolutionNextPage) {
+          await fetchSolutionNextPage();
+        } else {
+          fetching = false;
+        }
+      }
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+
+    //We have a bug at the moment, this block of code runs and fetches more
+    // questions when a user reaches the end of the page, whether on the question tab
+    //or solution tab. This can be revisited in the future when users have > 30
+    //questions/ solutions
+  }, [fetchSolutionNextPage, hasSolutionNextPage]);
+
+  useEffect(() => {
+    let fetching = false;
+    const handleScroll = async (e) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasBookmarkNextPage) {
+          await fetchBookmarkNextPage();
+        } else {
+          fetching = false;
+        }
+      }
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+
+    //We have a bug at the moment, this block of code runs and fetches more
+    // questions when a user reaches the end of the page, whether on the question tab
+    //or solution tab. This can be revisited in the future when users have > 30
+    //questions/ solutions
+  }, [fetchBookmarkNextPage, hasBookmarkNextPage]);
+
   const handleFollow = (user) => {
     dispatch(followUserThunk({ username: user?.profile.username }));
   };
@@ -186,6 +229,7 @@ function Profile({ match, history }) {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     // Resets userData to an initial state
     // document.title = `${currentUser?.last_name} ${currentUser?.first_name} Profile`;
     dispatch(resetProfile());
@@ -226,50 +270,44 @@ function Profile({ match, history }) {
       ) : error ? (
         error
       ) : (
-        <Switch>
-          <Route
-            path="/me/:username/qfeed"
-            render={(props) => (
-              <UserQuestionSolutionPage
-                user={user}
-                questions={questions}
-                solutions={solutions}
-                bookmarks={bookmarks}
-                deleteQuestion={deleteQuestion}
-                updateQuestions={updateQuestions}
-                fetchQuestionNextPage={fetchQuestionNextPage}
-                hasQuestionNextPage={hasQuestionNextPage}
-                fetchSolutionNextPage={fetchSolutionNextPage}
-                hasSolutionNextPage={hasSolutionNextPage}
-                fetchBookmarkNextPage={fetchBookmarkNextPage}
-                hasBookmarkNextPage={hasBookmarkNextPage}
-              />
-            )}
+        <>
+          <ProfileHome
+            user={user}
+            currentUser={currentUser}
+            handleFollow={handleFollow}
+            questions={questions}
+            bookmarks={bookmarks}
+            solutions={solutions}
+            isQuestionLoading={isQuestionLoading}
+            isBookmarkLoading={isBookmarkLoading}
+            isSolutionLoading={isSolutionLoading}
+            questionError={questionError}
+            bookmarkError={bookmarkError}
+            solutionError={solutionError}
+            // {...props}
           />
 
-          <Route
-            path="/"
-            render={(props) => (
-              <ProfileHome
-                user={user}
-                currentUser={currentUser}
-                handleFollow={handleFollow}
-                questions={questions}
-                bookmarks={bookmarks}
-                solutions={solutions}
-                isQuestionLoading={isQuestionLoading}
-                isBookmarkLoading={isBookmarkLoading}
-                isSolutionLoading={isSolutionLoading}
-                questionError={questionError}
-                bookmarkError={bookmarkError}
-                solutionError={solutionError}
-                {...props}
-              />
-            )}
+          <UserQuestionSolutionPage
+            user={user}
+            currentUser={currentUser}
+            handleFollow={handleFollow}
+            questions={questions}
+            bookmarks={bookmarks}
+            solutions={solutions}
+            isQuestionLoading={isQuestionLoading}
+            isBookmarkLoading={isBookmarkLoading}
+            isSolutionLoading={isSolutionLoading}
+            questionError={questionError}
+            bookmarkError={bookmarkError}
+            solutionError={solutionError}
+            hasQuestionNextPage={hasQuestionNextPage}
+            hasSolutionNextPage={hasSolutionNextPage}
+            hasBookmarkNextPage={hasBookmarkNextPage}
+            isFetchingQuestionNextPage={isFetchingQuestionNextPage}
+            isFetchingSolutionNextPage={isFetchingSolutionNextPage}
+            isFetchingBookmarkNextPage={isFetchingBookmarkNextPage}
           />
-          <Route path="/not-found" component={NotFound} />
-          <Redirect push to="/not-found" />
-        </Switch>
+        </>
       )}
     </div>
   );
