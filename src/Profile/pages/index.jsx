@@ -16,6 +16,7 @@ import {
   resetProfile,
   updateProfile,
 } from "../../common/features/qfeed/qfeedSlice";
+import SecondaryButton from "../../common/components/SecondaryButton";
 
 function Profile({ match, history }) {
   const currentUser = getCurrentUser();
@@ -268,7 +269,18 @@ function Profile({ match, history }) {
       {loading ? (
         <ProfileHomeLoader />
       ) : error ? (
-        error
+        // error
+        <div className="p-3  rounded-lg border bg-background m-3 text-center">
+          <>
+            <p className="text-xs sm:text-base ">
+              Something went wrong, please try again later
+            </p>
+            <SecondaryButton
+              cta="Retry"
+              action={() => window.location.reload()}
+            />
+          </>
+        </div>
       ) : (
         <>
           <ProfileHome
@@ -306,6 +318,7 @@ function Profile({ match, history }) {
             isFetchingQuestionNextPage={isFetchingQuestionNextPage}
             isFetchingSolutionNextPage={isFetchingSolutionNextPage}
             isFetchingBookmarkNextPage={isFetchingBookmarkNextPage}
+            username={match.params.username}
           />
         </>
       )}

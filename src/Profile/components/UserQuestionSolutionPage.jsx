@@ -4,6 +4,8 @@ import Loader from "../../common/components/Loader";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import QuestionsLoader from "../../Qfeed/components/QuestionsLoader";
 import { useEffect } from "react";
+import Empty from "../../common/components/Empty";
+import { getCurrentUser } from "../../common/services/authService";
 
 const UserQuestionSolutionPage = ({
   user,
@@ -21,8 +23,11 @@ const UserQuestionSolutionPage = ({
   isFetchingQuestionNextPage,
   isFetchingSolutionNextPage,
   isFetchingBookmarkNextPage,
+  username,
 }) => {
   const history = useHistory();
+
+  const currentUser = getCurrentUser();
 
   useEffect(() => {
     const element = document.querySelector(".profile-nav");
@@ -41,6 +46,11 @@ const UserQuestionSolutionPage = ({
     };
   }, []);
 
+  const tab =
+    username === currentUser?.username
+      ? ["Questions", "Solutions", "Bookmarks"]
+      : ["Questions", "Solutions"];
+
   return (
     <>
       {/* We need a nav here */}
@@ -52,7 +62,7 @@ const UserQuestionSolutionPage = ({
             className="border-b p-0 w-full pt-2 mt-4 bg-whit profile-nav"
           >
             <div className="h-14 sm:h-0 displace" id="displace"></div>
-            {["Questions", "Solutions", "Bookmarks"].map((tab, index) => (
+            {tab.map((tab, index) => (
               <Tab
                 key={index}
                 className={({ selected }) =>
@@ -86,6 +96,12 @@ const UserQuestionSolutionPage = ({
                         />
                       ))}
                     </div>
+
+                    {questions.length === 0 && !isQuestionLoading ? (
+                      <Empty msg="User has no question" />
+                    ) : (
+                      ""
+                    )}
 
                     {isQuestionLoading || isFetchingQuestionNextPage ? (
                       !questions?.length ? (
@@ -133,6 +149,12 @@ const UserQuestionSolutionPage = ({
                       />
                     ))}
                   </div>
+
+                  {solutions.length === 0 && !isSolutionLoading ? (
+                    <Empty msg="User has no solution" />
+                  ) : (
+                    ""
+                  )}
 
                   {isSolutionLoading || isFetchingSolutionNextPage ? (
                     !solutions?.length ? (
@@ -196,7 +218,7 @@ const UserQuestionSolutionPage = ({
                   )}
                 </>
               ) : (
-                ""
+                <Empty msg="You haven't bookmarked any question yet" />
               )}
             </Tab.Panel>
           </Tab.Panels>
