@@ -4,11 +4,10 @@ import { getCurrentUser } from "../../common/services/authService";
 import { useDispatch } from "react-redux";
 import { createQuestionThunk } from "../../common/features/qfeed/qfeedSlice";
 
+export const LIMIT = { title: 150, content: 1050 };
 const PostPage = (props) => {
   // Redux here
   const dispatch = useDispatch();
-
-  const LIMIT = { title: 150, content: 1050 };
 
   const currentUser = getCurrentUser();
 

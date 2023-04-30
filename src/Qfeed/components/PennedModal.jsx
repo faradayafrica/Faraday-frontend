@@ -6,6 +6,9 @@ import TagsInput from "./tags/TagInput";
 import { useDispatch } from "react-redux";
 import { ErrorToast } from "../../common/components/CustomToast";
 import { penQuestionThunk } from "../../common/features/qfeed/qfeedSlice";
+import PrimaryButton from "../../common/components/PrimaryButton";
+import { LIMIT } from "./PostPage";
+import { PinnedQuestion } from "./QuestionComponent";
 
 export default function PennedModal({
   question,
@@ -59,94 +62,69 @@ export default function PennedModal({
     }
   };
 
+  let titleClasses =
+    "ask-title bg-background rounded-[8px] to-white mt-2 px-3 py-4 placeholder-[rgba(0,0,0,0.5)] border-background border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-sm sm:text-base font-semibold ";
+
+  titleClasses +=
+    comment.length > LIMIT.title
+      ? "focus:bg-gradient-to-t from-danger-highlight to-white focus:border-danger border-danger "
+      : "";
+
   return (
     <>
       <Transition appear show={isPennedOpen} as={Fragment}>
-        <Dialog as='div' className='relative z-10' onClose={closeModal}>
+        <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
-            enter='ease-out duration-300'
-            enterFrom='opacity-0'
-            enterTo='opacity-100'
-            leave='ease-in duration-200'
-            leaveFrom='opacity-100'
-            leaveTo='opacity-0'
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
           >
-            <div className='fixed inset-0 bg-[#00000022] bg-opacity-25' />
+            <div className="fixed inset-0 bg-[#00000022] bg-opacity-25" />
           </Transition.Child>
 
-          <div className='fixed inset-0 overflow-y-auto'>
-            <div className='flex min-h-full items-center justify-center p-4 text-center'>
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child
                 as={Fragment}
-                enter='ease-out duration-300'
-                enterFrom='opacity-0 scale-95'
-                enterTo='opacity-100 scale-100'
-                leave='ease-in duration-200'
-                leaveFrom='opacity-100 scale-100'
-                leaveTo='opacity-0 scale-95'
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
-                  <div className='flex justify-between items-center'>
-                    <button aria-label='close modal' onClick={closeModal}>
-                      <CloseIcon stroke='#000' />
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <div className="flex justify-between items-center">
+                    <button aria-label="close modal" onClick={closeModal}>
+                      <CloseIcon stroke="#000" />
                     </button>
 
-                    <button
-                      className='bg-brand px-4 py-[7px] sm:py-[9px] rounded-lg font-semibold text-white'
-                      onClick={onSubmit}
-                    >
-                      Pen
-                    </button>
+                    <PrimaryButton cta="Pen" action={onSubmit} />
                   </div>
                   <textarea
                     value={comment}
-                    className='w-full mt-2 p-3 text-sm placeholder:font-semibold placeholder:text-lg'
-                    placeholder='Add Comment'
+                    className={titleClasses}
+                    placeholder="Add Comment"
                     rows={2}
                     onChange={(e) => setComment(e.target.value)}
                   />
 
-                  <div className='mt-1 border rounded-lg p-3'>
-                    <p className='flex m-0 text-night-secondary text-xs sm:text-sm flex-wrap'>
-                      <span className=' font-semibold text-faraday-night shorten'>
-                        {question?.user.firstname} {question?.user.lastname}
-                      </span>
-                      <span className='mr-1'>
-                        {question?.user.account_verified && (
-                          <img
-                            src={verify}
-                            className='h-[14px] w-[14px] sm:h-5 sm:w-5 ml-1'
-                            alt=''
-                          />
-                        )}
-                      </span>
-                      <span className='mr-1 '>@{question?.user.username} </span>{" "}
-                    </p>
-
-                    <h3 className={`${"text-base font-semibold mt-1"}`}>
-                      {question?.title}
-                    </h3>
-                    {question && question?.content && (
-                      <div
-                        className='text-sm text-faraday-night render truncate '
-                        style={{ marginTop: 0 }}
-                        dangerouslySetInnerHTML={{ __html: question.content }}
-                      />
-                    )}
-                  </div>
-
                   {/* Tags */}
-                  <div className='mt-3'>
+
+                  <div className="mt-3 mb-3">
                     <TagsInput
                       selectedTags={selectedTags}
                       tags={tags}
                       ref={tagRef}
-                      // editorRef={editorRef}
-                      // postQuestion={() => postQuestion(title, content, tags)}
-                      from='penned'
+                      // from="penned"
                     />
                   </div>
+
+                  <PinnedQuestion question={question} />
                 </Dialog.Panel>
               </Transition.Child>
             </div>
