@@ -231,7 +231,7 @@ function QuestionComponent({
                           </span>{" "}
                           {discussionPage === false && (
                             <span className="shorten-time">
-                              {moment(question?.created, "YYYYMMDD").fromNow()}
+                              {moment(question?.created).fromNow()}
                             </span>
                           )}
                         </div>
@@ -468,7 +468,7 @@ export function PinnedQuestion({ question }) {
           )}
         </span>
         <span className="mr-2 ">@{question?.user.username} </span>{" "}
-        <span>{moment(question?.created, "YYYYMMDD").fromNow()}</span>
+        <span>{moment(question?.created).fromNow()}</span>
       </p>
       <Link
         to={`/qfeed/${question?.id}`}
