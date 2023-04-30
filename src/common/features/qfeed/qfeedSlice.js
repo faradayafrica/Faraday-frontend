@@ -778,9 +778,13 @@ const qfeedSlice = createSlice({
       state.status = QfeedStates.LOADING;
     });
     builder.addCase(echoQuestionThunk.fulfilled, (state, action) => {
-      const { data, message: error } = action.payload;
+      const { data, message } = action.payload;
+
+      console.log(data, "Echo");
 
       if (data) {
+        toast.dismiss();
+        SuccessToast(message);
         const feed = state.feed.qfeed;
         for (let i = 0; i < feed.length; i++) {
           if (feed[i].id === data.original.id) {
