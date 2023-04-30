@@ -113,8 +113,9 @@ export default function PennedModal({
                     onChange={(e) => setComment(e.target.value)}
                   />
 
-                  {/* Tags */}
+                  <PinnedQuestion question={question} />
 
+                  {/* Tags */}
                   <div className="mt-3 mb-3">
                     <TagsInput
                       selectedTags={selectedTags}
@@ -123,8 +124,6 @@ export default function PennedModal({
                       // from="penned"
                     />
                   </div>
-
-                  <PinnedQuestion question={question} />
                 </Dialog.Panel>
               </Transition.Child>
             </div>
