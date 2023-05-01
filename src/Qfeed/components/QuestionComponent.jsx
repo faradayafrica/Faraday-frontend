@@ -231,7 +231,7 @@ function QuestionComponent({
                           </span>{" "}
                           {discussionPage === false && (
                             <span className="shorten-time">
-                              {moment(question?.created, "YYYYMMDD").fromNow()}
+                              {moment(question?.created).fromNow()}
                             </span>
                           )}
                         </div>
@@ -316,7 +316,7 @@ function QuestionComponent({
 
               {type === "pen" ? (
                 <>
-                  <PinnedQuestion question={question} />
+                  <PinnedQuestion question={question.original} />
                 </>
               ) : null}
 
@@ -454,7 +454,7 @@ function QuestionComponent({
 
 export default QuestionComponent;
 
-function PinnedQuestion({ question }) {
+export function PinnedQuestion({ question }) {
   return (
     <div
       style={{ borderLeft: "3px solid #BFC9D2" }}
@@ -468,20 +468,25 @@ function PinnedQuestion({ question }) {
           )}
         </span>
         <span className="mr-2 ">@{question?.user.username} </span>{" "}
-        <span>{moment(question?.created, "YYYYMMDD").fromNow()}</span>
+        <span>{moment(question?.created).fromNow()}</span>
       </p>
       <Link
-        to={`/qfeed/${question?.original?.id}`}
+        to={`/qfeed/${question?.id}`}
         style={{ textDecoration: "none" }}
         className={`text-night-secondary hover:text-faraday-night `}
       >
         <h3 className="text-base font-semibold m-0 mb-1 md:text-lg">
-          {question?.original?.title}
+          {question?.title}
         </h3>
         {/* Question body --optional */}
-        <p className="text-sm sm:text-base m-0 mb-2">
-          {question?.original?.content}
-        </p>
+
+        {question?.original && question?.content && (
+          <div
+            className="mb-4 text-sm text-faraday-night render truncate-render"
+            style={{ marginTop: 0 }}
+            dangerouslySetInnerHTML={{ __html: question?.content }}
+          />
+        )}
       </Link>
     </div>
   );
