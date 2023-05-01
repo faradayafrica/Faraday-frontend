@@ -63,7 +63,7 @@ export default function PennedModal({
   };
 
   let titleClasses =
-    "ask-title bg-background rounded-[8px] to-white mt-2 px-3 py-4 placeholder-[rgba(0,0,0,0.5)] border-background border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-sm sm:text-base font-semibold ";
+    "ask-title bg-background rounded-[8px] to-white mt-2 px-3 py-4 placeholder-[rgba(0,0,0,0.5)] border-secondary-text border-b-[1px] focus:outline-none focus:border-faraday-night focus:bg-bckground block w-full text-sm sm:text-base font-semibold ";
 
   titleClasses +=
     comment.length > LIMIT.title

@@ -69,12 +69,11 @@ class SignUpPage extends Form {
           progress.classList.add("progress-25");
         })
         .catch((err) => {
-          console.warn(err.response.data.message);
           this.setState({
             ...this.state,
             errorMessage: err.response.data.message,
           });
-          ErrorToast(`Sorry! ${err.response.data.message}`);
+          ErrorToast(`Sorry! ${err.response.data.message.detail[0]}`);
         })
         .finally(() => {
           spinner.classList.add("vanish");
