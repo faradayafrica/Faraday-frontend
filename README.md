@@ -7,7 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/github/languages/code-size/faradayafrica/Faraday-frontend" alt="GitHub code size in bytes">
   <img src="https://img.shields.io/github/commit-activity/w/faradayafrica/Faraday-frontend" alt="GitHub commit activity">
-  <a href="https://github.com/open-sauced/browser-extensions/issues">
+  <a href="https://github.com/faradayafrica/Faraday-frontend/issues">
     <img src="https://img.shields.io/github/issues/faradayafrica/Faraday-frontend" alt="GitHub issues">
   </a>
   <a href="https:faraday.africa">
