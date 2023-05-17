@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/github/issues/faradayafrica/Faraday-frontend" alt="GitHub issues">
   </a>
   
-  <a href="https:faraday.africa">
+  <a href="https://t.me/+Ekm9DS5Ucb5mMmQ0">
     <img src="https://img.shields.io/discord/714698561081704529.svg?label=&logo=telegram&logoColor=ffffff&color=229ED9&labelColor=229ED9" alt="Telegram">
   </a>
 
@@ -56,3 +56,6 @@ yarn start
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the app start on your computer.
 
 You can start editing by modifying the `JS files`. The page on the browser auto-updates as you save the file.
+
+## Community
+Got Questions? Join the conversation in our [Telegram](https://t.me/+Ekm9DS5Ucb5mMmQ0).
