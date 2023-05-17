@@ -22,9 +22,11 @@
   Say hello to campus-wide engagement with Faraday. Explore the Faraday app. Discover students to engage, learn and connect with at https://app.faraday.africa. 
  
  ![screenshot of Faraday website](https://github.com/faradayafrica/Faraday-frontend/assets/90288585/78449ebc-9f9e-46c8-b85d-645c8c354e47)
+ <br><br><br>
 
  ## 🏞️ Project Figma
  The figma design for this project can be found [here](https://www.figma.com/file/GmdqdKpgeXsuNo7WoF1xNq/User-Interface?type=design&t=KMqiSeuVA3qv1MH0-1).
+ <br><br>
  
  ## 🏠 File Architecture
 This is a React.js project bootstrapped with create-react-app.
@@ -36,7 +38,7 @@ In this project, the file architecture used is known as `Architecture by Feature
 Other helpful resources:
 - [Atomic Design by Brad Frost](https://bradfrost.com/blog/post/atomic-web-design/)
 
-  
+  <br><br>
  ## 🖥️ Local development
  First, install the dependencies:
 ```bash
@@ -56,6 +58,6 @@ yarn start
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the app start on your computer.
 
 You can start editing by modifying the `JS files`. The page on the browser auto-updates as you save the file.
-
+<br><br>
 ## Community
 Got Questions? Join the conversation in our [Telegram](https://t.me/+Ekm9DS5Ucb5mMmQ0).
