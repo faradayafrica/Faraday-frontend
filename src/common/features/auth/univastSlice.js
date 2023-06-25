@@ -10,15 +10,28 @@ export const UnivastStates = {
 
 const initialState = {
   status: UnivastStates.BASE,
+  allCountries: [],
   allSchools: [],
   error: "",
 };
 
-export const fetchSchoolThunk = createAsyncThunk(
-  "univast/school",
+export const fetchCountryThunk = createAsyncThunk(
+  "univast/country",
   async (_, { rejectWithValue }) => {
     try {
-      const data = await UnivastService.getSchools();
+      const response = await UnivastService.getCountries();
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
+export const fetchSchoolThunk = createAsyncThunk(
+  "univast/school",
+  async ({ countryid }, { rejectWithValue }) => {
+    try {
+      const data = await UnivastService.getSchools(countryid);
       return data;
     } catch (error) {
       return rejectWithValue(error.toString());
@@ -40,8 +53,31 @@ const univastSlice = createSlice({
       state.error = "";
     },
   },
-
   extraReducers: (builder) => {
+    // ##############################
+    // Extra Reducers for Countries
+    // ##############################
+    builder.addCase(fetchCountryThunk.pending, (state) => {
+      state.status = UnivastStates.LOADING;
+    });
+    builder.addCase(fetchCountryThunk.fulfilled, (state, action) => {
+      const { data, message: error } = action.payload;
+
+      if (data) {
+        state.allCountries = data;
+        state.status = UnivastStates.SUCCESSFUL;
+      } else {
+        state.error = error;
+      }
+    });
+    builder.addCase(fetchCountryThunk.rejected, (state) => {
+      state.status = UnivastStates.FAILED;
+    });
+
+    // ##############################
+    // Extra Reducers for Schools
+    // ##############################
+
     builder.addCase(fetchSchoolThunk.pending, (state) => {
       state.status = UnivastStates.LOADING;
     });
