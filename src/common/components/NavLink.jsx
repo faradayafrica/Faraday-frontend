@@ -10,13 +10,11 @@ class NavLink extends Component {
       <Link
         //url comes from the profile link as props
         to={url ? url : newUrl}
-        className="align-item-center"
+        className={this.renderNavlink(focus, green)}
+        onClick={() => this.props.handleLink(item)}
         style={{ textDecoration: "none" }}
       >
-        <button
-          className={this.renderNavlink(focus, green)}
-          onClick={() => this.props.handleLink(item)}
-        >
+        <button className="navlink-wrapper">
           <div className="nav-tooltip">{item}</div>
           <div className={this.renderNavIcon(focus)}>{icon}</div>
           <p className="mx-2 sidenav__item"> {item}</p>
@@ -39,9 +37,9 @@ class NavLink extends Component {
 
   renderNavIcon = (focus) => {
     if (focus === true) {
-      return "icon active-icon";
+      return "icon h-7 w-7 active-icon";
     } else {
-      return "icon";
+      return "icon h-7 w-7 ";
     }
   };
 }

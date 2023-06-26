@@ -190,7 +190,7 @@ function SideNav({ history }) {
   });
 
   return (
-    <div className="bg-whit">
+    <div className="bg-white mr-1">
       {visible ? (
         <>
           {online && (

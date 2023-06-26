@@ -86,7 +86,7 @@ const App = () => {
     <BrowserRouter>
       <UserProvider>
         <Toaster position="top-center" reverseOrder={false} />
-        <div className="text-faraday-night max-w-[1024px] p-0 mx-auto flex bg-white">
+        <div className="text-faraday-night max-w-[1024px] p-0 mx-auto flex bg-[#F8F9FA]">
           <MobileSideNav />
           <SideNav />
           <Switch>

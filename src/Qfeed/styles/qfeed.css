@@ -9,8 +9,8 @@
 }
 
 .route-wrapper {
-  border-right: 1px theme("colors.outline") solid;
-  border-left: 1px theme("colors.outline") solid;
+  /* border-right: 1px theme("colors.outline") solid; */
+  /* border-left: 1px theme("colors.outline") solid; */
   background-color: #f8f9fa;
 }
 
