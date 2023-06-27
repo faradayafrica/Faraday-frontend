@@ -1,4 +1,48 @@
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import close from "../../Qfeed/assets/close-sm.svg";
+
+export async function NotificationToast(message, link = "/") {
+  toast(
+    (t) => (
+      <Link
+        to={link}
+        className="bg-[#FFFAEE] relative"
+        onClick={() => toast.dismiss(t.id)}
+      >
+        <span className="p-2 pl-0 flex text-sm item-center">
+          <p className="mr-3">{message}</p>
+          <button className="absolute right-[-15px] top-[6px]">
+            <img src={close} />
+          </button>
+        </span>
+      </Link>
+    ),
+    {
+      style: {
+        border: "1px solid #76787C",
+        padding: "16px",
+        color: "#76787C",
+        backgroundColor: "#FFFAEE",
+        fontSize: "14px",
+        paddingTop: "8px",
+        paddingBottom: "8px",
+      },
+      iconTheme: {
+        primary: "#05b851",
+        secondary: "#FFFAEE",
+      },
+    }
+    // {
+    //   icon: "🔔",
+    //   style: {
+    //     borderRadius: "8px",
+    //     background: "#FFFAEE",
+    //     color: "#000",
+    //   },
+    // }
+  );
+}
 
 export async function SuccessToast(message) {
   toast.success(message, {

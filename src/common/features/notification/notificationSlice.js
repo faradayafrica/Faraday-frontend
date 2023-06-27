@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-hot-toast";
+import { SuccessToast, NotificationToast } from "../../components/CustomToast";
 
 export const NotificationStates = {
   BASE: "base",
@@ -21,21 +23,17 @@ const notificationSlice = createSlice({
       const { value } = action.payload;
       state.notificationFeed = value;
     },
+
+    addNewNotification: (state, action) => {
+      const { value } = action.payload;
+      // console.log("VALUE", value);
+      if (value.type !== "connection_established") {
+        NotificationToast(value.message);
+      }
+      state.notificationFeed.unshift(value);
+    },
   },
 });
 
 export default notificationSlice.reducer;
-export const {
-  updateFeed,
-  updateQuestion,
-  onChangeComment,
-  updateProfile,
-  resetProfile,
-  hideSecondReply,
-  hideThirdReply,
-  optimisticQuestionVote,
-  optimisticCommentVote,
-  optimisticReplyVote,
-  resetStatus,
-  resetToast,
-} = notificationSlice.actions;
+export const { updateFeed, addNewNotification } = notificationSlice.actions;

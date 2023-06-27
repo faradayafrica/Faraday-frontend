@@ -170,7 +170,7 @@ const DiscussionPage = ({ match, history }) => {
 
     isSuccess &&
       data?.pages?.map((page) =>
-        page?.data?.results.map((item) => newComments.push(item))
+        page?.data?.results?.map((item) => newComments.push(item))
       );
     dispatch(updateQuestion({ name: "comments", value: newComments }));
   }, [data]);

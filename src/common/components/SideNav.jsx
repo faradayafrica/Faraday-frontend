@@ -190,7 +190,7 @@ function SideNav({ history }) {
   });
 
   return (
-    <div className="bg-white mr-1">
+    <div className="bg-white mr-1 border-r border-r-[#ECECF0]">
       {visible ? (
         <>
           {online && (
@@ -209,7 +209,7 @@ function SideNav({ history }) {
       )}
       <div
         style={{ minWidth: "220px" }}
-        className=" px-2 bg-whte sidenav-container active h-full"
+        className=" px-2 bg-whte sidenav-container active h-full "
       >
         <div className="sticky top-6 mt-6 mx-3 d-flex flex-column justify-content-between h-100">
           <div>
@@ -227,7 +227,6 @@ function SideNav({ history }) {
             {/* Ask question btn */}
             {currentUser.username ? (
               <Link to="/qfeed/post" className=" ">
-                {" "}
                 <PrimaryButton cta="Ask a question" />
               </Link>
             ) : (

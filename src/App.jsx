@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from "./common/components/ProtectedRoute.jsx";
 import Qfeed from "./Qfeed/pages";
@@ -14,10 +14,24 @@ import { UserProvider } from "./Authentication/context/userContext";
 import SideNav from "./common/components/SideNav.jsx";
 import MissingQuestion from "./Qfeed/components/MissingQuestion.jsx";
 import { root_route } from "./rootRoutes.js";
+import { getCurrentUser } from "./common/services/authService.js";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewNotification } from "./common/features/notification/notificationSlice.js";
+import { getJwt } from "./common/services/authService.js";
 
 const App = () => {
   const [clearCache, setClearCache] = useState(false);
+  const [alertWS, setAlertWS] = useState();
   // const location = useLocation();
+
+  const socketRef = useRef(null);
+  const user = getCurrentUser();
+
+  const dispatch = useDispatch();
+  const { notificationFeed: notifications } = useSelector(
+    (state) => state.notification
+  );
+  console.log(notifications, "**********");
 
   useEffect(() => {
     if (window.location.pathname === "/login" && clearCache) {
@@ -25,6 +39,34 @@ const App = () => {
       setClearCache(false);
     }
   }, []);
+
+  let interval = "1h";
+
+  useEffect(() => {
+    // const WSS_NOTIFICATION_URL = `wss://stream.binance.com:9443/ws/btcusdt@kline_${interval}`;
+    const WSS_NOTIFICATION_URL = `wss://faradayapi-staging.azurewebsites.net/ws/notifications/${
+      user?.username
+    }/?token=${getJwt()}`;
+    socketRef.current = new WebSocket(WSS_NOTIFICATION_URL);
+
+    // Receive data from the server
+    socketRef.current.onmessage = (event) => {
+      if (user?.username) {
+        dispatch(addNewNotification({ value: JSON.parse(event.data) }));
+      }
+    };
+
+    return () => {
+      socketRef.current.close();
+    };
+  }, []);
+
+  // Close Realtime Notification connection when user is logged out
+  useEffect(() => {
+    if (!user.username) {
+      socketRef.current.close();
+    }
+  }, [user]);
 
   const handleClearCache = () => {
     setClearCache(true);
@@ -85,7 +127,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <UserProvider>
-        <Toaster position="top-center" reverseOrder={false} />
+        <Toaster position="top-center" reverseOrder={true} />
         <div className="text-faraday-night max-w-[1024px] p-0 mx-auto flex bg-[#F8F9FA]">
           <MobileSideNav />
           <SideNav />
