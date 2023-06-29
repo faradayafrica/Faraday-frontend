@@ -17,6 +17,7 @@ import "../styles/mobileSideNav.scss";
 import "../styles/topnav.css";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "./PrimaryButton";
+import AlertBadge from "./AlertBadge";
 
 function MobileSideNav() {
   const [isQfeed, setQfeed] = useState();
@@ -27,6 +28,7 @@ function MobileSideNav() {
   const location = useLocation();
 
   const { data: user } = useSelector((state) => state.user);
+  const { unreadCount } = useSelector((state) => state.notification);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -159,6 +161,7 @@ function MobileSideNav() {
             >
               <div className={renderBottomLink(isNotification)}>
                 <img src={bell} alt="notification" />
+                <AlertBadge />
               </div>
             </Link>
           </div>
@@ -235,8 +238,11 @@ function MobileSideNav() {
                 </Link>
 
                 <Link to="/notification" style={{ textDecoration: "none" }}>
-                  <div className="mobile-link bg-white flex items-center  mx-3 px-3 py-3">
+                  <div className="relative mobile-link bg-white flex items-center  mx-3 px-3 py-3">
                     <img src={bell} alt="notification" />
+                    <div className="absolute left-7 bottom-3">
+                      <AlertBadge />
+                    </div>
                     <p className="m-0 ml-2 text-lg font-normal text-faraday-night">
                       Notification
                     </p>

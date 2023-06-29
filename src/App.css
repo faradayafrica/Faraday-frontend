@@ -451,6 +451,18 @@ SIDENAV STYLING
   padding: 5px;
 }
 
+.sidenav-container .navlink-wrapper {
+  font-size: 20px;
+  display: block;
+  border-radius: 8px;
+  width: initial;
+
+  display: flex;
+  align-items: flex-end;
+  justify-items: center;
+  color: #343a40;
+}
+
 .sidenav-container .navlink {
   font-size: 20px;
   padding: 7px;
@@ -458,11 +470,6 @@ SIDENAV STYLING
   border-radius: 8px;
   margin-bottom: 10px;
   width: initial;
-
-  display: flex;
-  align-items: flex-end;
-  justify-items: center;
-  color: #343a40;
 }
 
 .sidenav-container .navlink p {

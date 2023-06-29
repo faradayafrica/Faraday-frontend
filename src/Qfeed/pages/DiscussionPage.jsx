@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import CopyLink from "./CopyLink";
+import CopyLink from "../components/CopyLink";
 import SecondaryButton from "../../common/components/SecondaryButton";
-import Comments from "./commentComponents/Comments";
+import Comments from "../components/commentComponents/Comments";
 
 import http from "../../common/services/httpService";
 import arrowRight from "../assets/arrow-right.svg";
 
-import QuestionsLoader from "./QuestionsLoader";
+import QuestionsLoader from "../components/QuestionsLoader";
 import { useSelector, useDispatch } from "react-redux";
 import {
   deleteQuestionThunk,
@@ -18,7 +18,7 @@ import {
 } from "../../common/features/qfeed/qfeedSlice";
 import { useLayoutEffect } from "react";
 import QService from "../../common/features/qfeed/QfeedServices";
-import DiscussionQuestion from "./DiscusstionQuestion";
+import DiscussionQuestion from "../components/DiscusstionQuestion";
 
 const DiscussionPage = ({ match, history }) => {
   const [url, setUrl] = useState(match.params.id);
@@ -170,7 +170,7 @@ const DiscussionPage = ({ match, history }) => {
 
     isSuccess &&
       data?.pages?.map((page) =>
-        page?.data?.results.map((item) => newComments.push(item))
+        page?.data?.results?.map((item) => newComments.push(item))
       );
     dispatch(updateQuestion({ name: "comments", value: newComments }));
   }, [data]);

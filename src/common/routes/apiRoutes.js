@@ -2,7 +2,8 @@ const apiBase = process.env.REACT_APP_API_URL;
 
 const apiRoutes = {
   // Authentification
-  getSchool: "https://univast.faraday.africa/academia/schools/NG",
+  getCountries: "https://univast.faraday.africa/academia/countries",
+  getSchool: "https://univast.faraday.africa/academia/schools/",
 
   // Qfeed
   fetchQuestions: apiBase + "/qfeed/que/fetch/",

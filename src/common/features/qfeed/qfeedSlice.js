@@ -780,7 +780,7 @@ const qfeedSlice = createSlice({
     builder.addCase(echoQuestionThunk.fulfilled, (state, action) => {
       const { data, message } = action.payload;
 
-      console.log(data, "Echo");
+      // console.log(data, "Echo");
 
       if (data) {
         toast.dismiss();

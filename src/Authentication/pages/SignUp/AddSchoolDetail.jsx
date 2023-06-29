@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import Joi from "joi-browser";
 import Myspinner from "../../../common/components/Spinner";
 import Form from "../../components/Form";
@@ -16,7 +16,10 @@ import { useForm } from "react-hook-form";
 import PrimaryButton from "../../../common/components/PrimaryButton";
 import { Listbox } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSchoolThunk } from "../../../common/features/auth/univastSlice";
+import {
+  fetchCountryThunk,
+  fetchSchoolThunk,
+} from "../../../common/features/auth/univastSlice";
 import { UnivastStates } from "../../../common/features/auth/univastSlice";
 
 const filterData = (query, lists) =>
@@ -30,31 +33,38 @@ const filterData = (query, lists) =>
       );
 
 const AddSchoolDetail = () => {
-  const [schoolCode, setSchoolCode] = useState(null);
-  const [facultySel, setFaultySel] = useState(null);
+  const [countryid, setCountryid] = useState(null);
+  const [schoolid, setSchoolid] = useState(null);
+  const [facultyid, setFaultyid] = useState(null);
+  const [departmentid, setDepartmentid] = useState(null);
+
+  const [schoolLogo, setSchoolLogo] = useState("");
+
+  const [countryValue, setCountryValue] = useState("");
   const [schoolValue, setSchoolValue] = useState("");
   const [facultyValue, setFacultyValue] = useState("");
   const [departmentValue, setDepartmentValue] = useState("");
   const [levelValue, setLevelValue] = useState("");
   const [redirect, setRedirect] = useState(false);
 
+  const [countryQuery, setCountryQuery] = useState("");
   const [schoolQuery, setSchoolQuery] = useState("");
   const [facultyQuery, setFacultyQuery] = useState("");
   const [departmentQuery, setDepartmentQuery] = useState("");
   const [levelQuery, setLevelQuery] = useState("");
 
-  const [schoolsData, setSchoolsData] = useState([]);
+  const [countriesData, setCountriesData] = useState([]);
 
   const dispatch = useDispatch();
-  const { allSchools, status } = useSelector((state) => state.univast);
+  const { allCountries, status } = useSelector((state) => state.univast);
 
   useLayoutEffect(() => {
-    if (schoolsData.length === 0) {
-      setSchoolsData([...allSchools]);
-      dispatch(fetchSchoolThunk());
+    if (countriesData.length === 0) {
+      dispatch(fetchCountryThunk());
+      setCountriesData([...allCountries]);
     } else {
     }
-  }, [allSchools]);
+  }, [allCountries]);
 
   const {
     register,
@@ -65,43 +75,64 @@ const AddSchoolDetail = () => {
   } = useForm();
 
   const getSchoolInfo = (data, label, event) => {
-    if (label === "School") {
-      setSchoolCode(data.code);
+    if (label === "Country") {
+      setCountryid(data.id);
+      setSchoolQuery("");
+      setSchoolValue("");
+      setSchoolid("");
+
       setFacultyQuery("");
-      setFaultySel("");
+      setFaultyid("");
       setFacultyValue("");
 
       setDepartmentQuery("");
       setDepartmentValue("");
+
+      setLevelValue("");
     }
-    if (label === "Faculty") {
-      setFaultySel(data.name);
+    if (label === "School") {
+      setSchoolid(data.id);
+      setSchoolLogo(data.logo);
+      setFacultyQuery("");
+      setFaultyid("");
+      setFacultyValue("");
 
       setDepartmentQuery("");
       setDepartmentValue("");
+
+      setLevelValue("");
+    }
+    if (label === "Faculty") {
+      setFaultyid(data.id);
+
+      setDepartmentQuery("");
+      setDepartmentValue("");
+
+      setLevelValue("");
+    }
+
+    if (label === "Department") {
+      setDepartmentid(data.id);
     }
 
     // TODO: Keyboard navigate doesn't work, and this is suppose to be for it
     if (event) {
       if (event.key === "Enter" && label === "School") {
-        setSchoolCode(data.code);
+        setSchoolid(data.code);
       }
       if (event.key === "Enter" && label === "Faculty") {
-        setFaultySel(data.name);
+        setFaultyid(data.name);
       }
     }
   };
 
-  const {
-    data: facultiesData,
-    isLoading: facultyLoading,
-    isPaused,
-    isRefetching,
-    isFetching,
-  } = useQuery({
-    queryKey: ["facultiesData", schoolCode],
+  // ######################
+  // Get the Schools Data
+  // #######################
+  const { data: schoolsData, isLoading: schoolLoading } = useQuery({
+    queryKey: ["schoolsData", countryid],
     queryFn: () =>
-      fetch(`https://univast.faraday.africa/academia/faculties/${schoolCode}`, {
+      fetch(`https://univast.faraday.africa/academia/schools/${countryid}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Api-Key ${process.env.REACT_APP_UNIVAST_KEY}`,
@@ -109,15 +140,36 @@ const AddSchoolDetail = () => {
       })
         .then((res) => res.json())
         .then((data) => data.data),
-    enabled: !!schoolCode,
+    enabled: !!countryid,
     refetchOnWindowFocus: false,
   });
 
+  // ######################
+  // Get the Faculty Data
+  // #######################
+  const { data: facultiesData, isLoading: facultyLoading } = useQuery({
+    queryKey: ["facultiesData", schoolid],
+    queryFn: () =>
+      fetch(`https://univast.faraday.africa/academia/faculties/${schoolid}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Api-Key ${process.env.REACT_APP_UNIVAST_KEY}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => data.data),
+    enabled: !!countryid && !!schoolid,
+    refetchOnWindowFocus: false,
+  });
+
+  // ######################
+  // Get the Department Data
+  // #######################
   const { data: departmentData, isLoading: departmentLoading } = useQuery({
-    queryKey: ["departmentData", schoolCode, facultySel],
+    queryKey: ["departmentData", schoolid, facultyid],
     queryFn: () =>
       fetch(
-        `https://univast.faraday.africa/academia/departments/${schoolCode}/${facultySel}`,
+        `https://univast.faraday.africa/academia/departments/${schoolid}/${facultyid}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -127,20 +179,46 @@ const AddSchoolDetail = () => {
       )
         .then((res) => res.json())
         .then((data) => data.data),
-    enabled: !!schoolCode && !!facultySel,
+    enabled: !!countryid && !!schoolid && !!facultyid,
     refetchOnWindowFocus: false,
   });
 
+  const filteredCountryData = filterData(countryQuery, countriesData);
   const filteredSchoolData = filterData(schoolQuery, schoolsData);
   const filteredFacultyData = filterData(facultyQuery, facultiesData);
   const filteredDepartmentData = filterData(departmentQuery, departmentData);
-  const filteredLevelData = filterData(levelQuery, getLevel());
+  const filteredLevelData = filterData(
+    levelQuery,
+    !!countryid && !!schoolid && !!facultyid & !!departmentValue
+      ? getLevel()
+      : []
+  );
+
+  const validate = () => {
+    return !(
+      !!countryid &&
+      !!schoolid &&
+      !!facultyid &&
+      !!departmentValue &&
+      !!levelValue
+    );
+  };
 
   const onSubmit = async () => {
     const data = {
+      country: countryValue,
+      country_id: countryid,
+
       school: schoolValue,
+      school_id: schoolid,
+      school_logo: schoolLogo,
+
       faculty: facultyValue,
+      faculty_id: facultyid,
+
       department: departmentValue,
+      department_id: departmentid,
+
       level: levelValue,
     };
 
@@ -149,6 +227,7 @@ const AddSchoolDetail = () => {
     spinner.classList.remove("vanish");
 
     try {
+      // console.log("Final Payload", data);
       await auth.updateSchoolDetail(data);
       progress?.classList.add("progress-75");
       spinner?.classList.add("vanish");
@@ -194,32 +273,27 @@ const AddSchoolDetail = () => {
         <p className="mx-3 extra-info text-md">
           We just need your academic information.
         </p>
-        {/* 
-       <form
-        //  onSubmit={handleSubmit}
-       >
-         {renderSelect(
-           "school",
-           "School",
-           state.schools.length ? state.schools : []
-         )}
-         {renderSelect("faculty", "Faculty", state.faculties)}
-
-         {renderSelect("department", "Department", listDepartment())}
-
-         {renderSelect("level", "Level", state.level)}
-         {renderButton("Next")}
-       </form> */}
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Select
             signup
-            lists={filteredSchoolData}
+            lists={filteredCountryData}
             loading={status !== UnivastStates.SUCCESSFUL}
+            value={countryValue}
+            setValue={setCountryValue}
+            label={"Country"}
+            optionClick={getSchoolInfo}
+            setQuery={setCountryQuery}
+          />
+          <Select
+            signup
+            lists={filteredSchoolData}
+            loading={schoolLoading}
             value={schoolValue}
             setValue={setSchoolValue}
-            label={"School"}
             optionClick={getSchoolInfo}
+            label={"School"}
+            loadingMsg={countryValue ? "Loading.." : "Please select a Country"}
             setQuery={setSchoolQuery}
           />
           <Select
@@ -230,7 +304,7 @@ const AddSchoolDetail = () => {
             setValue={setFacultyValue}
             optionClick={getSchoolInfo}
             label={"Faculty"}
-            loadingMsg={schoolValue ? "Loading.." : "Please select a school"}
+            loadingMsg={schoolValue ? "Loading.." : "Please select a School"}
             setQuery={setFacultyQuery}
           />
           <Select
@@ -241,29 +315,23 @@ const AddSchoolDetail = () => {
             setValue={setDepartmentValue}
             optionClick={getSchoolInfo}
             label={"Department"}
-            loadingMsg={facultyValue ? "Loading.." : "Please select a faculty"}
+            loadingMsg={facultyValue ? "Loading.." : "Please select a Faculty"}
             setQuery={setDepartmentQuery}
           />
           <Select
             signup
             lists={filteredLevelData}
-            loading={false}
+            loading={!!filteredLevelData}
             value={levelValue}
             setValue={setLevelValue}
             optionClick={getSchoolInfo}
             label={"Level"}
-            loadingMsg={
-              departmentValue ? "Loading.." : "Please select a department"
-            }
+            loadingMsg={departmentValue ? " " : "Please select a Department"}
             setQuery={setLevelQuery}
           />
 
           <div className="mt-3">
-            <PrimaryButton
-              cta="Next"
-              // disabled={validate()}
-              wide
-            />
+            <PrimaryButton cta="Next" disabled={validate()} wide />
           </div>
         </form>
       </div>
