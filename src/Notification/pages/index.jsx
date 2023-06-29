@@ -11,7 +11,10 @@ import "../styles/notification.css";
 import caretIcon from "../assets/caret.svg";
 import arrowRight from "../../Qfeed/assets/arrow-right.svg";
 import NotificationService from "../../common/features/notification/notificationServices";
-import { updateFeed } from "../../common/features/notification/notificationSlice";
+import {
+  resetReadCount,
+  updateFeed,
+} from "../../common/features/notification/notificationSlice";
 
 const Notification = (props) => {
   const dispatch = useDispatch();
@@ -90,12 +93,17 @@ const Notification = (props) => {
   // Update state with the data data from React Query
   useEffect(() => {
     const newNotifications = [];
+    let unreadCount = 0; // Used later to update the count everytime the notification is fetched
 
     isSuccess &&
       data?.pages.map((page) =>
-        page.data?.results.map((item) => newNotifications.push(item))
+        page.data?.results?.map((item) => {
+          unreadCount = page?.data?.count;
+          return newNotifications.push(item);
+        })
       );
     dispatch(updateFeed({ name: "qfeed", value: newNotifications }));
+    dispatch(resetReadCount());
   }, [data]);
 
   // Check for the kind of error

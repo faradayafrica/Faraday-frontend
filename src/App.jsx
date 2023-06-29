@@ -18,11 +18,10 @@ import { getCurrentUser } from "./common/services/authService.js";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewNotification } from "./common/features/notification/notificationSlice.js";
 import { getJwt } from "./common/services/authService.js";
+import alertSound from "./common/assets/sound/alert1.wav";
 
 const App = () => {
   const [clearCache, setClearCache] = useState(false);
-  const [alertWS, setAlertWS] = useState();
-  // const location = useLocation();
 
   const socketRef = useRef(null);
   const user = getCurrentUser();
@@ -31,7 +30,6 @@ const App = () => {
   const { notificationFeed: notifications } = useSelector(
     (state) => state.notification
   );
-  console.log(notifications, "**********");
 
   useEffect(() => {
     if (window.location.pathname === "/login" && clearCache) {
@@ -40,18 +38,20 @@ const App = () => {
     }
   }, []);
 
-  let interval = "1h";
+  function play() {
+    new Audio(alertSound).play();
+  }
 
   useEffect(() => {
-    // const WSS_NOTIFICATION_URL = `wss://stream.binance.com:9443/ws/btcusdt@kline_${interval}`;
-    const WSS_NOTIFICATION_URL = `wss://faradayapi-staging.azurewebsites.net/ws/notifications/${
-      user?.username
-    }/?token=${getJwt()}`;
+    const WSS_NOTIFICATION_URL = `${
+      process.env.REACT_APP_WS_URL
+    }/ws/notifications/${user?.username}/?token=${getJwt()}`;
     socketRef.current = new WebSocket(WSS_NOTIFICATION_URL);
 
     // Receive data from the server
     socketRef.current.onmessage = (event) => {
       if (user?.username) {
+        // play();
         dispatch(addNewNotification({ value: JSON.parse(event.data) }));
       }
     };

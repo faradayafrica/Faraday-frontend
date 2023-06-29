@@ -2,17 +2,16 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import close from "../../Qfeed/assets/close-sm.svg";
 
-export async function NotificationToast(message, link = "/") {
+export async function NotificationToast(message, link = "/notification") {
   toast(
     (t) => (
-      <Link
-        to={link}
-        className="bg-[#FFFAEE] relative"
-        onClick={() => toast.dismiss(t.id)}
-      >
+      <Link to={link} className="bg-[#FFFAEE] relative">
         <span className="p-2 pl-0 flex text-sm item-center">
           <p className="mr-3">{message}</p>
-          <button className="absolute right-[-15px] top-[6px]">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="absolute right-[-15px] top-[6px]"
+          >
             <img src={close} />
           </button>
         </span>

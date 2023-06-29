@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { toast } from "react-hot-toast";
-import { SuccessToast, NotificationToast } from "../../components/CustomToast";
+import { NotificationToast } from "../../components/CustomToast";
+import alertSound from "../../../common/assets/sound/alert1.wav";
 
 export const NotificationStates = {
   BASE: "base",
@@ -11,8 +11,13 @@ export const NotificationStates = {
 
 const initialState = {
   notificationFeed: [],
+  unreadCount: 30,
   error: "",
 };
+
+function play() {
+  new Audio(alertSound).play();
+}
 
 const notificationSlice = createSlice({
   name: "notification",
@@ -26,14 +31,23 @@ const notificationSlice = createSlice({
 
     addNewNotification: (state, action) => {
       const { value } = action.payload;
-      // console.log("VALUE", value);
       if (value.type !== "connection_established") {
-        NotificationToast(value.message);
+        NotificationToast(value?.message);
+        play();
+        state.notificationFeed.unshift(value);
+        state.unreadCount = state.unreadCount + 1;
+      } else {
+        state.unreadCount = value?.notification_count;
+        // console.log("VALUE", value);
       }
-      state.notificationFeed.unshift(value);
+    },
+
+    resetReadCount: (state) => {
+      state.unreadCount = 0;
     },
   },
 });
 
 export default notificationSlice.reducer;
-export const { updateFeed, addNewNotification } = notificationSlice.actions;
+export const { updateFeed, addNewNotification, resetReadCount } =
+  notificationSlice.actions;

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import React, { Component } from "react";
+import AlertBadge from "./AlertBadge";
 
 class NavLink extends Component {
   render() {
@@ -17,6 +18,13 @@ class NavLink extends Component {
         <button className="navlink-wrapper">
           <div className="nav-tooltip">{item}</div>
           <div className={this.renderNavIcon(focus)}>{icon}</div>
+          {item === "Notification" ? (
+            <div className="absolute left-7 bottom-3">
+              <AlertBadge />
+            </div>
+          ) : (
+            ""
+          )}
           <p className="mx-2 sidenav__item"> {item}</p>
         </button>
       </Link>
@@ -24,7 +32,7 @@ class NavLink extends Component {
   }
 
   renderNavlink = (focus, green) => {
-    let classes = "navlink btn ";
+    let classes = "navlink btn relative ";
     if (focus) {
       classes += "active-nav ";
     }
