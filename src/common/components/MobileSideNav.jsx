@@ -238,8 +238,11 @@ function MobileSideNav() {
                 </Link>
 
                 <Link to="/notification" style={{ textDecoration: "none" }}>
-                  <div className="mobile-link bg-white flex items-center  mx-3 px-3 py-3">
+                  <div className="relative mobile-link bg-white flex items-center  mx-3 px-3 py-3">
                     <img src={bell} alt="notification" />
+                    <div className="absolute left-7 bottom-3">
+                      <AlertBadge />
+                    </div>
                     <p className="m-0 ml-2 text-lg font-normal text-faraday-night">
                       Notification
                     </p>

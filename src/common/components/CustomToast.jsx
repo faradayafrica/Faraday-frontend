@@ -5,12 +5,16 @@ import close from "../../Qfeed/assets/close-sm.svg";
 export async function NotificationToast(message, link = "/notification") {
   toast(
     (t) => (
-      <Link to={link} className="bg-[#FFFAEE] relative">
-        <span className="p-2 pl-0 flex text-sm item-center">
-          <p className="mr-3">{message}</p>
+      <Link
+        // to={link}
+        onClick={() => toast.dismiss(t.id)}
+        className="bg-[#FFFAEE] relative"
+      >
+        <span className="pr-2 pl-0 flex text-sm item-center">
+          <p className="mr-3" dangerouslySetInnerHTML={{ __html: message }}></p>
           <button
             onClick={() => toast.dismiss(t.id)}
-            className="absolute right-[-15px] top-[6px]"
+            className="absolute right-[-15px] top-0 p-2 cursor-pointer"
           >
             <img src={close} />
           </button>
@@ -21,7 +25,7 @@ export async function NotificationToast(message, link = "/notification") {
       style: {
         border: "1px solid #76787C",
         padding: "16px",
-        color: "#76787C",
+        color: "#605647",
         backgroundColor: "#FFFAEE",
         fontSize: "14px",
         paddingTop: "8px",
