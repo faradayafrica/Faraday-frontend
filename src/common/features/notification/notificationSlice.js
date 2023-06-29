@@ -11,7 +11,7 @@ export const NotificationStates = {
 
 const initialState = {
   notificationFeed: [],
-  unreadCount: 30,
+  unreadCount: 0,
   error: "",
 };
 
