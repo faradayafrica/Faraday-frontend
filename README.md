@@ -21,17 +21,17 @@
   ## 🎈 Project Faraday
   Say hello to campus-wide engagement with Faraday. Explore the Faraday app. Discover students to engage, learn and connect with at https://app.faraday.africa. 
  
- ![screenshot of Faraday website](https://github.com/faradayafrica/Faraday-frontend/assets/90288585/78449ebc-9f9e-46c8-b85d-645c8c354e47)
+![Faraday Github](https://github.com/faradayafrica/Faraday-frontend/assets/56418363/ef61e509-3c58-4b23-9613-282ba34faafb)
  <br><br><br>
 
  ## 🏞️ Project Figma
- The figma design for this project can be found [here](https://www.figma.com/file/GmdqdKpgeXsuNo7WoF1xNq/User-Interface?type=design&t=KMqiSeuVA3qv1MH0-1).
+ The Figma design for this project can be found [here](https://www.figma.com/file/GmdqdKpgeXsuNo7WoF1xNq/User-Interface?type=design&t=KMqiSeuVA3qv1MH0-1).
  <br><br>
  
  ## 🏠 File Architecture
 This is a React.js project bootstrapped with create-react-app.
 
-In this project, the file architecture used is known as `Architecture by Feature`, the react app is structured around specific features/ user stories.  Here's a good resource for File architecture for React application if you are unfamiliar:
+In this project, the file architecture used is known as `Architecture by Feature`, the react app is structured around specific features/ user stories.  Here's a good resource for File architecture for React applications if you are unfamiliar:
 
 - [React Architecture: File Structure for Scalable projects](https://kingslee.hashnode.dev/file-structure-for-scalable-projects#heading-architecture-by-feature)
 
