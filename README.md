@@ -59,5 +59,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing by modifying the `JS files`. The page on the browser auto-updates as you save the file.
 <br><br>
-## Community
-Got Questions? Join the conversation in our [Telegram](https://t.me/+Ekm9DS5Ucb5mMmQ0).
+
+# Contributing
+**Pre-requisites:**
+- Create an account on the [Development/Staging environment](https://app-staging.faraday.africa)
+- Join the [Contributor Program](https://frda.me/become-a-contributor) so we can add you to the team of contributors in the Faraday GitHub organization.
+
+**Next;**
+- Read our [Code of Conduct](https://github.com/faradayafrica/.github/code_of_conduct.md)
+- Read our [General Guide to Contributing](https://github.com/faradayafrica/.github/contributing.md)
+- Get started Contributing, we can't wait to see what you have for us.
+
+# Community
+Got Questions or something to share that isn't an issue? Start a [discussion](https://github.com/faradayafrica/Faraday-frontend/discussions/new/choose).
