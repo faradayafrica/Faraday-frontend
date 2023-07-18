@@ -1,26 +1,37 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import CopyLink from "./CopyLink";
-import SecondaryButton from "../../common/components/SecondaryButton";
-import Comments from "./commentComponents/Comments";
+import React, { useState, useEffect } from 'react';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import CopyLink from './CopyLink';
+import SecondaryButton from '../../common/components/SecondaryButton';
+import Comments from './commentComponents/Comments';
 
-import http from "../../common/services/httpService";
-import arrowRight from "../assets/arrow-right.svg";
+import http from '../../common/services/httpService';
+import arrowRight from '../assets/arrow-right.svg';
 
-import QuestionsLoader from "./QuestionsLoader";
-import { useSelector, useDispatch } from "react-redux";
+import QuestionsLoader from './QuestionsLoader';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   deleteQuestionThunk,
   markSolutionThunk,
   updateFeed,
   updateQuestion,
-} from "../../common/features/qfeed/qfeedSlice";
-import { useLayoutEffect } from "react";
-import QService from "../../common/features/qfeed/QfeedServices";
-import DiscussionQuestion from "./DiscusstionQuestion";
+} from '../../common/features/qfeed/qfeedSlice';
+import { useLayoutEffect } from 'react';
+import QService from '../../common/features/qfeed/QfeedServices';
+import DiscussionQuestion from './DiscussionQuestion';
 
 const DiscussionPage = ({ match, history }) => {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '//fast.wistia.net/labs/fresh-url/v1.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   const [url, setUrl] = useState(match.params.id);
   const [loader, setLoader] = useState(true);
 
@@ -54,22 +65,26 @@ const DiscussionPage = ({ match, history }) => {
       (question) => question.id === id
     );
 
-    if (shortLink === "" || shortLink === null) {
+    if (shortLink === '' || shortLink === null) {
       try {
         http
-          .post("https://frda.me/api/shorten/", {
+          .post('https://frda.me/api/shorten/', {
             original_url,
           })
           .then((resp) => {
-            http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {
-              postid: id,
-              link: resp.data.short_url,
-            });
+            http.post(
+              process.env.REACT_APP_API_URL + '/qfeed/que/shorten/',
+              {
+                postid: id,
+                link: resp.data.short_url,
+              }
+            );
 
             setShortLink(resp.data.short_url);
             if (question_index !== -1) {
-              questionsClone[question_index].short_link = resp.data.short_url;
-              dispatch(updateFeed({ name: "qfeed", value: questionsClone }));
+              questionsClone[question_index].short_link =
+                resp.data.short_url;
+              dispatch(updateFeed({ name: 'qfeed', value: questionsClone }));
             }
           });
       } catch (e) {
@@ -89,7 +104,7 @@ const DiscussionPage = ({ match, history }) => {
     setLoader(true);
     try {
       const { data } = await QService.fetchQuestion(match.params.id);
-      dispatch(updateQuestion({ name: "question", value: data }));
+      dispatch(updateQuestion({ name: 'question', value: data }));
     } catch (err) {
       setLoader(false);
     }
@@ -100,20 +115,20 @@ const DiscussionPage = ({ match, history }) => {
   const fetchThisQuestion = async () => {
     try {
       const { data } = await QService.fetchQuestion(match.params.id);
-      dispatch(updateQuestion({ name: "question", value: data }));
+      dispatch(updateQuestion({ name: 'question', value: data }));
     } catch (ex) {
       setLoader(false);
       if (ex.response.status == 404) {
-        history.replace("/missing-question");
+        history.replace('/missing-question');
       } else {
-        // console.log("Problem");
+        // console.log('Problem');
       }
       setLoader(false);
     }
   };
 
   const updateComments = (newComments) => {
-    dispatch(updateQuestion({ name: "comments", value: newComments }));
+    dispatch(updateQuestion({ name: 'comments', value: newComments }));
   };
 
   const {
@@ -127,7 +142,7 @@ const DiscussionPage = ({ match, history }) => {
     error,
     refetch,
   } = useInfiniteQuery(
-    ["comments"],
+    ['comments'],
     ({ pageParam = 1 }) => QService.fetchQuestionComments(url, pageParam),
     {
       cacheTime: 0,
@@ -142,7 +157,6 @@ const DiscussionPage = ({ match, history }) => {
     refetch();
   }, [question]);
 
-  // Next page fetch from the useInfinite Query
   useEffect(() => {
     let fetching = false;
     const handleScroll = async (e) => {
@@ -156,37 +170,35 @@ const DiscussionPage = ({ match, history }) => {
         fetching = false;
       }
     };
-    document.addEventListener("scroll", handleScroll);
+    document.addEventListener('scroll', handleScroll);
     return () => {
-      document.removeEventListener("scroll", handleScroll);
+      document.removeEventListener('scroll', handleScroll);
     };
   }, [fetchNextPage, hasNextPage]);
 
-  // Update comments on the store
   useEffect(() => {
     !comments.length &&
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     const newComments = [];
 
     isSuccess &&
       data?.pages?.map((page) =>
         page?.data?.results.map((item) => newComments.push(item))
       );
-    dispatch(updateQuestion({ name: "comments", value: newComments }));
+    dispatch(updateQuestion({ name: 'comments', value: newComments }));
   }, [data]);
 
-  // Initialize the state of the Discussion feed when navigating from the Qfeen home
   useLayoutEffect(() => {
     fetchThisQuestion();
     setUrl(match.params.id);
-    dispatch(updateQuestion({ name: "comments", value: [] }));
+    dispatch(updateQuestion({ name: 'comments', value: [] }));
     const thisQuestion = questions?.find((q) => q.id === match.params.id);
     const value = thisQuestion ? thisQuestion : {};
-    dispatch(updateQuestion({ name: "question", value }));
+    dispatch(updateQuestion({ name: 'question', value }));
   }, [match.params.id]);
 
   useEffect(() => {
-    setShortLink(question ? question.short_link : "");
+    setShortLink(question ? question.short_link : '');
   }, [question, match.params.id]);
 
   return (
@@ -221,15 +233,6 @@ const DiscussionPage = ({ match, history }) => {
                 setEchoMenu={setEchoMenu}
               />
 
-              {/* <CopyLink
-                isCopyLinkModal={isCopyLinkModal}
-                isCopied={isCopied}
-                shortLink={shortLink}
-                handleIsCopied={handleIsCopied}
-                toggleCopyLinkModal={setCopyLinkModal}
-              /> */}
-
-              {/* Comments here */}
               <Comments
                 comments={comments}
                 questionid={match.params.id}
