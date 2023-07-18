@@ -1,24 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from 'react';
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
-import CopyLink from '../components/CopyLink';
-import SecondaryButton from '../../common/components/SecondaryButton';
-import Comments from '../components/commentComponents/Comments';
+import { useState, useEffect } from "react";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import CopyLink from "../components/CopyLink";
+import SecondaryButton from "../../common/components/SecondaryButton";
+import Comments from "../components/commentComponents/Comments";
 
-import http from '../../common/services/httpService';
-import arrowRight from '../assets/arrow-right.svg';
+import http from "../../common/services/httpService";
+import arrowRight from "../assets/arrow-right.svg";
 
-import QuestionsLoader from '../components/QuestionsLoader';
-import { useSelector, useDispatch } from 'react-redux';
+import QuestionsLoader from "../components/QuestionsLoader";
+import { useSelector, useDispatch } from "react-redux";
 import {
   deleteQuestionThunk,
   markSolutionThunk,
   updateFeed,
   updateQuestion,
-} from '../../common/features/qfeed/qfeedSlice';
-import { useLayoutEffect } from 'react';
-import QService from '../../common/features/qfeed/QfeedServices';
-import DiscussionQuestion from '../components/DiscussionQuestion';
+} from "../../common/features/qfeed/qfeedSlice";
+import { useLayoutEffect } from "react";
+import QService from "../../common/features/qfeed/QfeedServices";
+import DiscussionQuestion from "../components/DiscusstionQuestion";
 
 const DiscussionPage = ({ match, history }) => {
   useEffect(() => {
@@ -31,7 +31,6 @@ const DiscussionPage = ({ match, history }) => {
       document.body.removeChild(script);
     };
   }, []);
-
   const [url, setUrl] = useState(match.params.id);
   const [loader, setLoader] = useState(true);
 
@@ -65,26 +64,22 @@ const DiscussionPage = ({ match, history }) => {
       (question) => question.id === id
     );
 
-    if (shortLink === '' || shortLink === null) {
+    if (shortLink === "" || shortLink === null) {
       try {
         http
-          .post('https://frda.me/api/shorten/', {
+          .post("https://frda.me/api/shorten/", {
             original_url,
           })
           .then((resp) => {
-            http.post(
-              process.env.REACT_APP_API_URL + '/qfeed/que/shorten/',
-              {
-                postid: id,
-                link: resp.data.short_url,
-              }
-            );
+            http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {
+              postid: id,
+              link: resp.data.short_url,
+            });
 
             setShortLink(resp.data.short_url);
             if (question_index !== -1) {
-              questionsClone[question_index].short_link =
-                resp.data.short_url;
-              dispatch(updateFeed({ name: 'qfeed', value: questionsClone }));
+              questionsClone[question_index].short_link = resp.data.short_url;
+              dispatch(updateFeed({ name: "qfeed", value: questionsClone }));
             }
           });
       } catch (e) {
@@ -104,7 +99,7 @@ const DiscussionPage = ({ match, history }) => {
     setLoader(true);
     try {
       const { data } = await QService.fetchQuestion(match.params.id);
-      dispatch(updateQuestion({ name: 'question', value: data }));
+      dispatch(updateQuestion({ name: "question", value: data }));
     } catch (err) {
       setLoader(false);
     }
@@ -115,20 +110,20 @@ const DiscussionPage = ({ match, history }) => {
   const fetchThisQuestion = async () => {
     try {
       const { data } = await QService.fetchQuestion(match.params.id);
-      dispatch(updateQuestion({ name: 'question', value: data }));
+      dispatch(updateQuestion({ name: "question", value: data }));
     } catch (ex) {
       setLoader(false);
       if (ex.response.status == 404) {
-        history.replace('/missing-question');
+        history.replace("/missing-question");
       } else {
-        // console.log('Problem');
+        // console.log("Problem");
       }
       setLoader(false);
     }
   };
 
   const updateComments = (newComments) => {
-    dispatch(updateQuestion({ name: 'comments', value: newComments }));
+    dispatch(updateQuestion({ name: "comments", value: newComments }));
   };
 
   const {
@@ -142,7 +137,7 @@ const DiscussionPage = ({ match, history }) => {
     error,
     refetch,
   } = useInfiniteQuery(
-    ['comments'],
+    ["comments"],
     ({ pageParam = 1 }) => QService.fetchQuestionComments(url, pageParam),
     {
       cacheTime: 0,
@@ -157,6 +152,7 @@ const DiscussionPage = ({ match, history }) => {
     refetch();
   }, [question]);
 
+  // Next page fetch from the useInfinite Query
   useEffect(() => {
     let fetching = false;
     const handleScroll = async (e) => {
@@ -170,56 +166,58 @@ const DiscussionPage = ({ match, history }) => {
         fetching = false;
       }
     };
-    document.addEventListener('scroll', handleScroll);
+    document.addEventListener("scroll", handleScroll);
     return () => {
-      document.removeEventListener('scroll', handleScroll);
+      document.removeEventListener("scroll", handleScroll);
     };
   }, [fetchNextPage, hasNextPage]);
 
+  // Update comments on the store
   useEffect(() => {
     !comments.length &&
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     const newComments = [];
 
     isSuccess &&
       data?.pages?.map((page) =>
         page?.data?.results?.map((item) => newComments.push(item))
       );
-    dispatch(updateQuestion({ name: 'comments', value: newComments }));
+    dispatch(updateQuestion({ name: "comments", value: newComments }));
   }, [data]);
 
+  // Initialize the state of the Discussion feed when navigating from the Qfeen home
   useLayoutEffect(() => {
     fetchThisQuestion();
     setUrl(match.params.id);
-    dispatch(updateQuestion({ name: 'comments', value: [] }));
+    dispatch(updateQuestion({ name: "comments", value: [] }));
     const thisQuestion = questions?.find((q) => q.id === match.params.id);
     const value = thisQuestion ? thisQuestion : {};
-    dispatch(updateQuestion({ name: 'question', value }));
+    dispatch(updateQuestion({ name: "question", value }));
   }, [match.params.id]);
 
   useEffect(() => {
-    setShortLink(question ? question.short_link : '');
+    setShortLink(question ? question.short_link : "");
   }, [question, match.params.id]);
 
   return (
     <>
-      <div className=' bg-background min-h-[100vh] z-30 bottom-0 left-0 h-min-screen sm:w-auto sm:static'>
-        <div className='min-h-[70px] sm:min-h-[0px] '> </div>
-        <div className='z-50' id='discussion'>
-          <div className='flex items-center p-3'>
+      <div className=" bg-background min-h-[100vh] z-30 bottom-0 left-0 h-min-screen sm:w-auto sm:static">
+        <div className="min-h-[70px] sm:min-h-[0px] "> </div>
+        <div className="z-50" id="discussion">
+          <div className="flex items-center p-3">
             <img
               src={arrowRight}
-              className='w-8 h-8 p-2 rounded-full mr-2 bg-white hover:bg-background2 cursor-pointer rotate-180 shadow-sm'
-              alt='return'
+              className="w-8 h-8 p-2 rounded-full mr-2 bg-white hover:bg-background2 cursor-pointer rotate-180 shadow-sm"
+              alt="return"
               onClick={() => {
-                // dispatch(updateQuestion({ name: 'comments', value: [] }));
+                // dispatch(updateQuestion({ name: "comments", value: [] }));
                 history.goBack();
               }}
             />
-            <h1 className='text-2xl text-center font-bold m-0 '>Discussion</h1>
+            <h1 className="text-2xl text-center font-bold m-0 ">Discussion</h1>
           </div>
           {question?.user ? (
-            <div className=' py-3 relative bg-white'>
+            <div className=" py-3 relative bg-white">
               <DiscussionQuestion
                 question={question}
                 handleQuestionDelete={handleQuestionDelete}
@@ -258,14 +256,14 @@ const DiscussionPage = ({ match, history }) => {
           ) : (
             <>
               {loader ? (
-                <QuestionsLoader type='discussion' />
+                <QuestionsLoader type="discussion" />
               ) : (
-                <div className='p-3  rounded-lg border bg-background m-3 text-center'>
+                <div className="p-3  rounded-lg border bg-background m-3 text-center">
                   <>
-                    <p className='text-xs sm:text-sm '>
+                    <p className="text-xs sm:text-sm ">
                       Couldn't fetch this question at this time, try again later
                     </p>
-                    <SecondaryButton cta='Retry' action={retry} />
+                    <SecondaryButton cta="Retry" action={retry} />
                   </>
                 </div>
               )}
