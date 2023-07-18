@@ -203,23 +203,23 @@ const DiscussionPage = ({ match, history }) => {
 
   return (
     <>
-      <div className=" bg-background min-h-[100vh] z-30 bottom-0 left-0 h-min-screen sm:w-auto sm:static">
-        <div className="min-h-[70px] sm:min-h-[0px] "> </div>
-        <div className="z-50" id="discussion">
-          <div className="flex items-center p-3">
+      <div className=' bg-background min-h-[100vh] z-30 bottom-0 left-0 h-min-screen sm:w-auto sm:static'>
+        <div className='min-h-[70px] sm:min-h-[0px] '> </div>
+        <div className='z-50' id='discussion'>
+          <div className='flex items-center p-3'>
             <img
               src={arrowRight}
-              className="w-8 h-8 p-2 rounded-full mr-2 bg-white hover:bg-background2 cursor-pointer rotate-180 shadow-sm"
-              alt="return"
+              className='w-8 h-8 p-2 rounded-full mr-2 bg-white hover:bg-background2 cursor-pointer rotate-180 shadow-sm'
+              alt='return'
               onClick={() => {
-                // dispatch(updateQuestion({ name: "comments", value: [] }));
+                // dispatch(updateQuestion({ name: 'comments', value: [] }));
                 history.goBack();
               }}
             />
-            <h1 className="text-2xl text-center font-bold m-0 ">Discussion</h1>
+            <h1 className='text-2xl text-center font-bold m-0 '>Discussion</h1>
           </div>
           {question?.user ? (
-            <div className=" py-3 relative bg-white">
+            <div className=' py-3 relative bg-white'>
               <DiscussionQuestion
                 question={question}
                 handleQuestionDelete={handleQuestionDelete}
@@ -258,14 +258,14 @@ const DiscussionPage = ({ match, history }) => {
           ) : (
             <>
               {loader ? (
-                <QuestionsLoader type="discussion" />
+                <QuestionsLoader type='discussion' />
               ) : (
-                <div className="p-3  rounded-lg border bg-background m-3 text-center">
+                <div className='p-3  rounded-lg border bg-background m-3 text-center'>
                   <>
-                    <p className="text-xs sm:text-sm ">
+                    <p className='text-xs sm:text-sm '>
                       Couldn't fetch this question at this time, try again later
                     </p>
-                    <SecondaryButton cta="Retry" action={retry} />
+                    <SecondaryButton cta='Retry' action={retry} />
                   </>
                 </div>
               )}
