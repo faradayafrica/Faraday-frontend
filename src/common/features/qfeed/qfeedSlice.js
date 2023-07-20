@@ -1008,14 +1008,23 @@ const qfeedSlice = createSlice({
         // Update comment count on the discussion page
         state.thisQuestion.question.comments =
           state.thisQuestion.question.comments + 1;
+        state.thisQuestion.question.comment_count += 1;
 
         // Update comment count on that question on qfeed home
         const newFeed = state.feed.qfeed;
-        const question = newFeed.find(
-          (q) => q.id === state.thisQuestion.question.id
-        );
+        const question = newFeed.find((q) => {
+          if (q.type === "echo") {
+            return q.original.id === state.thisQuestion.question.id;
+          }
+          return q.id === state.thisQuestion.question.id;
+        });
         if (question) {
-          question.comments = question.comments + 1;
+          if (question.type === "echo") {
+            question.original.comment_count += 1;
+          } else {
+            question.comments = question.comments + 1; // I don't think this is correct
+            question.comment_count += 1;
+          }
         }
         state.feed.qfeed = newFeed;
 
