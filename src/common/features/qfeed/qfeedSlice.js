@@ -680,9 +680,14 @@ const qfeedSlice = createSlice({
 
       if (data) {
         // Updates the qfeed Home
-        const newFeed = state.feed.qfeed.map((question) =>
-          question.id === data.id ? data : question
-        );
+        const newFeed = state.feed.qfeed.map((question) => {
+          if (question.type === "echo" && question.original.id === data.id) {
+            question.original = data;
+            return question;
+          }
+
+          return question.id === data.id ? data : question;
+        });
         state.feed.qfeed = newFeed;
 
         // Updates the profile question feed
