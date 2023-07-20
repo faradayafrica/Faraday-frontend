@@ -359,6 +359,20 @@ const qfeedSlice = createSlice({
         });
       }
 
+      // This is for Echo question
+      if (index === -1) {
+        _questions.forEach((question) => {
+          if (question.type === "echo" && question.original.id === questionid) {
+            question.original = {
+              ...question.original,
+              vote_rank: value.rank,
+              vote_status: value.status,
+            };
+            return question;
+          }
+        });
+      }
+
       // Update for Profile Questions
       const _profile_questions = state.feed.profile.userQuestions;
       let _profileQuestionIndex = _profile_questions.findIndex(
