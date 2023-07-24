@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { getCurrentUser } from "../services/authService";
+import http from "../../common/services/httpService";
 
 // icons import
 import logout from "../assets/nav/logout.svg";
@@ -17,6 +18,8 @@ import "../styles/mobileSideNav.scss";
 import "../styles/topnav.css";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "./PrimaryButton";
+import AlertBadge from "./AlertBadge";
+import { updateProfile } from "../features/qfeed/qfeedSlice";
 
 function MobileSideNav() {
   const [isQfeed, setQfeed] = useState();
@@ -27,12 +30,32 @@ function MobileSideNav() {
   const location = useLocation();
 
   const { data: user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+
+  // const dispatch = useDispatch();
 
   useEffect(() => {
     setQfeed(location.pathname === "/" || location.pathname === "/qfeed");
     setNotification(location.pathname === "/notification");
   }, [location.pathname]);
+
+  // useEffect(() => {
+  //   const userEndpoint = `/users/${user?.profile?.username}/`;
+
+  //   console.log(user?.profile?.username, "User Data");
+
+  //   async function fetchdata() {
+  //     try {
+  //       if (user?.profile?.username) {
+  //         const { data } = await http.get(userEndpoint);
+  //         dispatch(updateProfile({ name: "profileData", value: data.data }));
+  //       }
+  //     } catch (e) {
+  //       console.log("Couldn't fetch user at this time");
+  //     }
+  //   }
+
+  //   fetchdata();
+  // }, [user]);
 
   const renderBottomLink = (focus) => {
     let qfeedClasses = "w-1/2 h-12 flex justify-center items-center rounded-xl";
@@ -116,13 +139,26 @@ function MobileSideNav() {
                   to={`/me/${currentUser.username}`}
                   style={{ textDecoration: "none" }}
                 >
-                  <img
-                    className="p-3 rounded-xl cursor-pointer"
-                    data-toggle="tooltip"
-                    title="view profile"
-                    src={profile}
-                    alt="profile"
-                  />
+                  {user?.profile?.profile_pic ? (
+                    <img
+                      className="h-10 w-10 m-2 rounded-full cursor-pointer border border-1"
+                      style={{
+                        objectFit: "cover",
+                      }}
+                      data-toggle="tooltip"
+                      title="view profile"
+                      src={user?.profile?.profile_pic}
+                      alt="profile"
+                    />
+                  ) : (
+                    <img
+                      className="p-3 rounded-xl cursor-pointer"
+                      data-toggle="tooltip"
+                      title="view profile"
+                      src={profile}
+                      alt="profile"
+                    />
+                  )}
                 </Link>
               </>
             </div>
@@ -159,11 +195,13 @@ function MobileSideNav() {
             >
               <div className={renderBottomLink(isNotification)}>
                 <img src={bell} alt="notification" />
+                <AlertBadge />
               </div>
             </Link>
           </div>
         )}
 
+        {/* The Mobile Slide in side nav */}
         <div className="side">
           <div className="side-container">
             <div className="side-overlay" onClick={handleMobileMenuClick}></div>
@@ -227,7 +265,11 @@ function MobileSideNav() {
               <div onClick={handleMobileMenuClick}>
                 <Link to="/" style={{ textDecoration: "none" }}>
                   <div className="mobile-link bg-white flex items-center rounded-t-xl mx-3 px-3 py-3">
-                    <img src={qfeed} alt="qfeed" />
+                    <img
+                      src={qfeed}
+                      alt="qfeed"
+                      style={{ marginRight: ".375rem" }}
+                    />
                     <p className="m-0 ml-2 text-lg font-normal text-faraday-night">
                       Qfeed
                     </p>
@@ -235,8 +277,15 @@ function MobileSideNav() {
                 </Link>
 
                 <Link to="/notification" style={{ textDecoration: "none" }}>
-                  <div className="mobile-link bg-white flex items-center  mx-3 px-3 py-3">
-                    <img src={bell} alt="notification" />
+                  <div className="relative mobile-link bg-white flex items-center  mx-3 px-3 py-3">
+                    <img
+                      src={bell}
+                      alt="notification"
+                      style={{ marginRight: ".375rem" }}
+                    />
+                    <div className="absolute left-7 bottom-3">
+                      <AlertBadge />
+                    </div>
                     <p className="m-0 ml-2 text-lg font-normal text-faraday-night">
                       Notification
                     </p>
@@ -248,7 +297,11 @@ function MobileSideNav() {
                   style={{ textDecoration: "none" }}
                 >
                   <div className="mobile-link bg-white flex items-center rounded-b-xl mx-3 px-3 py-3">
-                    <img src={profile} alt="profile" />
+                    <img
+                      src={profile}
+                      alt="profile"
+                      style={{ marginRight: ".375rem" }}
+                    />
                     <p className="m-0 ml-2 text-lg font-normal text-faraday-night">
                       Profile
                     </p>
@@ -257,7 +310,11 @@ function MobileSideNav() {
 
                 <Link to="/logout" style={{ textDecoration: "none" }}>
                   <div className="mt-4 mobile-link bg-white flex items-center rounded-xl mx-3 px-3 py-3">
-                    <img src={logout} alt="logout" />
+                    <img
+                      src={logout}
+                      alt="logout"
+                      style={{ marginRight: ".375rem" }}
+                    />
                     <p className="m-0 ml-2 text-lg font-normal text-faraday-night">
                       Logout
                     </p>

@@ -227,7 +227,7 @@ const AddSchoolDetail = () => {
     spinner.classList.remove("vanish");
 
     try {
-      console.log("Final Payload", data);
+      // console.log("Final Payload", data);
       await auth.updateSchoolDetail(data);
       progress?.classList.add("progress-75");
       spinner?.classList.add("vanish");
