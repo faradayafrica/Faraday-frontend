@@ -19,6 +19,7 @@ import {
 import { useLayoutEffect } from "react";
 import QService from "../../common/features/qfeed/QfeedServices";
 import DiscussionQuestion from "../components/DiscusstionQuestion";
+import DiscussionAd from "../components/adsComponents/DiscussionAd";
 
 const DiscussionPage = ({ match, history }) => {
   useEffect(() => {

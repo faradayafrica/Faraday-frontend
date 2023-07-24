@@ -3,6 +3,7 @@ import univastReducer from "../features/auth/univastSlice";
 import qfeedReducer from "../features/qfeed/qfeedSlice";
 import userReducer from "../features/user/userSlice";
 import notificationReducer from "../features/notification/notificationSlice";
+import AdsReducer from "../features/ads/AdsSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     qfeed: qfeedReducer,
     notification: notificationReducer,
     user: userReducer,
+    ads: AdsReducer,
   },
 });
 
