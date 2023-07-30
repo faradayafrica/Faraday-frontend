@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useDispatch, useSelector } from "react-redux";
 import NotificationItem from "../components/NotificationItem";
 import NotificationLoader from "../components/NotificationLoader";
 import SecondaryButton from "../../common/components/SecondaryButton";
@@ -9,8 +10,15 @@ import gsap from "gsap";
 import "../styles/notification.css";
 import caretIcon from "../assets/caret.svg";
 import arrowRight from "../../Qfeed/assets/arrow-right.svg";
+import NotificationService from "../../common/features/notification/notificationServices";
+import {
+  resetReadCount,
+  updateFeed,
+} from "../../common/features/notification/notificationSlice";
 
 const Notification = (props) => {
+  const dispatch = useDispatch();
+  const { notificationFeed } = useSelector((state) => state.notification);
   const apiEndpoint = process.env.REACT_APP_API_URL + `/notifications/`;
 
   const [filter, setFilter] = useState("");
@@ -61,12 +69,6 @@ const Notification = (props) => {
     }
   };
 
-  const fetchNotifications = async (pageParam) => {
-    const resp = await http.get(apiEndpoint + `?page=${pageParam}`);
-    setCount(resp.data.count);
-    return resp;
-  };
-
   const {
     data,
     isSuccess,
@@ -79,7 +81,7 @@ const Notification = (props) => {
     refetch,
   } = useInfiniteQuery(
     ["notification"],
-    ({ pageParam = 1 }) => fetchNotifications(pageParam),
+    ({ pageParam = 1 }) => NotificationService.fetchNotifications(pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
         const nextPage = allPages?.length + 1;
@@ -88,8 +90,23 @@ const Notification = (props) => {
     }
   );
 
-  // Check for the kind of error
+  // Update state with the data data from React Query
+  useEffect(() => {
+    const newNotifications = [];
+    let unreadCount = 0; // Used later to update the count everytime the notification is fetched
 
+    isSuccess &&
+      data?.pages.map((page) =>
+        page.data?.results?.map((item) => {
+          unreadCount = page?.data?.count;
+          return newNotifications.push(item);
+        })
+      );
+    dispatch(updateFeed({ name: "qfeed", value: newNotifications }));
+    dispatch(resetReadCount());
+  }, [data]);
+
+  // Check for the kind of error
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     document.title = `Faraday`;
@@ -132,16 +149,12 @@ const Notification = (props) => {
           </h1>
         </div>
 
-        <div className="relative">
+        {/* <div className="relative">
           <button
             onClick={() => {
               toggleFilterDropDown();
             }}
-            className={
-              filter
-                ? "border-y border-x border-brand rounded-lg py-2 bg-brand-highlight"
-                : "border-y border-x border-faraday-night rounded-lg py-2 "
-            }
+            className="border-y border-x border-night-secondary rounded-lg py-2 "
           >
             <p className="m-0 pl-3 pr-2 inline">{filter ? filter : "Filter"}</p>{" "}
             <img className="inline px-2" src={caretIcon} alt="" />
@@ -175,7 +188,7 @@ const Notification = (props) => {
           ) : (
             ""
           )}
-        </div>
+        </div> */}
       </div>
 
       {isLoading && <NotificationLoader />}
@@ -194,10 +207,29 @@ const Notification = (props) => {
       {
         <div>
           <>
-            {isSuccess &&
-              (filter === "" || filter === "All") &&
-              data?.pages?.map((page) =>
-                page?.data?.results.data.map((item) => (
+            {(filter === "" || filter === "All") &&
+              notificationFeed?.map((item) => (
+                <NotificationItem
+                  key={item.id}
+                  id={item.id}
+                  is_read={item.is_read}
+                  created={item.created}
+                  notification_type={item.notification_type}
+                  // notification data
+                  message={item.content}
+                  que={item.notification}
+                  follow_by={item.notification?.followed_by}
+                  commentQue={item.notification?.que_with_comment}
+                  notification={item}
+                  // function
+                  markAsRead={markAsRead}
+                />
+              ))}
+
+            {filter === "Read" &&
+              notificationFeed
+                ?.filter((item) => item.is_read === true)
+                ?.map((item) => (
                   <NotificationItem
                     key={item.id}
                     id={item.id}
@@ -213,56 +245,28 @@ const Notification = (props) => {
                     // function
                     markAsRead={markAsRead}
                   />
-                ))
-              )}
+                ))}
 
-            {isSuccess &&
-              filter === "Read" &&
-              data?.pages?.map((page) =>
-                page?.data?.results.data
-                  .filter((item) => item.is_read === true)
-                  .map((item) => (
-                    <NotificationItem
-                      key={item.id}
-                      id={item.id}
-                      is_read={item.is_read}
-                      created={item.created}
-                      notification_type={item.notification_type}
-                      // notification data
-                      message={item.content}
-                      que={item.notification}
-                      follow_by={item.notification?.followed_by}
-                      commentQue={item.notification?.que_with_comment}
-                      notification={item.notification}
-                      // function
-                      markAsRead={markAsRead}
-                    />
-                  ))
-              )}
-
-            {isSuccess &&
-              filter === "Unread" &&
-              data?.pages?.map((page) =>
-                page?.data?.results.data
-                  .filter((item) => item.is_read === false)
-                  .map((item) => (
-                    <NotificationItem
-                      key={item.id}
-                      id={item.id}
-                      is_read={item.is_read}
-                      created={item.created}
-                      notification_type={item.notification_type}
-                      // notification data
-                      message={item.content}
-                      que={item.notification}
-                      follow_by={item.notification?.followed_by}
-                      commentQue={item.notification?.que_with_comment}
-                      notification={item.notification}
-                      // function
-                      markAsRead={markAsRead}
-                    />
-                  ))
-              )}
+            {filter === "Unread" &&
+              notificationFeed
+                ?.filter((item) => item.is_read === false)
+                ?.map((item) => (
+                  <NotificationItem
+                    key={item.id}
+                    id={item.id}
+                    is_read={item.is_read}
+                    created={item.created}
+                    notification_type={item.notification_type}
+                    // notification data
+                    message={item.content}
+                    que={item.notification}
+                    follow_by={item.notification?.followed_by}
+                    commentQue={item.notification?.que_with_comment}
+                    notification={item}
+                    // function
+                    markAsRead={markAsRead}
+                  />
+                ))}
           </>
         </div>
       }
