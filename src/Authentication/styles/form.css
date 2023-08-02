@@ -12,3 +12,8 @@
 .form-control.is-invalid {
   color: #e35f5f;
 }
+
+.tooltip-wrapper {
+  display: flex;
+  margin: 0 auto;
+}
