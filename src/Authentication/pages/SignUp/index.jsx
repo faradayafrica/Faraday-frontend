@@ -27,6 +27,7 @@ class SignUpPage extends Form {
     errorMessage: null,
     redirect: null,
     showPassword: false,
+    showErrors: false,
   };
 
   componentDidMount() {
@@ -38,25 +39,23 @@ class SignUpPage extends Form {
     fname: Joi.string()
       .min(3)
       .max(30)
-      .regex(/^[A-Za-z0-9]+(?:\s+[A-Za-z0-9]+)*$/)
+      .regex(/^[A-Za-z0-9]+(?:\s+[A-Za-z0-9]+)*\s*$/)
       .required()
       .label("First name"),
 
     lname: Joi.string()
       .min(3)
       .max(30)
-      .regex(/^[A-Za-z0-9]+(?:\s+[A-Za-z0-9]+)*$/)
+      .regex(/^[A-Za-z0-9\s]+$/)
       .required()
       .label("Last name"),
 
     username: Joi.string()
-      .alphanum()
       .min(3)
       .max(30)
       .required()
       .label("Username")
-      .regex(/^[A-Za-z0-9]+(?:\s+[A-Za-z0-9]+)*$/)
-      .regex(/^\s*\w+(?:[^\w,]+\w+)*[^,\w]*$/),
+      .regex(/^[A-Za-z0-9]+(?:\s+[A-Za-z0-9]+)*\s*$/),
     email: Joi.string().email().required().label("Email"),
     password: Joi.string().min(8).required().label("Password"),
   };

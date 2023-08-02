@@ -203,17 +203,17 @@ class Form extends Component {
     const { data, errors } = this.state;
 
     return (
-      <>
-        <Input
+      <div className="form-group">
+        <input
           type={type}
           name={name}
           value={data[name]}
           label={placeholder}
           placeholder={placeholder}
           onChange={this.handleChange}
-          error={errors[name]}
+          className={`form-control ${errors[name] ? "is-invalid" : ""}`}
         />
-      </>
+      </div>
     );
   }
 
@@ -229,7 +229,7 @@ class Form extends Component {
           label={placeholder}
           placeholder={placeholder}
           onChange={this.handleChange}
-          error={errors[name]}
+          className={`form-control ${errors[name] ? "is-invalid" : ""}`}
         />
 
         <div

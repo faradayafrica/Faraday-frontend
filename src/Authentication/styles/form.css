@@ -1,10 +1,14 @@
 .add-profile-btn {
-    height: 180px;
-    width: 180px;
-  
-    background-color: var(--background) !important;
-    border: 2px dashed var(--outline) !important;
-  
-    object-fit: cover;
-    margin:auto;
-  }
+  height: 180px;
+  width: 180px;
+
+  background-color: var(--background) !important;
+  border: 2px dashed var(--outline) !important;
+
+  object-fit: cover;
+  margin: auto;
+}
+
+.form-control.is-invalid {
+  color: #e35f5f;
+}
