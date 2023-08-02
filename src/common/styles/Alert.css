@@ -1,0 +1,16 @@
+.alert-count {
+  /* line-height: 0; */
+  height: 1.3rem;
+  width: 1.3rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 2rem;
+  font-weight: 400;
+
+  position: relative;
+  top: -0.5rem;
+  right: 0.5rem;
+}

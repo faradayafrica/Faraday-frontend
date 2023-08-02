@@ -2,7 +2,7 @@
 import { useLayoutEffect, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import DiscussionPage from "../components/DiscussionPage.jsx";
+import DiscussionPage from "./DiscussionPage.jsx";
 import PostPage from "../components/PostPage";
 import TimeLine from "../components/Timeline.jsx";
 import NotFound from "../../common/components/NotFound.jsx";

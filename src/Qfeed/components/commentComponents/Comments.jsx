@@ -17,6 +17,7 @@ import {
   onChangeComment,
   updateQuestion,
 } from "../../../common/features/qfeed/qfeedSlice";
+import DiscussionAd from "../adsComponents/DiscussionAd";
 
 const Comments = ({
   match,
@@ -99,6 +100,8 @@ const Comments = ({
 
   return (
     <div className="bg-background pt-2">
+      <DiscussionAd />
+
       <div className="bg-white">
         <AddComment
           onChange={handleChange}

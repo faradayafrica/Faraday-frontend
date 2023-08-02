@@ -9,6 +9,7 @@ import ask from "../assets/ask.svg";
 import "../styles/qfeed.css";
 import QuestionsLoader from "./QuestionsLoader";
 import uuid from "react-uuid";
+import QfeedSlider from "../components/adsComponents/QfeedSlider.jsx";
 
 const TimeLine = (props) => {
   const [scrollPosition, setScrollPosition] = useState([]);
@@ -51,8 +52,9 @@ const TimeLine = (props) => {
         <h1 className="text-cente md:!text-left text-2xl sm:text-2xl m-3 font-bold">
           Question Feed
         </h1>
-        {/* The questions */}
 
+        <QfeedSlider />
+        {/* The questions */}
         <>
           {questions?.length ? (
             <div className="space-y-1 sm:space-y-0 bg-background">
