@@ -222,12 +222,13 @@ const AddSchoolDetail = () => {
     spinner.classList.remove("vanish");
 
     try {
-      // console.log("Final Payload", data);
       await auth.updateSchoolDetail(data);
+      await auth.refreshJwt();
       progress?.classList.add("progress-75");
       spinner?.classList.add("vanish");
 
-      setRedirect(true);
+      // setRedirect(true);
+      window.location.replace("/");
 
       // window.location.replace("/update-personal-data");
     } catch (ex) {
@@ -257,7 +258,6 @@ const AddSchoolDetail = () => {
 
   return (
     <div className="login-page">
-      {redirect && <Redirect to="/update-personal-data" />}
       {/* the spinner */}
       <div id="spinnerContainer" className="spinner-container vanish">
         <Myspinner />

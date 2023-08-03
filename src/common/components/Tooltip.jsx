@@ -8,10 +8,10 @@ const Modal = ({ visible, icon, title, message, cancel }) => {
     setTimeout(() => {
       gsap.fromTo(
         modal.current,
-        { y: +50, opacity: 0.5 },
+        { y: +50, opacity: 0 },
         { y: 0, opacity: 1, ease: "power2.inOut" }
       );
-    }, 200);
+    }, 100);
   }, [visible]);
 
   return (
