@@ -23,8 +23,8 @@ import DiscussionAd from "../components/adsComponents/DiscussionAd";
 
 const DiscussionPage = ({ match, history }) => {
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = '//fast.wistia.net/labs/fresh-url/v1.js';
+    const script = document.createElement("script");
+    script.src = "//fast.wistia.net/labs/fresh-url/v1.js";
     script.async = true;
     document.body.appendChild(script);
 

@@ -126,7 +126,14 @@ export async function LoadingToast(message) {
   });
 }
 
-export default {
+// Create an object to hold the named exports
+const toastMethods = {
   ErrorToast,
   SuccessToast,
+  NotificationToast,
+  PromiseToast,
+  LoadingToast,
 };
+
+// Export the object
+export default toastMethods;
