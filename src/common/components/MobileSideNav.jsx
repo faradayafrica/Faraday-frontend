@@ -19,7 +19,7 @@ import "../styles/topnav.css";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "./PrimaryButton";
 import AlertBadge from "./AlertBadge";
-import { updateProfile } from "../features/qfeed/qfeedSlice";
+import logo from "../../common/assets/logo.svg";
 
 function MobileSideNav() {
   const [isQfeed, setQfeed] = useState();
@@ -113,6 +113,13 @@ function MobileSideNav() {
   //   }
   // });
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <div className="mobile-sidenav">
@@ -132,6 +139,15 @@ function MobileSideNav() {
                   title="mobile-sidenav"
                   onClick={handleMobileMenuClick}
                   src={menu}
+                  alt="reveal sidebar"
+                />
+
+                <img
+                  className="p-3 rounded-xl w-28 cursor-pointer"
+                  data-toggle="tooltip"
+                  title="Faraday"
+                  onClick={scrollToTop}
+                  src={logo}
                   alt="reveal sidebar"
                 />
 
@@ -163,15 +179,21 @@ function MobileSideNav() {
               </>
             </div>
           ) : (
-            <div className="p-2 rounded-lg border bg-background  text-center flex justify-between justify-items-center">
-              <p className="font-bold m-0 my-auto">Faraday Guest Mode</p>
+            <div className="ask-shadow nav-container rounded-xl bg-white flex justify-between p-3">
+              <img
+                className=" rounded-xl w-24 cursor-pointer"
+                data-toggle="tooltip"
+                title="Faraday"
+                onClick={scrollToTop}
+                src={logo}
+                alt="reveal sidebar"
+              />
               <Link to={`/login`} style={{ textDecoration: "none" }}>
                 <PrimaryButton>Login</PrimaryButton>
               </Link>
             </div>
           )}
         </div>
-
         {/* fixed bottom nav for mobile */}
         {isProfile && (
           <div
@@ -200,7 +222,6 @@ function MobileSideNav() {
             </Link>
           </div>
         )}
-
         {/* The Mobile Slide in side nav */}
         <div className="side">
           <div className="side-container">
