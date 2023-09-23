@@ -145,7 +145,7 @@ class ConfirmEmail extends Form {
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             <div className="form-group log" style={{ marginTop: "1.5rem" }}>
               <div className="form-group log">
-                <label className="sr-only " htmlFor="email">
+                <label className="sr-only" htmlFor="email">
                   email
                 </label>
                 <input
@@ -155,6 +155,7 @@ class ConfirmEmail extends Form {
                   name="email"
                   id="email"
                   className="form-control static-input rounded-lg"
+                  style={{ paddingLeft: "1rem" }}
                 />
               </div>
             </div>

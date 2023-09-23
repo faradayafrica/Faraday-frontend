@@ -32,25 +32,29 @@ const DiscussionAd = () => {
           fetchNextPage();
         });
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 
   useEffect(() => {
-    if (!discussionAds.url) {
+    if (!discussionAds?.link) {
       fetchData();
     }
   }, []);
 
   return (
-    <div className="discussion-ad-wrapper">
-      <a href={discussionAds?.link} target="_blank" rel="noreferrer">
-        <img
-          src={discussionAds?.discussion_design[0]?.url}
-          alt={discussionAds?.discussion_design[0]?.advertiser_name}
-        />
-      </a>
-    </div>
+    <>
+      {discussionAds.link && (
+        <div className="discussion-ad-wrapper">
+          <a href={discussionAds?.link} target="_blank" rel="noreferrer">
+            <img
+              src={discussionAds?.discussion_design[0]?.url}
+              alt={discussionAds?.discussion_design[0]?.advertiser_name}
+            />
+          </a>
+        </div>
+      )}
+    </>
   );
 };
 

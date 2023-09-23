@@ -82,11 +82,13 @@ class LoginPage extends Form {
       spinner.classList.add("vanish");
 
       const user = auth.getCurrentUser();
-      if (user.email_verified) {
+      if (user?.email_verified && user?.edu_verified) {
         window.location = redirectUrl ?? "/";
-      } else {
+      } else if (!user?.email_verified) {
         auth.resendEmailConfirmation();
         this.setState({ ...this.state, redirect: "/confirm-email" });
+      } else {
+        this.setState({ ...this.state, redirect: "/update-school-detail" });
       }
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
