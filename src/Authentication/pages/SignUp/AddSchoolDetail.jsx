@@ -343,7 +343,7 @@ const AddSchoolDetail = () => {
           </div>
         </form>
 
-        <div
+        {/* <div
           className="mx-auto text-center mt-3 text-md"
           style={{ maxWidth: "425px", alignText: "center" }}
         >
@@ -356,7 +356,7 @@ const AddSchoolDetail = () => {
               </span>
             </NavLink>{" "}
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
