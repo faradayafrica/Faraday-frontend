@@ -24,14 +24,18 @@ const QfeedSlider = () => {
         .select({ view: "Grid view" })
         .eachPage((records, fetchNextPage) => {
           // setAds(records);
-          dispatch(addFeedAds(records.map((record) => record?.fields)));
-          dispatch(
-            addDisccussionAds(
-              records
-                .filter((record) => record?.fields?.discussion_active === true)
-                .map((record) => record?.fields)[0]
-            )
-          );
+          if (records.length) {
+            dispatch(addFeedAds(records.map((record) => record?.fields)));
+            dispatch(
+              addDisccussionAds(
+                records
+                  .filter(
+                    (record) => record?.fields?.discussion_active === true
+                  )
+                  .map((record) => record?.fields)[0]
+              )
+            );
+          }
           fetchNextPage();
         });
     } catch (e) {
@@ -40,7 +44,9 @@ const QfeedSlider = () => {
   }
 
   useEffect(() => {
-    fetchData();
+    if (!feedAds.length) {
+      fetchData();
+    }
   }, []);
 
   //   const handleDragStart = (e) => e.preventDefault();
@@ -50,15 +56,17 @@ const QfeedSlider = () => {
   //   ));
 
   return (
-    <div className="ad-hero-wrapper">
-      <a href={feedAds[0]?.link} target="_blank" rel="noreferrer">
-        <img
-          src={feedAds[0]?.feed_design[0]?.url}
-          alt={feedAds[0]?.advertiser_name}
-        />
-      </a>
+    <>
+      {!!feedAds.length && (
+        <div className="ad-hero-wrapper">
+          <a href={feedAds[0]?.link} target="_blank" rel="noreferrer">
+            <img
+              src={feedAds[0]?.feed_design[0]?.url}
+              alt={feedAds[0]?.advertiser_name}
+            />
+          </a>
 
-      {/* <AliceCarousel
+          {/* <AliceCarousel
         mouseTracking
         animationDuration
         // autoWidth
@@ -68,7 +76,9 @@ const QfeedSlider = () => {
         disableDotsControls
         items={ads}
       /> */}
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -11,6 +11,8 @@ const DiscussionAd = () => {
   const dispatch = useDispatch();
   const { discussionAds } = useSelector((state) => state.ads);
 
+  console.log(discussionAds);
+
   const base = new Airtable({
     apiKey: process.env.REACT_APP_AIRTABLE_API_KEY,
   }).base(process.env.REACT_APP_AIRTABLE_BASE);
@@ -37,20 +39,24 @@ const DiscussionAd = () => {
   }
 
   useEffect(() => {
-    if (!discussionAds.url) {
+    if (!discussionAds?.link) {
       fetchData();
     }
   }, []);
 
   return (
-    <div className="discussion-ad-wrapper">
-      <a href={discussionAds?.link} target="_blank" rel="noreferrer">
-        <img
-          src={discussionAds?.discussion_design[0]?.url}
-          alt={discussionAds?.discussion_design[0]?.advertiser_name}
-        />
-      </a>
-    </div>
+    <>
+      {discussionAds.link && (
+        <div className="discussion-ad-wrapper">
+          <a href={discussionAds?.link} target="_blank" rel="noreferrer">
+            <img
+              src={discussionAds?.discussion_design[0]?.url}
+              alt={discussionAds?.discussion_design[0]?.advertiser_name}
+            />
+          </a>
+        </div>
+      )}
+    </>
   );
 };
 
