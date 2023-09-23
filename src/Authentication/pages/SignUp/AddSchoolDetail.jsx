@@ -21,6 +21,7 @@ import {
   fetchSchoolThunk,
 } from "../../../common/features/auth/univastSlice";
 import { UnivastStates } from "../../../common/features/auth/univastSlice";
+import { NavLink } from "react-router-dom/cjs/react-router-dom";
 
 const filterData = (query, lists) =>
   query === ""
@@ -326,6 +327,21 @@ const AddSchoolDetail = () => {
             <PrimaryButton cta="Next" disabled={validate()} wide />
           </div>
         </form>
+
+        <div
+          className="mx-auto text-center mt-3 text-md"
+          style={{ maxWidth: "425px", alignText: "center" }}
+        >
+          <p>
+            Couldn't find your school data?
+            <NavLink to={"/"} style={{ textDecoration: "none" }}>
+              {" "}
+              <span className="icon-container-secondary link-brand bubbly-button">
+                Skip
+              </span>
+            </NavLink>{" "}
+          </p>
+        </div>
       </div>
     </div>
   );
