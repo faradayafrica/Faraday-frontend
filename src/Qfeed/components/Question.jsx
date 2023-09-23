@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { useHistory } from "react-router-dom";
 // import ReactMarkdown from "react-markdown";
 import http from "../../common/services/httpService";
@@ -10,6 +10,7 @@ import {
   voteQuestionThunk,
 } from "../../common/features/qfeed/qfeedSlice";
 import QuestionComponent from "./QuestionComponent";
+import { removeRichTextFormatting } from "../../common/utils/helpers";
 
 const Question = (props) => {
   const { question } = props;
@@ -17,7 +18,9 @@ const Question = (props) => {
   const [echoMenu, setEchoMenu] = useState(false);
   const [isCopyLinkModal, setCopyLinkModal] = useState(false);
   const [isCopied, setCopied] = useState(false);
-  const [shortLink, setShortLink] = useState(props.question.short_link);
+  const [shortLink, setShortLink] = useState(
+    props.question.short_link || props.question?.original?.short_link
+  );
   const [disclaimer, setDisclaimer] = useState(false);
 
   const history = useHistory();
@@ -45,7 +48,6 @@ const Question = (props) => {
     setCopyLinkModal(!isCopyLinkModal);
     setCopied(false);
   };
-
   const getShortLink = (id) => {
     const original_url = process.env.REACT_APP_URL + `qfeed/${id}`;
     const questionsClone = [...questions];
@@ -54,10 +56,26 @@ const Question = (props) => {
     );
 
     if (!shortLink) {
+      console.log("Fa", !shortLink, shortLink);
       try {
         http
           .post("https://frda.me/api/shorten/", {
             original_url,
+            metacheck: true,
+            metatitle:
+              question.type === "echo"
+                ? question?.original?.title
+                : question?.title,
+            metadesc: removeRichTextFormatting(
+              question.type === "echo"
+                ? question?.original?.content
+                : question?.content
+            ),
+            metaimageurl:
+              question.type === "echo"
+                ? question?.original?.sharing_image
+                : question?.sharing_image,
+            metaimage: "",
           })
           .then((resp) => {
             http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {

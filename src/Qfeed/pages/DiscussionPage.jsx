@@ -20,6 +20,7 @@ import { useLayoutEffect } from "react";
 import QService from "../../common/features/qfeed/QfeedServices";
 import DiscussionQuestion from "../components/DiscusstionQuestion";
 import DiscussionAd from "../components/adsComponents/DiscussionAd";
+import { removeRichTextFormatting } from "../../common/utils/helpers";
 
 const DiscussionPage = ({ match, history }) => {
   useEffect(() => {
@@ -70,6 +71,21 @@ const DiscussionPage = ({ match, history }) => {
         http
           .post("https://frda.me/api/shorten/", {
             original_url,
+            meta_check: true,
+            meta_title:
+              question.type === "echo"
+                ? question?.original?.title
+                : question.title,
+            meta_desc: removeRichTextFormatting(
+              question.type === "echo"
+                ? question?.original?.content
+                : question.content
+            ),
+            meta_image_url:
+              question.type === "echo"
+                ? question?.original?.sharing_image
+                : question.sharing_image,
+            meta_image: "",
           })
           .then((resp) => {
             http.post(process.env.REACT_APP_API_URL + "/qfeed/que/shorten/", {
