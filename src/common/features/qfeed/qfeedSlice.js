@@ -359,6 +359,20 @@ const qfeedSlice = createSlice({
         });
       }
 
+      // This is for Echo question
+      if (index === -1) {
+        _questions.forEach((question) => {
+          if (question.type === "echo" && question.original.id === questionid) {
+            question.original = {
+              ...question.original,
+              vote_rank: value.rank,
+              vote_status: value.status,
+            };
+            return question;
+          }
+        });
+      }
+
       // Update for Profile Questions
       const _profile_questions = state.feed.profile.userQuestions;
       let _profileQuestionIndex = _profile_questions.findIndex(
@@ -680,9 +694,14 @@ const qfeedSlice = createSlice({
 
       if (data) {
         // Updates the qfeed Home
-        const newFeed = state.feed.qfeed.map((question) =>
-          question.id === data.id ? data : question
-        );
+        const newFeed = state.feed.qfeed.map((question) => {
+          if (question.type === "echo" && question.original.id === data.id) {
+            question.original = data;
+            return question;
+          }
+
+          return question.id === data.id ? data : question;
+        });
         state.feed.qfeed = newFeed;
 
         // Updates the profile question feed
@@ -989,14 +1008,23 @@ const qfeedSlice = createSlice({
         // Update comment count on the discussion page
         state.thisQuestion.question.comments =
           state.thisQuestion.question.comments + 1;
+        state.thisQuestion.question.comment_count += 1;
 
         // Update comment count on that question on qfeed home
         const newFeed = state.feed.qfeed;
-        const question = newFeed.find(
-          (q) => q.id === state.thisQuestion.question.id
-        );
+        const question = newFeed.find((q) => {
+          if (q.type === "echo") {
+            return q.original.id === state.thisQuestion.question.id;
+          }
+          return q.id === state.thisQuestion.question.id;
+        });
         if (question) {
-          question.comments = question.comments + 1;
+          if (question.type === "echo") {
+            question.original.comment_count += 1;
+          } else {
+            question.comments = question.comments + 1; // I don't think this is correct
+            question.comment_count += 1;
+          }
         }
         state.feed.qfeed = newFeed;
 

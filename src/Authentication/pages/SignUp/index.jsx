@@ -3,7 +3,6 @@ import Form from "../../components/Form";
 import Myspinner from "../../../common/components/Spinner";
 import faraday from "../../../common/assets/logo.svg";
 import Joi from "joi-browser";
-import { Link } from "react-router-dom";
 import { Redirect } from "react-router";
 import UserContext from "../../context/userContext";
 import { connect } from "react-redux";
@@ -28,6 +27,7 @@ class SignUpPage extends Form {
     errorMessage: null,
     redirect: null,
     showPassword: false,
+    showErrors: false,
   };
 
   componentDidMount() {
@@ -36,15 +36,26 @@ class SignUpPage extends Form {
   }
 
   schema = {
-    fname: Joi.string().alphanum().required().label("First name"),
-    lname: Joi.string().alphanum().required().label("Last name"),
+    fname: Joi.string()
+      .min(3)
+      .max(30)
+      .regex(/^[A-Za-z0-9]+(?:\s+[A-Za-z0-9]+)*\s*$/)
+      .required()
+      .label("First name"),
+
+    lname: Joi.string()
+      .min(3)
+      .max(30)
+      .regex(/^[A-Za-z0-9\s]+$/)
+      .required()
+      .label("Last name"),
+
     username: Joi.string()
-      .alphanum()
       .min(3)
       .max(30)
       .required()
       .label("Username")
-      .regex(/^\s*\w+(?:[^\w,]+\w+)*[^,\w]*$/),
+      .regex(/^[A-Za-z0-9]+(?:\s+[A-Za-z0-9]+)*\s*$/),
     email: Joi.string().email().required().label("Email"),
     password: Joi.string().min(8).required().label("Password"),
   };

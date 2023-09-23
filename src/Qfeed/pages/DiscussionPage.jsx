@@ -22,6 +22,16 @@ import DiscussionQuestion from "../components/DiscusstionQuestion";
 import DiscussionAd from "../components/adsComponents/DiscussionAd";
 
 const DiscussionPage = ({ match, history }) => {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "//fast.wistia.net/labs/fresh-url/v1.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   const [url, setUrl] = useState(match.params.id);
   const [loader, setLoader] = useState(true);
 

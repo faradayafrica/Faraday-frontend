@@ -21,17 +21,17 @@
   ## 🎈 Project Faraday
   Say hello to campus-wide engagement with Faraday. Explore the Faraday app. Discover students to engage, learn and connect with at https://app.faraday.africa. 
  
- ![screenshot of Faraday website](https://github.com/faradayafrica/Faraday-frontend/assets/90288585/78449ebc-9f9e-46c8-b85d-645c8c354e47)
+![Faraday Github](https://github.com/faradayafrica/Faraday-frontend/assets/56418363/ef61e509-3c58-4b23-9613-282ba34faafb)
  <br><br><br>
 
  ## 🏞️ Project Figma
- The figma design for this project can be found [here](https://www.figma.com/file/GmdqdKpgeXsuNo7WoF1xNq/User-Interface?type=design&t=KMqiSeuVA3qv1MH0-1).
+ The Figma design for this project can be found [here](https://www.figma.com/file/GmdqdKpgeXsuNo7WoF1xNq/User-Interface?type=design&t=KMqiSeuVA3qv1MH0-1).
  <br><br>
  
  ## 🏠 File Architecture
 This is a React.js project bootstrapped with create-react-app.
 
-In this project, the file architecture used is known as `Architecture by Feature`, the react app is structured around specific features/ user stories.  Here's a good resource for File architecture for React application if you are unfamiliar:
+In this project, the file architecture used is known as `Architecture by Feature`, the react app is structured around specific features/ user stories.  Here's a good resource for File architecture for React applications if you are unfamiliar:
 
 - [React Architecture: File Structure for Scalable projects](https://kingslee.hashnode.dev/file-structure-for-scalable-projects#heading-architecture-by-feature)
 
@@ -59,5 +59,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing by modifying the `JS files`. The page on the browser auto-updates as you save the file.
 <br><br>
-## Community
-Got Questions? Join the conversation in our [Telegram](https://t.me/+Ekm9DS5Ucb5mMmQ0).
+
+# Contributing
+**Pre-requisites:**
+- Create an account on the [Development/Staging environment](https://app-staging.faraday.africa)
+- Join the [Contributor Program](https://frda.me/become-a-contributor) so we can add you to the team of contributors in the Faraday GitHub organization.
+
+**Next;**
+- Read our [Code of Conduct](https://github.com/faradayafrica/.github/code_of_conduct.md)
+- Read our [General Guide to Contributing](https://github.com/faradayafrica/.github/contributing.md)
+- Get started Contributing, we can't wait to see what you have for us.
+
+# Community
+Got Questions or something to share that isn't an issue? Start a [discussion](https://github.com/faradayafrica/Faraday-frontend/discussions/new/choose).
