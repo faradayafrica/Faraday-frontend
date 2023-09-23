@@ -181,7 +181,7 @@ function MobileSideNav() {
           ) : (
             <div className="ask-shadow nav-container rounded-xl bg-white flex justify-between p-3">
               <img
-                className=" rounded-xl w-24 cursor-pointer"
+                className="p-1 rounded-xl w-24 cursor-pointer"
                 data-toggle="tooltip"
                 title="Faraday"
                 onClick={scrollToTop}

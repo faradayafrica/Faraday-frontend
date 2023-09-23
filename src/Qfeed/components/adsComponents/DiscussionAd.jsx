@@ -11,8 +11,6 @@ const DiscussionAd = () => {
   const dispatch = useDispatch();
   const { discussionAds } = useSelector((state) => state.ads);
 
-  console.log(discussionAds);
-
   const base = new Airtable({
     apiKey: process.env.REACT_APP_AIRTABLE_API_KEY,
   }).base(process.env.REACT_APP_AIRTABLE_BASE);
@@ -34,7 +32,7 @@ const DiscussionAd = () => {
           fetchNextPage();
         });
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 

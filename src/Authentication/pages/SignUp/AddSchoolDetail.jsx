@@ -228,6 +228,7 @@ const AddSchoolDetail = () => {
 
     try {
       // console.log("Final Payload", data);
+      await auth.refreshJwt();
       await auth.updateSchoolDetail(data);
       progress?.classList.add("progress-75");
       spinner?.classList.add("vanish");
@@ -237,19 +238,10 @@ const AddSchoolDetail = () => {
       // window.location.replace("/update-personal-data");
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
-        // const errors = { ...this.state.errors };
-        // errors.school = "Something went wrong, try again later";
-        // this.setState({ errors });
         spinner.classList.add("vanish");
       } else if (ex.response && ex.response.status === 401) {
-        // const errors = { ...this.state.errors };
-        // errors.school = `There's an auth error`;
-        // this.setState({ errors });
         spinner.classList.add("vanish");
       } else {
-        // const errors = { ...this.state.errors };
-        // errors.school = "Check your internet connection and try again";
-        // this.setState({ errors });
       }
       spinner.classList.add("vanish");
     }
@@ -257,7 +249,7 @@ const AddSchoolDetail = () => {
 
   return (
     <div className="login-page">
-      {redirect && <Redirect to="/update-personal-data" />}
+      {redirect && <Redirect to="/" />}
       {/* the spinner */}
       <div id="spinnerContainer" className="spinner-container vanish">
         <Myspinner />

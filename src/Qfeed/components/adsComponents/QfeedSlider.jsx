@@ -39,7 +39,7 @@ const QfeedSlider = () => {
           fetchNextPage();
         });
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 
