@@ -167,13 +167,7 @@ function MobileSideNav() {
                       alt="profile"
                     />
                   ) : (
-                    <img
-                      className="p-3 rounded-xl cursor-pointer"
-                      data-toggle="tooltip"
-                      title="view profile"
-                      src={profile}
-                      alt="profile"
-                    />
+                    <div className="h-10 w-10 m-2 rounded-full cursor-pointer border border-1 bg-slate-200 animate-pulse"></div>
                   )}
                 </Link>
               </>
