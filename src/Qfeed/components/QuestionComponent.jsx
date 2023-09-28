@@ -101,7 +101,7 @@ function QuestionComponent({
   );
   // console.log(question, type);
   return (
-    <div className="relative">
+    <div className="question-card">
       <QuestionMenu
         questionMenu={questionMenu}
         question={question}

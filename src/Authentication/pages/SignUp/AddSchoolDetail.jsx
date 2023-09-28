@@ -13,6 +13,8 @@ import PrimaryButton from "../../../common/components/PrimaryButton";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCountryThunk } from "../../../common/features/auth/univastSlice";
 import { UnivastStates } from "../../../common/features/auth/univastSlice";
+import { NavLink } from "react-router-dom/cjs/react-router-dom";
+
 import TipModal from "../../../common/components/Tooltip";
 import tooltipicon from "../../assets/Mouse.svg";
 import "../../styles/form.css";
@@ -222,8 +224,8 @@ const AddSchoolDetail = () => {
     spinner.classList.remove("vanish");
 
     try {
-      await auth.updateSchoolDetail(data);
       await auth.refreshJwt();
+      await auth.updateSchoolDetail(data);
       progress?.classList.add("progress-75");
       spinner?.classList.add("vanish");
 
@@ -233,19 +235,10 @@ const AddSchoolDetail = () => {
       // window.location.replace("/update-personal-data");
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
-        // const errors = { ...this.state.errors };
-        // errors.school = "Something went wrong, try again later";
-        // this.setState({ errors });
         spinner.classList.add("vanish");
       } else if (ex.response && ex.response.status === 401) {
-        // const errors = { ...this.state.errors };
-        // errors.school = `There's an auth error`;
-        // this.setState({ errors });
         spinner.classList.add("vanish");
       } else {
-        // const errors = { ...this.state.errors };
-        // errors.school = "Check your internet connection and try again";
-        // this.setState({ errors });
       }
       spinner.classList.add("vanish");
     }
@@ -258,6 +251,7 @@ const AddSchoolDetail = () => {
 
   return (
     <div className="login-page">
+      {redirect && <Redirect to="/" />}
       {/* the spinner */}
       <div id="spinnerContainer" className="spinner-container vanish">
         <Myspinner />
@@ -348,6 +342,21 @@ const AddSchoolDetail = () => {
             <PrimaryButton cta="Next" disabled={validate()} wide />
           </div>
         </form>
+
+        {/* <div
+          className="mx-auto text-center mt-3 text-md"
+          style={{ maxWidth: "425px", alignText: "center" }}
+        >
+          <p>
+            Couldn't find your school data?
+            <NavLink to={"/"} style={{ textDecoration: "none" }}>
+              {" "}
+              <span className="icon-container-secondary link-brand bubbly-button">
+                Skip
+              </span>
+            </NavLink>{" "}
+          </p>
+        </div> */}
       </div>
     </div>
   );

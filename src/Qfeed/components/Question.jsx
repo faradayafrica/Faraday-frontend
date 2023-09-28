@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 // import ReactMarkdown from "react-markdown";
 import http from "../../common/services/httpService";
@@ -21,6 +21,8 @@ const Question = (props) => {
   const [disclaimer, setDisclaimer] = useState(false);
 
   const history = useHistory();
+
+  const qref = useRef();
 
   const dispatch = useDispatch();
   const { qfeed: questions } = useSelector((state) => state.qfeed.feed);
@@ -103,36 +105,38 @@ const Question = (props) => {
   }
 
   return (
-    <QuestionComponent
-      type={
-        question.type === "echo"
-          ? question.type
-          : question.type === "pen"
-          ? "pen"
-          : question.type
-      }
-      user={
-        question.type === "echo" || question.type === "pen"
-          ? question.user
-          : null
-      }
-      question={question.type === "echo" ? question.original : question}
-      setQuestionMenu={setQuestionMenu}
-      handleLike={handleLike}
-      handleEcho={handleEcho}
-      handleCopyLinkModal={handleCopyLinkModal}
-      getShortLink={getShortLink}
-      isCopyLinkModal={isCopyLinkModal}
-      isCopied={isCopied}
-      shortLink={shortLink}
-      handleIsCopied={handleIsCopied}
-      questionMenu={questionMenu}
-      toggleQuestionMenu={toggleQuestionMenu}
-      handleQuestionDelete={handleQuestionDelete}
-      echoMenu={echoMenu}
-      setEchoMenu={setEchoMenu}
-      discussionPage={false}
-    />
+    <div>
+      <QuestionComponent
+        type={
+          question.type === "echo"
+            ? question.type
+            : question.type === "pen"
+            ? "pen"
+            : question.type
+        }
+        user={
+          question.type === "echo" || question.type === "pen"
+            ? question.user
+            : null
+        }
+        question={question.type === "echo" ? question.original : question}
+        setQuestionMenu={setQuestionMenu}
+        handleLike={handleLike}
+        handleEcho={handleEcho}
+        handleCopyLinkModal={handleCopyLinkModal}
+        getShortLink={getShortLink}
+        isCopyLinkModal={isCopyLinkModal}
+        isCopied={isCopied}
+        shortLink={shortLink}
+        handleIsCopied={handleIsCopied}
+        questionMenu={questionMenu}
+        toggleQuestionMenu={toggleQuestionMenu}
+        handleQuestionDelete={handleQuestionDelete}
+        echoMenu={echoMenu}
+        setEchoMenu={setEchoMenu}
+        discussionPage={false}
+      />
+    </div>
   );
 };
 
