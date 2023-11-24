@@ -21,14 +21,20 @@ export default function swDev() {
   }
 
   let swUrl = `${process.env.PUBLIC_URL}/sw.js`;
-  navigator.serviceWorker.register(swUrl).then((response) => {
-    console.warn("response", response);
+  console.log(swUrl);
+  navigator.serviceWorker.register(swUrl).then(
+    (response) => {
+      console.log("Service Worker Registered", response);
 
-    return response.pushManager.getSubscription().then(function (subscription) {
-      response.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: determineAppServerKey(),
+      return response.pushManager.getSubscription().then((subscription) => {
+        return response.pushManager.subscribe({
+          userVisibleOnly: false,
+          applicationServerKey: determineAppServerKey(),
+        });
       });
-    });
-  });
+    },
+    (error) => {
+      console.log("Service Worker Registration Failed", error);
+    }
+  );
 }
