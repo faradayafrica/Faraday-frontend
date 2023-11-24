@@ -9,7 +9,7 @@
   "description": "Where students connect, learn, and innovate together.",
   "icons": [
     {
-      "src": "./maskable.png",
+      "src": "maskable.png",
       "sizes": "192x192",
       "type": "image/png"
     },
