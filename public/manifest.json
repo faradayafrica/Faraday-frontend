@@ -3,7 +3,7 @@
   "background_color": "#05b851",
   "display": "standalone",
   "scope": "/",
-  "start_url": "/",
+  "start_url": "/?utm_source=pwa",
   "name": "Faraday Africa",
   "short_name": "Faraday",
   "description": "Where students connect, learn, and innovate together.",
