@@ -12,7 +12,7 @@ this.addEventListener("install", (event) => {
         "/index.html",
         "/",
         "/users",
-        "src/",
+        "../src/",
       ]);
     })
   );
@@ -45,26 +45,26 @@ this.addEventListener("fetch", (event) => {
   }
 });
 
-// Periodic Sync
-this.addEventListener("periodicsync", (event) => {
-  if (event.tag === "myPeriodicSync") {
-    event.waitUntil(doPeriodicSync());
-  }
-});
+// // Periodic Sync
+// this.addEventListener("periodicsync", (event) => {
+//   if (event.tag === "myPeriodicSync") {
+//     event.waitUntil(doPeriodicSync());
+//   }
+// });
 
-function doPeriodicSync() {
-  // Perform your periodic sync logic here
-  console.log("Periodic sync executed");
-}
+// function doPeriodicSync() {
+//   // Perform your periodic sync logic here
+//   console.log("Periodic sync executed");
+// }
 
-// Background Sync
-this.addEventListener("sync", (event) => {
-  if (event.tag === "myBackgroundSync") {
-    event.waitUntil(doBackgroundSync());
-  }
-});
+// // Background Sync
+// this.addEventListener("sync", (event) => {
+//   if (event.tag === "myBackgroundSync") {
+//     event.waitUntil(doBackgroundSync());
+//   }
+// });
 
-function doBackgroundSync() {
-  // Perform your background sync logic here
-  console.log("Background sync executed");
-}
+// function doBackgroundSync() {
+//   // Perform your background sync logic here
+//   console.log("Background sync executed");
+// }
