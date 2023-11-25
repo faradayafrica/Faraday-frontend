@@ -18,22 +18,6 @@ this.addEventListener("install", (event) => {
   );
 });
 
-this.addEventListener("activate", (event) => {
-  const cacheWhitelist = [cacheData];
-
-  event.waitUntil(
-    caches.keys().then((cacheNames) =>
-      Promise.all(
-        cacheNames.map((cacheName) => {
-          if (!cacheWhitelist.includes(cacheName)) {
-            return caches.delete(cacheName);
-          }
-        })
-      )
-    )
-  );
-});
-
 this.addEventListener("fetch", (event) => {
   if (!navigator.onLine) {
     if (event.request.url === "http://localhost:3000/static/js/main.chunk.js") {
@@ -60,3 +44,27 @@ this.addEventListener("fetch", (event) => {
     }
   }
 });
+
+// Periodic Sync
+this.addEventListener("periodicsync", (event) => {
+  if (event.tag === "myPeriodicSync") {
+    event.waitUntil(doPeriodicSync());
+  }
+});
+
+function doPeriodicSync() {
+  // Perform your periodic sync logic here
+  console.log("Periodic sync executed");
+}
+
+// Background Sync
+this.addEventListener("sync", (event) => {
+  if (event.tag === "myBackgroundSync") {
+    event.waitUntil(doBackgroundSync());
+  }
+});
+
+function doBackgroundSync() {
+  // Perform your background sync logic here
+  console.log("Background sync executed");
+}
