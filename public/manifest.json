@@ -458,7 +458,10 @@
     }
   ],
   "orientation": "portrait",
-  "display_override": ["standalone", "fullscreen"],
+  "display_override": ["standalone", "fullscreen", "window-controls-overlay"],
   "categories": ["books", "education", "productivity", "social"],
-  "dir": "auto"
+  "dir": "auto",
+  "prefer_related_applications": false,
+  "lang": "en",
+  "id": "3TmdAMgks2jHt89i%r"
 }
