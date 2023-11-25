@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { NotificationToast } from "../../components/CustomToast";
 import alertSound from "../../../common/assets/sound/alert1.wav";
+import { updateBadge } from "../../../utils";
 
 export const NotificationStates = {
   BASE: "base",
@@ -38,12 +39,14 @@ const notificationSlice = createSlice({
         state.unreadCount = state.unreadCount + 1;
       } else {
         state.unreadCount = value?.notification_count;
+        updateBadge(state.unreadCount);
         // console.log("VALUE", value);
       }
     },
 
     resetReadCount: (state) => {
       state.unreadCount = 0;
+      updateBadge(state.unreadCount);
     },
   },
 });
