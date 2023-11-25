@@ -7,6 +7,28 @@
   "name": "Faraday Africa",
   "short_name": "Faraday",
   "description": "Where students connect, learn, and innovate together.",
+  "orientation": "portrait",
+  "display_override": ["standalone", "fullscreen", "window-controls-overlay"],
+  "categories": ["books", "education", "productivity", "social"],
+  "dir": "auto",
+  "lang": "en",
+  "id": "3TmdAMgks2jHt89i%r",
+  "shortcuts": [
+    {
+      "name": "Question Feed",
+      "short_name": "QFeed",
+      "url": "/qfeed",
+      "description": "Qfeed is a place where students can ask questions and get answers from other students.",
+      "icons": [
+        {
+          "src": "assets/shortcut_icons/qfeed.png",
+          "type": "image/png",
+          "purpose": "any"
+        }
+      ]
+    }
+  ],
+  "handle_links": "preferred",
   "icons": [
     {
       "src": "assets/windows11/SmallTile.scale-100.png",
@@ -456,31 +478,5 @@
       "src": "assets/ios/1024.png",
       "sizes": "1024x1024"
     }
-  ],
-  "orientation": "portrait",
-  "display_override": ["standalone", "fullscreen", "window-controls-overlay"],
-  "categories": ["books", "education", "productivity", "social"],
-  "dir": "auto",
-  "prefer_related_applications": false,
-  "lang": "en",
-  "id": "3TmdAMgks2jHt89i%r",
-  "edge_side_panel": {
-    "preferred_width": 0
-  },
-  "shortcuts": [
-    {
-      "name": "Question Feed",
-      "short_name": "QFeed",
-      "url": "/qfeed",
-      "description": "Qfeed is a place where students can ask questions and get answers from other students.",
-      "icons": [
-        {
-          "src": "assets/shortcut_icons/qfeed.png",
-          "type": "image/png",
-          "purpose": "any"
-        }
-      ]
-    }
-  ],
-  "handle_links": "preferred"
+  ]
 }
