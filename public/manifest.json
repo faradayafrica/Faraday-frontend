@@ -463,5 +463,8 @@
   "dir": "auto",
   "prefer_related_applications": false,
   "lang": "en",
-  "id": "3TmdAMgks2jHt89i%r"
+  "id": "3TmdAMgks2jHt89i%r",
+  "edge_side_panel": {
+    "preferred_width": 0
+  }
 }
