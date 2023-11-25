@@ -7,9 +7,8 @@ import App from "./App";
 import { Provider } from "react-redux";
 import store from "./common/store/index.js";
 
-// import swDev from "./swDev";
+import swDev from "./swDev";
 
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 export const queryClient = new QueryClient();
 
 ReactDOM.render(
@@ -23,5 +22,4 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-// swDev();
-serviceWorkerRegistration.register();
+swDev();
