@@ -481,5 +481,6 @@
         }
       ]
     }
-  ]
+  ],
+  "handle_links": "preferred"
 }
