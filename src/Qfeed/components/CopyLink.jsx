@@ -2,8 +2,15 @@ import Loader from "../../common/components/Loader";
 import closeImg from "../assets/close.svg";
 import copy from "../assets/copy.svg";
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
 import { SuccessToast } from "../../common/components/CustomToast";
+import { ShareQuestion } from "./QuestionComponent";
+import copy2 from "../assets/copy-2.svg";
+import link from "../assets/link.svg";
+import { Fragment } from "react";
+import gsap from "gsap";
+import SecondaryButton from "../../common/components/SecondaryButton";
+import PrimaryButton from "../../common/components/PrimaryButton";
+import { Dialog, Transition } from "@headlessui/react";
 
 const CopyLink = (props) => {
   const {
@@ -12,6 +19,7 @@ const CopyLink = (props) => {
     isCopied,
     toggleCopyLinkModal,
     handleIsCopied,
+    questionProp,
   } = props;
 
   const copy_modal = useRef();
@@ -61,7 +69,7 @@ const CopyLink = (props) => {
               onClick={() => handleCopyLinkModal()}
               className=" fixed h-screen w-full"
             ></div>
-            <div className="w-[28rem] bg-white rounded-xl border ask-shadow p-2 relative my-24 mx-8 sm:mx-4  ">
+            <div className="w-[52rem] bg-white rounded-xl border ask-shadow p-6 relative my-24 mx-8 sm:mx-4  ">
               <button
                 onClick={() => handleCopyLinkModal()}
                 className="p-2 right-1 top-1 absolute rounded-lg hover:bg-danger-highlight hover:hot-shadow hidden sm:block"
@@ -69,43 +77,61 @@ const CopyLink = (props) => {
                 <img src={closeImg} alt="close modal" />
               </button>
 
-              <div className="px-2 py-3">
-                <h5 className="font-semibold">Here's a link to the question</h5>
-                {shortLink ? (
-                  <>
-                    <p className="text-faraday-night opacity-70 text-sm mb-4 mt-2">
-                      Copy this link and share with people you want to see the
-                      question.
-                    </p>
-                    <div className="p-2 bg-background rounded-lg flex items-center justify-between">
-                      {/* <span id="link">{`https://frda.me/${shortLink}`}</span> */}
+              <div className="grid md:grid-cols-2 gap-2">
+                <div className="relative px-8 py-28 bg-[linear-gradient(101deg,#FEECD4_-2.93%,_#F4FBF3_53.9%,#D6F8EE_100%)] rounded-md">
+                  <ShareQuestion questionProp={questionProp} />
 
-                      <input
-                        id="link"
-                        value={`https://frda.me/${shortLink}`}
-                        className="bg-transparent text-sm w-full"
-                        readOnly
-                      />
-
-                      {isCopied ? (
-                        <span className="p-2 rounded-lg">Copied!</span>
-                      ) : (
-                        <button className="w-10 h-10 p-2 rounded-lg hover:bg-background2">
-                          <img
-                            src={copy}
-                            className=""
-                            onClick={() => copyQuestionLink()}
-                            alt="copy"
-                          />
-                        </button>
-                      )}
-                    </div>
-                  </>
-                ) : (
-                  <div className="mt-4">
-                    <Loader />
+                  <div className="absolute bottom-[40px] left-0 right-0 border-2 border-[#35C567]  text-[#35C567] text-center rounded-md max-w-[120px] mx-auto bg-white p-2">
+                    <p className="text-[10px] font-bold">Join the Cool Club</p>
+                    <p className="text-[6px]">https://www.app.faraday.africa</p>
                   </div>
-                )}
+                </div>
+                <div className="px-2 py-3">
+                  <h5 className="font-semibold">Share Question</h5>
+                  {shortLink ? (
+                    <>
+                      <p className="text-faraday-night opacity-70 text-sm mb-4 mt-2">
+                        Share your question on social media to help more people
+                        find it. Copy the short URL below or download and share
+                        the question shot!
+                      </p>
+                      <div className="p-2 bg-background rounded-lg flex items-center justify-between mb-4">
+                        {/* <span id="link">{`https://frda.me/${shortLink}`}</span> */}
+                        <img src={link} className="" alt="copy" />
+
+                        <input
+                          id="link"
+                          value={`https://frda.me/${shortLink}`}
+                          className="bg-transparent text-sm w-full mx-1"
+                          readOnly
+                        />
+
+                        {isCopied ? (
+                          <span className="p-2 rounded-lg">Copied!</span>
+                        ) : (
+                          <button className="w-10 h-10 p-2 rounded-lg bg-white">
+                            <img
+                              src={copy2}
+                              className=""
+                              onClick={() => copyQuestionLink()}
+                              alt="copy"
+                            />
+                          </button>
+                        )}
+                      </div>
+
+                      <button className="px-4 py-[7px] sm:py-[9px] rounded-lg font-semibold text-white bg-[#011945] hover:bg-faraday-night-hover cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:pointer-events-none w-full">
+                        Download Image
+                      </button>
+
+                      {/* <PrimaryButton wide>Download Image</PrimaryButton> */}
+                    </>
+                  ) : (
+                    <div className="mt-4">
+                      <Loader />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
