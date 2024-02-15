@@ -1,7 +1,7 @@
 import Loader from "../../common/components/Loader";
 import closeImg from "../assets/close.svg";
 import copy from "../assets/copy.svg";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { SuccessToast } from "../../common/components/CustomToast";
 import { ShareQuestion } from "./QuestionComponent";
 import copy2 from "../assets/copy-2.svg";
@@ -11,6 +11,7 @@ import gsap from "gsap";
 import SecondaryButton from "../../common/components/SecondaryButton";
 import PrimaryButton from "../../common/components/PrimaryButton";
 import { Dialog, Transition } from "@headlessui/react";
+import { toPng } from "html-to-image";
 
 const CopyLink = (props) => {
   const {
@@ -23,6 +24,7 @@ const CopyLink = (props) => {
   } = props;
 
   const copy_modal = useRef();
+  const share_node = useRef(null);
 
   const handleCopyLinkModal = () => {
     gsap.fromTo(
@@ -44,6 +46,23 @@ const CopyLink = (props) => {
       );
     }, 200);
   }, [isCopyLinkModal]);
+
+  const handleDownload = useCallback(() => {
+    if (share_node.current === null) {
+      return;
+    }
+
+    toPng(share_node.current, { cacheBust: true })
+      .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = `${questionProp.question.title}`;
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [share_node]);
 
   const copyQuestionLink = () => {
     const copyText = document.getElementById("link");
@@ -78,7 +97,10 @@ const CopyLink = (props) => {
               </button>
 
               <div className="grid md:grid-cols-2 gap-2">
-                <div className="relative px-8 py-28 bg-[linear-gradient(101deg,#FEECD4_-2.93%,_#F4FBF3_53.9%,#D6F8EE_100%)] rounded-md">
+                <div
+                  ref={share_node}
+                  className="relative px-8 py-28 bg-[linear-gradient(101deg,#FEECD4_-2.93%,_#F4FBF3_53.9%,#D6F8EE_100%)] rounded-md"
+                >
                   <ShareQuestion questionProp={questionProp} />
 
                   <div className="absolute bottom-[40px] left-0 right-0 border-2 border-[#35C567]  text-[#35C567] text-center rounded-md max-w-[120px] mx-auto bg-white p-2">
@@ -120,10 +142,6 @@ const CopyLink = (props) => {
                         )}
                       </div>
 
-                      <button className="px-4 py-[7px] sm:py-[9px] rounded-lg font-semibold text-white bg-[#011945] hover:bg-faraday-night-hover cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:pointer-events-none w-full">
-                        Download Image
-                      </button>
-
                       {/* <PrimaryButton wide>Download Image</PrimaryButton> */}
                     </>
                   ) : (
@@ -131,6 +149,13 @@ const CopyLink = (props) => {
                       <Loader />
                     </div>
                   )}
+
+                  <button
+                    onClick={handleDownload}
+                    className="mt-3 px-4 py-[7px] sm:py-[9px] rounded-lg font-semibold text-white bg-[#011945] hover:bg-faraday-night-hover cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:pointer-events-none w-full"
+                  >
+                    Download Image
+                  </button>
                 </div>
               </div>
             </div>

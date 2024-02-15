@@ -476,7 +476,23 @@ function QuestionComponent({
 
 export default memo(QuestionComponent);
 
-export function PinnedQuestion({ question }) {
+export function PinnedQuestion({ question, isShare }) {
+  const Question = (
+    <>
+      <h3 className="text-base font-semibold m-0 mb-1 md:text-lg">
+        {question?.title}
+      </h3>
+      {/* Question body --optional */}
+
+      {question?.original && question?.content && (
+        <div
+          className="mb-4 text-sm text-faraday-night render truncate-render"
+          style={{ marginTop: 0 }}
+          dangerouslySetInnerHTML={{ __html: question?.content }}
+        />
+      )}
+    </>
+  );
   return (
     <div
       style={{ borderLeft: "3px solid #BFC9D2" }}
@@ -492,51 +508,28 @@ export function PinnedQuestion({ question }) {
         <span className="mr-2 ">@{question?.user.username} </span>{" "}
         <span>{moment(question?.created).fromNow()}</span>
       </p>
-      <Link
-        to={`/qfeed/${question?.id}`}
-        style={{ textDecoration: "none" }}
-        className={`text-night-secondary hover:text-faraday-night `}
-      >
-        <h3 className="text-base font-semibold m-0 mb-1 md:text-lg">
-          {question?.title}
-        </h3>
-        {/* Question body --optional */}
-
-        {question?.original && question?.content && (
-          <div
-            className="mb-4 text-sm text-faraday-night render truncate-render"
-            style={{ marginTop: 0 }}
-            dangerouslySetInnerHTML={{ __html: question?.content }}
-          />
-        )}
-      </Link>
+      {isShare ? (
+        <div className={`text-night-secondary hover:text-faraday-night `}>
+          {Question}
+        </div>
+      ) : (
+        <Link
+          to={`/qfeed/${question?.id}`}
+          style={{ textDecoration: "none" }}
+          className={`text-night-secondary hover:text-faraday-night `}
+        >
+          {Question}
+        </Link>
+      )}
     </div>
   );
 }
 
 export function ShareQuestion({ questionProp }) {
   const { history, type, user, question, discussionPage } = questionProp;
-  // console.log(question)
   const [isPennedOpen, setIsPennedOpen] = React.useState(false);
-  // console.log(type, question.type);
 
   const dispatch = useDispatch();
-
-  const handleLike = async (postid, vote) => {
-    if (token === null || token === undefined) {
-      return history.push(`/login?redirect=${window.origin}/qfeed/${postid}`);
-    }
-
-    if (vote === "downvote") {
-      dispatch(voteQuestionThunk({ postid, value: "downvote" }));
-    } else {
-      dispatch(voteQuestionThunk({ postid }));
-    }
-  };
-
-  function handleEcho(ques_id) {
-    dispatch(echoQuestionThunk({ ques_id }));
-  }
 
   const QuestionBodyComp = (
     <>
@@ -588,13 +581,13 @@ export function ShareQuestion({ questionProp }) {
             <BroadCastIcon className="w-3 h-3" />
             <span>
               echoed by{" "}
-              <Link
-                to={`/me/${user.username}`}
+              <span
+                // to={`/me/${user.username}`}
                 style={{ textDecoration: "none" }}
                 className="text-faraday-night hover:text-faraday-night "
               >
                 @{user.username}
-              </Link>
+              </span>
             </span>
           </div>
         )}
@@ -751,12 +744,11 @@ export function ShareQuestion({ questionProp }) {
                 </>
               </div>
 
-              {/* We need to do for pinned question */}
-              {/* {type === "pen" ? (
+              {type === "pen" ? (
                 <>
-                  <PinnedQuestion question={question.original} />
+                  <PinnedQuestion question={question.original} isShare />
                 </>
-              ) : null} */}
+              ) : null}
 
               <div className="action-bar mt-4 pt-2">
                 <div
@@ -764,7 +756,7 @@ export function ShareQuestion({ questionProp }) {
                     discussionPage ? "mx-auto" : ""
                   }`}
                 >
-                  <button className=" items-center gap-2 disabled:text-gray-400 disabled:cursor-not-allowed">
+                  <div className=" items-center gap-2">
                     <BroadCastIcon
                       stroke={
                         type === "echo" || type === "pen"
@@ -773,21 +765,21 @@ export function ShareQuestion({ questionProp }) {
                       }
                       className="w-3"
                     />
-                  </button>
-                  <button className="w-3">
+                  </div>
+                  <div className="w-3">
                     {question.vote_status === "upvote" ? (
                       <img src={upvoteActive} alt="helpful" />
                     ) : (
                       <img src={upvote} alt="helpful" />
                     )}
-                  </button>
-                  <button className="w-3">
+                  </div>
+                  <div className="w-3">
                     {question.vote_status === "downvote" ? (
                       <img src={downvoteActive} alt="not helpful" />
                     ) : (
                       <img src={downvote} alt="not helpful" />
                     )}
-                  </button>
+                  </div>
 
                   {Boolean(question.has_solution) ? (
                     <SolvedIcon className="w-3" />
@@ -795,9 +787,9 @@ export function ShareQuestion({ questionProp }) {
                     <img src={replyImg} alt="reply" className="w-3" />
                   )}
 
-                  <button className="flex gap-2 items-center mr-2 md:mr-0">
+                  <div className="flex gap-2 items-center mr-2 md:mr-0">
                     <ShareIcon className="w-3" />
-                  </button>
+                  </div>
                 </div>
               </div>
             </section>
