@@ -1,10 +1,11 @@
 import Loader from "../../common/components/Loader";
 import closeImg from "../assets/close.svg";
 import copy from "../assets/copy.svg";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SuccessToast } from "../../common/components/CustomToast";
 import { ShareQuestion } from "./QuestionComponent";
 import copy2 from "../assets/copy-2.svg";
+import checked from "../assets/check.svg";
 import link from "../assets/link.svg";
 import { Fragment } from "react";
 import gsap from "gsap";
@@ -25,6 +26,11 @@ const CopyLink = (props) => {
 
   const copy_modal = useRef();
   const share_node = useRef(null);
+  const [isChecked, setIsChecked] = useState("one");
+
+  const handleChecked = (ev) => {
+    setIsChecked(ev.target.value);
+  };
 
   const handleCopyLinkModal = () => {
     gsap.fromTo(
@@ -97,19 +103,71 @@ const CopyLink = (props) => {
               </button>
 
               <div className="grid md:grid-cols-2 gap-2">
-                <div
-                  ref={share_node}
-                  className="relative px-8 py-28 bg-[linear-gradient(101deg,#FEECD4_-2.93%,_#F4FBF3_53.9%,#D6F8EE_100%)] rounded-md"
-                >
-                  <ShareQuestion questionProp={questionProp} />
+                <div>
+                  <div
+                    ref={share_node}
+                    className={`relative px-8 py-28 ${
+                      isChecked === "one"
+                        ? "bg-[linear-gradient(101deg,#FEECD4_-2.93%,_#F4FBF3_53.9%,#D6F8EE_100%)]"
+                        : isChecked === "two"
+                        ? "bg-[#F1FBEF]"
+                        : "bg-[#FDF1DF]"
+                    }  rounded-md`}
+                  >
+                    <ShareQuestion questionProp={questionProp} />
 
-                  <div className="absolute bottom-[40px] left-0 right-0 border-2 border-[#35C567]  text-[#35C567] text-center rounded-md max-w-[120px] mx-auto bg-white p-2">
-                    <p className="text-[10px] font-bold">Join the Cool Club</p>
-                    <p className="text-[6px]">https://www.app.faraday.africa</p>
+                    <div className="absolute bottom-[40px] left-0 right-0 border-2 border-[#35C567]  text-[#35C567] text-center rounded-md max-w-[120px] mx-auto bg-white p-2">
+                      <p className="text-[10px] font-bold">
+                        Join the Cool Club
+                      </p>
+                      <p className="text-[6px]">
+                        https://www.app.faraday.africa
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-1 justify-center mt-4">
+                    <label htmlFor="one" className="flex ">
+                      <input
+                        id="one"
+                        type="radio"
+                        name="share-gradient"
+                        className="peer/one appearance-none "
+                        value={"one"}
+                        onChange={handleChecked}
+                      />
+                      <div className=" peer-checked/one:border-2 peer-checked/one:border-brand bg-[linear-gradient(101deg,#FEECD4_-2.93%,_#F4FBF3_53.9%,#D6F8EE_100%)] w-3 h-3 rounded-full"></div>
+                    </label>
+
+                    <label htmlFor="two" className="flex ">
+                      <input
+                        id="two"
+                        type="radio"
+                        name="share-gradient"
+                        className="peer/two appearance-none "
+                        checked={isChecked.two}
+                        value={"two"}
+                        onChange={handleChecked}
+                      />
+                      <div className="peer-checked/two:border-2 peer-checked/two:border-brand bg-[#F1FBEF] w-3 h-3 rounded-full"></div>
+                    </label>
+
+                    <label htmlFor="three" className="flex ">
+                      <input
+                        id="three"
+                        type="radio"
+                        name="share-gradient"
+                        className="peer/three appearance-none "
+                        value={"three"}
+                        onChange={handleChecked}
+                      />
+                      <div className="peer-checked/three:border-2 peer-checked/three:border-brand bg-[#FEECD4] w-3 h-3 rounded-full"></div>
+                    </label>
                   </div>
                 </div>
+
                 <div className="px-2 py-3">
-                  <h5 className="font-semibold">Share Question</h5>
+                  <h5 className="font-bold">Share Question</h5>
                   {shortLink ? (
                     <>
                       <p className="text-faraday-night opacity-70 text-sm mb-4 mt-2">
@@ -117,19 +175,25 @@ const CopyLink = (props) => {
                         find it. Copy the short URL below or download and share
                         the question shot!
                       </p>
-                      <div className="p-2 bg-background rounded-lg flex items-center justify-between mb-4">
+                      <div
+                        className={`p-2 ${
+                          isCopied ? "bg-[#F1FBEF]" : "bg-[#F7F7F7]"
+                        } rounded-lg flex items-center justify-between mb-4`}
+                      >
                         {/* <span id="link">{`https://frda.me/${shortLink}`}</span> */}
                         <img src={link} className="" alt="copy" />
 
                         <input
                           id="link"
                           value={`https://frda.me/${shortLink}`}
-                          className="bg-transparent text-sm w-full mx-1"
+                          className={`bg-transparent  text-sm w-full mx-1 font-bold text-[#6C757D]`}
                           readOnly
                         />
 
                         {isCopied ? (
-                          <span className="p-2 rounded-lg">Copied!</span>
+                          <button className="w-10 h-10 p-2">
+                            <img src={checked} className="" alt="checked" />
+                          </button>
                         ) : (
                           <button className="w-10 h-10 p-2 rounded-lg bg-white">
                             <img
