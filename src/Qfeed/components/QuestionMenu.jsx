@@ -86,10 +86,7 @@ const QuestionMenu = ({
 
   return (
     <>
-      <Menu
-        as="div"
-        className="relative inline-block text-left hidden md:block"
-      >
+      <Menu as="div" className="relative  text-left hidden md:inline-block">
         <div>
           <Menu.Button className="hover:bg-brand-highlight cursor-pointer rounded-md">
             <EllipsesIcon className="w-6 h-6 rounded-full m-1 " />
