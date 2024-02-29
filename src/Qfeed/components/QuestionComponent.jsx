@@ -102,12 +102,6 @@ function QuestionComponent({
   // console.log(question, type);
   return (
     <div className="question-card">
-      <QuestionMenu
-        questionMenu={questionMenu}
-        question={question}
-        toggleQuestionMenu={toggleQuestionMenu}
-        onDeleteQuestion={handleQuestionDelete}
-      />
       <EchoMenu
         question={question}
         echoMenu={echoMenu}
@@ -166,93 +160,95 @@ function QuestionComponent({
             )}
             <section className=" p-0 w-full">
               <div className=" pr-2 relative">
-                <div className="flex items-center">
-                  {/* Profile details */}
-                  {discussionPage === true && (
-                    <Link
-                      to={
-                        token === null || token === undefined
-                          ? `/login?redirect=${window.origin}/qfeed/${question.id}`
-                          : `/me/${question?.user.username}`
-                      }
-                      style={{ textDecoration: "none" }}
-                      className="mr-2 cursor-pointer"
-                    >
-                      <img
-                        src={question?.user.profile_pic}
-                        className="w-10 h-10 rounded-full bg-background2"
-                        style={{
-                          objectFit: "cover",
-                          border: "1px solid #cfd9de",
-                        }}
-                        alt=""
-                      />
-                    </Link>
-                  )}
-                  <div>
-                    <p className="flex m-0 text-night-secondary text-xs sm:text-sm justify-between">
-                      {discussionPage === false && (
-                        <Link
-                          to={
-                            token === null || token === undefined
-                              ? `/login?redirect=${window.origin}/qfeed/${question.id}`
-                              : `/me/${question?.user.username}`
-                          }
-                          style={{ textDecoration: "none" }}
-                          className="min-w-[18px] h-auto mr-1 cursor-pointer  md:hidden"
-                        >
-                          <img
-                            src={question?.user.profile_pic}
-                            className="w-6 rounded-full bg-background2"
-                            style={{
-                              objectFit: "cover",
-                              border: "1px solid #cfd9de",
-                            }}
-                            alt=""
-                          />
-                        </Link>
-                      )}
-                      <div className="">
-                        <div className="flex ">
-                          <span className=" font-semibold text-faraday-night shorten">
-                            {question?.user.firstname} {question?.user.lastname}{" "}
-                          </span>
-                          <span className="mr-1">
-                            {question?.user.account_verified && (
-                              <img
-                                src={verify}
-                                className="h-[14px] w-[14px] sm:h-5 sm:w-5 ml-1"
-                                alt=""
-                              />
-                            )}
-                          </span>
-                          <span className="mr-1 ">
-                            @{question?.user.username}{" "}
-                          </span>{" "}
-                          {discussionPage === false && (
-                            <span className="shorten-time">
-                              {moment(question?.created).fromNow()}
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center">
+                    {/* Profile details */}
+                    {discussionPage === true && (
+                      <Link
+                        to={
+                          token === null || token === undefined
+                            ? `/login?redirect=${window.origin}/qfeed/${question.id}`
+                            : `/me/${question?.user.username}`
+                        }
+                        style={{ textDecoration: "none" }}
+                        className="mr-2 cursor-pointer"
+                      >
+                        <img
+                          src={question?.user.profile_pic}
+                          className="w-10 h-10 rounded-full bg-background2"
+                          style={{
+                            objectFit: "cover",
+                            border: "1px solid #cfd9de",
+                          }}
+                          alt=""
+                        />
+                      </Link>
+                    )}
+                    <div>
+                      <p className="flex m-0 text-night-secondary text-xs sm:text-sm justify-between">
+                        {discussionPage === false && (
+                          <Link
+                            to={
+                              token === null || token === undefined
+                                ? `/login?redirect=${window.origin}/qfeed/${question.id}`
+                                : `/me/${question?.user.username}`
+                            }
+                            style={{ textDecoration: "none" }}
+                            className="min-w-[18px] h-auto mr-1 cursor-pointer  md:hidden"
+                          >
+                            <img
+                              src={question?.user.profile_pic}
+                              className="w-6 rounded-full bg-background2"
+                              style={{
+                                objectFit: "cover",
+                                border: "1px solid #cfd9de",
+                              }}
+                              alt=""
+                            />
+                          </Link>
+                        )}
+                        <div className="">
+                          <div className="flex ">
+                            <span className=" font-semibold text-faraday-night shorten">
+                              {question?.user.firstname}{" "}
+                              {question?.user.lastname}{" "}
                             </span>
-                          )}
+                            <span className="mr-1">
+                              {question?.user.account_verified && (
+                                <img
+                                  src={verify}
+                                  className="h-[14px] w-[14px] sm:h-5 sm:w-5 ml-1"
+                                  alt=""
+                                />
+                              )}
+                            </span>
+                            <span className="mr-1 ">
+                              @{question?.user.username}{" "}
+                            </span>{" "}
+                            {discussionPage === false && (
+                              <span className="shorten-time">
+                                {moment(question?.created).fromNow()}
+                              </span>
+                            )}
+                          </div>
+                          <p className="m-0 text-night-secondary text-xs  flex align-middle ">
+                            {/* <img src={love} className="h-4 w-4 object-fill" alt="" /> */}
+                            <span className="min-h-4">
+                              {question?.user?.department}
+                            </span>
+                          </p>
                         </div>
-                        <p className="m-0 text-night-secondary text-xs  flex align-middle ">
-                          {/* <img src={love} className="h-4 w-4 object-fill" alt="" /> */}
-                          <span className="min-h-4">
-                            {question?.user?.department}
-                          </span>
-                        </p>
-                      </div>
-                    </p>
+                      </p>
+                    </div>
                   </div>
 
-                  <button
-                    className=" hover:bg-brand-highlight cursor-pointer absolute right-1 top-[-8px] rounded-md"
-                    onClick={() => {
-                      setQuestionMenu(!questionMenu);
-                    }}
-                  >
-                    <EllipsesIcon className="w-6 h-6 rounded-full m-1 " />
-                  </button>
+                  <QuestionMenu
+                    questionMenu={questionMenu}
+                    question={question}
+                    toggleQuestionMenu={toggleQuestionMenu}
+                    onDeleteQuestion={handleQuestionDelete}
+                    setQuestionMenu={setQuestionMenu}
+                  />
                 </div>
 
                 <div className="mt-4">
