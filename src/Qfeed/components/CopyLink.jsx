@@ -13,6 +13,8 @@ import SecondaryButton from "../../common/components/SecondaryButton";
 import PrimaryButton from "../../common/components/PrimaryButton";
 import { Dialog, Transition } from "@headlessui/react";
 import { toPng } from "html-to-image";
+import { ReactComponent as DownloadIcon } from "../assets/download.svg";
+import { ReactComponent as FaradayLogo } from "../../common/assets/logo2.svg";
 
 const CopyLink = (props) => {
   const {
@@ -106,7 +108,7 @@ const CopyLink = (props) => {
                 <div>
                   <div
                     ref={share_node}
-                    className={`relative px-8 py-28 ${
+                    className={`relative px-8 pb-28 ${
                       isChecked === "one"
                         ? "bg-[linear-gradient(101deg,#FEECD4_-2.93%,_#F4FBF3_53.9%,#D6F8EE_100%)]"
                         : isChecked === "two"
@@ -114,15 +116,26 @@ const CopyLink = (props) => {
                         : "bg-[#FDF1DF]"
                     }  rounded-md`}
                   >
-                    <ShareQuestion questionProp={questionProp} />
+                    <div className="pb-8 pt-16 flex justify-center">
+                      <FaradayLogo
+                        fill={
+                          isChecked === "one" || isChecked === "three"
+                            ? "#605647"
+                            : "#4AA848"
+                        }
+                      />
+                    </div>
+
+                    <ShareQuestion
+                      questionProp={questionProp}
+                      shortLink={shortLink}
+                    />
 
                     <div className="absolute bottom-[40px] left-0 right-0 border-2 border-[#35C567]  text-[#35C567] text-center rounded-md max-w-[120px] mx-auto bg-white p-2">
                       <p className="text-[10px] font-bold">
                         Join the Cool Club
                       </p>
-                      <p className="text-[6px]">
-                        https://www.app.faraday.africa
-                      </p>
+                      <p className="text-[6px]">https://app.faraday.africa</p>
                     </div>
                   </div>
 
@@ -166,11 +179,11 @@ const CopyLink = (props) => {
                   </div>
                 </div>
 
-                <div className="px-2 py-3">
+                <div className="px-2 py-3 flex justify-center flex-col ">
                   <h5 className="font-bold">Share Question</h5>
                   {shortLink ? (
                     <>
-                      <p className="text-faraday-night opacity-70 text-sm mb-4 mt-2">
+                      <p className="text-faraday-night opacity-70 text-sm mb-5 mt-2">
                         Share your question on social media to help more people
                         find it. Copy the short URL below or download and share
                         the question shot!
@@ -216,8 +229,9 @@ const CopyLink = (props) => {
 
                   <button
                     onClick={handleDownload}
-                    className="mt-3 px-4 py-[7px] sm:py-[9px] rounded-lg font-semibold text-white bg-[#011945] hover:bg-faraday-night-hover cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:pointer-events-none w-full"
+                    className=" flex justify-center items-center gap-2 px-4 py-[7px] sm:py-[9px] rounded-lg font-semibold text-white bg-[#011945] hover:bg-faraday-night-hover cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:pointer-events-none w-full"
                   >
+                    <DownloadIcon />
                     Download Image
                   </button>
                 </div>

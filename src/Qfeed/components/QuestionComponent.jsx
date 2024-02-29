@@ -23,6 +23,7 @@ import {
   voteQuestionThunk,
 } from "../../common/features/qfeed/qfeedSlice";
 import { useDispatch } from "react-redux";
+import link from "../assets/link.svg";
 
 const token = localStorage.getItem("token");
 
@@ -525,7 +526,7 @@ export function PinnedQuestion({ question, isShare }) {
   );
 }
 
-export function ShareQuestion({ questionProp }) {
+export function ShareQuestion({ questionProp, shortLink }) {
   const { history, type, user, question, discussionPage } = questionProp;
   const [isPennedOpen, setIsPennedOpen] = React.useState(false);
 
@@ -565,7 +566,7 @@ export function ShareQuestion({ questionProp }) {
   );
   // console.log(question, type);
   return (
-    <div className="question-card ">
+    <div className="question-card shadow-[0px_1.4019997119903564px_7.009998798370361px_0px_#0000000D]">
       <PennedModal
         question={question}
         isPennedOpen={isPennedOpen}
@@ -599,108 +600,7 @@ export function ShareQuestion({ questionProp }) {
           <div className={`flex justify-start items-start `}>
             <section className=" p-0 w-full">
               <div className=" pr-2 relative">
-                <div className="flex items-center">
-                  {discussionPage === false && (
-                    <div
-                      // to={
-                      //   token === null || token === undefined
-                      //     ? `/login?redirect=${window.origin}/qfeed/${question.id}`
-                      //     : `/me/${question?.user.username}`
-                      // }
-                      // style={{ textDecoration: "none" }}
-                      className="w-10 mr-2 cursor-pointer hidden md:block"
-                    >
-                      <img
-                        src={question?.user.profile_pic}
-                        className="w-10 h-10 rounded-full bg-background2"
-                        style={{
-                          objectFit: "cover",
-                          border: "1px solid #cfd9de",
-                        }}
-                        alt=""
-                      />
-                    </div>
-                  )}
-                  {/* Profile details */}
-                  {discussionPage === true && (
-                    <div
-                      // to={
-                      //   token === null || token === undefined
-                      //     ? `/login?redirect=${window.origin}/qfeed/${question.id}`
-                      //     : `/me/${question?.user.username}`
-                      // }
-                      // style={{ textDecoration: "none" }}
-                      className="mr-2 cursor-pointer"
-                    >
-                      <img
-                        src={question?.user.profile_pic}
-                        className="w-8 h-8 rounded-full bg-background2"
-                        style={{
-                          objectFit: "cover",
-                          border: "1px solid #cfd9de",
-                        }}
-                        alt=""
-                      />
-                    </div>
-                  )}
-                  <div>
-                    <p className="flex m-0 text-[6px] text-night-secondary text-xs sm:text-sm justify-between">
-                      {discussionPage === false && (
-                        <div
-                          // to={
-                          //   token === null || token === undefined
-                          //     ? `/login?redirect=${window.origin}/qfeed/${question.id}`
-                          //     : `/me/${question?.user.username}`
-                          // }
-                          style={{ textDecoration: "none" }}
-                          className="min-w-[18px] h-auto mr-1 cursor-pointer  md:hidden"
-                        >
-                          <img
-                            src={question?.user.profile_pic}
-                            className="w-6 rounded-full bg-background2"
-                            style={{
-                              objectFit: "cover",
-                              border: "1px solid #cfd9de",
-                            }}
-                            alt=""
-                          />
-                        </div>
-                      )}
-                      <div className="">
-                        <div className="flex text-[11px]">
-                          <span className=" font-semibold text-faraday-night">
-                            {question?.user.firstname} {question?.user.lastname}{" "}
-                          </span>
-                          <span className="mr-1">
-                            {question?.user.account_verified && (
-                              <img
-                                src={verify}
-                                className="h-[14px] w-[14px] sm:h-5 sm:w-5 ml-1"
-                                alt=""
-                              />
-                            )}
-                          </span>
-                          <span className="mr-1 ">
-                            @{question?.user.username}{" "}
-                          </span>{" "}
-                          {/* {discussionPage === false && (
-                            <span className="shorten-time">
-                              {moment(question?.created).fromNow()}
-                            </span>
-                          )} */}
-                        </div>
-                        <p className="m-0 text-night-secondary text-xs  flex align-middle ">
-                          {/* <img src={love} className="h-4 w-4 object-fill" alt="" /> */}
-                          <span className="min-h-4">
-                            {question?.user?.department}
-                          </span>
-                        </p>
-                      </div>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-4">
+                {/* <div className="mt-4">
                   {discussionPage === true
                     ? question.tags && (
                         <ul id="tags">
@@ -717,7 +617,7 @@ export function ShareQuestion({ questionProp }) {
                         </ul>
                       )
                     : null}
-                </div>
+                </div> */}
 
                 {/* <Modal
               icon={info}
@@ -750,47 +650,114 @@ export function ShareQuestion({ questionProp }) {
                 </>
               ) : null}
 
-              <div className="action-bar mt-4 pt-2">
-                <div
-                  className={`flex gap-2  items-center max-w-lg ${
-                    discussionPage ? "mx-auto" : ""
-                  }`}
-                >
-                  <div className=" items-center gap-2">
-                    <BroadCastIcon
-                      stroke={
-                        type === "echo" || type === "pen"
-                          ? "rgb(156 163 175 / 1)"
-                          : "#6C757D"
-                      }
-                      className="w-3"
-                    />
-                  </div>
-                  <div className="w-3">
-                    {question.vote_status === "upvote" ? (
-                      <img src={upvoteActive} alt="helpful" />
-                    ) : (
-                      <img src={upvote} alt="helpful" />
-                    )}
-                  </div>
-                  <div className="w-3">
-                    {question.vote_status === "downvote" ? (
-                      <img src={downvoteActive} alt="not helpful" />
-                    ) : (
-                      <img src={downvote} alt="not helpful" />
-                    )}
-                  </div>
-
-                  {Boolean(question.has_solution) ? (
-                    <SolvedIcon className="w-3" />
-                  ) : (
-                    <img src={replyImg} alt="reply" className="w-3" />
+              <div className="flex justify-between items-center ">
+                <div className="flex items-center mt-4">
+                  {discussionPage === false && (
+                    <div
+                      // to={
+                      //   token === null || token === undefined
+                      //     ? `/login?redirect=${window.origin}/qfeed/${question.id}`
+                      //     : `/me/${question?.user.username}`
+                      // }
+                      // style={{ textDecoration: "none" }}
+                      className=" mr-2 cursor-pointer hidden md:block"
+                    >
+                      <img
+                        src={question?.user.profile_pic}
+                        className="w-6 h-6 rounded-full bg-background2"
+                        style={{
+                          objectFit: "cover",
+                          border: "1px solid #cfd9de",
+                        }}
+                        alt=""
+                      />
+                    </div>
                   )}
-
-                  <div className="flex gap-2 items-center mr-2 md:mr-0">
-                    <ShareIcon className="w-3" />
+                  {/* Profile details */}
+                  {discussionPage === true && (
+                    <div
+                      // to={
+                      //   token === null || token === undefined
+                      //     ? `/login?redirect=${window.origin}/qfeed/${question.id}`
+                      //     : `/me/${question?.user.username}`
+                      // }
+                      // style={{ textDecoration: "none" }}
+                      className=" cursor-pointer"
+                    >
+                      <img
+                        src={question?.user.profile_pic}
+                        className="w-6 h-6 rounded-full bg-background2"
+                        style={{
+                          objectFit: "cover",
+                          border: "1px solid #cfd9de",
+                        }}
+                        alt=""
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <p className="flex m-0 text-[6px] text-night-secondary text-xs sm:text-sm justify-between">
+                      {discussionPage === false && (
+                        <div
+                          // to={
+                          //   token === null || token === undefined
+                          //     ? `/login?redirect=${window.origin}/qfeed/${question.id}`
+                          //     : `/me/${question?.user.username}`
+                          // }
+                          style={{ textDecoration: "none" }}
+                          className="min-w-[18px] h-auto mr-1 cursor-pointer  md:hidden"
+                        >
+                          <img
+                            src={question?.user.profile_pic}
+                            className="w-6 rounded-full bg-background2"
+                            style={{
+                              objectFit: "cover",
+                              border: "1px solid #cfd9de",
+                            }}
+                            alt=""
+                          />
+                        </div>
+                      )}
+                      <div className="text-[10px]">
+                        <div className="flex ">
+                          <span className=" font-semibold text-faraday-night">
+                            {question?.user.firstname} {question?.user.lastname}{" "}
+                          </span>
+                          <span className="mr-1">
+                            {question?.user.account_verified && (
+                              <img
+                                src={verify}
+                                className="h-[10px] w-[10px] sm:h-5 sm:w-4 ml-1"
+                                alt=""
+                              />
+                            )}
+                          </span>
+                          <span className="mr-1 ">
+                            @{question?.user.username}{" "}
+                          </span>{" "}
+                          {/* {discussionPage === false && (
+                            <span className="shorten-time">
+                              {moment(question?.created).fromNow()}
+                            </span>
+                          )} */}
+                        </div>
+                        <p className="m-0 leading-none text-night-secondary   flex align-middle ">
+                          {/* <img src={love} className="h-4 w-4 object-fill" alt="" /> */}
+                          <span className="min-h-4">
+                            {question?.user?.department}
+                          </span>
+                        </p>
+                      </div>
+                    </p>
                   </div>
                 </div>
+
+                {shortLink ? (
+                  <div className="text-[8px] self-end font-semibold bg-[#F8F9FA] p-1 leading-none rounded-md flex gap-1">
+                    <img src={link} className="w-[11px] h-[11px]" alt="copy" />
+                    frda.me/{shortLink}
+                  </div>
+                ) : null}
               </div>
             </section>
           </div>
