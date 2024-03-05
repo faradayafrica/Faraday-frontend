@@ -53,7 +53,7 @@ class LoginPage extends Form {
             {this.renderButton("Login")}
             <Link to="/forgot-password" style={{ textDecoration: "none" }}>
               <p className="text-sm mt-2 mb-0 text-night-secondary">
-                forgot password
+                forgot password hg
               </p>
             </Link>
           </form>
