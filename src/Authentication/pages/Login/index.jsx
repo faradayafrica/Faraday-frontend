@@ -5,6 +5,9 @@ import Form from "../../components/Form";
 import Joi from "joi-browser";
 import auth from "../../../common/services/authService";
 import faraday from "../../../common/assets/logo.svg";
+import { ReactComponent as FaradayLogo } from "../../../common/assets/logo-green.svg";
+import { ReactComponent as GoogleIcon } from "../../../common/assets/google.svg";
+import OrGoogle from "../../components/OrGoogle";
 
 class LoginPage extends Form {
   componentDidMount() {
@@ -36,12 +39,12 @@ class LoginPage extends Form {
         </div>
         <div className="form-container">
           <div className="logo-container ">
-            <img className="logo mx-auto" src={faraday} alt="faraday" />
+            <FaradayLogo className="mx-auto" />
           </div>
-          <h3 className="form-title">Welcome back</h3>{" "}
-          <p className="font-medium text-brand">
+          <h3 className="form-title">Sign In</h3>{" "}
+          {/* <p className="font-medium text-brand">
             to <span className="font-bold">Beta</span>
-          </p>
+          </p> */}
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             {this.renderInput("username", "Username or Email")}
@@ -51,11 +54,17 @@ class LoginPage extends Form {
               this.state.showPassword ? "" : "password"
             )}
             {this.renderButton("Login")}
-            <Link to="/forgot-password" style={{ textDecoration: "none" }}>
+            <Link
+              to="/forgot-password"
+              style={{ textDecoration: "none" }}
+              className="text-right"
+            >
               <p className="text-sm mt-2 mb-0 text-night-secondary">
-                forgot password hg
+                Forgot password
               </p>
             </Link>
+
+            <OrGoogle />
           </form>
         </div>
         {this.renderRedirectBtn("Sign up", "signup", "Don't have an account?")}

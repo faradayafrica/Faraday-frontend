@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "../../components/Form";
 import Myspinner from "../../../common/components/Spinner";
-import faraday from "../../../common/assets/logo.svg";
+import faraday from "../../../common/assets/logo-green.svg";
 import Joi from "joi-browser";
 import { Redirect } from "react-router";
 import UserContext from "../../context/userContext";
@@ -10,6 +10,8 @@ import { fetchSchoolThunk } from "../../../common/features/auth/univastSlice";
 
 import * as userService from "../../services/userService";
 import { ErrorToast } from "../../../common/components/CustomToast";
+import OrGoogle from "../../components/OrGoogle";
+import { Link } from "react-router-dom";
 
 class SignUpPage extends Form {
   static contextType = UserContext;
@@ -161,24 +163,17 @@ class SignUpPage extends Form {
             )} */}
             {/* </div> */}
 
+            <div className="text-xs">
+              <span>By clicking the sign up button, you agree to our </span>
+              <Link to="#" className="text-[#0043CE]">
+                User Condition and Privacy Policy
+              </Link>
+            </div>
+
             {this.renderButton("Sign up")}
           </form>
 
-          <p className="faraday-terms mt-2 text-[12px]">
-            By clicking the sign up button, you agree to our
-            {/* <Link
-              to="/terms-and-condition"
-              className="link-grey icon-container-secondary "
-            > */}{" "}
-            User Condition {/* </Link> */}
-            and
-            {/* <Link
-              to="/privacy-policy"
-              className="link-grey icon-container-secondary "
-            > */}{" "}
-            Privacy Policy
-            {/* </Link> */}
-          </p>
+          <OrGoogle />
         </div>
         {this.renderRedirectBtn("Login", "login", "Already have an account?")}
       </div>
