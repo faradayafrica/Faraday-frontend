@@ -596,68 +596,62 @@ export function ShareQuestion({ questionProp, shortLink }) {
           <div className={`flex justify-start items-start `}>
             <section className=" p-0 w-full">
               <div className=" pr-2 relative">
-                {/* <div className="mt-4">
-                  {discussionPage === true
-                    ? question.tags && (
-                        <ul id="tags">
-                          {question.tags
-                            .slice(0, question.tags.length)
-                            .map((item) => (
-                              <li
-                                key={uuid()}
-                                className="bg-[#ECECF0] mr-2 py-1 mb-2 px-2 rounded-md text-xs font-medium"
-                              >
-                                <span className="tag-title">{item.name}</span>
-                              </li>
-                            ))}
-                        </ul>
-                      )
-                    : null}
-                </div> */}
-
-                {/* <Modal
-              icon={info}
-              visible={disclaimer}
-              action={() => setDisclaimer(false)}
-              title={`Disclaimer`}
-              message={`Unless the account that created the question is the Faraday
-                  official account, we can't take responsibility for the comment
-                  marked as a solution.`}
-            /> */}
-
                 <>
                   <h3 className="text-sm font-semibold m-0 mb-1 md:text-lg">
                     {question?.title}
                   </h3>
-                  {/* Question body --optional */}
-                  {/* {question && question?.content && (
-                      <div
-                        className="mb-4 text-sm text-faraday-night render"
-                        style={{ marginTop: 0 }}
-                        dangerouslySetInnerHTML={{ __html: question.content }}
-                      />
-                    )} */}
                 </>
               </div>
 
               {type === "pen" ? (
                 <>
-                  <PinnedQuestion question={question.original} isShare />
+                  <div
+                    style={{ borderLeft: "3px solid #BFC9D2" }}
+                    className={`p-3 bg-background mt-2`}
+                  >
+                    <p className="flex flex-wrap m-0 text-night-secondary mb-1 text-[8px]  md:text-[10px]">
+                      <span className="mr-1 font-semibold text-night-secondary flex items-center">
+                        {question.original?.user.firstname}{" "}
+                        {question.original?.user.lastname}{" "}
+                        {question.original?.user.account_verified && (
+                          <img src={verify} className="h-2 w-2 ml-1" alt="" />
+                        )}
+                      </span>
+                      <span className="mr-1">
+                        @{question.original?.user.username}{" "}
+                      </span>{" "}
+                      <span>
+                        {moment(question.original?.created).fromNow()}
+                      </span>
+                    </p>
+
+                    <div
+                      className={`text-night-secondary hover:text-faraday-night `}
+                    >
+                      {/* {Question.original} */}
+                      <h3 className="text-sm font-semibold m-0 mb-1 md:text-base">
+                        {question?.original?.title}
+                      </h3>
+                      {/* Question body --optional */}
+
+                      {question?.original && question?.content && (
+                        <div
+                          className="mb-4 text-sm text-faraday-night render truncate-render"
+                          style={{ marginTop: 0 }}
+                          dangerouslySetInnerHTML={{
+                            __html: question?.content,
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
                 </>
               ) : null}
 
-              <div className="flex justify-between items-center ">
-                <div className="flex items-center mt-4">
+              <div className="flex flex-col gap-3 md:gap-0 md:flex-row justify-between items-center  mt-4">
+                <div className="flex items-center">
                   {discussionPage === false && (
-                    <div
-                      // to={
-                      //   token === null || token === undefined
-                      //     ? `/login?redirect=${window.origin}/qfeed/${question.id}`
-                      //     : `/me/${question?.user.username}`
-                      // }
-                      // style={{ textDecoration: "none" }}
-                      className=" mr-2 cursor-pointer hidden md:block"
-                    >
+                    <div className=" mr-2 cursor-pointer hidden md:block">
                       <img
                         src={question?.user.profile_pic}
                         className="w-6 h-6 rounded-full bg-background2"
@@ -671,15 +665,7 @@ export function ShareQuestion({ questionProp, shortLink }) {
                   )}
                   {/* Profile details */}
                   {discussionPage === true && (
-                    <div
-                      // to={
-                      //   token === null || token === undefined
-                      //     ? `/login?redirect=${window.origin}/qfeed/${question.id}`
-                      //     : `/me/${question?.user.username}`
-                      // }
-                      // style={{ textDecoration: "none" }}
-                      className=" cursor-pointer"
-                    >
+                    <div className=" cursor-pointer">
                       <img
                         src={question?.user.profile_pic}
                         className="w-6 h-6 rounded-full bg-background2"
@@ -695,11 +681,6 @@ export function ShareQuestion({ questionProp, shortLink }) {
                     <p className="flex m-0 text-[6px] text-night-secondary text-xs sm:text-sm justify-between">
                       {discussionPage === false && (
                         <div
-                          // to={
-                          //   token === null || token === undefined
-                          //     ? `/login?redirect=${window.origin}/qfeed/${question.id}`
-                          //     : `/me/${question?.user.username}`
-                          // }
                           style={{ textDecoration: "none" }}
                           className="min-w-[18px] h-auto mr-1 cursor-pointer  md:hidden"
                         >
@@ -715,7 +696,7 @@ export function ShareQuestion({ questionProp, shortLink }) {
                         </div>
                       )}
                       <div className="text-[10px]">
-                        <div className="flex ">
+                        <div className="flex items-center ">
                           <span className=" font-semibold text-faraday-night">
                             {question?.user.firstname} {question?.user.lastname}{" "}
                           </span>
@@ -731,13 +712,8 @@ export function ShareQuestion({ questionProp, shortLink }) {
                           <span className="mr-1 ">
                             @{question?.user.username}{" "}
                           </span>{" "}
-                          {/* {discussionPage === false && (
-                            <span className="shorten-time">
-                              {moment(question?.created).fromNow()}
-                            </span>
-                          )} */}
                         </div>
-                        <p className="m-0 leading-none text-night-secondary   flex align-middle ">
+                        <p className="m-0 leading-none text-night-secondary text-[8px]  flex align-middle ">
                           {/* <img src={love} className="h-4 w-4 object-fill" alt="" /> */}
                           <span className="min-h-4">
                             {question?.user?.department}
@@ -749,7 +725,7 @@ export function ShareQuestion({ questionProp, shortLink }) {
                 </div>
 
                 {shortLink ? (
-                  <div className="text-[8px] self-end font-semibold bg-[#F8F9FA] p-1 leading-none rounded-md flex gap-1">
+                  <div className="text-[8px] self-center font-semibold bg-[#F8F9FA] p-1 leading-none rounded-md flex gap-1">
                     <img src={link} className="w-[11px] h-[11px]" alt="copy" />
                     frda.me/{shortLink}
                   </div>
