@@ -1,5 +1,5 @@
 import moment from "moment";
-import React from "react";
+import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import CopyLink from "./CopyLink";
 import QuestionMenu from "./QuestionMenu";
@@ -23,6 +23,7 @@ import {
   voteQuestionThunk,
 } from "../../common/features/qfeed/qfeedSlice";
 import { useDispatch } from "react-redux";
+import link from "../assets/link.svg";
 
 const token = localStorage.getItem("token");
 
@@ -35,6 +36,7 @@ function QuestionComponent({
   handleCopyLinkModal,
   getShortLink,
   isCopyLinkModal,
+  setCopyLinkModal,
   isCopied,
   shortLink,
   handleIsCopied,
@@ -423,6 +425,7 @@ function QuestionComponent({
                   <button
                     onClick={() => {
                       handleCopyLinkModal();
+                      // setCopyLinkModal(true);
                       getShortLink(question.id);
                     }}
                     className="flex gap-2 items-center mr-2 md:mr-0"
@@ -435,10 +438,30 @@ function QuestionComponent({
 
               <CopyLink
                 isCopyLinkModal={isCopyLinkModal}
+                setCopyLinkModal={setCopyLinkModal}
                 isCopied={isCopied}
                 shortLink={shortLink}
                 toggleCopyLinkModal={handleCopyLinkModal}
                 handleIsCopied={handleIsCopied}
+                questionProp={{
+                  history,
+                  type,
+                  user,
+                  question,
+                  setQuestionMenu,
+                  handleCopyLinkModal,
+                  getShortLink,
+                  isCopyLinkModal,
+                  isCopied,
+                  shortLink,
+                  handleIsCopied,
+                  questionMenu,
+                  toggleQuestionMenu,
+                  handleQuestionDelete,
+                  echoMenu,
+                  setEchoMenu,
+                  discussionPage,
+                }}
               />
             </section>
           </div>
@@ -448,9 +471,25 @@ function QuestionComponent({
   );
 }
 
-export default QuestionComponent;
+export default memo(QuestionComponent);
 
-export function PinnedQuestion({ question }) {
+export function PinnedQuestion({ question, isShare }) {
+  const Question = (
+    <>
+      <h3 className="text-base font-semibold m-0 mb-1 md:text-lg">
+        {question?.title}
+      </h3>
+      {/* Question body --optional */}
+
+      {question?.original && question?.content && (
+        <div
+          className="mb-4 text-sm text-faraday-night render truncate-render"
+          style={{ marginTop: 0 }}
+          dangerouslySetInnerHTML={{ __html: question?.content }}
+        />
+      )}
+    </>
+  );
   return (
     <div
       style={{ borderLeft: "3px solid #BFC9D2" }}
@@ -466,24 +505,236 @@ export function PinnedQuestion({ question }) {
         <span className="mr-2 ">@{question?.user.username} </span>{" "}
         <span>{moment(question?.created).fromNow()}</span>
       </p>
-      <Link
-        to={`/qfeed/${question?.id}`}
-        style={{ textDecoration: "none" }}
-        className={`text-night-secondary hover:text-faraday-night `}
-      >
-        <h3 className="text-base font-semibold m-0 mb-1 md:text-lg">
-          {question?.title}
-        </h3>
-        {/* Question body --optional */}
+      {isShare ? (
+        <div className={`text-night-secondary hover:text-faraday-night `}>
+          {Question}
+        </div>
+      ) : (
+        <Link
+          to={`/qfeed/${question?.id}`}
+          style={{ textDecoration: "none" }}
+          className={`text-night-secondary hover:text-faraday-night `}
+        >
+          {Question}
+        </Link>
+      )}
+    </div>
+  );
+}
 
-        {question?.original && question?.content && (
-          <div
-            className="mb-4 text-sm text-faraday-night render truncate-render"
-            style={{ marginTop: 0 }}
-            dangerouslySetInnerHTML={{ __html: question?.content }}
-          />
+export function ShareQuestion({ questionProp, shortLink }) {
+  const { history, type, user, question, discussionPage } = questionProp;
+  const [isPennedOpen, setIsPennedOpen] = React.useState(false);
+
+  const dispatch = useDispatch();
+
+  const QuestionBodyComp = (
+    <>
+      {/* Question head */}
+      <h3
+        className={`${
+          discussionPage
+            ? "mt-4 text-lg sm:text-xl font-semibold m-0 "
+            : "text-base font-semibold m-0 mb-1 md:text-lg"
+        }`}
+      >
+        {question?.title}
+      </h3>
+      {discussionPage && (
+        <p className="m-0 mb-4 mt-1 text-night-secondary text-xs">
+          Published {moment(question?.created).fromNow()}
+        </p>
+      )}{" "}
+      {/* {Boolean(question.has_solution) && (
+        <div className="bg-[#F1FBEF] inline-block py-1 px-3 rounded-full text-[#2C974B] font-medium text-xs mb-2">
+          Solved
+        </div>
+      )} */}
+      {/* Question body without a selected solution --optional */}
+      {question && question?.content && (
+        <div
+          className="mb-4 text-sm text-faraday-night render truncate-render"
+          style={{ marginTop: 0 }}
+          dangerouslySetInnerHTML={{ __html: question.content }}
+        />
+      )}
+    </>
+  );
+  // console.log(question, type);
+  return (
+    <div className="question-card shadow-[0px_1.4019997119903564px_7.009998798370361px_0px_#0000000D]">
+      <PennedModal
+        question={question}
+        isPennedOpen={isPennedOpen}
+        setIsPennedOpen={setIsPennedOpen}
+      />
+      <div
+        id="container__questions relative bg-danger "
+        className=" bg-white rounded-md"
+        style={{ marginBottom: ".3rem" }}
+      >
+        {type === "echo" && discussionPage === false && (
+          <div className="flex items-center gap-2 border-b-[1px] border-[#f5f5f5] py-1 px-3 text-xs">
+            <BroadCastIcon className="w-3 h-3" />
+            <span>
+              echoed by{" "}
+              <span
+                // to={`/me/${user.username}`}
+                style={{ textDecoration: "none" }}
+                className="text-faraday-night hover:text-faraday-night "
+              >
+                @{user.username}
+              </span>
+            </span>
+          </div>
         )}
-      </Link>
+        <div
+          className={`${
+            discussionPage ? "" : "border-b border-b-[#ECECF0]"
+          } px-3 py-3 sm:pt-4 relative rounded-md `}
+        >
+          <div className={`flex justify-start items-start `}>
+            <section className=" p-0 w-full">
+              <div className=" pr-2 relative">
+                <>
+                  <h3 className="text-sm font-semibold m-0 mb-1 md:text-lg">
+                    {question?.title}
+                  </h3>
+                </>
+              </div>
+
+              {type === "pen" ? (
+                <>
+                  <div
+                    style={{ borderLeft: "3px solid #BFC9D2" }}
+                    className={`p-3 bg-background mt-2`}
+                  >
+                    <p className="flex flex-wrap m-0 text-night-secondary mb-1 text-[8px]  md:text-[10px]">
+                      <span className="mr-1 font-semibold text-night-secondary flex items-center">
+                        {question.original?.user.firstname}{" "}
+                        {question.original?.user.lastname}{" "}
+                        {question.original?.user.account_verified && (
+                          <img src={verify} className="h-2 w-2 ml-1" alt="" />
+                        )}
+                      </span>
+                      <span className="mr-1">
+                        @{question.original?.user.username}{" "}
+                      </span>{" "}
+                      <span>
+                        {moment(question.original?.created).fromNow()}
+                      </span>
+                    </p>
+
+                    <div
+                      className={`text-night-secondary hover:text-faraday-night `}
+                    >
+                      {/* {Question.original} */}
+                      <h3 className="text-sm font-semibold m-0 mb-1 md:text-base">
+                        {question?.original?.title}
+                      </h3>
+                      {/* Question body --optional */}
+
+                      {question?.original && question?.content && (
+                        <div
+                          className="mb-4 text-sm text-faraday-night render truncate-render"
+                          style={{ marginTop: 0 }}
+                          dangerouslySetInnerHTML={{
+                            __html: question?.content,
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </>
+              ) : null}
+
+              <div className="flex flex-col gap-3 md:gap-0 md:flex-row justify-between items-center  mt-4">
+                <div className="flex items-center">
+                  {discussionPage === false && (
+                    <div className=" mr-2 cursor-pointer hidden md:block">
+                      <img
+                        src={question?.user.profile_pic}
+                        className="w-6 h-6 rounded-full bg-background2"
+                        style={{
+                          objectFit: "cover",
+                          border: "1px solid #cfd9de",
+                        }}
+                        alt=""
+                      />
+                    </div>
+                  )}
+                  {/* Profile details */}
+                  {discussionPage === true && (
+                    <div className=" cursor-pointer">
+                      <img
+                        src={question?.user.profile_pic}
+                        className="w-6 h-6 rounded-full bg-background2"
+                        style={{
+                          objectFit: "cover",
+                          border: "1px solid #cfd9de",
+                        }}
+                        alt=""
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <p className="flex m-0 text-[6px] text-night-secondary text-xs sm:text-sm justify-between">
+                      {discussionPage === false && (
+                        <div
+                          style={{ textDecoration: "none" }}
+                          className="min-w-[18px] h-auto mr-1 cursor-pointer  md:hidden"
+                        >
+                          <img
+                            src={question?.user.profile_pic}
+                            className="w-6 rounded-full bg-background2"
+                            style={{
+                              objectFit: "cover",
+                              border: "1px solid #cfd9de",
+                            }}
+                            alt=""
+                          />
+                        </div>
+                      )}
+                      <div className="text-[10px]">
+                        <div className="flex items-center ">
+                          <span className=" font-semibold text-faraday-night">
+                            {question?.user.firstname} {question?.user.lastname}{" "}
+                          </span>
+                          <span className="mr-1">
+                            {question?.user.account_verified && (
+                              <img
+                                src={verify}
+                                className="h-[10px] w-[10px] sm:h-5 sm:w-4 ml-1"
+                                alt=""
+                              />
+                            )}
+                          </span>
+                          <span className="mr-1 ">
+                            @{question?.user.username}{" "}
+                          </span>{" "}
+                        </div>
+                        <p className="m-0 leading-none text-night-secondary text-[8px]  flex align-middle ">
+                          {/* <img src={love} className="h-4 w-4 object-fill" alt="" /> */}
+                          <span className="min-h-4">
+                            {question?.user?.department}
+                          </span>
+                        </p>
+                      </div>
+                    </p>
+                  </div>
+                </div>
+
+                {shortLink ? (
+                  <div className="text-[8px] self-center font-semibold bg-[#F8F9FA] p-1 leading-none rounded-md flex gap-1">
+                    <img src={link} className="w-[11px] h-[11px]" alt="copy" />
+                    frda.me/{shortLink}
+                  </div>
+                ) : null}
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
