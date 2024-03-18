@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import { useHistory } from "react-router-dom";
 // import ReactMarkdown from "react-markdown";
 import http from "../../common/services/httpService";
@@ -126,6 +126,7 @@ const Question = (props) => {
         handleCopyLinkModal={handleCopyLinkModal}
         getShortLink={getShortLink}
         isCopyLinkModal={isCopyLinkModal}
+        setCopyLinkModal={setCopyLinkModal}
         isCopied={isCopied}
         shortLink={shortLink}
         handleIsCopied={handleIsCopied}
@@ -140,4 +141,4 @@ const Question = (props) => {
   );
 };
 
-export default Question;
+export default memo(Question);
