@@ -1,6 +1,8 @@
 import React from "react";
 import Myspinner from "../../../common/components/Spinner";
 import { ReactComponent as FaradayLogo } from "../../../common/assets/logo-green.svg";
+import Input from "../../../common/components/form/input";
+import PrimaryButton from "../../../common/components/PrimaryButton";
 
 function CreateUsername() {
   return (
@@ -16,13 +18,20 @@ function CreateUsername() {
         </div>
 
         <div>
-          <h2>Hello Chinagorom Ngozichukwu</h2>
-          <p>
+          <h2 className="form-title text-[#1C1C1C] font-bold">
+            Hello Chinagorom Ngozichukwu
+          </h2>
+          <p className="text-sm">
             Choose a cool username so others can easily find you on Faraday!
           </p>
         </div>
 
-        <form></form>
+        <form className="space-y-4">
+          <Input name="email" placeholder={"Email"} />
+          <Input name="username" placeholder={"Username"} />
+
+          <PrimaryButton cta={"Continue"} wide />
+        </form>
       </div>
     </div>
   );

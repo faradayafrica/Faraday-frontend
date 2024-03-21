@@ -1,6 +1,6 @@
 import React from "react";
 import { ReactComponent as GoogleIcon } from "../../common/assets/google.svg";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function OrGoogle({ login }) {
   return (
@@ -19,16 +19,16 @@ function OrGoogle({ login }) {
       {login ? (
         <div className="font-medium">
           <span>Don't have an account? </span>
-          <span to="/signup" className="text-[#0043CE]">
+          <Link to="/signup" className="text-[#0043CE]">
             Create one
-          </span>
+          </Link>
         </div>
       ) : (
         <div className="font-medium">
           <span>Already have an account? </span>
-          <span to="/signup" className="text-[#0043CE]">
+          <Link to="/login" className="text-[#0043CE]">
             Sign in
-          </span>
+          </Link>
         </div>
       )}
     </div>

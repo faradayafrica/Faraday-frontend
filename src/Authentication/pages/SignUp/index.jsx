@@ -131,15 +131,17 @@ class SignUpPage extends Form {
           <Myspinner />
         </div>
 
-        <div className="progress-container mx-auto mt-3">
+        {/* <div className="progress-container mx-auto mt-3">
           <div id="progressBar" className="progress vanish"></div>
-        </div>
+        </div> */}
 
         <div className="form-container">
           <div className="logo-container">
             <img className="logo mx-auto" src={faraday} alt="faraday" />
           </div>
-          <h3 className="form-title">Create your account</h3>
+          <h3 className="form-title text-[#1C1C1C] font-bold">
+            Create account
+          </h3>
 
           <form onSubmit={this.handleSubmit}>
             <div className="horinzontal-align label-group">
@@ -147,8 +149,8 @@ class SignUpPage extends Form {
               {this.renderInput("lname", "Last name")}
             </div>
 
-            {this.renderInput("username", "Username")}
             {this.renderInput("email", "Email")}
+            {this.renderInput("username", "Username")}
 
             {/* <div className='horinzontal-align label-group mb-3'> */}
             {this.renderPassword(
@@ -163,19 +165,19 @@ class SignUpPage extends Form {
             )} */}
             {/* </div> */}
 
-            <div className="text-xs">
+            <div className="text-xs mt-8">
               <span>By clicking the sign up button, you agree to our </span>
               <Link to="#" className="text-[#0043CE]">
                 User Condition and Privacy Policy
               </Link>
             </div>
 
-            {this.renderButton("Sign up")}
+            <div className="mb-4">{this.renderButton("Create account")}</div>
           </form>
 
           <OrGoogle />
         </div>
-        {this.renderRedirectBtn("Login", "login", "Already have an account?")}
+        {/* {this.renderRedirectBtn("Login", "login")} */}
       </div>
     );
   }

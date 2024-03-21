@@ -5,7 +5,7 @@ import Form from "../../../components/Form";
 import Joi from "joi-browser";
 import auth from "../../../../common/services/authService";
 import UserContext from "../../../context/userContext";
-import faraday from "../../../../common/assets/logo.svg";
+import faraday from "../../../../common/assets/logo-green.svg";
 import { ErrorToast } from "../../../../common/components/CustomToast";
 
 class ResetPassword extends Form {
@@ -38,8 +38,9 @@ class ResetPassword extends Form {
           <div className="logo-container ">
             <img className="logo mx-auto" src={faraday} alt="faraday" />
           </div>
-          <h3 className="form-title">Enter a new password</h3>{" "}
-          <p className="text-xs mt-1 max-w-[280px] mx-auto">Final step</p>
+          <h3 className="form-title text-[#1C1C1C] font-bold">
+            Enter a new password
+          </h3>{" "}
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             {this.renderPassword(
@@ -47,7 +48,7 @@ class ResetPassword extends Form {
               "Password",
               this.state.showPassword ? "" : "password"
             )}
-            {this.renderInput(
+            {this.renderPassword(
               "confirmPassword",
               "Confirm Password",
               "password"

@@ -9,6 +9,9 @@ import PrimaryButton from "../../common/components/PrimaryButton";
 // import Myspinner from "../../components/styledComponents/Spinner";
 import "../styles/form.css";
 import { ErrorToast } from "../../common/components/CustomToast";
+// import { ReactComponent as EyeIcon } from "../../common/assets/eye-icon.svg";
+import { IoMdEye } from "react-icons/io";
+import { IoMdEyeOff } from "react-icons/io";
 
 class Form extends Component {
   state = {
@@ -221,7 +224,7 @@ class Form extends Component {
     const { data, errors } = this.state;
 
     return (
-      <>
+      <div className="relative">
         <Input
           type={type}
           name={name}
@@ -232,23 +235,20 @@ class Form extends Component {
           className={`form-control ${errors[name] ? "is-invalid" : ""}`}
         />
 
-        <div
+        <button
           onClick={() => {
             const showPassword = !this.state.showPassword;
             this.setState({ showPassword });
           }}
-          className="text-left mt-2 mb-4 text-sm flex cursor-pointer items-center"
+          className="absolute top-[50%] -translate-x-[50%] -translate-y-[50%] right-0 text-sm cursor-pointer w-fit"
         >
-          <div className="mr-1 border h-4 w-4 flex items-center justify-center rounded-full">
-            <div
-              className={`h-3 w-3 rounded-full ${
-                this.state.showPassword ? "bg-faraday-night" : ""
-              }`}
-            ></div>
-          </div>
-          <p className="m-0">Show password </p>
-        </div>
-      </>
+          {this.state.showPassword ? (
+            <IoMdEyeOff fill="#9DA1A7" size="24" />
+          ) : (
+            <IoMdEye fill="#9DA1A7" size="24" />
+          )}
+        </button>
+      </div>
     );
   }
 

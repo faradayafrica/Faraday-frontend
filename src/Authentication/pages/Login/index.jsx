@@ -41,7 +41,7 @@ class LoginPage extends Form {
           <div className="logo-container ">
             <FaradayLogo className="mx-auto" />
           </div>
-          <h3 className="form-title">Sign In</h3>{" "}
+          <h3 className="form-title text-[#1C1C1C] font-bold">Sign In</h3>{" "}
           {/* <p className="font-medium text-brand">
             to <span className="font-bold">Beta</span>
           </p> */}
@@ -64,7 +64,7 @@ class LoginPage extends Form {
               </p>
             </Link>
 
-            <OrGoogle />
+            <OrGoogle login />
           </form>
         </div>
         {this.renderRedirectBtn("Sign up", "signup", "Don't have an account?")}
