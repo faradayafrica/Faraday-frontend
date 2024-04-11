@@ -61,6 +61,13 @@ class SignUpPage extends Form {
   };
 
   doSubmit = async () => {
+    // This is to get the Query Parameter
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop) => searchParams.get(prop),
+    });
+
+    let redirectUrl = params.redirect;
+
     //Activate spinner
     const spinner = document.getElementById("spinnerContainer");
     const progress = document.getElementById("progressBar");
@@ -75,7 +82,7 @@ class SignUpPage extends Form {
         .register(data)
         .then((res) => {
           setUser(res.data);
-          this.setState({ ...this.state, redirect: "/confirm-email" });
+          this.setState({ ...this.state, redirect: redirectUrl ?? "/" });
           progress.classList.remove("vanish");
           progress.classList.add("progress-25");
         })
