@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
 import { BsInfoCircle } from "react-icons/bs";
-import Tooltip from "react-tooltip-lite";
 import Myspinner from "../../../common/components/Spinner";
 import faraday from "../../../common/assets/logo.svg";
 import auth from "../../../common/services/authService";
@@ -15,8 +14,6 @@ import { fetchCountryThunk } from "../../../common/features/auth/univastSlice";
 import { UnivastStates } from "../../../common/features/auth/univastSlice";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
 
-import TipModal from "../../../common/components/Tooltip";
-import tooltipicon from "../../assets/Mouse.svg";
 import "../../styles/form.css";
 
 const filterData = (query, lists) =>
@@ -244,11 +241,6 @@ const AddSchoolDetail = () => {
     }
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleTooltipClick = () => {
-    setIsModalOpen(!isModalOpen); // Toggle the isModalOpen state
-  };
-
   return (
     <div className="login-page">
       {redirect && <Redirect to="/" />}
@@ -268,19 +260,7 @@ const AddSchoolDetail = () => {
           <p className="mx-12 extra-info text-md">
             Just your academic information and we'll be gone.{" "}
           </p>
-          <Tooltip>
-            <BsInfoCircle onClick={handleTooltipClick} />
-          </Tooltip>
         </div>
-        {isModalOpen && (
-          <TipModal
-            icon={tooltipicon}
-            title={`Why do we ask this?`}
-            message={`We kindly request your academic information to enhance your Faraday signup experience. By understanding your educational background, we can tailor Faraday to better suit your needs, offer personalized recommendations, and provide relevant resources to support your academic journey`}
-            visible={isModalOpen}
-            cancel={() => setIsModalOpen(false)}
-          />
-        )}
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Select
