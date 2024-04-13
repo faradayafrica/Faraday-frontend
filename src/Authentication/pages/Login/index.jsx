@@ -8,7 +8,7 @@ import faraday from "../../../common/assets/logo.svg";
 
 class LoginPage extends Form {
   componentDidMount() {
-    if (this.props.clearCache == true) window.location.reload(true);
+    if (this.props.clearCache === true) window.location.reload(true);
   }
 
   state = {
@@ -39,9 +39,6 @@ class LoginPage extends Form {
             <img className="logo mx-auto" src={faraday} alt="faraday" />
           </div>
           <h3 className="form-title">Welcome back</h3>{" "}
-          <p className="font-medium text-brand">
-            to <span className="font-bold">Beta</span>
-          </p>
           <form onSubmit={this.handleSubmit}>
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             {this.renderInput("username", "Username or Email")}
@@ -50,15 +47,22 @@ class LoginPage extends Form {
               "Password",
               this.state.showPassword ? "" : "password"
             )}
-            {this.renderButton("Login")}
             <Link to="/forgot-password" style={{ textDecoration: "none" }}>
-              <p className="text-sm mt-2 mb-0 text-night-secondary">
-                forgot password
+              <p
+                className="text-sm mt-2 mb-0 text-night-secondary"
+                style={{ textAlign: "right" }}
+              >
+                Forgot your password?
               </p>
             </Link>
+            {this.renderButton("Login")}
+            {this.renderRedirectBtn(
+              "Create an account",
+              "signup",
+              "New to Faraday?"
+            )}
           </form>
         </div>
-        {this.renderRedirectBtn("Sign up", "signup", "Don't have an account?")}
       </div>
     );
   }
@@ -69,11 +73,9 @@ class LoginPage extends Form {
     spinner.classList.remove("vanish");
 
     // This is to get the Query Parameter
-    const params = new Proxy(new URLSearchParams(window.location.search), {
-      get: (searchParams, prop) => searchParams.get(prop),
-    });
+    const currentPage = window.location.pathname.substring(1);
 
-    let redirectUrl = params.redirect;
+    let redirectUrl = currentPage;
 
     // call the backend
     try {
