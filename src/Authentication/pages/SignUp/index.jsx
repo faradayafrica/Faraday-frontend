@@ -5,8 +5,6 @@ import faraday from "../../../common/assets/logo.svg";
 import Joi from "joi-browser";
 import { Redirect } from "react-router";
 import UserContext from "../../context/userContext";
-import { connect } from "react-redux";
-import { fetchSchoolThunk } from "../../../common/features/auth/univastSlice";
 
 import * as userService from "../../services/userService";
 import { ErrorToast } from "../../../common/components/CustomToast";
@@ -29,11 +27,6 @@ class SignUpPage extends Form {
     showPassword: false,
     showErrors: false,
   };
-
-  componentDidMount() {
-    const { fetchSchool } = this.props;
-    fetchSchool();
-  }
 
   schema = {
     fname: Joi.string()
@@ -75,7 +68,7 @@ class SignUpPage extends Form {
         .register(data)
         .then((res) => {
           setUser(res.data);
-          this.setState({ ...this.state, redirect: "/confirm-email" });
+          this.setState({ ...this.state, redirect: "/" });
           progress.classList.remove("vanish");
           progress.classList.add("progress-25");
         })
@@ -127,10 +120,6 @@ class SignUpPage extends Form {
         {/* the spinner */}
         <div id="spinnerContainer" className="spinner-container vanish">
           <Myspinner />
-        </div>
-
-        <div className="progress-container mx-auto mt-3">
-          <div id="progressBar" className="progress vanish"></div>
         </div>
 
         <div className="form-container">
@@ -186,10 +175,4 @@ class SignUpPage extends Form {
   }
 }
 
-// These lines of code bellow allows us to interact with the redux store from here
-
-const mapDispatchToProps = {
-  fetchSchool: fetchSchoolThunk,
-};
-
-export default connect(null, mapDispatchToProps)(SignUpPage);
+export default SignUpPage;
