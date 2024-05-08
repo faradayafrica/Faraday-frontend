@@ -5,6 +5,7 @@ import Form from "../../components/Form";
 import Joi from "joi-browser";
 import auth from "../../../common/services/authService";
 import faraday from "../../../common/assets/logo.svg";
+import { FcGoogle } from "react-icons/fc";
 
 class LoginPage extends Form {
   componentDidMount() {
@@ -56,9 +57,27 @@ class LoginPage extends Form {
                 forgot password
               </p>
             </Link>
+            <div className="text-sm mt-8">
+              <hr />
+              OR
+            </div>
+            <div className="signup-with-google mt-8 flex items-center justify-center border rounded-[20px] hover:bg-blue-500 hover:text-white">
+              <button
+                className="font-[550] py-2 px-4 flex items-center"
+                onClick={this.googleSignUp}
+              >
+                <FcGoogle size={24} className="mr-2" /> Login with Google
+              </button>
+            </div>
+            <p className="mt-10 text[14px]">
+              Don’t have an account?{" "}
+              <Link to="/signup" className="text-[#0043CE] font-[510]">
+                Create one
+              </Link>
+            </p>
           </form>
         </div>
-        {this.renderRedirectBtn("Sign up", "signup", "Don't have an account?")}
+        {/* {this.renderRedirectBtn("Sign up", "signup", "Don't have an account?")} */}
       </div>
     );
   }
@@ -88,7 +107,7 @@ class LoginPage extends Form {
         auth.resendEmailConfirmation();
         this.setState({ ...this.state, redirect: "/confirm-email" });
       } else {
-        this.setState({ ...this.state, redirect: "/update-school-detail" });
+        this.setState({ ...this.state, redirect: "/" });
       }
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {

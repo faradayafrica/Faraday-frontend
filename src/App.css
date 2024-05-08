@@ -1063,12 +1063,54 @@ LOGIN
 
   padding: 1rem;
   background-color: var(--background2) !important;
+  border-radius: 10px;
+}
+.model-page {
+  font-family: "Poppins", Arial, sans-serif;
+  color: var(--text2-black);
+  position: absolute;
+  min-height: 100%;
+  min-width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+
+  padding: 1rem;
+  /* background-color: var(--background2) !important; */
+  border-radius: 10px;
+  margin-top: 4rem;
 }
 
-.form-container {
-  margin-top: 8rem;
+.container {
+  margin-top: 5rem;
+  margin-bottom: 1rem;
   /* margin-bottom: 4rem; */
   padding: 1rem;
+  padding-bottom: 2rem;
+  margin-left: -50px;
+  margin-right: auto;
+
+  border-radius: 6px;
+  border: 0.5px solid var(--outline);
+  /* border: 0.5px solid var(--outline); */
+  background-color: var(--white) !important;
+  width: 650px;
+  /* max-width: 425px; */
+  text-align: center;
+
+  box-shadow: 5px 5px 0px var(--shadow);
+  transition: all 200ms ease;
+
+  @media screen and (max-width: 567px) {
+    width: 100%;
+    margin-left: auto;
+  }
+}
+.form-container {
+  margin-top: 6rem;
+  /* margin-bottom: 4rem; */
+  padding: 1rem;
+  padding-bottom: 2rem;
   margin-left: auto;
   margin-right: auto;
 

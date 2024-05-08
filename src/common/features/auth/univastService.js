@@ -13,7 +13,6 @@ export default class UnivastService {
     if (response.response === false) {
       throw new Error("some error");
     }
-
     return response.data;
   }
 

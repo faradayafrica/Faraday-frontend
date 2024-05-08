@@ -18,7 +18,7 @@ import { NavLink } from "react-router-dom/cjs/react-router-dom";
 import TipModal from "../../../common/components/Tooltip";
 import tooltipicon from "../../assets/Mouse.svg";
 import "../../styles/form.css";
-
+import { IoChevronBackOutline } from "react-icons/io5";
 const filterData = (query, lists) =>
   query === ""
     ? lists
@@ -29,7 +29,7 @@ const filterData = (query, lists) =>
           .includes(query.toLowerCase().replace(/\s+/g, ""))
       );
 
-const AddSchoolDetail = () => {
+const AddSchoolDetail = ({ user }) => {
   const [countryid, setCountryid] = useState(null);
   const [schoolid, setSchoolid] = useState(null);
   const [facultyid, setFaultyid] = useState(null);
@@ -250,27 +250,33 @@ const AddSchoolDetail = () => {
   };
 
   return (
-    <div className="login-page">
+    <div className="">
       {redirect && <Redirect to="/" />}
       {/* the spinner */}
       <div id="spinnerContainer" className="spinner-container vanish">
         <Myspinner />
       </div>
-      <div className="progress-container mx-auto mt-3">
-        <div className="progress progress-50"></div>
-      </div>
-      <div className="form-container">
-        <div className="logo-container">
+      <div className="w-full container">
+        {/* <div className="logo-container">
           <img className="logo mx-auto" src={faraday} alt="faraday" />
+        </div> */}
+        <div className="flex justify-between items-center mb-10  mx-2">
+          <IoChevronBackOutline
+            className="p-2 bg-[#F8FAF9] rounded-full cursor-pointer"
+            size={35}
+          />
+          <p className="text-black">Skip</p>
         </div>
-        <h3 className="form-title">One last thing...</h3>
-        <div className="tooltip-wrapper">
-          <p className="mx-12 extra-info text-md">
-            Just your academic information and we'll be gone.{" "}
+        <div className="progress-container mx-auto mt-3">
+          <div className="progress progress-50"></div>
+        </div>
+        <div className=" text-left mt-12  ml-5">
+          <p className="font-bold  text-xl">
+            Hello <span className="">{user?.profile?.lastname}  👋  </span>
           </p>
-          <Tooltip>
-            <BsInfoCircle onClick={handleTooltipClick} />
-          </Tooltip>
+          <p className="mt-1 text-[#545454] text-sm md:text-[16px]">
+            We need some information about the school you are enrolled in
+          </p>
         </div>
         {isModalOpen && (
           <TipModal
@@ -282,7 +288,7 @@ const AddSchoolDetail = () => {
           />
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
           <Select
             signup
             lists={filteredCountryData}

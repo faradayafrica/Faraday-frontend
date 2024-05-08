@@ -65,7 +65,7 @@ const QfeedSlider = () => {
               alt={feedAds[0]?.advertiser_name}
             />
           </a>
-
+          
           {/* <AliceCarousel
         mouseTracking
         animationDuration

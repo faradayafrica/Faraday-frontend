@@ -166,6 +166,10 @@ export function getRefresh() {
   }
 }
 
+export function isLoggedIn() {
+  const jwt = localStorage.getItem(tokenKey);
+  return jwt !== null && jwt !== undefined;
+}
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   tokenKey,
@@ -173,6 +177,7 @@ export default {
   refreshJwt,
   getRefresh,
   getCurrentUser,
+  isLoggedIn,
 
   login,
   logout,

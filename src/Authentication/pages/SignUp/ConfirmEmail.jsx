@@ -92,7 +92,8 @@ class ConfirmEmail extends Form {
       await auth.confirmEmail(data);
 
       progress.classList.add("progress-50");
-      this.setState({ ...this.state, redirect: "/update-school-detail" });
+      this.setState({ ...this.state, redirect: "/" });
+      // this.setState({ ...this.state, redirect: "/update-school-detail" });
       spinner.classList.add("vanish");
       // this.props.history.push("/update-school-detail");
     } catch (ex) {

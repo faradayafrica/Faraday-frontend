@@ -10,6 +10,8 @@ import "../styles/qfeed.css";
 import QuestionsLoader from "./QuestionsLoader";
 import uuid from "react-uuid";
 import QfeedSlider from "../components/adsComponents/QfeedSlider.jsx";
+import CompletionBanner from "../../Authentication/pages/SignUp/CompletionBanner.jsx";
+// import auth from "../../../common/services/authService";
 
 const TimeLine = (props) => {
   const [scrollPosition, setScrollPosition] = useState([]);
@@ -17,6 +19,8 @@ const TimeLine = (props) => {
   // Redux biz starts here
   const { qfeed: questions } = useSelector((state) => state.qfeed.feed);
   // Redux biz ends here
+
+  // const user = auth.getCurrentUser(); 
 
   // Preserve Scroll position
   useEffect(() => {
@@ -39,6 +43,7 @@ const TimeLine = (props) => {
     return () => document.removeEventListener("scroll", save);
   }, [window.pageYOffset]);
 
+
   return (
     <div className="relative">
       <div className="bg-background " id="timeline">
@@ -46,6 +51,8 @@ const TimeLine = (props) => {
         <h1 className="text-cente md:!text-left text-2xl sm:text-2xl m-3 font-bold">
           Question Feed
         </h1>
+        
+
 
         <QfeedSlider />
         {/* The questions */}

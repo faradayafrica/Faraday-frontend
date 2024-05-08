@@ -6,6 +6,7 @@ import QuestionsLoader from "../../Qfeed/components/QuestionsLoader";
 import { useEffect } from "react";
 import Empty from "../../common/components/Empty";
 import { getCurrentUser } from "../../common/services/authService";
+import CompletionBanner from "../../Authentication/pages/SignUp/CompletionBanner";
 
 const UserQuestionSolutionPage = ({
   user,
@@ -54,7 +55,7 @@ const UserQuestionSolutionPage = ({
   return (
     <>
       {/* We need a nav here */}
-
+      <CompletionBanner />
       <div className="w-full profile-wrapper text-faraday-night ">
         <Tab.Group>
           <Tab.List
