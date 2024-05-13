@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import Myspinner from "../../../common/components/Spinner";
 import faraday from "../../../common/assets/logo.svg";
 import auth from "../../../common/services/authService";
@@ -14,6 +14,26 @@ import { UnivastStates } from "../../../common/features/auth/univastSlice";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
 import "../../styles/form.css";
 import { IoChevronBackOutline } from "react-icons/io5";
+import { Box, Modal } from "@mui/material";
+import PersonalData from "./PersonalData";
+import { CarouselNext, useCarouselNext } from "src/ui/carousel";
+
+const style = {
+  position: "absolute",
+  top: "10%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  borderRadius: 10,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  // p: 4,
+  width: 500,
+  height: 0,
+  "@media (max-width: 600px)": {
+    width: 350,
+  },
+};
+
 const filterData = (query, lists) =>
   query === ""
     ? lists
@@ -24,7 +44,7 @@ const filterData = (query, lists) =>
           .includes(query.toLowerCase().replace(/\s+/g, ""))
       );
 
-const AddSchoolDetail = ({ user }) => {
+const AddSchoolDetail = ({ user, onNext }) => {
   const [countryid, setCountryid] = useState(null);
   const [schoolid, setSchoolid] = useState(null);
   const [facultyid, setFaultyid] = useState(null);
@@ -45,10 +65,30 @@ const AddSchoolDetail = ({ user }) => {
   const [departmentQuery, setDepartmentQuery] = useState("");
   const [levelQuery, setLevelQuery] = useState("");
 
-  const [countriesData, setCountriesData] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleCancel = () => setOpen(false);
 
+  const [success, setSuccess] = useState(false);
+  const [countriesData, setCountriesData] = useState([]);
+  const [formComplete, setFormComplete] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleNext = useCarouselNext();
   const dispatch = useDispatch();
   const { allCountries, status } = useSelector((state) => state.univast);
+
+  // Effect to update form completion state
+  useEffect(() => {
+    setFormComplete(
+      !!countryValue
+      // !!schoolid &&
+      // !!facultyid &&
+      // !!departmentValue &&
+      // !!levelValue
+    );
+  }, [countryValue]);
 
   useLayoutEffect(() => {
     if (countriesData.length === 0) {
@@ -217,7 +257,6 @@ const AddSchoolDetail = ({ user }) => {
     const progress = document.getElementById("progressBar");
     const spinner = document.getElementById("spinnerContainer");
     spinner.classList.remove("vanish");
-
     try {
       await auth.refreshJwt();
       await auth.updateSchoolDetail(data);
@@ -225,9 +264,8 @@ const AddSchoolDetail = ({ user }) => {
       spinner?.classList.add("vanish");
 
       // setRedirect(true);
-      window.location.replace("/");
-
-      // window.location.replace("/update-personal-data");
+      // window.location.replace("/");
+      setSuccess(true);
     } catch (ex) {
       if (ex.response && ex.response.status === 500) {
         spinner.classList.add("vanish");
@@ -240,43 +278,28 @@ const AddSchoolDetail = ({ user }) => {
   };
 
   return (
-    <div className="">
-      {redirect && <Redirect to="/" />}
-      {/* the spinner */}
+    <div className="w-full ">
       <div id="spinnerContainer" className="spinner-container vanish">
         <Myspinner />
       </div>
       <div className="w-full container">
-        {/* <div className="logo-container">
-          <img className="logo mx-auto" src={faraday} alt="faraday" />
-        </div> */}
-        <div className="flex justify-between items-center mb-10  mx-2">
-          <IoChevronBackOutline
-            className="p-2 bg-[#F8FAF9] rounded-full cursor-pointer"
-            size={35}
-          />
-          <p className="text-black">Skip</p>
-        </div>
-        <div className="progress-container mx-auto mt-3">
-          <div className="progress progress-50"></div>
-        </div>
         <div className=" text-left mt-12  ml-5">
-          <p className="font-bold  text-xl">
-            Hello <span className="">{user?.profile?.lastname} 👋 </span>
+          <p className="font-bold  text-2xl">
+            Hello <span className=""> {user?.profile?.lastname} 👋 </span>
           </p>
           <p className="mt-1 text-[#545454] text-sm md:text-[16px]">
-            We need some information about the school you are enrolled in
+            Let’s lay the foundation by building your academic bookrock
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+        <form className="flex flex-col gap-3">
           <Select
             signup
             lists={filteredCountryData}
             loading={status !== UnivastStates.SUCCESSFUL}
             value={countryValue}
             setValue={setCountryValue}
-            label={"Country"}
+            label={"Where in the World Are You Studying?"}
             optionClick={getSchoolInfo}
             setQuery={setCountryQuery}
           />
@@ -287,7 +310,7 @@ const AddSchoolDetail = ({ user }) => {
             value={schoolValue}
             setValue={setSchoolValue}
             optionClick={getSchoolInfo}
-            label={"School"}
+            label={"What's your School of Thought?"}
             loadingMsg={countryValue ? "Loading.." : "Please select a Country"}
             setQuery={setSchoolQuery}
           />
@@ -298,7 +321,7 @@ const AddSchoolDetail = ({ user }) => {
             value={facultyValue}
             setValue={setFacultyValue}
             optionClick={getSchoolInfo}
-            label={"Faculty"}
+            label={"Which Faculty are You In?"}
             loadingMsg={schoolValue ? "Loading.." : "Please select a School"}
             setQuery={setFacultyQuery}
           />
@@ -309,7 +332,7 @@ const AddSchoolDetail = ({ user }) => {
             value={departmentValue}
             setValue={setDepartmentValue}
             optionClick={getSchoolInfo}
-            label={"Department"}
+            label={"Which Department Holds Your Passion?"}
             loadingMsg={facultyValue ? "Loading.." : "Please select a Faculty"}
             setQuery={setDepartmentQuery}
           />
@@ -320,16 +343,38 @@ const AddSchoolDetail = ({ user }) => {
             value={levelValue}
             setValue={setLevelValue}
             optionClick={getSchoolInfo}
-            label={"Level"}
+            label={"What Level Are You In?"}
             loadingMsg={departmentValue ? " " : "Please select a Department"}
             setQuery={setLevelQuery}
           />
-
-          <div className="mt-3">
-            <PrimaryButton cta="Next" disabled={validate()} wide />
+          {/* Display error message if form is incomplete and submitted */}
+          {submitted && !formComplete && (
+            <p className="text-red-600 text-sm font-semibold mt-2">
+              Please fill out all fields before submitting.
+            </p>
+          )}
+          <div className="mt-10 flex justify-between items-center">
+            <button
+              onClick={async (event) => {
+                event.preventDefault();
+                console.log(countryValue);
+                if (!formComplete) {
+                  setSubmitted(true);
+                  return;
+                } else {
+                  await onSubmit();
+                  handleNext();
+                }
+              }}
+              className={`bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-[#011945] mt-10 w-full ${
+                !formComplete ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              Next
+            </button>
           </div>
         </form>
-
+        {/* onSubmit={onSubmit} success={success} */}
         {/* <div
           className="mx-auto text-center mt-3 text-md"
           style={{ maxWidth: "425px", alignText: "center" }}

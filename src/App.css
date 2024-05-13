@@ -86,10 +86,56 @@ SPINNER STYLING
   align-items: center;
 }
 
+.index {
+  z-index: 1000000000000000;
+}
+.Carousel {
+  width: 650px;
+  padding: 10px;
+  background-color: var(--white);
+
+  @media screen and (max-width: 567px) {
+    width: 350px;
+  }
+}
+
+.slide {
+  transition: transform 0.3s ease-in-out;
+}
+/* .slider-container {
+  width: 650px;
+  overflow: hidden;
+  margin-left: -80px;
+
+
+  @media screen and (max-width: 567px) {
+    width: 100%;
+    margin-left: 0;
+  }
+} */
+
+.slider {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+}
+
+.navigation-buttons {
+  margin-top: 10px;
+}
+
+.navigation-buttons button {
+  margin-right: 10px;
+}
+
+.progress-bar {
+  margin-top: 20px;
+}
+
 .spinner-text {
   position: absolute;
   bottom: 1rem;
 }
+
 /*************************************************** 
 QFEED STYLING 
 ***************************************************/
@@ -1081,30 +1127,37 @@ LOGIN
   margin-top: 4rem;
 }
 
+.gradien-borderr {
+  border-image: linear-gradient(
+    to right,
+    rgba(19, 5, 184, 1),
+    rgba(14, 131, 75, 1),
+    rgba(9, 201, 91, 1)
+  );
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+}
+
 .container {
-  margin-top: 5rem;
   margin-bottom: 1rem;
-  /* margin-bottom: 4rem; */
-  padding: 1rem;
-  padding-bottom: 2rem;
-  margin-left: -50px;
   margin-right: auto;
 
   border-radius: 6px;
-  border: 0.5px solid var(--outline);
-  /* border: 0.5px solid var(--outline); */
-  background-color: var(--white) !important;
-  width: 650px;
-  /* max-width: 425px; */
+  /* width: 630px; */
   text-align: center;
-
-  box-shadow: 5px 5px 0px var(--shadow);
   transition: all 200ms ease;
 
-  @media screen and (max-width: 567px) {
-    width: 100%;
+  /* @media screen and (max-width: 567px) {
+    width: 350px;
     margin-left: auto;
-  }
+  } */
 }
 .form-container {
   margin-top: 6rem;
@@ -1162,6 +1215,25 @@ form {
   height: calc(1.5em + 0.75rem + 2px);
   line-height: 1.5;
   padding: 0.375rem 0.75rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  width: 100%;
+}
+.textarea-control {
+  border: none !important;
+  border-bottom: 0.5px solid var(--secondary-text) !important;
+  min-height: 140px !important;
+  background-color: #f8f9fa88 !important;
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+  border-bottom-left-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  color: #495057;
+  display: block;
+  font-size: 1rem;
+  font-weight: 400;
+  height: calc(1.5em + 0.75rem + 2px);
+  line-height: 1.5;
+  padding: 0.8rem 1rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   width: 100%;
 }
@@ -1356,12 +1428,12 @@ form {
   max-width: 425px;
 }
 
-.progress {
+/* .progress {
   background-color: var(--brand) !important;
   height: 100% !important;
-  width: 0%;
+  width: 100%;
   transition: all 0.3s ease;
-}
+} */
 .progress-25 {
   width: 25%;
 }

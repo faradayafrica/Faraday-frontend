@@ -8,6 +8,7 @@ import auth from "../../../common/services/authService";
 import { getYear, getMonth } from "../../services/bioServices";
 import { Redirect } from "react-router-dom";
 import defaultProfile from "../../assets/default-profile.png";
+import { CarouselNext } from "src/ui/carousel";
 
 class PersonalData extends Form {
   state = {
@@ -165,40 +166,37 @@ class PersonalData extends Form {
     }
 
     return (
-      <div className="login-page">
+      <div className="l">
         {/* the spinner */}
         <div id="spinnerContainer" className="spinner-container vanish">
           <Myspinner />
         </div>
-        <div className="progress-container mx-auto mt-3">
-          <div id="progressBar" className="progress progress-75"></div>
-        </div>
-        <div className="form-container">
-          <div className="logo-container">
-            <img className="logo mx-auto" src={faraday} alt="faraday" />
-          </div>
-          <h3 className="form-title ">Let’s finish up</h3>
-          <p className="mx-3 extra-info text-md">
-            Let’s get to know you a little better.
+        <div className=" text-left mt-12  ml-5">
+          <p className="font-bold  text-xl">Your profile details</p>
+          <p className="mt-1 text-[#545454] text-sm md:text-[16px]">
+            Could you tell us a bit about yourself.
           </p>
-
-          <form onSubmit={this.handleSubmit}>
+        </div>
+        <div className="container">
+          <form onSubmit={this.handleSubmit} className="flex flex-col gap-5">
             {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             {this.renderFileInput("image")}
 
-            {this.renderTextArea("bio", "What makes you special?")}
-            {this.renderGenderSelect("gender", "Gender", this.state.gender)}
+            {this.renderTextArea("bio", "Enter your bio")}
+            {/* {this.renderGenderSelect("gender", "Gender", this.state.gender)} */}
 
             <div className="horinzontal-align label-group relative mt-4">
               <p className="absolute top-0 text-md">Date of birth</p>
-              <div className=" col-4 mt-3">
-                {this.renderDateSelect("year", "Year", this.state.year)}
-              </div>
-              <div className="col-4 mt-3">
-                {this.renderDateSelect("month", "Month", this.state.month)}
-              </div>
-              <div className="col mt-3">
-                {this.renderDateSelect("day", "Day", this.listDays())}
+              <div className="flex gap-10">
+                <div className="col-4 mt-3">
+                  {this.renderDateSelect("year", "Year", this.state.year)}
+                </div>
+                <div className="col-4 mt-3">
+                  {this.renderDateSelect("month", "Month", this.state.month)}
+                </div>
+                <div className="col mt-3">
+                  {this.renderDateSelect("day", "Day", this.listDays())}
+                </div>
               </div>
             </div>
 
@@ -209,6 +207,8 @@ class PersonalData extends Form {
             >
               Skip
             </button> */}
+
+            <CarouselNext />
           </form>
         </div>
       </div>

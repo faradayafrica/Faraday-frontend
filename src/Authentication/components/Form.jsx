@@ -9,6 +9,7 @@ import PrimaryButton from "../../common/components/PrimaryButton";
 // import Myspinner from "../../components/styledComponents/Spinner";
 import "../styles/form.css";
 import { ErrorToast } from "../../common/components/CustomToast";
+import { TbCameraPlus } from "react-icons/tb";
 
 class Form extends Component {
   state = {
@@ -272,18 +273,28 @@ class Form extends Component {
 
   renderFileInput(name) {
     const { data } = this.state;
-
     return (
-      <div className="form-group m-0  mx-auto">
-        <img
-          className="add-profile-btn cursor-pointer"
-          src={data.image}
-          id="img"
-          alt=""
+      <div className="form-group m-0 mx-auto h-[7rem] flex justify-center items-center">
+        <div
+          className="h-[40px] w-[15rem] flex items-center gap-8 justify-center cursor-pointer gradien-borderr"
+          style={{}}
           onClick={(event) => {
             this.fileInputRef.current.click();
           }}
-        />
+        >
+          <img
+            className=" h-[30px]"
+            src={data.image}
+            id="img"
+            alt=""
+            onClick={(event) => {
+              this.fileInputRef.current.click();
+            }}
+          />
+
+          <TbCameraPlus size={24} />
+          <p className="text-center">Add a profile image</p>
+        </div>
 
         <input
           type="file"
@@ -292,11 +303,12 @@ class Form extends Component {
           accept="image/*"
           onChange={(event) => this.imageHandler(event.target.files[0])}
           ref={this.fileInputRef}
+          className=" "
           style={{ display: "none" }}
         />
-        <label htmlFor={name} className="sr-only">
-          Add Image
-        </label>
+        {/* <label htmlFor={name} className="">
+        Add a profile image
+        </label> */}
       </div>
     );
   }

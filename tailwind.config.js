@@ -7,6 +7,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        "custom-gradient": {
+          border:
+            "linear-gradient(to right, rgba(19, 5, 184, 1), rgba(14, 131, 75, 1), rgba(9, 201, 91, 1))",
+        },
         brand: "#05b851",
         "brand-dark": "#2C974B",
         "faraday-night": "#333B47",

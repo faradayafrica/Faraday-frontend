@@ -8,11 +8,12 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import AddSchoolDetail from "./AddSchoolDetail";
 import { useSelector } from "react-redux";
+import Slider from "./Slider";
 
 const style = {
   position: "absolute",
-  top: "10%",
-  left: "50%",
+  top: "8%",
+  // left: "50%",
   transform: "translate(-50%, -50%)",
   borderRadius: 10,
   bgcolor: "background.paper",
@@ -20,11 +21,10 @@ const style = {
   // p: 4,
   width: 500,
   height: 0,
-  '@media (max-width: 600px)': {
+  "@media (max-width: 600px)": {
     width: 350,
   },
 };
-
 
 const CompletionBanner = () => {
   const [eduVerified, setEduVerified] = useState(false);
@@ -33,7 +33,6 @@ const CompletionBanner = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
 
   const {
     profileData: user,
@@ -85,9 +84,9 @@ const CompletionBanner = () => {
   };
 
   // Only render the banner if relevant conditions are met
-  if (!isLoggedIn || eduVerified || !showBanner) {
-    return null;
-  }
+  // if (!isLoggedIn || eduVerified || !showBanner) {
+  //   return null;
+  // }
 
   return (
     <div className="">
@@ -126,9 +125,11 @@ const CompletionBanner = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <AddSchoolDetail  user={user} />
-        </Box>
+        <div className="flex justify-center items-center h-full">
+          <Box className="">
+            <Slider user={user} onClose={handleClose} />
+          </Box>
+        </div>
       </Modal>
     </div>
   );
