@@ -1,81 +1,48 @@
-import React, { useState } from "react";
-import defaultProfile from "../../../Authentication/assets/profile image.png";
-import defaultProfile2 from "../../../Authentication/assets/profile image-3.png";
-import defaultProfile3 from "../../../Authentication/assets/profile image-4.png";
-import defaultProfile4 from "../../../Authentication/assets/profile image-5.png";
-import defaultProfile5 from "../../../Authentication/assets/profile image.png";
+import React, { useEffect, useState } from "react";
 import { FiCheck } from "react-icons/fi";
+import auth, { getCurrentUser } from "../../../common/services/authService";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const PeopleToFollow = () => {
-  // Dummy data representing people to follow
-  const peopleToFollow = [
-    {
-      id: 1,
-      profileImage: defaultProfile,
-      username: "john_doe",
-      department: "Electronic and computer Engineering",
-      university: "University of XYZ",
-      level: "100",
-      // followed: false
-    },
-    {
-      id: 2,
-      profileImage: defaultProfile2,
-      username: "jane_smith",
-      department: "Electronic and computer Engineering",
-      university: "College ABC",
-      level: "200",
-      // followed: true
-    },
-    {
-      id: 3,
-      profileImage: defaultProfile3,
-      username: "jane_doe",
-      department: "Computer Science",
-      university: "University of XYZ",
-      level: "300",
-      // followed: false
-    },
-    {
-      id: 4,
-      profileImage: defaultProfile4,
-      username: "john_smith",
-      department: "Civil Engineering",
-      university: "College ABC",
-      level: "400",
-      // followed: true
-    },
-    {
-      id: 5,
-      profileImage: defaultProfile5,
-      username: "jane_doe",
-      department: "Mechanical Engineering",
-      university: "University of XYZ",
-      level: "500",
-      // followed: false
-    },
-    {
-      id: 6,
-      profileImage: defaultProfile5,
-      username: "jane_doe",
-      department: "Electronic and computer Engineering",
-      university: "University of XYZ",
-      level: "200",
-      // followed: false
-    },
-  ];
+  const [people, setPeople] = useState([]);
+  const currentUser = getCurrentUser();
+  const history = useHistory();
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-  const [people, setPeople] = useState(peopleToFollow);
-
-  const handleFollowToggle = (personId) => {
-    const updatedPeople = people.map((person) => {
-      if (person.id === personId) {
-        return { ...person, followed: !person.followed };
+  useEffect(() => {
+    const getRecommendedUsers = async () => {
+      try {
+        const data = await auth.fetchRecommendedUsers();
+        console.log(data);
+        setPeople(data);
+      } catch (error) {
+        console.error("Error fetching recommended users", error);
       }
-      return person;
-    });
-    setPeople(updatedPeople);
+    };
+
+    getRecommendedUsers();
+  }, []);
+
+  const handleSubmit = () => {
+    // history.push("/home");
   };
+  const handleFollowToggle = async (personId, username) => {
+    try {
+      await auth.followUser(personId, username); // Call the followUser function with personId and username
+      const updatedPeople = people.map((person) => {
+        if (person.id === personId) {
+          return { ...person, followed: !person.followed };
+        }
+        return person;
+      });
+      setPeople(updatedPeople);
+    } catch (error) {
+      console.error("Error following/unfollowing user", error);
+    }
+  };
+
   return (
     <div className="text-left mt-5 p-3">
       <p className="font-bold text-2xl">Fadets you should follow</p>
@@ -88,20 +55,22 @@ const PeopleToFollow = () => {
         {people.map((person) => (
           <div
             key={person.id}
-            className="flex flex-col gap-2 p-2 border-b border-gray-300 w-[190px] border rounded-xl"
+            className="flex flex-col gap-2 p-2 border-b border-gray-300  w-full md:w-[190px] border rounded-xl"
           >
             <img
-              src={person.profileImage}
+              src={person.profile.profile_pic}
               alt={person.username}
-              className="w-24 h-24 rounded-[1rem] mr-4"
+              className="w-[5rem] h-[5rem] rounded-[1rem] mr-4"
             />
             <div>
               <p className="text-[15px] font-bold">{person.username}</p>
-              <p className="truncate w-[70%] text-sm text-[#545454]">
-                {person.department}
+              <p className="md:truncate w-[70%] text-sm text-[#545454]">
+                {person.profile.department}
               </p>
-              <p className="text-sm text-[#545454]">{person.university}</p>
-              <p className="text-sm text-[#545454]">{person.level}L</p>
+              <p className="text-sm text-[#545454] truncate">
+                {person.profile.school}
+              </p>
+              <p className="text-sm text-[#545454]">{person.profile.level}L</p>
             </div>
             <button
               className={`px-4 py-[2px] rounded-[2rem] w-full flex justify-center text-sm ${
@@ -109,7 +78,7 @@ const PeopleToFollow = () => {
                   ? "bg-[#F1FBEF]"
                   : "bg-green-500 text-white font-[550]"
               }`}
-              onClick={() => handleFollowToggle(person.id)}
+              onClick={() => handleFollowToggle(person.id, person.username)}
             >
               {person.followed ? (
                 <FiCheck className="text-[#05B851]" size={21} />
@@ -120,15 +89,15 @@ const PeopleToFollow = () => {
           </div>
         ))}
       </div>
-      <button
+      <Link
+        to="/"
         type="submit"
-        // onClick={handleSubmit}
-        className="bg-gray-400 text-white px-4 py-2 w-full rounded-md hover:bg-[#011945] mt-10"
+        onClick={handleClose}
+        className="bg-gray-400 text-white px-4 py-2 w-full rounded-md hover:bg-[#011945] mt-10 text-center"
       >
         Finish
-      </button>
+      </Link>
     </div>
   );
 };
-
 export default PeopleToFollow;

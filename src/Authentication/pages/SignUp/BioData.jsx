@@ -18,7 +18,6 @@ const BioData = () => {
   const [isFormComplete, setIsFormComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  // const [value, setValue] = React.useState(dayjs('2022-04-17'));
 
   const handleNext = useCarouselNext();
 
@@ -30,11 +29,16 @@ const BioData = () => {
   useEffect(() => {
     const isProfilePicFilled = !!profilePic;
     const isBioFilled = !!bio.trim();
-    // const isGenderFilled = !!gender;
+    const isGenderFilled = !!gender;
     const isDateOfBirthFvilled = !!dateOfBirth;
 
-    setIsFormComplete(isProfilePicFilled && isBioFilled, isDateOfBirthFvilled);
-  }, [profilePic, bio, dateOfBirth]);
+    setIsFormComplete(
+      isProfilePicFilled &&
+        isBioFilled &&
+        isGenderFilled &&
+        isDateOfBirthFvilled
+    );
+  }, [profilePic, bio, gender, dateOfBirth]);
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -42,10 +46,11 @@ const BioData = () => {
     try {
       const imageUrl = await uploadImage(profilePic);
 
+      const formattedDate = dateOfBirth.format("YYYY-MM-DD");
       const formData = new FormData();
       formData.append("bio", bio);
-      // formData.append("gender", gender);
-      formData.append("dob", dateOfBirth.toISOString());
+      formData.append("gender", gender);
+      formData.append("dob", formattedDate);
       formData.append("image", imageUrl);
 
       const response = await auth.updatePersonalDetail(formData);
@@ -54,7 +59,7 @@ const BioData = () => {
 
       setIsLoading(false);
       setSubmitted(true);
-      handleNext(); // Proceed to next step after successful submission
+      handleNext();
     } catch (error) {
       console.error("Error submitting data:", error);
       setIsLoading(false);
@@ -79,19 +84,16 @@ const BioData = () => {
   };
 
   const handleRemoveImage = () => {
-    setProfilePic(null); // Clear the profile picture
+    setProfilePic(null);
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log("Subbbbbbbbbb");
-    console.log(dateOfBirth);
     if (!isFormComplete) {
-      setSubmitted(true); // Show validation message
-      console.log("Summmmmmm");
+      setSubmitted(true);
     } else {
-      setSubmitted(false); // Reset submitted state
-      await handleSubmit(); // Submit the form
+      setSubmitted(false);
+      await handleSubmit();
       handleNext();
     }
   };
@@ -106,14 +108,14 @@ const BioData = () => {
             </div>
           )}
 
-          <div className="text-left mt-10 ml-5">
+          <div className="text-left mt-5 ml-5">
             <p className="font-bold text-2xl">Your Mark, Make It Personal</p>
             <p className="mt-1 text-[#545454] text-sm md:text-[16px]">
               Tell us, what’s your unique personality?
             </p>
           </div>
 
-          <div className="flex justify-center items-center mt-5 mb-3">
+          <div className="flex justify-center items-center mt-5 mb-1">
             {profilePic ? (
               <div className="flex flex-col gap-4 items-center">
                 <img
@@ -158,15 +160,29 @@ const BioData = () => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer
             components={["DatePicker", "DatePicker"]}
-            className=" p-5"
+            className="p-0"
           >
             <DatePicker
               label="Date of birth (DD/MM/YYYY)"
               value={dateOfBirth}
               onChange={(newValue) => setDateOfBirth(newValue)}
+              className="date-picker"
             />
           </DemoContainer>
         </LocalizationProvider>
+
+        <select
+          value={gender}
+          onChange={(e) => setGender(e.target.value)}
+          className="p-3 rounded-md bg-[#F8FAF9] shadow-sm shadow-[#AFAFAF] focus:outline-none w-full"
+        >
+          <option value="" disabled>
+            Select Gender
+          </option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
 
         {submitted && !isFormComplete && (
           <p className="text-red-600 text-sm font-semibold mt-2">

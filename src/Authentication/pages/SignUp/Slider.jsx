@@ -43,8 +43,8 @@ const Slider = ({ onNext, user, onClose }) => {
   };
 
   return (
-    <Carousel className="rounded-xl Carousel">
-      <div className="flex justify-between items-center mb-5 mx-3 mt-2">
+    <Carousel className="rounded-xl bg-white w-[90%]  p-4 lg:w-[40%]">
+      <div className="flex justify-between items-center mx-3 mt-2">
         <CarouselPrevious>
           <IoChevronBackOutline />
         </CarouselPrevious>
@@ -52,7 +52,7 @@ const Slider = ({ onNext, user, onClose }) => {
           Cancel
         </p>
       </div>
-      <div className="progress-container mx-auto mt-0">
+      <div className="progress-container mt-4">
         {components.map((comp, index) => (
           <div
             key={index}

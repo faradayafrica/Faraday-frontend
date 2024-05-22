@@ -41,6 +41,7 @@ export function getCurrentUser() {
     return { email_verified: null };
   }
 }
+// another way to get the current user
 
 export async function updateSchoolDetail(user) {
   const url = process.env.REACT_APP_API_URL + "/users/edu_update/";
@@ -56,6 +57,39 @@ export async function updateSchoolDetail(user) {
     },
     config
   );
+}
+
+export async function updateUserInterests(followedInterests) {
+  const updatedInterests = followedInterests.map((interest) => ({
+    name: interest,
+  }));
+  console.log(updatedInterests);
+  const url =
+    process.env.REACT_APP_API_URL + "/users/profile_update/interests/";
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` },
+  };
+  await axios.patch(url, updatedInterests, config);
+}
+
+// function to fetch the recommended user to follow
+export async function fetchRecommendedUsers() {
+  const url = process.env.REACT_APP_API_URL + "/users/recommended/";
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` },
+  };
+  const { data } = await axios.get(url, config);
+  console.log(data);
+  return data;
+}
+
+// function to follow a user
+export async function followUser(userId, username) {
+  const url = `${process.env.REACT_APP_API_URL}/users/${username}/follow/`;
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem(tokenKey)}` },
+  };
+  await axios.post(url, userId, config);
 }
 
 export async function editUserProfile(user) {
@@ -185,6 +219,9 @@ export default {
   resendEmailConfirmation,
   updateSchoolDetail,
   updatePersonalDetail,
+  updateUserInterests,
+  fetchRecommendedUsers,
+  followUser,
 
   forgotPassword,
   confirmAccount,
