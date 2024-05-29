@@ -9,7 +9,7 @@ import { FcGoogle } from "react-icons/fc";
 
 class LoginPage extends Form {
   componentDidMount() {
-    if (this.props.clearCache == true) window.location.reload(true);
+    if (this.props.clearCache === true) window.location.reload(true);
   }
 
   state = {
@@ -36,7 +36,7 @@ class LoginPage extends Form {
           <Myspinner />
         </div>
         <div className="form-container">
-          <div className="logo-container ">
+          <div className="logo-container">
             <img className="logo mx-auto" src={faraday} alt="faraday" />
           </div>
           <h3 className="form-title">Welcome back</h3>{" "}
@@ -44,7 +44,6 @@ class LoginPage extends Form {
             to <span className="font-bold">Beta</span>
           </p>
           <form onSubmit={this.handleSubmit}>
-            {/* the input fields is being rendered by a method in the parent class "Form" in form.jsx */}
             {this.renderInput("username", "Username or Email")}
             {this.renderPassword(
               "password",
@@ -57,7 +56,8 @@ class LoginPage extends Form {
                 forgot password
               </p>
             </Link>
-            <div className="text-sm mt-8">
+            {/* {this.renderErrors()} */}
+            {/* <div className="text-sm mt-8">
               <hr />
               OR
             </div>
@@ -68,7 +68,7 @@ class LoginPage extends Form {
               >
                 <FcGoogle size={24} className="mr-2" /> Login with Google
               </button>
-            </div>
+            </div> */}
             <p className="mt-10 text[14px]">
               Don’t have an account?{" "}
               <Link to="/signup" className="text-[#0043CE] font-[510]">
@@ -77,7 +77,20 @@ class LoginPage extends Form {
             </p>
           </form>
         </div>
-        {/* {this.renderRedirectBtn("Sign up", "signup", "Don't have an account?")} */}
+      </div>
+    );
+  }
+
+  renderErrors() {
+    const { errors } = this.state;
+    return (
+      <div className="error-messages">
+        {errors.username && (
+          <p className="error alert alert-danger">{errors.username}</p>
+        )}
+        {errors.password && (
+          <p className="error alert alert-danger">{errors.password}</p>
+        )}
       </div>
     );
   }
@@ -110,26 +123,24 @@ class LoginPage extends Form {
         this.setState({ ...this.state, redirect: "/" });
       }
     } catch (ex) {
-      if (ex.response && ex.response.status === 500) {
-        const errors = { ...this.state.errors };
-        errors.username = "Internal error, please try again";
-        this.setState({ errors });
-        spinner.classList.add("vanish");
-      } else if (ex.response && ex.response.status >= 400) {
-        const errors = { ...this.state.errors };
-        if (ex.response.data.detail.includes("password")) {
-          errors.password = ex.response.data.detail;
+      const errors = { ...this.state.errors };
+      if (ex.response) {
+        if (ex.response.status === 500) {
+          errors.username = "Internal error, please try again";
+        } else if (ex.response.status >= 400) {
+          if (ex.response.data.detail.includes("password")) {
+            errors.password = ex.response.data.detail;
+          } else {
+            errors.username = ex.response.data.detail;
+          }
         } else {
-          errors.username = ex.response.data.detail;
+          errors.username = "Something went wrong, please try again";
         }
-        this.setState({ errors });
-        spinner.classList.add("vanish");
       } else {
-        const errors = { ...this.state.errors };
         errors.username = "Something went wrong, please try again";
-        this.setState({ errors });
-        spinner.classList.add("vanish");
       }
+      this.setState({ errors });
+      spinner.classList.add("vanish");
     }
   };
 }

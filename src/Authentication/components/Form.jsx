@@ -6,7 +6,6 @@ import Input from "../../common/components/form/input";
 import TextArea from "../../common/components/form/TextArea";
 import Select from "../../common/components/form/select";
 import PrimaryButton from "../../common/components/PrimaryButton";
-// import Myspinner from "../../components/styledComponents/Spinner";
 import "../styles/form.css";
 import { ErrorToast } from "../../common/components/CustomToast";
 import { TbCameraPlus } from "react-icons/tb";
@@ -131,7 +130,7 @@ class Form extends Component {
   renderButton(label, isFluid) {
     return (
       <div className="mt-3">
-        <PrimaryButton cta={label} disabled={this.validate()} wide />
+        <PrimaryButton cta={label} wide />
       </div>
     );
   }
@@ -159,14 +158,19 @@ class Form extends Component {
     const { data, errors } = this.state;
 
     return (
-      <Select
-        name={name}
-        value={data[name]}
-        label={label}
-        options={options}
-        onChange={this.handleSelectChange}
-        error={errors[name]}
-      />
+      <div className="form-group">
+        <Select
+          name={name}
+          value={data[name]}
+          label={label}
+          options={options}
+          onChange={this.handleSelectChange}
+          error={errors[name]}
+        />
+        {errors[name] && (
+          <div className="alert alert-danger">{errors[name]}</div>
+        )}
+      </div>
     );
   }
 
@@ -174,14 +178,19 @@ class Form extends Component {
     const { data, errors } = this.state;
 
     return (
-      <Select
-        name={name}
-        value={data[name]}
-        label={label}
-        options={options}
-        onChange={this.handleDateChange}
-        error={errors[name]}
-      />
+      <div className="form-group">
+        <Select
+          name={name}
+          value={data[name]}
+          label={label}
+          options={options}
+          onChange={this.handleDateChange}
+          error={errors[name]}
+        />
+        {errors[name] && (
+          <div className="alert alert-danger">{errors[name]}</div>
+        )}
+      </div>
     );
   }
 
@@ -189,14 +198,19 @@ class Form extends Component {
     const { data, errors } = this.state;
 
     return (
-      <Select
-        name={name}
-        value={data[name]}
-        label={label}
-        options={options}
-        onChange={this.handleChange}
-        error={errors[name]}
-      />
+      <div className="form-group">
+        <Select
+          name={name}
+          value={data[name]}
+          label={label}
+          options={options}
+          onChange={this.handleChange}
+          error={errors[name]}
+        />
+        {errors[name] && (
+          <div className="alert alert-danger">{errors[name]}</div>
+        )}
+      </div>
     );
   }
 
@@ -205,24 +219,6 @@ class Form extends Component {
 
     return (
       <div className="form-group">
-        <input
-          type={type}
-          name={name}
-          value={data[name]}
-          label={placeholder}
-          placeholder={placeholder}
-          onChange={this.handleChange}
-          className={`form-control ${errors[name] ? "is-invalid" : ""}`}
-        />
-      </div>
-    );
-  }
-
-  renderPassword(name, placeholder, type = "text") {
-    const { data, errors } = this.state;
-
-    return (
-      <>
         <Input
           type={type}
           name={name}
@@ -232,7 +228,27 @@ class Form extends Component {
           onChange={this.handleChange}
           className={`form-control ${errors[name] ? "is-invalid" : ""}`}
         />
+        {errors[name] && (
+          <div className="alert alert-danger">{errors[name]}</div>
+        )}
+      </div>
+    );
+  }
 
+  renderPassword(name, placeholder, type = "text") {
+    const { data, errors } = this.state;
+
+    return (
+      <div className="form-group">
+        <Input
+          type={type}
+          name={name}
+          value={data[name]}
+          label={placeholder}
+          placeholder={placeholder}
+          onChange={this.handleChange}
+          className={`form-control ${errors[name] ? "is-invalid" : ""}`}
+        />
         <div
           onClick={() => {
             const showPassword = !this.state.showPassword;
@@ -249,7 +265,10 @@ class Form extends Component {
           </div>
           <p className="m-0">Show password </p>
         </div>
-      </>
+        {errors[name] && (
+          <div className="alert alert-danger">{errors[name]}</div>
+        )}
+      </div>
     );
   }
 
@@ -257,26 +276,32 @@ class Form extends Component {
     const { data, errors } = this.state;
 
     return (
-      <TextArea
-        type="text"
-        name={name}
-        rows={rows}
-        value={data[name]}
-        label={placeholder}
-        isTitle={isTitle}
-        placeholder={placeholder}
-        onChange={this.handleChange}
-        error={errors[name]}
-      />
+      <div className="form-group">
+        <TextArea
+          type="text"
+          name={name}
+          rows={rows}
+          value={data[name]}
+          label={placeholder}
+          isTitle={isTitle}
+          placeholder={placeholder}
+          onChange={this.handleChange}
+          error={errors[name]}
+        />
+        {errors[name] && (
+          <div className="alert alert-danger">{errors[name]}</div>
+        )}
+      </div>
     );
   }
 
-  renderFileInput(name) {
-    const { data } = this.state;
+  renderFile(name) {
+    const data = this.state;
+
     return (
-      <div className="form-group m-0 mx-auto h-[7rem] flex justify-center items-center">
+      <div className="file-box-container">
         <div
-          className="h-[40px] w-[15rem] flex items-center gap-8 justify-center cursor-pointer gradien-borderr"
+          className="file-box d-flex justify-content-center align-items-center cursor-pointer gradien-border"
           style={{}}
           onClick={(event) => {
             this.fileInputRef.current.click();
@@ -291,11 +316,9 @@ class Form extends Component {
               this.fileInputRef.current.click();
             }}
           />
-
           <TbCameraPlus size={24} />
           <p className="text-center">Add a profile image</p>
         </div>
-
         <input
           type="file"
           name="image-upload"
@@ -306,9 +329,6 @@ class Form extends Component {
           className=" "
           style={{ display: "none" }}
         />
-        {/* <label htmlFor={name} className="">
-        Add a profile image
-        </label> */}
       </div>
     );
   }

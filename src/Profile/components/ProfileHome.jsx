@@ -29,12 +29,12 @@ const ProfileHome = ({
 
   const history = useHistory();
 
+  console.log(user, "user");
   return (
     <div className="bg-white py-4">
       <div className="min-h-[70px] sm:min-h-[20px] bg-brand-highlight"> </div>
       {user ? (
         <>
-          
           <div className=" text-sm sm:text-base">
             <div className=" bg-brand-highlight flex items-center justify-center ">
               <img
@@ -61,7 +61,7 @@ const ProfileHome = ({
                     @{user?.profile?.username}
                   </div>
                 </div>
-                
+
                 {/* here */}
                 {currentUser.username !== user?.profile?.username ? (
                   <div onClick={() => handleFollow(user)}>
@@ -86,8 +86,8 @@ const ProfileHome = ({
                 {user?.profile?.bio
                   ? user?.profile?.bio
                   : user?.profile?.level
-                    ? `A ${user?.profile?.level}L student of ${user?.profile?.school} studying ${user?.profile?.department}.`
-                    : ""}
+                  ? `A ${user?.profile?.level}L student of ${user?.profile?.school} studying ${user?.profile?.department}.`
+                  : ""}
               </p>
               <div className="text-xs text-night-secondary">
                 <p className="m-0">{user?.profile?.school}</p>

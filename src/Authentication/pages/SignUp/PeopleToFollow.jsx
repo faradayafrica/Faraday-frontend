@@ -25,9 +25,11 @@ const PeopleToFollow = () => {
     getRecommendedUsers();
   }, []);
 
-  const handleSubmit = () => {
-    // history.push("/home");
+  const handleSubmit = async () => {
+    await auth.refreshJwt();
+    window.location.reload();
   };
+
   const handleFollowToggle = async (personId, username) => {
     try {
       await auth.followUser(personId, username); // Call the followUser function with personId and username
@@ -89,14 +91,13 @@ const PeopleToFollow = () => {
           </div>
         ))}
       </div>
-      <Link
-        to="/"
+      <button
         type="submit"
-        onClick={handleClose}
+        onClick={handleSubmit}
         className="bg-gray-400 text-white px-4 py-2 w-full rounded-md hover:bg-[#011945] mt-10 text-center"
       >
         Finish
-      </Link>
+      </button>
     </div>
   );
 };

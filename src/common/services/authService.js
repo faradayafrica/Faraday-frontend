@@ -23,6 +23,7 @@ export async function login({ username, password }) {
 
 export async function refreshJwt() {
   const refresh_token = getRefresh();
+  console.log(refresh_token);
   await axios
     .post(`${process.env.REACT_APP_API_URL + "/users/refresh_token/"}`, {
       refresh: refresh_token,
@@ -42,6 +43,22 @@ export function getCurrentUser() {
   }
 }
 // another way to get the current user
+// export async function getCurrentUser() {
+//   try {
+//     const jwt = localStorage.getItem(tokenKey);
+//     if (!jwt) return null;
+
+//     const url = "https://faradayapi-staging.azurewebsites.net/v1/users/me/"
+//     const { data } = await axios.get(url, {
+//       headers: { Authorization: `Bearer ${jwt}` },
+//     });
+
+//     return data;
+//   } catch (ex) {
+//     console.error("Error fetching current user:", ex);
+//     return null;
+//   }
+// }
 
 export async function updateSchoolDetail(user) {
   const url = process.env.REACT_APP_API_URL + "/users/edu_update/";

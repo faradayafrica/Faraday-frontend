@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import { fetchSchoolThunk } from "../../../common/features/auth/univastSlice";
 import * as userService from "../../services/userService";
 import { ErrorToast } from "../../../common/components/CustomToast";
-
 import { FcGoogle } from "react-icons/fc";
 
 class SignUpPage extends Form {
@@ -85,19 +84,11 @@ class SignUpPage extends Form {
     }
   };
 
-  // Function to handle sign up with Google
   googleSignUp = async () => {
     try {
-      // Implement Google sign-up logic here using an authentication service/library
-      // Example: Use Firebase Authentication with Google OAuth
-      // const googleProvider = new firebase.auth.GoogleAuthProvider();
-      // await firebase.auth().signInWithPopup(googleProvider);
-
-      // After successful Google sign-up, navigate user to desired page
       this.setState({ redirect: "/desired-page-after-google-signup" });
     } catch (error) {
       console.error("Google sign-up error:", error);
-      // Handle error (e.g., display error message)
       ErrorToast("Failed to sign up with Google. Please try again.");
     }
   };
@@ -123,8 +114,8 @@ class SignUpPage extends Form {
           </div>
           <h3 className="form-title">Create your account</h3>
 
-          <form onSubmit={this.handleSubmit}>
-            <div className="horinzontal-align label-group">
+          <form onSubmit={this.handleSubmit} showErrorMessages={true}>
+            <div className="horizontal-align label-group">
               {this.renderInput("fname", "First name")}
               {this.renderInput("lname", "Last name")}
             </div>
@@ -133,23 +124,15 @@ class SignUpPage extends Form {
             {this.renderPassword(
               "password",
               "Password",
-              this.state.showPassword ? "" : "password"
+              this.state.showPassword ? "text" : "password"
             )}
             {this.renderButton("Sign up")}
+            {this.state.errorMessage && (
+              <div className="alert alert-danger mt-2">
+                {this.state.errorMessage}
+              </div>
+            )}
           </form>
-
-          <div>
-            <hr />
-            OR
-          </div>
-          <div className="signup-with-google mt-8 flex items-center justify-center border rounded-[20px] hover:bg-blue-500 hover:text-white">
-            <button
-              className="font-[550] py-2 px-4 flex items-center"
-              onClick={this.googleSignUp}
-            >
-              <FcGoogle size={24} className="mr-2" /> Sign Up with Google
-            </button>
-          </div>
 
           <p className="mt-10 text[14px]">
             Already have an account?{" "}

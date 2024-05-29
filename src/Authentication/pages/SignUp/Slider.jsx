@@ -16,7 +16,12 @@ import PeopleToFollow from "./PeopleToFollow";
 const Slider = ({ onNext, user, onClose }) => {
   const [currentComponent, setCurrentComponent] = useState(0);
   const [components, setComponents] = useState([
-    { component: <AddSchoolDetail user={user} />, progress: 0 },
+    {
+      component: (
+        <AddSchoolDetail user={user} schoolDetails={user?.profile || {}} />
+      ),
+      progress: 0,
+    },
     { component: <BioData />, progress: 0 },
     { component: <ChooseInterest />, progress: 0 },
     { component: <PeopleToFollow />, progress: 0 },
@@ -52,16 +57,16 @@ const Slider = ({ onNext, user, onClose }) => {
           Cancel
         </p>
       </div>
-      <div className="progress-container mt-4">
+      {/* <div className="progress-container mt-4 w-full">
         {components.map((comp, index) => (
           <div
             key={index}
             className={`progress ${
-              comp.progress === 100 ? "progress-filled" : ""
+              comp.progress === 100 ? "progress-filled w-ful" : ""
             }`}
           ></div>
         ))}
-      </div>
+      </div> */}
       <CarouselContent>
         {components.map((comp, index) => (
           <CarouselItem
