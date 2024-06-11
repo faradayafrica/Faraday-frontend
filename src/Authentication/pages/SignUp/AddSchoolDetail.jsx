@@ -1,22 +1,15 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import Myspinner from "../../../common/components/Spinner";
-import faraday from "../../../common/assets/logo.svg";
 import auth from "../../../common/services/authService";
 import { getLevel } from "../../../common/services/schoolService";
-import { Redirect } from "react-router-dom";
 import Select from "../../../common/components/form/select";
 import { useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import PrimaryButton from "../../../common/components/PrimaryButton";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCountryThunk } from "../../../common/features/auth/univastSlice";
 import { UnivastStates } from "../../../common/features/auth/univastSlice";
-import { NavLink } from "react-router-dom/cjs/react-router-dom";
 import "../../styles/form.css";
-import { IoChevronBackOutline } from "react-icons/io5";
-import { Box, Modal } from "@mui/material";
-import PersonalData from "./PersonalData";
-import { CarouselNext, useCarouselNext } from "src/ui/carousel";
+import { useCarouselNext } from "src/ui/carousel";
 
 const style = {
   position: "absolute",
@@ -105,10 +98,6 @@ const AddSchoolDetail = ({ user, onNext, schoolDetails }) => {
   }, [allCountries]);
 
   const {
-    register,
-    handleSubmit,
-    watch,
-    getValues,
     formState: { errors },
   } = useForm();
 
@@ -362,16 +351,15 @@ const AddSchoolDetail = ({ user, onNext, schoolDetails }) => {
             <button
               onClick={async (event) => {
                 event.preventDefault();
-                console.log(countryValue);
                 if (!formComplete) {
                   setSubmitted(true);
-                  handleNext();
                   return;
                 } else {
                   await onSubmit();
                   handleNext();
                 }
               }}
+              // disabled={}
               className={`bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-[#011945] mt-10 w-full ${
                 !formComplete ? "opacity-50 cursor-not-allowed" : ""
               }`}

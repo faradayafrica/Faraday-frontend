@@ -90,7 +90,7 @@ class ConfirmEmail extends Form {
     // call the backend
     try {
       await auth.confirmEmail(data);
-
+      await auth.refreshJwt();
       progress.classList.add("progress-50");
       this.setState({ ...this.state, redirect: "/" });
       // this.setState({ ...this.state, redirect: "/update-school-detail" });
