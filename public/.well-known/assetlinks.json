@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "Faraday Lite",
+      "sha256_cert_fingerprints": [
+        "AC:3A:DB:32:B2:14:C8:B2:A8:4E:EC:2C:16:3C:33:B1:ED:E3:84:FF:E5:50:31:48:36:53:BD:11:98:D9:A1:3C"
+      ]
+    }
+  }
+]
